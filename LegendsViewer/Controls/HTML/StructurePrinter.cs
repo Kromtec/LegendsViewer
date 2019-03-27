@@ -22,14 +22,7 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("<h1>" + _structure.Name + "</h1>");
             Html.AppendLine("<b>");
-            if (_structure.DungeonType != DungeonType.Unknown)
-            {
-                Html.AppendLine(_structure.DungeonType.GetDescription());
-            }
-            else
-            {
-                Html.AppendLine(_structure.Type.GetDescription());
-            }
+            Html.AppendLine(_structure.TypeAsString);
             Html.AppendLine(" in " + _structure.Site.ToLink() + "</b><br/><br/>");
 
             if (_structure.Deity != null)

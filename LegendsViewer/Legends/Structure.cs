@@ -20,8 +20,20 @@ namespace LegendsViewer.Legends
         public HistoricalFigure Deity { get; set; } // legends_plus.xml
         public int ReligionId { get; set; } // legends_plus.xml
         public Entity Religion { get; set; } // legends_plus.xml
-        public DungeonType DungeonType { get; set; } // legends_plus.xml
-        public string TypeAsString { get { return Type.GetDescription(); } set { } }
+        public StructureSubType StructureSubType { get; set; } // legends_plus.xml
+
+        public string TypeAsString
+        {
+            get
+            {
+                if (StructureSubType != StructureSubType.Unknown)
+                {
+                    return StructureSubType.GetDescription();
+                }
+                return Type.GetDescription();
+            }
+        }
+
         public string Icon { get; set; }
         public int EntityId { get; set; }
         public Entity Entity { get; set; }
@@ -67,9 +79,9 @@ namespace LegendsViewer.Legends
                     case "dungeon_type":
                         switch (property.Value)
                         {
-                            case "0": DungeonType = DungeonType.Dungeon; break;
-                            case "1": DungeonType = DungeonType.Sewers; break;
-                            case "2": DungeonType = DungeonType.Catacombs; break;
+                            case "0": StructureSubType = StructureSubType.Dungeon; break;
+                            case "1": StructureSubType = StructureSubType.Sewers; break;
+                            case "2": StructureSubType = StructureSubType.Catacombs; break;
                             default:
                                 property.Known = false;
                                 break;
@@ -79,8 +91,8 @@ namespace LegendsViewer.Legends
                         switch (property.Value)
                         {
                             case "standard": break;
-                            case "catacombs": DungeonType = DungeonType.Catacombs; break;
-                            case "sewers": DungeonType = DungeonType.Sewers; break;
+                            case "catacombs": StructureSubType = StructureSubType.Catacombs; break;
+                            case "sewers": StructureSubType = StructureSubType.Sewers; break;
                             default:
                                 property.Known = false;
                                 break;
@@ -200,9 +212,9 @@ namespace LegendsViewer.Legends
             if (link)
             {
                 string title = "";
-                if (DungeonType != DungeonType.Unknown)
+                if (StructureSubType != StructureSubType.Unknown)
                 {
-                    title += DungeonType.GetDescription();
+                    title += StructureSubType.GetDescription();
                 }
                 else
                 {

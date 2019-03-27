@@ -271,7 +271,7 @@
     <Compile Include="Legends\Enums\ConfrontSituation.cs" />
     <Compile Include="Legends\Enums\DeathCause.cs" />
     <Compile Include="Legends\Enums\Dispute.cs" />
-    <Compile Include="Legends\Enums\DungeonType.cs" />
+    <Compile Include="Legends\Enums\StructureSubType.cs" />
     <Compile Include="Legends\Enums\EntityLawType.cs" />
     <Compile Include="Legends\Enums\EntityLinkType.cs" />
     <Compile Include="Legends\Enums\EntityType.cs" />

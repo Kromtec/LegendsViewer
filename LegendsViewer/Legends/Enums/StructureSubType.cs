@@ -1,6 +1,6 @@
 ﻿namespace LegendsViewer.Legends.Enums
 {
-    public enum DungeonType
+    public enum StructureSubType
     {
         Unknown,
         Dungeon,

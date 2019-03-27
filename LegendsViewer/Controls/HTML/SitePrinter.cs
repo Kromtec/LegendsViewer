@@ -330,14 +330,7 @@ namespace LegendsViewer.Controls.HTML
                 foreach (Structure structure in _site.Structures)
                 {
                     Html.AppendLine("<li>" + structure.ToLink() + ", ");
-                    if (structure.DungeonType != DungeonType.Unknown)
-                    {
-                        Html.AppendLine(structure.DungeonType.GetDescription());
-                    }
-                    else
-                    {
-                        Html.AppendLine(structure.Type.GetDescription());
-                    }
+                    Html.AppendLine(structure.TypeAsString);
                     Html.AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");

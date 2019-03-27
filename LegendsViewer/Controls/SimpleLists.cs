@@ -766,7 +766,7 @@ namespace LegendsViewer.Controls
 
             if (Type != "All")
             {
-                filtered = filtered.Where(element => element.Type.GetDescription() == Type);
+                filtered = filtered.Where(element => element.TypeAsString == Type);
             }
 
             if (SortEvents)

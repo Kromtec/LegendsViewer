@@ -99,8 +99,8 @@ namespace LegendsViewer.Controls.Tabs
             _structureSearch = new StructuresList(World);
 
             var structures = from structure in World.Structures
-                             orderby structure.Type.GetDescription()
-                             group structure by structure.Type.GetDescription() into structuretype
+                             orderby structure.TypeAsString
+                             group structure by structure.TypeAsString into structuretype
                              select structuretype;
             var worldconstructions = from construction in World.WorldConstructions
                                      orderby construction.Type.GetDescription()
