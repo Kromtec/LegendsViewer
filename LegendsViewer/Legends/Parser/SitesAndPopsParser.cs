@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 
 namespace LegendsViewer.Legends.Parser
@@ -31,6 +32,11 @@ namespace LegendsViewer.Legends.Parser
             ReadLine();
             ReadWorldPopulations();
             _worker.ReportProgress(0, "... Sites");
+            var mainRaces = _world.CivilizedPopulations.Select(cp => cp.Race);
+            foreach (Entity civilization in _world.Entities.Where(entity => entity.Type == EntityType.Civilization && mainRaces.Contains(entity.Race)))
+            {
+                civilization.IsCiv = true;
+            }
             while (_currentLine != "" && InSites())
             {
                 ReadSite();
