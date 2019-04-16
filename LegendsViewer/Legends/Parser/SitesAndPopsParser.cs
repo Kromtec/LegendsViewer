@@ -180,6 +180,8 @@ namespace LegendsViewer.Legends.Parser
                 Entity parent = null;
                 string civName = _currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                     _currentLine.IndexOf(",", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2);
+                string civRace = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
+                    _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2));
                 var entities = _world.Entities
                     .Where(entity => string.Compare(entity.Name, civName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
                 if (entities.Count == 1)
@@ -190,16 +192,40 @@ namespace LegendsViewer.Legends.Parser
                 {
                     _world.ParsingErrors.Report($"Couldn\'t Find Entity:\n{civName}, Parent Civ of {_owner.Name}");
                 }
-#if DEBUG
                 else
                 {
-                    _world.ParsingErrors.Report($"Ambiguous Parent Entity Name:\n{civName}, Parent Civ of {_owner.Name}");
-                }
+                    var possibleEntities = entities.Where(entity =>
+                        string.Compare(entity.Race, civRace, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                    if (possibleEntities.Count == 1)
+                    {
+                        parent = possibleEntities.First();
+                    }
+                    else if (!possibleEntities.Any())
+                    {
+                        _world.ParsingErrors.Report(
+                            $"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner.Name}");
+                    }
+                    else
+                    {
+                        var possibleCivilizations = possibleEntities
+                            .Where(entity => entity.Type == EntityType.Civilization).ToList();
+                        if (possibleCivilizations.Count == 1)
+                        {
+                            parent = possibleEntities.First();
+                        }
+                        else
+                        {
+#if DEBUG
+                            _world.ParsingErrors.Report(
+                                $"Ambiguous Parent Entity Name:\n{civName}, Parent Civ of {_owner.Name}");
 #endif
+                        }
+                    }
+                }
+
                 if (parent != null)
                 {
-                    parent.Race = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
-                        _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2));
+                    parent.Race = civRace;
                     if (string.IsNullOrWhiteSpace(parent.Race))
                     {
                         parent.Race = "Unknown";
