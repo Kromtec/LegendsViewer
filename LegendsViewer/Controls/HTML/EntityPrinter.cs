@@ -422,7 +422,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Leaders != null && _entity.Leaders.Count > 0)
             {
-                Html.AppendLine(Bold("Leaderhistory") + " " + MakeLink("[Load]", LinkOption.LoadEntityLeaders) + LineBreak);
+                Html.AppendLine(Bold("Leaderhistory") + " " + LineBreak);
                 foreach (string leaderType in _entity.LeaderTypes)
                 {
                     Html.AppendLine(leaderType + "s" + LineBreak);
@@ -501,7 +501,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Wars.Count(war => !_world.FilterBattles || war.Notable) > 0)
             {
-                Html.AppendLine(Bold("Wars") + " " + MakeLink("[Load]", LinkOption.LoadEntityWars) + LineBreak);
+                Html.AppendLine(Bold("Wars") + LineBreak);
                 TableMaker warTable = new TableMaker(true);
                 foreach (War war in _entity.Wars.Where(war => !_world.FilterBattles || war.Notable))
                 {

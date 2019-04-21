@@ -758,7 +758,7 @@ namespace LegendsViewer.Controls.HTML
 
             if (_historicalFigure.Battles.Count(battle => !_world.FilterBattles || battle.Notable) > 0)
             {
-                Html.AppendLine(Bold("Battles") + MakeLink("[Load]", LinkOption.LoadHfBattles));
+                Html.AppendLine(Bold("Battles"));
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");
@@ -861,7 +861,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_historicalFigure.NotableKills.Count > 0)
             {
-                Html.AppendLine(Bold("Kills") + " " + MakeLink("[Load]", LinkOption.LoadHfKills));
+                Html.AppendLine(Bold("Kills"));
                 StartList(ListType.Ordered);
                 if (_historicalFigure.NotableKills.Count > 100)
                 {

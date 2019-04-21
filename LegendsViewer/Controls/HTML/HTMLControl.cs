@@ -143,12 +143,11 @@ namespace LegendsViewer.Controls.HTML
                     case LinkOption.LoadChart:
                         TabControl.Navigate(ControlOption.Chart, HtmlObject);
                         break;
-                    case LinkOption.LoadSearch:
-                        TabControl.Navigate(ControlOption.Search);
-                        break;
                     case LinkOption.LoadSiteMap:
-                        Site currentSite = HtmlObject as Site;
-                        Process.Start(currentSite.SiteMapPath);
+                        if (HtmlObject is Site currentSite)
+                        {
+                            Process.Start(currentSite.SiteMapPath);
+                        }
                         break;
                 }
                 return true;

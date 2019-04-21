@@ -258,7 +258,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<div class=\"row\">");
                 Html.AppendLine("<div class=\"col-md-12\">");
                 int warfareCount = 1;
-                Html.AppendLine("<b>Warfare</b> " + MakeLink("[Load]", LinkOption.LoadSiteBattles));
+                Html.AppendLine("<b>Warfare</b> ");
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");
@@ -516,7 +516,6 @@ namespace LegendsViewer.Controls.HTML
             if (sitemap != null)
             {
                 string htmlImage = BitmapToHtml(sitemap);
-                //string mapLink = MakeFileLink(htmlImage, sitemapPath);
                 string mapLink = MakeLink(htmlImage, LinkOption.LoadSiteMap);
                 Html.AppendLine("<td>" + mapLink + "</td>");
             }

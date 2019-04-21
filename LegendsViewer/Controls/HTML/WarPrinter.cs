@@ -76,7 +76,7 @@ namespace LegendsViewer.Controls.HTML
             if (_war.Collections.Count(battle => !_world.FilterBattles || battle.Notable) > 0)
             {
                 int warfareCount = 1;
-                Html.AppendLine("<b>Warfare</b> " + MakeLink("[Load]", LinkOption.LoadWarBattles));
+                Html.AppendLine("<b>Warfare</b>");
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");

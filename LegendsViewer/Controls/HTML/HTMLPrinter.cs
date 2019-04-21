@@ -208,46 +208,39 @@ namespace LegendsViewer.Controls.HTML
             return "<a href=\"" + option + "\">" + text + "</a>";
         }
 
-        protected string MakeFileLink(string text, string filePath)
-        {
-            string htmlFilePath = filePath.Replace("\\", "/");
-            return "<a title=\"" + htmlFilePath + "\" href=\"file:///" + htmlFilePath + "\" target=\"_blank\">" + text + "</a>";
-        }
-
         protected string MakeLink(string text, DwarfObject dObject, ControlOption option = ControlOption.Html)
         {
-            //<a href=\"collection#" + attack.ID + "\">" + attack.GetOrdinal(attack.Ordinal)
-            string objectType = "";
-            int id = 0;
-            if (dObject is EventCollection)
+            string objectType;
+            int id;
+            if (dObject is EventCollection eventCollection)
             {
                 objectType = "collection";
-                id = (dObject as EventCollection).Id;
+                id = eventCollection.Id;
             }
-            else if (dObject.GetType() == typeof(HistoricalFigure))
+            else if (dObject is HistoricalFigure historicalFigure)
             {
                 objectType = "hf";
-                id = (dObject as HistoricalFigure).Id;
+                id = historicalFigure.Id;
             }
-            else if (dObject.GetType() == typeof(Entity))
+            else if (dObject is Entity entity)
             {
                 objectType = "entity";
-                id = (dObject as Entity).Id;
+                id = entity.Id;
             }
-            else if (dObject.GetType() == typeof(WorldRegion))
+            else if (dObject is WorldRegion worldRegion)
             {
                 objectType = "region";
-                id = (dObject as WorldRegion).Id;
+                id = worldRegion.Id;
             }
-            else if (dObject.GetType() == typeof(UndergroundRegion))
+            else if (dObject is UndergroundRegion undergroundRegion)
             {
                 objectType = "uregion";
-                id = (dObject as UndergroundRegion).Id;
+                id = undergroundRegion.Id;
             }
-            else if (dObject.GetType() == typeof(Site))
+            else if (dObject is Site site)
             {
                 objectType = "site";
-                id = (dObject as Site).Id;
+                id = site.Id;
             }
             else
             {
@@ -279,7 +272,7 @@ namespace LegendsViewer.Controls.HTML
                             drawSection.DrawImage(image, new Rectangle(new Point(0, 0), section.Size),
                                 new Rectangle(new Point(section.Size.Width * column, section.Size.Height * row),
                                     section.Size), GraphicsUnit.Pixel);
-                            string tempName = "";
+                            string tempName;
                             while (true)
                             {
                                 tempName = Path.Combine(LocalFileProvider.RootFolder, "temp",
@@ -289,9 +282,11 @@ namespace LegendsViewer.Controls.HTML
                                     break;
                                 }
                             }
-                            if (!Directory.Exists(Path.GetDirectoryName(tempName)))
+
+                            var directoryName = Path.GetDirectoryName(tempName);
+                            if (directoryName != null && !Directory.Exists(directoryName))
                             {
-                                Directory.CreateDirectory(Path.GetDirectoryName(tempName));
+                                Directory.CreateDirectory(directoryName);
                             }
                             section.Save(tempName);
                             html += ImageToHtml("temp/" + Path.GetFileName(tempName));
@@ -540,8 +535,9 @@ namespace LegendsViewer.Controls.HTML
                 {
                     File.Delete(filename);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex);
                 }
             }
             _temporaryFiles.Clear();
@@ -550,21 +546,8 @@ namespace LegendsViewer.Controls.HTML
 
     public enum LinkOption
     {
-        LoadHfKills,
-        LoadHfBattles,
-        LoadSiteBattles,
-        LoadSiteDeaths,
-        LoadRegionBattles,
-        LoadRegionDeaths,
-        LoadEntityWars,
-        LoadEntitySites,
-        LoadEntityLeaders,
-        LoadWarBattles,
-        LoadBattleAttackers,
-        LoadBattleDefenders,
         LoadMap,
         LoadChart,
-        LoadSearch,
         LoadSiteMap
     }
 
@@ -579,8 +562,8 @@ namespace LegendsViewer.Controls.HTML
 
     public class TableMaker
     {
-        StringBuilder _html;
-        bool _numbered;
+        readonly StringBuilder _html;
+        readonly bool _numbered;
         int _count;
         public TableMaker(bool numbered = false, int width = 0)
         {
@@ -643,7 +626,6 @@ namespace LegendsViewer.Controls.HTML
             return _html.ToString();
         }
     }
-
 
     public enum TableDataAlign
     {
