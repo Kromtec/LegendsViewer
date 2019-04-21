@@ -148,20 +148,21 @@ namespace LegendsViewer.Controls.HTML
         public string GetHtmlPage()
         {
             var htmlPage = new StringBuilder();
-            htmlPage.Append("<!DOCTYPE html><html><head>");
-            htmlPage.Append("<title>" + GetTitle() + "</title>");
-            htmlPage.Append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
+            htmlPage.AppendLine("<!DOCTYPE html><html><head>");
+            htmlPage.AppendLine("<title>" + GetTitle() + "</title>");
+            htmlPage.AppendLine("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
             htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/jquery-3.1.1.min.js\"></script>");
             htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/jquery.dataTables.min.js\"></script>");
-            htmlPage.Append("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/bootstrap.min.css\">");
-            htmlPage.Append("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/font-awesome.min.css\">");
-            htmlPage.Append("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/legends.css\">");
-            htmlPage.Append("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/jquery.dataTables.min.css\">");
-            htmlPage.Append("</head>");
-            htmlPage.Append("<body>");
-            htmlPage.Append(Print());
-            htmlPage.Append("</body>");
-            htmlPage.Append("</html>");
+            htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/Chart.bundle.min.js\"></script>");
+            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/bootstrap.min.css\">");
+            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/font-awesome.min.css\">");
+            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/legends.css\">");
+            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/jquery.dataTables.min.css\">");
+            htmlPage.AppendLine("</head>");
+            htmlPage.AppendLine("<body>");
+            htmlPage.AppendLine(Print());
+            htmlPage.AppendLine("</body>");
+            htmlPage.AppendLine("</html>");
             return htmlPage.ToString();
         }
 
@@ -483,7 +484,31 @@ namespace LegendsViewer.Controls.HTML
             {
                 return;
             }
-            Html.AppendLine("<b>Event Log</b> " + MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart) + "<br/><br/>");
+
+            List<string> chartLabels = new List<string>();
+            List<string> eventDataset = new List<string>();
+            List<string> filteredEventDataset = new List<string>();
+            var groupedEvents = events.GroupBy(e => e.Year).ToDictionary(group => group.Key, group => group.ToList())
+                .OrderBy(g => g.Key);
+            foreach (var eventsPerYear in groupedEvents)
+            {
+                chartLabels.Add(eventsPerYear.Key.ToString());
+                var eventsPerYearCount = eventsPerYear.Value.Count;
+                eventDataset.Add(eventsPerYearCount.ToString());
+                if (filters != null && filters.Any())
+                {
+                    var hiddenEventsPerYearCount = eventsPerYear.Value.Count(e => filters.Contains(e.Type));
+                    var filteredEventsPerYearCount = eventsPerYearCount - hiddenEventsPerYearCount;
+                    filteredEventDataset.Add(filteredEventsPerYearCount.ToString());
+                }
+            }
+
+            Html.AppendLine(Bold("Event Chart"));
+            Html.AppendLine("<div class=\"line-chart\">");
+            Html.AppendLine("<canvas id=\"event-chart\"></canvas>");
+            Html.AppendLine("</div>" + LineBreak);
+
+            Html.AppendLine("<b>Event Log</b> " + MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart) +"<br/><br/>");
             Html.AppendLine("<table id=\"lv_eventtable\" class=\"display\" width=\"100 %\"></table>");
             Html.AppendLine("<script>");
             Html.AppendLine("$(document).ready(function() {");
@@ -492,9 +517,11 @@ namespace LegendsViewer.Controls.HTML
             {
                 if (filters == null || !filters.Contains(e.Type))
                 {
-                    Html.AppendLine("['" + e.Date + "','" + e.Print(true, dfo).Replace("'", "`") + "','" + e.Type + "'],");
+                    Html.AppendLine("['" + e.Date + "','" + e.Print(true, dfo).Replace("'", "`") + "','" + e.Type +
+                                    "'],");
                 }
             }
+
             Html.AppendLine("   ];");
             Html.AppendLine("   $('#lv_eventtable').dataTable({");
             Html.AppendLine("       pageLength: 100,");
@@ -504,6 +531,35 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("           { title: \"Description\", type: \"html\" },");
             Html.AppendLine("           { title: \"Type\", type: \"string\" }");
             Html.AppendLine("       ]");
+            Html.AppendLine("   });");
+            Html.AppendLine("   var eventChart = new Chart(document.getElementById('event-chart').getContext('2d'), { ");
+            Html.AppendLine("       type: 'line', ");
+            Html.AppendLine("       data: {");
+            Html.AppendLine("           labels: [" + string.Join(",", chartLabels) + "], ");
+            Html.AppendLine("           datasets:[");
+            Html.AppendLine("               {");
+            Html.AppendLine("                   label:'Events',");
+            Html.AppendLine("                   backgroundColor:'rgba(54, 162, 235, 0.2)',");
+            Html.AppendLine("                   data:[" + string.Join(",", eventDataset) + "]");
+            Html.AppendLine("               },");
+            if (filters != null && filters.Any())
+            {
+                Html.AppendLine("               {");
+                Html.AppendLine("                   label:'Events (filtered)',");
+                Html.AppendLine("                   backgroundColor:'rgba(255, 205, 86, 0.2)',");
+                Html.AppendLine("                   data:[" + string.Join(",", filteredEventDataset) + "]");
+                Html.AppendLine("               }");
+            }
+
+            Html.AppendLine("           ]");
+            Html.AppendLine("       },");
+            Html.AppendLine("       options:{");
+            Html.AppendLine("           maintainAspectRatio: false, ");
+            Html.AppendLine("           legend:{");
+            Html.AppendLine("               position:'top',");
+            Html.AppendLine("               labels: { boxWidth: 12 }");
+            Html.AppendLine("           }");
+            Html.AppendLine("       }");
             Html.AppendLine("   });");
             Html.AppendLine("});");
             Html.AppendLine("</script>");
