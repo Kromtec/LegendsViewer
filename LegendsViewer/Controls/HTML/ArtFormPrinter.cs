@@ -28,7 +28,7 @@ namespace LegendsViewer.Controls.HTML
             {
                 Html.AppendLine(_artform.Description.Replace("[B]", "<br />") + "<br /><br />");
             }
-            PrintEventLog(_artform.Events, ArtForm.Filters, _artform);
+            PrintEventLog(_world, _artform.Events, ArtForm.Filters, _artform);
 
             return Html.ToString();
         }

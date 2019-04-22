@@ -61,7 +61,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
             Html.AppendLine("</tr></table></br>");
 
-            PrintEventLog(_attack.GetSubEvents(), BeastAttack.Filters, _attack);
+            PrintEventLog(_world, _attack.GetSubEvents(), BeastAttack.Filters, _attack);
 
             return Html.ToString();
         }

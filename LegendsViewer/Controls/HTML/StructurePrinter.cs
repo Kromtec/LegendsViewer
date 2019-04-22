@@ -67,7 +67,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
-            PrintEventLog(_structure.Events, Structure.Filters, _structure);
+            PrintEventLog(_world, _structure.Events, Structure.Filters, _structure);
             return Html.ToString();
         }
 

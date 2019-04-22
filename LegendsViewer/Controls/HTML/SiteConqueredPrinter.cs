@@ -44,7 +44,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<b>" + _conquering.Attacker.PrintEntity() + " (Attacker)</b></br>");
             Html.AppendLine("<b>" + _conquering.Defender.PrintEntity() + " (Defender)</b></br></br>");
 
-            PrintEventLog(_conquering.GetSubEvents(), SiteConquered.Filters, _conquering);
+            PrintEventLog(_world, _conquering.GetSubEvents(), SiteConquered.Filters, _conquering);
 
             return Html.ToString();
         }

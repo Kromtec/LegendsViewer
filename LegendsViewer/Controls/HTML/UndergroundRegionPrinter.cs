@@ -81,7 +81,7 @@ namespace LegendsViewer.Controls.HTML
                 }
             }
 
-            PrintEventLog(_region.Events, UndergroundRegion.Filters, _region);
+            PrintEventLog(_world, _region.Events, UndergroundRegion.Filters, _region);
 
             return Html.ToString();
         }

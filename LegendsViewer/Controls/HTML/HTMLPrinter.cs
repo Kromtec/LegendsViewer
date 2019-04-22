@@ -49,7 +49,7 @@ namespace LegendsViewer.Controls.HTML
 
             if (printType == typeof(Era))
             {
-                return new EraPrinter(printObject as Era);
+                return new EraPrinter(printObject as Era, world);
             }
 
             if (printType == typeof(HistoricalFigure))
@@ -314,7 +314,7 @@ namespace LegendsViewer.Controls.HTML
             return imageString;
         }
 
-        protected string ImageToHtml(string image)
+        private string ImageToHtml(string image)
         {
             string html = "<img src=\"" + LocalFileProvider.LocalPrefix + image + "\" align=absmiddle />";
             return html;
@@ -367,139 +367,101 @@ namespace LegendsViewer.Controls.HTML
             var prisonersPops = new List<Population>();
             var slavesPops = new List<Population>();
             var otherRacePops = new List<Population>();
-            for (int i = 0; i < populations.Count; i++)
+            foreach (var population in populations)
             {
-                if (populations[i].IsMainRace)
+                if (population.IsMainRace)
                 {
-                    mainRacePops.Add(populations[i]);
+                    mainRacePops.Add(population);
                 }
-                else if (populations[i].IsAnimalPeople)
+                else if (population.IsAnimalPeople)
                 {
-                    animalPeoplePops.Add(populations[i]);
+                    animalPeoplePops.Add(population);
                 }
-                else if (populations[i].IsVisitors)
+                else if (population.IsVisitors)
                 {
-                    visitorsPops.Add(populations[i]);
+                    visitorsPops.Add(population);
                 }
-                else if (populations[i].IsOutcasts)
+                else if (population.IsOutcasts)
                 {
-                    outcastsPops.Add(populations[i]);
+                    outcastsPops.Add(population);
                 }
-                else if (populations[i].IsPrisoners)
+                else if (population.IsPrisoners)
                 {
-                    prisonersPops.Add(populations[i]);
+                    prisonersPops.Add(population);
                 }
-                else if (populations[i].IsSlaves)
+                else if (population.IsSlaves)
                 {
-                    slavesPops.Add(populations[i]);
+                    slavesPops.Add(population);
                 }
                 else
                 {
-                    otherRacePops.Add(populations[i]);
+                    otherRacePops.Add(population);
                 }
             }
-            if (mainRacePops.Any())
-            {
-                Html.AppendLine("<b>Civilized Populations</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in mainRacePops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (animalPeoplePops.Any())
-            {
-                Html.AppendLine("<b>Animal People</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in animalPeoplePops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (visitorsPops.Any())
-            {
-                Html.AppendLine("<b>Visitors</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in visitorsPops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (outcastsPops.Any())
-            {
-                Html.AppendLine("<b>Outcasts</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in outcastsPops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (prisonersPops.Any())
-            {
-                Html.AppendLine("<b>Prisoners</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in prisonersPops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (slavesPops.Any())
-            {
-                Html.AppendLine("<b>Slaves</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in slavesPops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
-            if (otherRacePops.Any())
-            {
-                Html.AppendLine("<b>Other Populations</b></br>");
-                Html.AppendLine("<ul>");
-                foreach (Population population in otherRacePops)
-                {
-                    Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-            }
+            AddPopulationList(mainRacePops, "Civilized Populations");
+            AddPopulationList(animalPeoplePops, "Animal People");
+            AddPopulationList(visitorsPops, "Visitors");
+            AddPopulationList(outcastsPops, "Outcasts");
+            AddPopulationList(prisonersPops, "Prisoners");
+            AddPopulationList(slavesPops, "Slaves");
+            AddPopulationList(otherRacePops, "Other Populations");
             Html.AppendLine("</div>");
         }
 
-        protected void PrintEventLog(List<WorldEvent> events, List<string> filters, DwarfObject dfo)
+        private void AddPopulationList(List<Population> populations, string populationName)
+        {
+            if (!populations.Any())
+            {
+                return;
+            }
+            Html.AppendLine($"<b>{populationName}</b></br>");
+            Html.AppendLine("<ul>");
+            foreach (Population population in populations)
+            {
+                Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
+            }
+
+            Html.AppendLine("</ul>");
+        }
+
+        protected void PrintEventLog(World world, List<WorldEvent> events, List<string> filters, DwarfObject dfo)
         {
             if (!events.Any())
             {
                 return;
             }
 
-            List<string> chartLabels = new List<string>();
-            List<string> eventDataset = new List<string>();
-            List<string> filteredEventDataset = new List<string>();
-            var groupedEvents = events.GroupBy(e => e.Year).ToDictionary(group => group.Key, group => group.ToList())
+            var chartLabels = new List<string>();
+            var eventDataSet = new List<string>();
+            var filteredEventDataSet = new List<string>();
+            var groupedEvents = events
+                .GroupBy(e => e.Year)
+                .ToDictionary(group => group.Key, group => group.ToList())
                 .OrderBy(g => g.Key);
-            foreach (var eventsPerYear in groupedEvents)
+            var startYear = world.Eras.Min(e => e.StartYear);
+            var endYear = world.Eras.Max(e => e.EndYear);
+
+            for (int currentYear = startYear; currentYear < endYear; currentYear++)
             {
-                chartLabels.Add(eventsPerYear.Key.ToString());
-                var eventsPerYearCount = eventsPerYear.Value.Count;
-                eventDataset.Add(eventsPerYearCount.ToString());
+                chartLabels.Add(currentYear.ToString());
+                var eventsOfCurrentYear = groupedEvents.FirstOrDefault(group => group.Key == currentYear);
+                if (eventsOfCurrentYear.Value == null)
+                {
+                    eventDataSet.Add("0");
+                    if (filters != null && filters.Any())
+                    {
+                        filteredEventDataSet.Add("0");
+                    }
+
+                    continue;
+                }
+                var eventsOfCurrentYearCount = eventsOfCurrentYear.Value.Count;
+                eventDataSet.Add(eventsOfCurrentYearCount.ToString());
                 if (filters != null && filters.Any())
                 {
-                    var hiddenEventsPerYearCount = eventsPerYear.Value.Count(e => filters.Contains(e.Type));
-                    var filteredEventsPerYearCount = eventsPerYearCount - hiddenEventsPerYearCount;
-                    filteredEventDataset.Add(filteredEventsPerYearCount.ToString());
+                    var hiddenEventsOfCurrentYearCount = eventsOfCurrentYear.Value.Count(e => filters.Contains(e.Type));
+                    var filteredEventsPerYearCount = eventsOfCurrentYearCount - hiddenEventsOfCurrentYearCount;
+                    filteredEventDataSet.Add(filteredEventsPerYearCount.ToString());
                 }
             }
 
@@ -508,7 +470,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<canvas id=\"event-chart\"></canvas>");
             Html.AppendLine("</div>" + LineBreak);
 
-            Html.AppendLine("<b>Event Log</b> " + MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart) +"<br/><br/>");
+            Html.AppendLine("<b>Event Log</b> " + MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart) + "<br/><br/>");
             Html.AppendLine("<table id=\"lv_eventtable\" class=\"display\" width=\"100 %\"></table>");
             Html.AppendLine("<script>");
             Html.AppendLine("$(document).ready(function() {");
@@ -537,17 +499,23 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("       data: {");
             Html.AppendLine("           labels: [" + string.Join(",", chartLabels) + "], ");
             Html.AppendLine("           datasets:[");
-            Html.AppendLine("               {");
-            Html.AppendLine("                   label:'Events',");
-            Html.AppendLine("                   backgroundColor:'rgba(54, 162, 235, 0.2)',");
-            Html.AppendLine("                   data:[" + string.Join(",", eventDataset) + "]");
-            Html.AppendLine("               },");
+
             if (filters != null && filters.Any())
             {
                 Html.AppendLine("               {");
                 Html.AppendLine("                   label:'Events (filtered)',");
+                Html.AppendLine("                   borderColor:'rgba(255, 205, 86, 0.4)',");
                 Html.AppendLine("                   backgroundColor:'rgba(255, 205, 86, 0.2)',");
-                Html.AppendLine("                   data:[" + string.Join(",", filteredEventDataset) + "]");
+                Html.AppendLine("                   data:[" + string.Join(",", filteredEventDataSet) + "]");
+                Html.AppendLine("               }");
+            }
+            else
+            {
+                Html.AppendLine("               {");
+                Html.AppendLine("                   label:'Events',");
+                Html.AppendLine("                   borderColor:'rgba(54, 162, 235, 0.4)',");
+                Html.AppendLine("                   backgroundColor:'rgba(54, 162, 235, 0.2)',");
+                Html.AppendLine("                   data:[" + string.Join(",", eventDataSet) + "]");
                 Html.AppendLine("               }");
             }
 
@@ -558,6 +526,15 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("           legend:{");
             Html.AppendLine("               position:'top',");
             Html.AppendLine("               labels: { boxWidth: 12 }");
+            Html.AppendLine("           },");
+            Html.AppendLine("           scales:{");
+            Html.AppendLine("               yAxes: [{");
+            Html.AppendLine("                   ticks: {");
+            Html.AppendLine("                       beginAtZero: true,");
+            Html.AppendLine("                       min: 0,");
+            Html.AppendLine("                       precision: 0");
+            Html.AppendLine("                   }");
+            Html.AppendLine("               }]");
             Html.AppendLine("           }");
             Html.AppendLine("       }");
             Html.AppendLine("   });");

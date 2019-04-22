@@ -42,7 +42,7 @@ namespace LegendsViewer.Controls.HTML
             PrintBattles();
             PrintKills();
             PrintBeastAttacks();
-            PrintEventLog(_historicalFigure.Events, HistoricalFigure.Filters, _historicalFigure);
+            PrintEventLog(_world, _historicalFigure.Events, HistoricalFigure.Filters, _historicalFigure);
             return Html.ToString();
         }
 

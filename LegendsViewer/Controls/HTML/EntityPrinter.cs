@@ -59,7 +59,7 @@ namespace LegendsViewer.Controls.HTML
             PrintWars();
             PrintWarfareInfo();
             PrintSiteHistory();
-            PrintEventLog(_entity.Events, Entity.Filters, _entity);
+            PrintEventLog(_world, _entity.Events, Entity.Filters, _entity);
 
             Html.AppendLine("</div>");
             return Html.ToString();

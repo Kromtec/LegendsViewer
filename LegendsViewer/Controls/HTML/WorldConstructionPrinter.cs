@@ -62,7 +62,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br>");
             }
 
-            PrintEventLog(_worldConstruction.Events, WorldConstruction.Filters, _worldConstruction);
+            PrintEventLog(_world, _worldConstruction.Events, WorldConstruction.Filters, _worldConstruction);
             return Html.ToString();
         }
 

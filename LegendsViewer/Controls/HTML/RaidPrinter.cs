@@ -29,7 +29,7 @@ namespace LegendsViewer.Controls.HTML
 
             PrintMaps();
 
-            PrintEventLog(_raid.GetSubEvents(), Raid.Filters, _raid);
+            PrintEventLog(_world, _raid.GetSubEvents(), Raid.Filters, _raid);
 
             return Html.ToString();
         }

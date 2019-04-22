@@ -155,7 +155,7 @@ namespace LegendsViewer.Controls.HTML
                 }
             }
 
-            PrintEventLog(_region.Events, WorldRegion.Filters, _region);
+            PrintEventLog(_world, _region.Events, WorldRegion.Filters, _region);
 
             return Html.ToString();
         }

@@ -59,7 +59,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
-            PrintEventLog(_mountainPeak.Events, MountainPeak.Filters, _mountainPeak);
+            PrintEventLog(_world, _mountainPeak.Events, MountainPeak.Filters, _mountainPeak);
 
             return Html.ToString();
         }

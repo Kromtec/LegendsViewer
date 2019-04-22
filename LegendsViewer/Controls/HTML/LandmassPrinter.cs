@@ -40,7 +40,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</tr></table></br>");
             }
 
-            PrintEventLog(_landmass.Events, Landmass.Filters, _landmass);
+            PrintEventLog(_world, _landmass.Events, Landmass.Filters, _landmass);
 
             return Html.ToString();
         }

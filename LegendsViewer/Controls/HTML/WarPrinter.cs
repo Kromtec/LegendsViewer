@@ -133,7 +133,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
-            PrintEventLog(_war.GetSubEvents(), War.Filters, _war);
+            PrintEventLog(_world, _war.GetSubEvents(), War.Filters, _war);
 
             return Html.ToString();
         }

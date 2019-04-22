@@ -54,7 +54,7 @@ namespace LegendsViewer.Controls.HTML
             PrintDeaths();
             Html.AppendLine("</div>");
 
-            PrintEventLog(_site.Events, Site.Filters, _site);
+            PrintEventLog(_world, _site.Events, Site.Filters, _site);
             Html.AppendLine("</div>");
 
             return Html.ToString();

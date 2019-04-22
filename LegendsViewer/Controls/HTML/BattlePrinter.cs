@@ -161,7 +161,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ol>");
             }
 
-            PrintEventLog(_battle.GetSubEvents(), Battle.Filters, _battle);
+            PrintEventLog(_world, _battle.GetSubEvents(), Battle.Filters, _battle);
 
             return Html.ToString();
         }

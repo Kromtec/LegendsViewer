@@ -40,7 +40,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<br/>");
 
             PrintReferences();
-            PrintEventLog(_writtenContent.Events, WrittenContent.Filters, _writtenContent);
+            PrintEventLog(_world, _writtenContent.Events, WrittenContent.Filters, _writtenContent);
             return Html.ToString();
         }
 
