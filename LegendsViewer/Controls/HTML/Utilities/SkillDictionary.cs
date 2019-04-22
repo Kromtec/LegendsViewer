@@ -179,5 +179,10 @@ namespace LegendsViewer.Controls.HTML.Utilities
 
             return desc;
         }
+
+        public static bool IsKnownSkill(Skill skill)
+        {
+            return Dict.ContainsKey(skill.Name);
+        }
     }
 }

@@ -261,12 +261,12 @@ namespace LegendsViewer.Legends
 
                         break;
                     case "hf_skill":
-                        property.Known = true;
                         if (property.SubProperties != null)
                         {
-                            Skills.Add(new Skill(property.SubProperties));
+                            var skill = new Skill(property.SubProperties);
+                            property.Known = SkillDictionary.IsKnownSkill(skill);
+                            Skills.Add(skill);
                         }
-
                         break;
                     case "active_interaction": ActiveInteractions.Add(string.Intern(property.Value)); break;
                     case "interaction_knowledge": InteractionKnowledge.Add(string.Intern(property.Value)); break;

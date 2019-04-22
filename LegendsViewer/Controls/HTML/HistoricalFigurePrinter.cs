@@ -727,7 +727,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_historicalFigure.Skills.Count > 0)
             {
-                var described = _historicalFigure.Skills.ConvertAll(s => SkillDictionary.LookupSkill(s));
+                var described = _historicalFigure.Skills.ConvertAll(SkillDictionary.LookupSkill);
 
                 Html.AppendLine(Bold("Skills") + LineBreak);
 

@@ -9,9 +9,9 @@ namespace LegendsViewer.Legends.EventCollections
 {
     public class BeastAttack : EventCollection
     {
-        public static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
+        private static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
 
-        public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "UNKNOWN BEAST"); } set { } }
+        public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
         public int DeathCount { get { return Deaths.Count; } set { } }
 
         public int Ordinal { get; set; }
@@ -83,7 +83,7 @@ namespace LegendsViewer.Legends.EventCollections
             }
             else
             {
-                name += "UNKNOWN BEAST";
+                name += "an unknown creature";
             }
 
             if (pov != Site)
