@@ -48,11 +48,11 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintRelatedArtifacts()
         {
-            var createdArtifacts = _historicalFigure.Events.OfType<ArtifactCreated>().Where(e => e.HistoricalFigure == _historicalFigure).Select(e => e.Artifact).ToList();
-            var sanctifyArtifacts = _historicalFigure.Events.OfType<ArtifactCreated>().Where(e => e.SanctifyFigure == _historicalFigure).Select(e => e.Artifact).ToList();
-            var possessedArtifacts = _historicalFigure.Events.OfType<ArtifactPossessed>().Select(e => e.Artifact).ToList();
+            var createdArtifacts = _historicalFigure.Events.OfType<ArtifactCreated>().Where(e => e.HistoricalFigure == _historicalFigure && e.Artifact != null).Select(e => e.Artifact).ToList();
+            var sanctifyArtifacts = _historicalFigure.Events.OfType<ArtifactCreated>().Where(e => e.SanctifyFigure == _historicalFigure && e.Artifact != null).Select(e => e.Artifact).ToList();
+            var possessedArtifacts = _historicalFigure.Events.OfType<ArtifactPossessed>().Where(e => e.Artifact != null).Select(e => e.Artifact).ToList();
             var stolenArtifacts = _historicalFigure.Events.OfType<ItemStolen>().Where(e => e.Artifact != null).Select(e => e.Artifact).ToList();
-            var storedArtifacts = _historicalFigure.Events.OfType<ArtifactStored>().Select(e => e.Artifact).ToList();
+            var storedArtifacts = _historicalFigure.Events.OfType<ArtifactStored>().Where(e => e.Artifact != null).Select(e => e.Artifact).ToList();
             var relatedArtifacts = createdArtifacts
                 .Union(sanctifyArtifacts)
                 .Union(possessedArtifacts)
