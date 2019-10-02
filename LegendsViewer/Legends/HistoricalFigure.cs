@@ -30,7 +30,14 @@ namespace LegendsViewer.Legends
             {
                 if (string.IsNullOrEmpty(_shortName))
                 {
-                    _shortName = Name.IndexOf(" ", StringComparison.Ordinal) >= 2 ? Name.Substring(0, Name.IndexOf(" ", StringComparison.Ordinal)) : Name;
+                    if (Name.IndexOf(" ", StringComparison.Ordinal) >= 2 && !Name.StartsWith("The "))
+                    {
+                        _shortName = Name.Substring(0, Name.IndexOf(" ", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        _shortName = Name;
+                    }
                 }
                 return _shortName;
             }
