@@ -150,7 +150,7 @@ namespace LegendsViewer.Controls.Map
         private static List<SiteNode> CreateSiteNodes(Entity civ, int year)
         {
             List<SiteNode> sites = new List<SiteNode>();
-            foreach (OwnerPeriod sitePeriod in civ.SiteHistory.Where(ownerPeriod => ownerPeriod.StartYear <= year && ownerPeriod.EndYear >= year || ownerPeriod.EndYear == -1))
+            foreach (OwnerPeriod sitePeriod in civ.SiteHistory.Where(ownerPeriod => ownerPeriod.StartYear <= year && (ownerPeriod.EndYear >= year || ownerPeriod.EndYear == -1)))
             {
                 sites.Add(new SiteNode(sitePeriod.Site));
             }
