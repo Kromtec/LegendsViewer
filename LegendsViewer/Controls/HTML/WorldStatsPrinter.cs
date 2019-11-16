@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 
@@ -608,14 +609,20 @@ namespace LegendsViewer.Controls.HTML
                 }
                 if (dwarfEvent.Type == "change hf state")
                 {
-                    var states = from state in _world.Events.OfType<ChangeHfState>()
-                                 group state by state.State into stateType
-                                 select new { Type = stateType.Key, Count = stateType.Count() };
-                    states = states.OrderByDescending(state => state.Count);
+                    var stateChangeInfo = _world.Events.OfType<ChangeHfState>()
+                        .GroupBy(changeStateEvent => changeStateEvent.State != HfState.Unknown 
+                            ? changeStateEvent.State.GetDescription() 
+                            : "Mood - " + changeStateEvent.Mood.GetDescription())
+                        .Select(changeStateEventsGroupedByState => new
+                        {
+                            Type = changeStateEventsGroupedByState.Key, 
+                            Count = changeStateEventsGroupedByState.Count()
+                        });
+                    stateChangeInfo = stateChangeInfo.OrderByDescending(state => state.Count);
                     Html.AppendLine("<ul>");
                     Html.AppendLine("<li>States</li>");
                     Html.AppendLine("<ul>");
-                    foreach (var state in states)
+                    foreach (var state in stateChangeInfo)
                     {
                         Html.AppendLine("<li>" + state.Type.GetDescription() + ": " + state.Count + "</li>");
                     }
