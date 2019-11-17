@@ -56,7 +56,7 @@ namespace LegendsViewer.Controls.HTML
             PrintMap();
             Html.AppendLine("</div>");
 
-            Html.AppendLine("<div class=\"col-md-4 col-sm-6\" style=\"height: 300px\">");
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 300px\">");
             Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
             Html.AppendLine("</div>");
 
@@ -107,7 +107,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<script>");
             Html.AppendLine("window.onload = function(){");
 
-            PopulateWorldOverviewData();
+            PopulatePopulationChartData(_world.CivilizedPopulations);
             if (_world.Wars.Any())
             {
                 PopulateWarOverview();
@@ -115,44 +115,6 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("}");
             Html.AppendLine("</script>");
-        }
-
-        private void PopulateWorldOverviewData()
-        {
-            string races = "";
-            string popCounts = "";
-            string backgroundColors = "";
-
-            for (int i = 0; i < _world.CivilizedPopulations.Count; i++)
-            {
-                Population civilizedPop = _world.CivilizedPopulations[i];
-                Color civilizedPopColor = World.MainRaces.ContainsKey(civilizedPop.Race)
-                    ? World.MainRaces.First(r => r.Key == civilizedPop.Race).Value
-                    : Color.Gray;
-
-                Color darkenedPopColor = HtmlStyleUtil.ChangeColorBrightness(civilizedPopColor, -0.1f);
-
-                races += (i != 0 ? "," : "") + "'"+ civilizedPop.Race+"'";
-                popCounts += (i != 0 ? "," : "") + civilizedPop.Count;
-                backgroundColors += (i != 0 ? "," : "") + "'" + ColorTranslator.ToHtml(darkenedPopColor) + "'";
-            }
-
-            Html.AppendLine("var chartPopulationByRace = new Chart(document.getElementById('chart-populationbyrace').getContext('2d'), { type: 'doughnut', ");
-                Html.AppendLine("data: {");
-                    Html.AppendLine("labels: [" + races+ "], ");
-                    Html.AppendLine("datasets:[{");
-                        Html.AppendLine("data:[" + popCounts + "], ");
-                        Html.AppendLine("backgroundColor:[" + backgroundColors + "]");
-                    Html.AppendLine("}],");
-                Html.AppendLine("},");
-                Html.AppendLine("options:{");
-                    Html.AppendLine("maintainAspectRatio: false,");
-                    Html.AppendLine("legend:{");
-                        Html.AppendLine("position:'right',");
-                        Html.AppendLine("labels: { boxWidth: 12 }");
-                    Html.AppendLine("}");
-                Html.AppendLine("}");
-            Html.AppendLine("});");
         }
 
         private void PopulateWarOverview()

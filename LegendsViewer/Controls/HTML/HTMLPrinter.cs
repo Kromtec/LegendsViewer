@@ -424,6 +424,51 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</ul>");
         }
 
+        protected void PopulatePopulationChartData(List<Population> populations)
+        {
+            if (populations.Count == 0)
+            {
+                Html.AppendLine("$('#chart-populationbyrace-container').hide()");
+                return;
+            }
+            string races = "";
+            string popCounts = "";
+            string backgroundColors = "";
+
+            for (int i = 0; i < populations.Count; i++)
+            {
+                Population civilizedPop = populations[i];
+                Color civilizedPopColor = World.MainRaces.ContainsKey(civilizedPop.Race)
+                    ? World.MainRaces.First(r => r.Key == civilizedPop.Race).Value
+                    : Color.Gray;
+
+                Color darkenedPopColor = HtmlStyleUtil.ChangeColorBrightness(civilizedPopColor, -0.1f);
+
+                races += (i != 0 ? "," : "") + "'" + civilizedPop.Race + "'";
+                popCounts += (i != 0 ? "," : "") + civilizedPop.Count;
+                backgroundColors += (i != 0 ? "," : "") + "'" + ColorTranslator.ToHtml(darkenedPopColor) + "'";
+            }
+
+            Html.AppendLine("setTimeout(function(){");
+            Html.AppendLine("var chartPopulationByRace = new Chart(document.getElementById('chart-populationbyrace').getContext('2d'), { type: 'doughnut', ");
+            Html.AppendLine("data: {");
+            Html.AppendLine("labels: [" + races + "], ");
+            Html.AppendLine("datasets:[{");
+            Html.AppendLine("data:[" + popCounts + "], ");
+            Html.AppendLine("backgroundColor:[" + backgroundColors + "]");
+            Html.AppendLine("}],");
+            Html.AppendLine("},");
+            Html.AppendLine("options:{");
+            Html.AppendLine("maintainAspectRatio: false,");
+            Html.AppendLine("legend:{");
+            Html.AppendLine("position:'right',");
+            Html.AppendLine("labels: { boxWidth: 12 }");
+            Html.AppendLine("}");
+            Html.AppendLine("}");
+            Html.AppendLine("});");
+            Html.AppendLine("}, 10);");
+        }
+
         protected void PrintEventLog(World world, List<WorldEvent> events, List<string> filters, DwarfObject dfo)
         {
             if (!events.Any())

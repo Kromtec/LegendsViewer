@@ -31,10 +31,23 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
+            LoadCustomScripts();
+
             Html.AppendLine("<div class=\"container-fluid\">");
 
             PrintTitle();
+
+            Html.AppendLine("<div class=\"row\">");
+
+            Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
             PrintMaps();
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">");
+            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("</div>");
 
             Html.AppendLine("<div class=\"row\">");
             PrintPopulations(_site.Populations);
@@ -98,6 +111,17 @@ namespace LegendsViewer.Controls.HTML
             EndList(ListType.Unordered);
             Html.AppendLine("</div>");
             Html.AppendLine("</div>");
+        }
+
+        private void LoadCustomScripts()
+        {
+            Html.AppendLine("<script>");
+            Html.AppendLine("window.onload = function(){");
+
+            PopulatePopulationChartData(_site.Populations.Where(pop => pop.IsMainRace || pop.IsAnimalPeople).ToList());
+
+            Html.AppendLine("}");
+            Html.AppendLine("</script>");
         }
 
         private void PrintRelatedArtifacts()

@@ -37,7 +37,19 @@ namespace LegendsViewer.Controls.HTML
 
             PrintTitle();
 
+
+            Html.AppendLine("<div class=\"row\">");
+
+            Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
             PrintMaps();
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">");
+            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("</div>");
+
 
             Html.AppendLine("<div class=\"row\">");
 
@@ -71,8 +83,7 @@ namespace LegendsViewer.Controls.HTML
             {
                 return;
             }
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-lg-12\">");
+
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _entity);
             TableMaker mapTable = new TableMaker();
             mapTable.StartRow();
@@ -82,8 +93,6 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine(mapTable.GetTable() + "</br>");
             maps[0].Dispose();
             maps[1].Dispose();
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
         }
 
         private void PrintOriginStructure()
@@ -138,6 +147,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<script>");
             Html.AppendLine("window.onload = function(){");
 
+            PopulatePopulationChartData(_entity.Populations.Where(pop => pop.IsMainRace || pop.IsAnimalPeople).ToList());
             if (_entity.Wars.Any())
             {
                 PopulateWarOverview();
