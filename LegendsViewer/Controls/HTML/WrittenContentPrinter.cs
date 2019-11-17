@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
@@ -40,8 +41,45 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<br/>");
 
             PrintReferences();
+            PrintArtform();
             PrintEventLog(_world, _writtenContent.Events, WrittenContent.Filters, _writtenContent);
             return Html.ToString();
+        }
+
+        private void PrintArtform()
+        {
+            if (_writtenContent.FormId == -1)
+            {
+                return;
+            }
+            ArtForm artForm = null;
+            if (_writtenContent.Type == WrittenContentType.Poem)
+            {
+                artForm = _world.GetPoeticForm(_writtenContent.FormId);
+            }
+            else if (_writtenContent.Type == WrittenContentType.MusicalComposition)
+            {
+                artForm = _world.GetMusicalForm(_writtenContent.FormId);
+            }
+            else if (_writtenContent.Type == WrittenContentType.Choreography)
+            {
+                artForm = _world.GetDanceForm(_writtenContent.FormId);
+            }
+            // TODO
+            // Does not seam to be right for other types like 'novel, 'essay', 'shortstory', 'guide', ...
+            // Not sure which art form is correct in these cases
+            //else
+            //{
+            //    artForm = _world.GetPoeticForm(_writtenContent.FormId);
+            //}
+            if (artForm != null)
+            {
+                Html.AppendLine("<b>" + artForm.FormType.GetDescription() + "</b><br />");
+                Html.AppendLine("<ul>");
+                Html.AppendLine("<li>" + artForm.ToLink() + "</li>");
+                Html.AppendLine("</ul>");
+                Html.AppendLine("</br>");
+            }
         }
 
         private void PrintReferences()

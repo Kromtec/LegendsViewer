@@ -11,7 +11,23 @@ namespace LegendsViewer.Legends
 {
     public class WrittenContent : WorldObject
     {
-        public string Name { get; set; } // legends_plus.xml
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_name))
+                {
+                    return _name;
+                }
+
+                var type = Type.GetDescription();
+                _name = "An untitled " + type.ToLower();
+                return _name;
+            }
+            set => _name = value;
+        } // legends_plus.xml
+
         public int PageStart { get; set; } // legends_plus.xml
         public int PageEnd { get; set; } // legends_plus.xml
         public WrittenContentType Type { get; set; } // legends_plus.xml
@@ -26,6 +42,7 @@ namespace LegendsViewer.Legends
         public static string Icon = "<i class=\"fa fa-fw fa-book\"></i>";
 
         public static List<string> Filters;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
@@ -34,9 +51,9 @@ namespace LegendsViewer.Legends
         public WrittenContent(List<Property> properties, World world)
             : base(properties, world)
         {
-            Name = "Untitled";
             Styles = new List<string>();
             References = new List<Reference>();
+            FormId = -1;
 
             foreach (Property property in properties)
             {
@@ -149,10 +166,18 @@ namespace LegendsViewer.Legends
                         Author = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
                         break;
                     case "style":
-                        Styles.Add(property.Value.Contains(":")
-                            ? string.Intern(property.Value.Substring(0,
-                                property.Value.IndexOf(":", StringComparison.Ordinal)))
-                            : string.Intern(property.Value));
+                        var style = property.Value.Contains(":")
+                            ? string.Intern(property.Value.Substring(0, property.Value.IndexOf(":", StringComparison.Ordinal))).ToLower()
+                            : string.Intern(property.Value).ToLower();
+                        if (Styles.Contains(style.Replace(" ", "")))
+                        {
+                            Styles.Remove(style.Replace(" ", ""));
+                            Styles.Add(style);
+                        }
+                        else if (Styles.All(s => s.Replace(" ", "") != style))
+                        {
+                            Styles.Add(style);
+                        }
                         break;
                     case "author_roll":
                         AuthorRoll = Convert.ToInt32(property.Value);
