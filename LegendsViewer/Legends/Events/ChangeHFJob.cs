@@ -41,15 +41,15 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
             if (OldJob != "standard" && NewJob != "standard")
             {
-                eventString += " gave up being a " + OldJob + " to become a " + NewJob;
+                eventString += " gave up being " + Formatting.AddArticle(OldJob) + " to become " + Formatting.AddArticle(NewJob);
             }
             else if (NewJob != "standard")
             {
-                eventString += " became a " + NewJob;
+                eventString += " became " + Formatting.AddArticle(NewJob);
             }
             else if (OldJob != "standard")
             {
-                eventString += " stopped being a " + OldJob;
+                eventString += " stopped being " + Formatting.AddArticle(OldJob);
             }
             else
             {

@@ -375,7 +375,7 @@ namespace LegendsViewer.Controls.HTML
                     title += ". ";
                 }
 
-                title += _historicalFigure.ToLink(false, _historicalFigure) + " is most often depicted as a " + _historicalFigure.GetRaceTitleString() + ". ";
+                title += _historicalFigure.ToLink(false, _historicalFigure) + " is most often depicted as " + _historicalFigure.GetRaceTitleString() + ". ";
             }
             else if (_historicalFigure.Force)
             {
@@ -389,11 +389,11 @@ namespace LegendsViewer.Controls.HTML
             {
                 if (_historicalFigure.DeathYear >= 0)
                 {
-                    title += "Was a " + _historicalFigure.GetRaceTitleString();
+                    title += "Was " + _historicalFigure.GetRaceTitleString();
                 }
                 else
                 {
-                    title += "Is a " + _historicalFigure.GetRaceTitleString();
+                    title += "Is " + _historicalFigure.GetRaceTitleString();
                 }
                 title += " born in " + _historicalFigure.BirthYear;
 

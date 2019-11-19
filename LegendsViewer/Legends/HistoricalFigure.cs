@@ -512,7 +512,7 @@ namespace LegendsViewer.Legends
 
             if (owner)
             {
-                return "it's";
+                return "its";
             }
 
             return "it";
@@ -555,25 +555,25 @@ namespace LegendsViewer.Legends
 
             if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
             {
-                return hfraceString + " vampire";
+                hfraceString += " vampire";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("WEREBEAST")))
             {
-                return hfraceString + " werebeast";
+                hfraceString += " werebeast";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE")))
             {
-                return hfraceString + " necromancer";
+                hfraceString += " necromancer";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("ANIMATE")))
             {
-                return hfraceString + " animated corpse";
+                hfraceString += " animated corpse";
             }
 
-            return hfraceString;
+            return Formatting.AddArticle(hfraceString);
         }
 
         public string GetRaceString()
@@ -588,32 +588,35 @@ namespace LegendsViewer.Legends
                 return "Force";
             }
 
-            if (Race == "Night Creature" && PreviousRace != "")
+            string raceString = "";
+            if (!string.IsNullOrWhiteSpace(PreviousRace))
             {
-                return PreviousRace.ToLower() + " turned night creature";
+                raceString += PreviousRace.ToLower() + " turned ";
             }
+
+            raceString += Race.ToLower();
 
             if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
             {
-                return Race.ToLower() + " vampire";
+                raceString += " vampire";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("WEREBEAST")))
             {
-                return Race.ToLower() + " werebeast";
+                raceString += " werebeast";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE")))
             {
-                return Race.ToLower() + " necromancer";
+                raceString += " necromancer";
             }
 
             if (ActiveInteractions.Any(it => it.Contains("ANIMATE")))
             {
-                return Race.ToLower() + " animated corpse";
+                raceString += " animated corpse";
             }
 
-            return Race.ToLower();
+            return raceString;
         }
     }
 }

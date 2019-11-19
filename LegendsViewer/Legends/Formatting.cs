@@ -118,6 +118,24 @@ namespace LegendsViewer.Legends
             return sb.ToString();
         }
 
+        public static string AddArticle(string text)
+        {
+            if (text.ToLower().StartsWith("a") || 
+                text.ToLower().StartsWith("e") || 
+                text.ToLower().StartsWith("i") || 
+                text.ToLower().StartsWith("o") || 
+                text.ToLower().StartsWith("u"))
+            {
+                text = "an " + text;
+            }
+            else
+            {
+                text = "a " + text;
+            }
+
+            return text;
+        }
+
         public static string ReplaceNonAscii(string name)
         {
             name = name.Replace("\u017D", "a");

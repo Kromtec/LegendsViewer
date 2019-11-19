@@ -6,8 +6,15 @@ namespace LegendsViewer.Legends.Events
 {
     public class ChangedCreatureType : WorldEvent
     {
-        public HistoricalFigure Changee, Changer;
-        public string OldRace, OldCaste, NewRace, NewCaste;
+        public HistoricalFigure Changee { get; set; }
+        public HistoricalFigure Changer { get; set; }
+        public string OldRace { get; set; }
+        public string NewRace { get; set; }
+
+        // TODO Handle caste changes
+        public string OldCaste { get; set; }
+        public string NewCaste { get; set; }
+
         public ChangedCreatureType(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -32,7 +39,14 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Changer.ToLink(link, pov) + " changed " + Changee.ToLink(link, pov) + " from a " + OldRace + " into a " + NewRace;
+            string eventString = GetYearTime();
+            eventString += Changer?.ToLink(link, pov) ?? "An unknown creature";
+            eventString += " changed ";
+            eventString += Changee?.ToLink(link, pov) ?? "an unknown creature";
+            eventString += " from ";
+            eventString += Formatting.AddArticle(OldRace).ToLower();
+            eventString += " into ";
+            eventString += Formatting.AddArticle(NewRace).ToLower();
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;
