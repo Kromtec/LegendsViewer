@@ -37,12 +37,26 @@ namespace LegendsViewer.Controls.HTML
             PrintEras();
             PrintCivs();
             PrintWarCharts();
+            PrintEvents();
             PrintEntitesAndHFs();
             PrintGeography();
             PrintPopulations();
-            PrintEventStats();
-
+            
             return Html.ToString();
+        }
+
+        private void PrintEvents()
+        {
+            Html.AppendLine("<div class=\"container-fluid\">");
+            Html.AppendLine("<div class=\"row\">");
+            Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
+            Html.AppendLine("<h1>Events</h1> ");
+            Html.AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview));
+            Html.AppendLine("</br>");
+            Html.AppendLine("</br>");
+            Html.AppendLine("</div>");
+            Html.AppendLine("</div>");
+            Html.AppendLine("</div>");
         }
 
         private void PrintWorldInfo()
@@ -78,14 +92,9 @@ namespace LegendsViewer.Controls.HTML
                ? "<div class=\"col-lg-12\">"
                : "<div class=\"col-md-6 col-sm-12\">");
             Html.AppendLine("<h1>Wars Fought by Race</h1>");
-            Html.AppendLine("<canvas id=\"chart-countbyrace\" class=\"bar-chart\" width=\"600\" height=\"300\"></canvas>");
+            Html.AppendLine("<canvas id=\"chart-countbyrace\" class=\"bar-chart\"></canvas>");
             Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
-            Html.AppendLine("</br>");
-
-            Html.AppendLine("<div class=\"row\">");
+            
             var warParticipants =
                 _world.Wars.Select(x => x.Attacker.Name).Concat(_world.Wars.Select(x => x.Defender.Name)).Distinct().ToList();
             Html.AppendLine(warParticipants.Count > 20
@@ -431,170 +440,6 @@ namespace LegendsViewer.Controls.HTML
                 }
                 Html.AppendLine(MakeLink(BitmapToHtml(resizedMap), LinkOption.LoadMap) + "</br>");
             }
-        }
-
-        private void PrintEventStats()
-        {
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-sm-6\">");
-            PrintEventDetails();
-            Html.AppendLine("</div>");
-            Html.AppendLine("<div class=\"col-sm-6\">");
-            PrintEventCollectionDetails();
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
-        }
-
-        private void PrintEventCollectionDetails()
-        {
-            Html.AppendLine("<h1>Event Collections: " + _world.EventCollections.Count + "</h1>");
-            var collectionTypes = from collection in _world.EventCollections
-                                  group collection by collection.Type into collectionType
-                                  select new { Type = collectionType.Key, Count = collectionType.Count() };
-            collectionTypes = collectionTypes.OrderByDescending(collection => collection.Count);
-            foreach (var collectionType in collectionTypes)
-            {
-                Html.AppendLine("<h2>" + Formatting.InitCaps(collectionType.Type) + ": " + collectionType.Count + "</h2>");
-                Html.AppendLine("<ul>");
-                var subCollections = from subCollection in _world.EventCollections.Where(collection => collection.Type == collectionType.Type).SelectMany(collection => collection.Collections)
-                                     group subCollection by subCollection.Type into subCollectionType
-                                     select new { Type = subCollectionType.Key, Count = subCollectionType.Count() };
-                subCollections = subCollections.OrderByDescending(collection => collection.Count);
-                if (subCollections.Any())
-                {
-                    Html.AppendLine("<li>Sub Collections");
-                    Html.AppendLine("<ul>");
-                    foreach (var subCollection in subCollections)
-                    {
-                        Html.AppendLine("<li>" + Formatting.InitCaps(subCollection.Type) + ": " + subCollection.Count + "</li>");
-                    }
-
-                    Html.AppendLine("</ul>");
-                }
-
-                Html.AppendLine("<li>Events");
-                var eventTypes = from dwarfEvent in _world.EventCollections.Where(collection => collection.Type == collectionType.Type).SelectMany(collection => collection.Collection)
-                                 group dwarfEvent by dwarfEvent.Type into eventType
-                                 select new { Type = eventType.Key, Count = eventType.Count() };
-                eventTypes = eventTypes.OrderByDescending(eventType => eventType.Count);
-                Html.AppendLine("<ul>");
-                foreach (var eventType in eventTypes)
-                {
-                    Html.AppendLine("<li>" + AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == eventType.Type))][1] + ": " + eventType.Count + "</li>");
-                }
-
-                Html.AppendLine("</ul>");
-
-                Html.AppendLine("</ul>");
-            }
-        }
-
-        private void PrintEventDetails()
-        {
-            Html.AppendLine("<h1>Events: " + _world.Events.Count + "</h1>");
-            var events = from dEvent in _world.Events
-                         group dEvent by dEvent.Type into eventType
-                         select new { Type = eventType.Key, Count = eventType.Count() };
-            events = events.OrderByDescending(dEvent => dEvent.Count);
-            Html.AppendLine("<ul>");
-            foreach (var dwarfEvent in events)
-            {
-                Html.AppendLine("<li title='"+dwarfEvent.Type+"'>" + AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == dwarfEvent.Type))][1] + ": " + dwarfEvent.Count + "</li>");
-                if (dwarfEvent.Type == "hf died")
-                {
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>As part of Collection</li>");
-                    var deathCollections = from death in _world.Events.OfType<HfDied>().Where(death => death.ParentCollection != null)
-                                           group death by death.ParentCollection.Type into collectionType
-                                           select new { Type = collectionType.Key, Count = collectionType.Count() };
-                    deathCollections = deathCollections.OrderByDescending(collectionType => collectionType.Count);
-                    Html.AppendLine("<ul>");
-                    foreach (var deathCollection in deathCollections)
-                    {
-                        Html.AppendLine("<li>" + Formatting.InitCaps(deathCollection.Type) + ": " + deathCollection.Count + "</li>");
-                    }
-
-                    Html.AppendLine("<li>None: " + _world.Events.OfType<HfDied>().Count(death => death.ParentCollection == null) + "</li>");
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>Deaths by Race</li>");
-                    Html.AppendLine("<ol>");
-                    var hfDeaths = from death in _world.Events.OfType<HfDied>()
-                                   group death by death.HistoricalFigure.Race into deathRace
-                                   select new { Type = deathRace.Key, Count = deathRace.Count() };
-                    hfDeaths = hfDeaths.OrderByDescending(death => death.Count);
-                    foreach (var hfdeath in hfDeaths)
-                    {
-                        Html.AppendLine("<li>" + hfdeath.Type + ": " + hfdeath.Count + "</li>");
-                    }
-
-                    Html.AppendLine("</ol>");
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>Deaths by Cause</li>");
-                    Html.AppendLine("<ul>");
-                    var deathCauses = from death in _world.Events.OfType<HfDied>()
-                                      group death by death.Cause into deathCause
-                                      select new { Cause = deathCause.Key, Count = deathCause.Count() };
-                    deathCauses = deathCauses.OrderByDescending(death => death.Count);
-                    foreach (var deathCause in deathCauses)
-                    {
-                        Html.AppendLine("<li>" + deathCause.Cause.GetDescription() + ": " + deathCause.Count + "</li>");
-                    }
-
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("</ul>");
-                }
-                if (dwarfEvent.Type == "hf simple battle event")
-                {
-                    var fightTypes = from fight in _world.Events.OfType<HfSimpleBattleEvent>()
-                                     group fight by fight.SubType into fightType
-                                     select new { Type = fightType.Key, Count = fightType.Count() };
-                    fightTypes = fightTypes.OrderByDescending(fightType => fightType.Count);
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>Fight SubTypes</li>");
-                    Html.AppendLine("<ul>");
-                    foreach (var fightType in fightTypes)
-                    {
-                        Html.AppendLine("<li>" + fightType.Type.GetDescription() + ": " + fightType.Count + "</li>");
-                    }
-
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("</ul>");
-                }
-                if (dwarfEvent.Type == "change hf state")
-                {
-                    var stateChangeInfo = _world.Events.OfType<ChangeHfState>()
-                        .GroupBy(changeStateEvent => changeStateEvent.State != HfState.Unknown 
-                            ? changeStateEvent.State.GetDescription() 
-                            : "Mood - " + changeStateEvent.Mood.GetDescription())
-                        .Select(changeStateEventsGroupedByState => new
-                        {
-                            Type = changeStateEventsGroupedByState.Key, 
-                            Count = changeStateEventsGroupedByState.Count()
-                        });
-                    stateChangeInfo = stateChangeInfo.OrderByDescending(state => state.Count);
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>States</li>");
-                    Html.AppendLine("<ul>");
-                    foreach (var state in stateChangeInfo)
-                    {
-                        Html.AppendLine("<li>" + state.Type.GetDescription() + ": " + state.Count + "</li>");
-                    }
-
-                    Html.AppendLine("</ul>");
-                    Html.AppendLine("</ul>");
-                }
-            }
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</br>");
         }
 
         private void PrintVarious()

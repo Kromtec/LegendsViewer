@@ -44,6 +44,8 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 insurrectionStart.ActualStart = true;
             }
+            TargetEntity.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         public override string ToLink(bool link = true, DwarfObject pov = null)

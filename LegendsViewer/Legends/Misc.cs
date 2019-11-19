@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 
 namespace LegendsViewer.Legends
@@ -7,10 +8,12 @@ namespace LegendsViewer.Legends
     {
         public static void AddEvent(this WorldObject worldObject, WorldEvent worldEvent)
         {
-            if (worldObject != null)
-            {
-                worldObject.Events.Add(worldEvent);
-            }
+            worldObject?.Events.Add(worldEvent);
+        }
+
+        public static void AddEventCollection(this WorldObject worldObject, EventCollection eventCollection)
+        {
+            worldObject?.EventCollectons.Add(eventCollection);
         }
 
         public static T GetWorldObject<T>(this List<T> list, int id) where T : WorldObject

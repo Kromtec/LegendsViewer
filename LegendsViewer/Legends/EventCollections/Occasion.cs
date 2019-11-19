@@ -18,6 +18,7 @@ namespace LegendsViewer.Legends.EventCollections
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
         }
+
         public Occasion(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -34,7 +35,9 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 EntityOccasion = Civ.Occassions.ElementAt(OccasionId);
             }
+            Civ.AddEventCollection(this);
         }
+
         public override string ToLink(bool link = true, DwarfObject pov = null)
         {
             return "an occasion";

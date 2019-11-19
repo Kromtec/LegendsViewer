@@ -92,7 +92,9 @@ namespace LegendsViewer.Legends.EventCollections
                     war.DefenderVictories.Add(this);
                 }
             }
-
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()

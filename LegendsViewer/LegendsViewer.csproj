@@ -101,6 +101,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\EventArgs.cs" />
+    <Compile Include="Controls\HTML\EventOverviewPrinter.cs" />
     <Compile Include="Controls\HTML\ArtifactPrinter.cs" />
     <Compile Include="Controls\HTML\ArtFormPrinter.cs" />
     <Compile Include="Controls\HTML\LandmassPrinter.cs" />

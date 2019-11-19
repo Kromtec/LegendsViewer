@@ -13,7 +13,8 @@ namespace LegendsViewer.Legends.EventCollections
         public WorldRegion Region;
         public UndergroundRegion UndergroundRegion;
         public Site Site;
-        public Entity Attacker, Defender;
+        public Entity Attacker;
+        public Entity Defender;
 
         public List<string> Filters;
         public override List<WorldEvent> FilteredEvents
@@ -63,6 +64,11 @@ namespace LegendsViewer.Legends.EventCollections
                 }
 
             }
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         public override string ToLink(bool link = true, DwarfObject pov = null)

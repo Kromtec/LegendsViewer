@@ -10,11 +10,14 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public string Ordinal;
         public Location Coordinates;
+
         public HistoricalFigure Abductee;
         public WorldRegion Region;
         public UndergroundRegion UndergroundRegion;
         public Site Site;
-        public Entity Attacker, Defender;
+        public Entity Attacker;
+        public Entity Defender;
+
         public List<string> Filters;
         public override List<WorldEvent> FilteredEvents
         {
@@ -37,6 +40,13 @@ namespace LegendsViewer.Legends.EventCollections
                     case "defending_enid": Defender = world.GetEntity(Convert.ToInt32(property.Value)); break;
                 }
             }
+
+            Abductee.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
         }
         public override string ToLink(bool link = true, DwarfObject pov = null)
         {

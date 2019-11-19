@@ -20,7 +20,18 @@ namespace LegendsViewer.Legends.EventCollections
         public UndergroundRegion UndergroundRegion { get; set; }
         public Site Site { get; set; }
         public Entity Defender { get; set; }
-        public HistoricalFigure Beast { get; set; }
+
+        private HistoricalFigure _beast;
+        public HistoricalFigure Beast
+        {
+            get => _beast;
+            set
+            {
+                _beast = value;
+                _beast.AddEventCollection(this);
+            }
+        }
+
         public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
 
         // BUG in XML? 
@@ -30,6 +41,7 @@ namespace LegendsViewer.Legends.EventCollections
         public EventCollection ParentEventCol { get; set; }
 
         public static List<string> Filters;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
@@ -61,6 +73,10 @@ namespace LegendsViewer.Legends.EventCollections
 
             //-------Fill in some missing event details with details from collection
             //-------Filled in after parsing event collections in ParseXML()
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()

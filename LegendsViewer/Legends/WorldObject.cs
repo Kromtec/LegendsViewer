@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 
@@ -8,12 +9,12 @@ namespace LegendsViewer.Legends
     public abstract class WorldObject : DwarfObject
     {
         public List<WorldEvent> Events { get; set; }
+        public List<EventCollection> EventCollectons { get; set; }
         public int EventCount { get { return Events.Count; } set { } }
         public int Id { get; set; }
-        protected WorldObject(List<Property> properties, World world)
+
+        protected WorldObject(List<Property> properties, World world) : this()
         {
-            Id = -1;
-            Events = new List<WorldEvent>();
             foreach(Property property in properties)
             {
                 switch (property.Name)
@@ -23,9 +24,11 @@ namespace LegendsViewer.Legends
                 }
             }
         }
+
         public WorldObject() { 
             Id = -1; 
-            Events = new List<WorldEvent>(); 
+            Events = new List<WorldEvent>();
+            EventCollectons = new List<EventCollection>();
         }
         
 

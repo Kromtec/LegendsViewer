@@ -126,6 +126,8 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 Length = world.Events.Last().Year - StartYear;
             }
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
         }
 
         private void Initialize()

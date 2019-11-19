@@ -13,7 +13,8 @@ namespace LegendsViewer.Legends.EventCollections
         public WorldRegion Region;
         public UndergroundRegion UndergroundRegion;
         public Site Site;
-        public HistoricalFigure Attacker, Defender;
+        public HistoricalFigure Attacker;
+        public HistoricalFigure Defender;
         public List<string> Filters;
         public override List<WorldEvent> FilteredEvents
         {
@@ -69,7 +70,13 @@ namespace LegendsViewer.Legends.EventCollections
                     }
                 }
             }
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
+
         public override string ToLink(bool link = true, DwarfObject pov = null)
         {
             return "a duel";

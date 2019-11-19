@@ -141,16 +141,19 @@ namespace LegendsViewer.Legends.EventCollections
             foreach (HistoricalFigure attacker in NotableAttackers)
             {
                 attacker.Battles.Add(this);
+                attacker.AddEventCollection(this);
             }
 
             foreach (HistoricalFigure defender in NotableDefenders)
             {
                 defender.Battles.Add(this);
+                defender.AddEventCollection(this);
             }
 
             foreach (HistoricalFigure nonCombatant in NonCombatants)
             {
                 nonCombatant.Battles.Add(this);
+                nonCombatant.AddEventCollection(this);
             }
 
             for (int i = 0; i < attackerSquadRace.Count; i++)
@@ -276,6 +279,11 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 Notable = false;
             }
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()

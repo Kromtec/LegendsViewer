@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 
