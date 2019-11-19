@@ -8,6 +8,7 @@ using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -410,7 +411,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"col-md-12\">");
             if (!string.IsNullOrWhiteSpace(_site.Name))
             {
-                Html.AppendLine("<h1>" + _site.UntranslatedName + ", \"" + _site.Name + "\"</h1>");
+                Html.AppendLine("<h1>" + _site.GetIcon() + " " + _site.UntranslatedName + ", \"" + _site.Name + "\"</h1>");
                 Html.AppendLine("<b>" + _site.ToLink(false) + " is a " + _site.Type + "</b><br /><br />");
             }
             else

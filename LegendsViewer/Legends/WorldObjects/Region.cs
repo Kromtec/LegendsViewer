@@ -7,7 +7,7 @@ using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Interfaces;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class WorldRegion : WorldObject, IHasCoordinates
     {
@@ -98,6 +98,11 @@ namespace LegendsViewer.Legends
                 return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

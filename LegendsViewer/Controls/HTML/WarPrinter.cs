@@ -30,7 +30,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            Html.AppendLine("<h1>" + _war.GetIcon() + " " + GetTitle() + "</h1></br>");
             Html.AppendLine("Started " + _war.GetYearTime().ToLower() + "and ");
             if (_war.EndYear == -1)
             {

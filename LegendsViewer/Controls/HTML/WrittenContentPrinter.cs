@@ -4,6 +4,7 @@ using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -21,7 +22,7 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _writtenContent.Name + "</h1>");
+            Html.AppendLine("<h1>" + _writtenContent.GetIcon() + " " + _writtenContent.Name + "</h1>");
             if (_writtenContent.Type != WrittenContentType.Unknown)
             {
                 var type = _writtenContent.Type.GetDescription();

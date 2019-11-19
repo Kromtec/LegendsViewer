@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Map
 {

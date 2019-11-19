@@ -7,6 +7,7 @@ using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -361,7 +362,7 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintTitle()
         {
-            Html.AppendLine("<h1>" + _historicalFigure.Name + "</h1>");
+            Html.AppendLine("<h1>" + _historicalFigure.GetIcon() + " " + _historicalFigure.Name + "</h1>");
             string title = string.Empty;
             if (_historicalFigure.Deity)
             {

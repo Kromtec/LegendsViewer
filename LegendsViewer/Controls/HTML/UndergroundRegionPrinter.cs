@@ -5,6 +5,7 @@ using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -28,7 +29,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>Depth: " + _region.Depth + "</h1></br></br>");
+            Html.AppendLine("<h1>" + _region.GetIcon() + " " + "Depth: " + _region.Depth + "</h1></br></br>");
 
             if (_region.Coordinates.Any())
             {

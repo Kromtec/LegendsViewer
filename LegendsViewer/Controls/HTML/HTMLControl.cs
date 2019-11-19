@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {

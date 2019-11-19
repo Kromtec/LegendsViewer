@@ -3,7 +3,7 @@ using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class DanceForm : ArtForm
     {
@@ -35,6 +35,11 @@ namespace LegendsViewer.Legends
                 return linkedString;
             }
             return Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

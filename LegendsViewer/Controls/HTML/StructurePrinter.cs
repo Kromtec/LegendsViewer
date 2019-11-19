@@ -2,6 +2,7 @@
 using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -20,7 +21,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _structure.Name + "</h1>");
+            Html.AppendLine("<h1>" + _structure.GetIcon() + " " + _structure.Name + "</h1>");
             Html.AppendLine("<b>");
             Html.AppendLine(_structure.TypeAsString);
             Html.AppendLine(" in " + _structure.Site.ToLink() + "</b><br/><br/>");

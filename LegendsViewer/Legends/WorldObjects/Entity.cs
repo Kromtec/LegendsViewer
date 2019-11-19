@@ -9,7 +9,7 @@ using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class Entity : WorldObject
     {
@@ -401,6 +401,11 @@ namespace LegendsViewer.Legends
                 title += Race;
             }
             return title;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

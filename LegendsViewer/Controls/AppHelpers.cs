@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls
 {

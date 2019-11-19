@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -18,7 +19,7 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _artifact.Name);
+            Html.AppendLine("<h1>" + _artifact.GetIcon() + " " + _artifact.Name);
             if (!string.IsNullOrWhiteSpace(_artifact.Item) && _artifact.Name != _artifact.Item)
             {
                 Html.AppendLine(" \"" + _artifact.Item + "\"");

@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
@@ -84,6 +85,11 @@ namespace LegendsViewer.Legends.EventCollections
         public override string ToString()
         {
             return Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

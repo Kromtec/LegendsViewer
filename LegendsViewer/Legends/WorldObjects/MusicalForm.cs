@@ -3,7 +3,7 @@ using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class MusicalForm : ArtForm
     {
@@ -30,6 +30,11 @@ namespace LegendsViewer.Legends
                 return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

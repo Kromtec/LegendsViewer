@@ -3,6 +3,7 @@ using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -37,7 +38,8 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            string icon = _dwarfObject != null ? _dwarfObject.GetIcon() + " " : "";
+            Html.AppendLine("<h1>" + icon + GetTitle() + "</h1></br>");
             PrintEventStats(Events, EventCollections);
             return Html.ToString();
         }

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 using WFC;
 
 namespace LegendsViewer.Controls.Tabs

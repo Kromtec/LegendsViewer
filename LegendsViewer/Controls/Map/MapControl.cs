@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Map
 {

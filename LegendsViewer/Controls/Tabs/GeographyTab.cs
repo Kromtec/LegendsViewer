@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Tabs
 {

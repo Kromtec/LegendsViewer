@@ -25,7 +25,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _raid.Name + "</h1><br />");
+            Html.AppendLine("<h1>" + _raid.GetIcon() + " " + _raid.Name + "</h1><br />");
 
             PrintMaps();
 

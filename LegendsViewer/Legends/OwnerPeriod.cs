@@ -1,4 +1,5 @@
 ﻿using System;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {

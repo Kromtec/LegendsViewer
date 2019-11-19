@@ -39,7 +39,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            Html.AppendLine("<h1>" + _attack.GetIcon() + " " + GetTitle() + "</h1></br>");
 
             string beastName = "an unknown creature";
             if (_attack.Beast != null)

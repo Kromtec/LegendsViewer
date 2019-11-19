@@ -6,6 +6,7 @@ using LegendsViewer.Controls.HTML;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Controls.Query;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls
 {

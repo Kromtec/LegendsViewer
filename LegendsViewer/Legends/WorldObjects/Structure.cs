@@ -7,7 +7,7 @@ using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class Structure : WorldObject
     {
@@ -235,6 +235,11 @@ namespace LegendsViewer.Legends
                 return linkedString;
             }
             return Icon + Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

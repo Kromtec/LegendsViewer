@@ -7,7 +7,7 @@ using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Interfaces;
 using LegendsViewer.Legends.Parser;
 
-namespace LegendsViewer.Legends
+namespace LegendsViewer.Legends.WorldObjects
 {
     public class UndergroundRegion : WorldObject, IHasCoordinates
     {
@@ -89,6 +89,10 @@ namespace LegendsViewer.Legends
             }
             return name;
         }
-        
+
+        public override string GetIcon()
+        {
+            return Icon;
+        }
     }
 }

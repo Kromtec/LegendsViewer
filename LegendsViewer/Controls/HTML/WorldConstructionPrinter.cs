@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -21,7 +22,7 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _worldConstruction.Name + ", " + _worldConstruction.Type + "</h1><br />");
+            Html.AppendLine("<h1>" + _worldConstruction.GetIcon() + " " + _worldConstruction.Name + ", " + _worldConstruction.Type + "</h1><br />");
 
             if (_worldConstruction.Coordinates.Any())
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {

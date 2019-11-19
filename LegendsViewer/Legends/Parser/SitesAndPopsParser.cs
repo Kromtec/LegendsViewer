@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Parser
 {

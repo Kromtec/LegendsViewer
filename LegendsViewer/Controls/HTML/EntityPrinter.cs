@@ -7,6 +7,7 @@ using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -361,7 +362,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
-            string title = _entity.ToLink(false);
+            string title = _entity.GetIcon() + " " + _entity.ToLink(false);
             if (_entity.IsCiv)
             {
                 title += " is a civilization";

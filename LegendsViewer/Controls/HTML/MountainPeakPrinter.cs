@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -27,7 +28,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _mountainPeak.Name + ", Mountain Peak</h1><br />");
+            Html.AppendLine("<h1>" + _mountainPeak.GetIcon() + " " + _mountainPeak.Name + ", Mountain Peak</h1><br />");
 
             if (_mountainPeak.Coordinates.Any())
             {
