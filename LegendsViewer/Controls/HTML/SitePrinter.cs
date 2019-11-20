@@ -40,11 +40,14 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("<div class=\"row\">");
 
-            Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
-            PrintMaps();
+            string siteMapPath = GetSiteMapPath();
+            string colClassMaps = string.IsNullOrEmpty(siteMapPath) ? "col-md-6 col-sm-12" : "col-lg-9 col-md-12 col-sm-12";
+            Html.AppendLine("<div class=\"" + colClassMaps + "\">");
+            PrintMaps(siteMapPath);
             Html.AppendLine("</div>");
 
-            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">");
+            string colClassChart = string.IsNullOrEmpty(siteMapPath) ? "col-md-3 col-sm-12" : "col-lg-3 col-md-6 col-sm-6";
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"" + colClassChart + "\" style=\"height: 250px\">");
             Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
             Html.AppendLine("</div>");
 
@@ -390,14 +393,14 @@ namespace LegendsViewer.Controls.HTML
             }
         }
 
-        private void PrintMaps()
+        private void PrintMaps(string siteMapPath)
         {
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _site);
             Html.AppendLine("<table>");
             Html.AppendLine("<tr>");
-            PrintSiteMap();
+            PrintSiteMap(siteMapPath);
             Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
             Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
             Html.AppendLine("</tr></table></br>");
@@ -483,46 +486,58 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</div>");
         }
 
-        private void PrintSiteMap()
+        private string GetSiteMapPath()
         {
             if (string.IsNullOrEmpty(FileLoader.SaveDirectory) || string.IsNullOrEmpty(FileLoader.RegionId))
             {
-                return;
+                return null;
             }
             string sitemapPath = Path.Combine(FileLoader.SaveDirectory, FileLoader.RegionId + "-site_map-" + _site.Id);
             string sitemapPathFromProcessScript = Path.Combine(FileLoader.SaveDirectory, "site_maps\\" + FileLoader.RegionId + "-site_map-" + _site.Id);
             if (File.Exists(sitemapPath + ".bmp"))
             {
-                CreateSitemapBitmap(sitemapPath + ".bmp");
+                return sitemapPath + ".bmp";
             }
-            else if (File.Exists(sitemapPath + ".png"))
+
+            if (File.Exists(sitemapPath + ".png"))
             {
-                CreateSitemapBitmap(sitemapPath + ".png");
+                return sitemapPath + ".png";
             }
-            else if (File.Exists(sitemapPath + ".jpg"))
+            if (File.Exists(sitemapPath + ".jpg"))
             {
-                CreateSitemapBitmap(sitemapPath + ".jpg");
+                return sitemapPath + ".jpg";
             }
-            else if (File.Exists(sitemapPath + ".jpeg"))
+            if (File.Exists(sitemapPath + ".jpeg"))
             {
-                CreateSitemapBitmap(sitemapPath + ".jpeg");
+                return sitemapPath + ".jpeg";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".bmp"))
+            if (File.Exists(sitemapPathFromProcessScript + ".bmp"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".bmp");
+                return sitemapPathFromProcessScript + ".bmp";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".png"))
+            if (File.Exists(sitemapPathFromProcessScript + ".png"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".png");
+                return sitemapPathFromProcessScript + ".png";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".jpg"))
+            if (File.Exists(sitemapPathFromProcessScript + ".jpg"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".jpg");
+                return sitemapPathFromProcessScript + ".jpg";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".jpeg"))
+            if (File.Exists(sitemapPathFromProcessScript + ".jpeg"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".jpeg");
+                return sitemapPathFromProcessScript + ".jpeg";
             }
+
+            return null;
+        }
+
+        private void PrintSiteMap(string siteMapPath)
+        {
+            if (string.IsNullOrEmpty(siteMapPath))
+            {
+                return;
+            }
+            CreateSitemapBitmap(siteMapPath);
         }
 
         private void CreateSitemapBitmap(string sitemapPath)

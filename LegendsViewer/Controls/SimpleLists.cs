@@ -75,7 +75,7 @@ namespace LegendsViewer.Controls
 
             if (Animated)
             {
-                filtered = filtered.Where(hf => hf.ActiveInteractions.Any(x => x.Contains("ANIMATE")));
+                filtered = filtered.Where(hf => hf.Animated || hf.ActiveInteractions.Any(x => x.Contains("ANIMATE")));
             }
 
             if (Force)

@@ -546,12 +546,19 @@ namespace LegendsViewer.Legends.WorldObjects
                 hfraceString += "female ";
             }
 
-            if (PreviousRace != "")
+            if (!string.IsNullOrWhiteSpace(PreviousRace))
             {
                 hfraceString += PreviousRace.ToLower() + " turned ";
             }
 
-            hfraceString += Race.ToLower();
+            if (!string.IsNullOrWhiteSpace(AnimatedType))
+            {
+                hfraceString += AnimatedType.ToLower();
+            }
+            else
+            {
+                hfraceString += Race.ToLower();
+            }
 
             if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
             {
@@ -594,7 +601,14 @@ namespace LegendsViewer.Legends.WorldObjects
                 raceString += PreviousRace.ToLower() + " turned ";
             }
 
-            raceString += Race.ToLower();
+            if (!string.IsNullOrWhiteSpace(AnimatedType))
+            {
+                raceString += AnimatedType.ToLower();
+            }
+            else
+            {
+                raceString += Race.ToLower();
+            }
 
             if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
             {
