@@ -82,10 +82,6 @@
     </Reference>
     <Reference Include="System.Xml">
     </Reference>
-    <Reference Include="WFC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\WFC.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AppHelpers.cs" />
@@ -643,9 +639,6 @@
     <None Include="Resources\arrow_back16x16.png" />
     <None Include="Resources\arrow_forward16x16.png" />
     <None Include="Resources\chart16x16.png" />
-    <Content Include="WFC.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="WebContent\styles\github-markdown.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

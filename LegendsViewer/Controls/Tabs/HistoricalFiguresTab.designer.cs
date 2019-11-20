@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using WFC;
 
 namespace LegendsViewer.Controls.Tabs
 {
@@ -44,7 +43,6 @@ namespace LegendsViewer.Controls.Tabs
             this.listHFSearch = new BrightIdeasSoftware.ObjectListView();
             this.olvName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.btnHFListReset = new System.Windows.Forms.Button();
-            this.filterPanel = new WFC.RichPanel();
             this.grpHFFilter = new System.Windows.Forms.GroupBox();
             this.chkAnimated = new System.Windows.Forms.CheckBox();
             this.chkNecromancer = new System.Windows.Forms.CheckBox();
@@ -73,7 +71,6 @@ namespace LegendsViewer.Controls.Tabs
             this.tpHFSearch.SuspendLayout();
             this.listPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listHFSearch)).BeginInit();
-            this.filterPanel.SuspendLayout();
             this.grpHFFilter.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.SuspendLayout();
@@ -95,7 +92,6 @@ namespace LegendsViewer.Controls.Tabs
             // tpHFSearch
             // 
             this.tpHFSearch.Controls.Add(this.listPanel);
-            this.tpHFSearch.Controls.Add(this.filterPanel);
             this.tpHFSearch.Location = new System.Drawing.Point(4, 22);
             this.tpHFSearch.Margin = new System.Windows.Forms.Padding(0);
             this.tpHFSearch.Name = "tpHFSearch";
@@ -106,6 +102,7 @@ namespace LegendsViewer.Controls.Tabs
             // 
             // listPanel
             // 
+            this.listPanel.Controls.Add(this.grpHFFilter);
             this.listPanel.Controls.Add(this.lblShownResults);
             this.listPanel.Controls.Add(this.lnkMaxResults);
             this.listPanel.Controls.Add(this.btnHFSearch);
@@ -115,14 +112,14 @@ namespace LegendsViewer.Controls.Tabs
             this.listPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listPanel.Location = new System.Drawing.Point(0, 0);
             this.listPanel.Name = "listPanel";
-            this.listPanel.Size = new System.Drawing.Size(261, 206);
+            this.listPanel.Size = new System.Drawing.Size(261, 492);
             this.listPanel.TabIndex = 44;
             // 
             // lblShownResults
             // 
             this.lblShownResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShownResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShownResults.Location = new System.Drawing.Point(140, 174);
+            this.lblShownResults.Location = new System.Drawing.Point(142, 220);
             this.lblShownResults.Name = "lblShownResults";
             this.lblShownResults.Size = new System.Drawing.Size(95, 10);
             this.lblShownResults.TabIndex = 44;
@@ -135,7 +132,7 @@ namespace LegendsViewer.Controls.Tabs
             this.lnkMaxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkMaxResults.AutoSize = true;
             this.lnkMaxResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lnkMaxResults.Location = new System.Drawing.Point(241, 174);
+            this.lnkMaxResults.Location = new System.Drawing.Point(240, 220);
             this.lnkMaxResults.Name = "lnkMaxResults";
             this.lnkMaxResults.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lnkMaxResults.Size = new System.Drawing.Size(17, 9);
@@ -180,15 +177,14 @@ namespace LegendsViewer.Controls.Tabs
             this.listHFSearch.FullRowSelect = true;
             this.listHFSearch.GridLines = true;
             this.listHFSearch.HeaderWordWrap = true;
-            this.listHFSearch.SelectedBackColor = System.Drawing.Color.Empty;
-            this.listHFSearch.SelectedForeColor = System.Drawing.Color.Empty;
+            this.listHFSearch.HideSelection = false;
             this.listHFSearch.Location = new System.Drawing.Point(3, 30);
             this.listHFSearch.Name = "listHFSearch";
             this.listHFSearch.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
             this.listHFSearch.ShowCommandMenuOnRightClick = true;
             this.listHFSearch.ShowImagesOnSubItems = true;
             this.listHFSearch.ShowItemCountOnGroups = true;
-            this.listHFSearch.Size = new System.Drawing.Size(255, 141);
+            this.listHFSearch.Size = new System.Drawing.Size(255, 174);
             this.listHFSearch.TabIndex = 42;
             this.listHFSearch.UseAlternatingBackColors = true;
             this.listHFSearch.UseCompatibleStateImageBehavior = false;
@@ -210,39 +206,13 @@ namespace LegendsViewer.Controls.Tabs
             // btnHFListReset
             // 
             this.btnHFListReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnHFListReset.Location = new System.Drawing.Point(3, 180);
+            this.btnHFListReset.Location = new System.Drawing.Point(3, 210);
             this.btnHFListReset.Name = "btnHFListReset";
             this.btnHFListReset.Size = new System.Drawing.Size(50, 20);
             this.btnHFListReset.TabIndex = 41;
             this.btnHFListReset.Text = "Reset";
             this.btnHFListReset.UseVisualStyleBackColor = true;
             this.btnHFListReset.Click += new System.EventHandler(this.ResetHfBaseList);
-            // 
-            // filterPanel
-            // 
-            this.filterPanel.AutoSize = true;
-            this.filterPanel.BackgroundColor1 = System.Drawing.SystemColors.Control;
-            this.filterPanel.BackgroundColor2 = System.Drawing.Color.White;
-            this.filterPanel.BorderColor = System.Drawing.SystemColors.Control;
-            this.filterPanel.Controls.Add(this.grpHFFilter);
-            this.filterPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.filterPanel.FillStyle = WFC.Utils.FillStyle.Solid;
-            this.filterPanel.HeaderBackColor = System.Drawing.Color.Gray;
-            this.filterPanel.HeaderFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.filterPanel.HeaderIcon = null;
-            this.filterPanel.HeaderIconAlign = WFC.Utils.Align.Right;
-            this.filterPanel.HeaderText = "Filter / Sort";
-            this.filterPanel.HeaderTextAlign = WFC.Utils.Align.Left;
-            this.filterPanel.HeaderTextColor = System.Drawing.Color.Black;
-            this.filterPanel.Location = new System.Drawing.Point(0, 206);
-            this.filterPanel.Name = "filterPanel";
-            this.filterPanel.RoundCornerType = WFC.Utils.RoundRectType.Upper;
-            this.filterPanel.SeparatorColor = System.Drawing.Color.Gray;
-            this.filterPanel.SeparatorPos = WFC.RichPanel.SeparatorPosition.Bottom;
-            this.filterPanel.ShadowOffSet = 0;
-            this.filterPanel.Size = new System.Drawing.Size(261, 286);
-            this.filterPanel.TabIndex = 43;
-            this.filterPanel.OnPanelExpand += new System.EventHandler(this.FilterPanel_OnPanelExpand);
             // 
             // grpHFFilter
             // 
@@ -264,10 +234,10 @@ namespace LegendsViewer.Controls.Tabs
             this.grpHFFilter.Controls.Add(this.chkAlive);
             this.grpHFFilter.Controls.Add(this.chkGhost);
             this.grpHFFilter.Controls.Add(this.chkDeity);
-            this.grpHFFilter.Location = new System.Drawing.Point(3, 30);
+            this.grpHFFilter.Location = new System.Drawing.Point(0, 236);
             this.grpHFFilter.MinimumSize = new System.Drawing.Size(249, 209);
             this.grpHFFilter.Name = "grpHFFilter";
-            this.grpHFFilter.Size = new System.Drawing.Size(249, 253);
+            this.grpHFFilter.Size = new System.Drawing.Size(258, 253);
             this.grpHFFilter.TabIndex = 33;
             this.grpHFFilter.TabStop = false;
             this.grpHFFilter.Text = "Filter / Sort";
@@ -339,7 +309,7 @@ namespace LegendsViewer.Controls.Tabs
             this.groupBox5.Controls.Add(this.radSortKills);
             this.groupBox5.Location = new System.Drawing.Point(133, 9);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(110, 168);
+            this.groupBox5.Size = new System.Drawing.Size(119, 168);
             this.groupBox5.TabIndex = 16;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sort By";
@@ -533,11 +503,9 @@ namespace LegendsViewer.Controls.Tabs
             this.Name = "HistoricalFiguresTab";
             this.tcHF.ResumeLayout(false);
             this.tpHFSearch.ResumeLayout(false);
-            this.tpHFSearch.PerformLayout();
             this.listPanel.ResumeLayout(false);
             this.listPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listHFSearch)).EndInit();
-            this.filterPanel.ResumeLayout(false);
             this.grpHFFilter.ResumeLayout(false);
             this.grpHFFilter.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -577,7 +545,6 @@ namespace LegendsViewer.Controls.Tabs
         private TabPage tpHFEvents;
         private ObjectListView listHFSearch;
         private OLVColumn olvName;
-        private RichPanel filterPanel;
         private BaseRenderer baseRenderer1;
         private Panel listPanel;
         private LinkLabel lnkMaxResults;
