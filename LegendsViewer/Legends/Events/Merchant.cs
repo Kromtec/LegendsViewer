@@ -12,6 +12,7 @@ namespace LegendsViewer.Legends.Events
         public Site Site { get; set; }
         public bool Seizure { get; set; }
         public bool LostValue { get; set; }
+        public bool HardShip { get; set; }
 
         public Merchant(List<Property> properties, World world)
             : base(properties, world)
@@ -67,6 +68,10 @@ namespace LegendsViewer.Legends.Events
                         LostValue = true;
                         property.Known = true;
                         break;
+                    case "hardship":
+                        HardShip = true;
+                        property.Known = true;
+                        break;
                 }
             }
             Source.AddEvent(this);
@@ -82,10 +87,18 @@ namespace LegendsViewer.Legends.Events
             eventString += Destination != null ? Destination.ToLink(link, pov) : "UNKNOWN ENTITY";
             eventString += " at ";
             eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            if (HardShip)
+            {
+                eventString += " and suffered great hardships";
+            }
             eventString += ".";
             if (Seizure)
             {
                 eventString += " They reported a seizure of goods.";
+            }
+            if (LostValue)
+            {
+                eventString += " They reported irregularities with their goods.";
             }
             return eventString;
         }
