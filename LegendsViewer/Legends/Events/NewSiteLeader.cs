@@ -59,13 +59,13 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Attacker.ToLink(link, pov) + " defeated ";
+            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " defeated ";
             if (SiteEntity != null && SiteEntity != Defender)
             {
-                eventString += SiteEntity.ToLink(link, pov) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
             }
 
-            eventString += Defender.ToLink(link, pov) + " and placed " + NewLeader.ToLink(link, pov) + " in charge of " + Site.ToLink(link, pov) + ". The new government was called " + NewSiteEntity.ToLink(link, pov);
+            eventString += Defender.ToLink(link, pov, this) + " and placed " + NewLeader.ToLink(link, pov, this) + " in charge of " + Site.ToLink(link, pov, this) + ". The new government was called " + NewSiteEntity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

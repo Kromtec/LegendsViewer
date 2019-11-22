@@ -68,21 +68,21 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Doer.ToLink(link, pov);
+            eventString += Doer.ToLink(link, pov, this);
             if (InteractionString == "")
             {
                 eventString += " bit ";
-                eventString += Target.ToLink(link, pov);
+                eventString += Target.ToLink(link, pov, this);
                 eventString += !string.IsNullOrWhiteSpace(InteractionAction) ? InteractionAction : ", passing on the " + Interaction + " ";
             }
             else
             {
                 eventString += !string.IsNullOrWhiteSpace(InteractionAction) ? InteractionAction : " put " + Interaction + " on ";
-                eventString += Target.ToLink(link, pov);
+                eventString += Target.ToLink(link, pov, this);
                 eventString += !string.IsNullOrWhiteSpace(InteractionString) ? InteractionString : "";
             }
             eventString += " in ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

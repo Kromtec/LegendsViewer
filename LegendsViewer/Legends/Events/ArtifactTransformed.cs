@@ -36,7 +36,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += NewArtifact.ToLink(link, pov);
+            eventString += NewArtifact.ToLink(link, pov, this);
             eventString += ", ";
             if (!string.IsNullOrWhiteSpace(NewArtifact.Material))
             {
@@ -53,7 +53,7 @@ namespace LegendsViewer.Legends.Events
                 eventString += !string.IsNullOrWhiteSpace(NewArtifact.Type) ? NewArtifact.Type.ToLower() : "UNKNOWN TYPE";
             }
             eventString += ", was made from ";
-            eventString += OldArtifact.ToLink(link, pov);
+            eventString += OldArtifact.ToLink(link, pov, this);
             eventString += ", ";
             if (!string.IsNullOrWhiteSpace(OldArtifact.Material))
             {
@@ -71,11 +71,11 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
 
             eventString += " by ";
-            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

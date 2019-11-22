@@ -28,15 +28,15 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact != null ? Artifact.ToLink(link, pov) : "UNKNOWN ARTIFACT";
+            eventString += Artifact != null ? Artifact.ToLink(link, pov, this) : "UNKNOWN ARTIFACT";
             eventString += " was lost";
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Artifact != null && Artifact.Events.Last() == this && Artifact.Region != null)
             {
-                eventString += " in " + Artifact.Region.ToLink(link, pov);
+                eventString += " in " + Artifact.Region.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

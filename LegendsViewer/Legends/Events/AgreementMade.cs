@@ -66,11 +66,11 @@ namespace LegendsViewer.Legends.Events
                     eventString += "UNKNOWN AGREEMENT";
                     break;
             }
-            eventString += Source != null ? Source.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Source != null ? Source.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " was accepted by ";
-            eventString += Destination != null ? Destination.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Destination != null ? Destination.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

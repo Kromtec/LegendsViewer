@@ -91,7 +91,7 @@ namespace LegendsViewer.Legends.Events
                 eventString += "the bodies of ";
                 for (int i = 0; i < Bodies.Count; i++)
                 {
-                    eventString += Bodies[i].ToLink(link, pov) ?? "UNKNOWN HISTORICAL FIGURE";
+                    eventString += Bodies[i].ToLink(link, pov, this) ?? "UNKNOWN HISTORICAL FIGURE";
                     if (i != Bodies.Count - 1)
                     {
                         if (i == Bodies.Count - 2)
@@ -109,7 +109,7 @@ namespace LegendsViewer.Legends.Events
             else
             {
                 eventString += "the body of ";
-                eventString += Bodies.FirstOrDefault()?.ToLink(link, pov) ?? "UNKNOWN HISTORICAL FIGURE";
+                eventString += Bodies.FirstOrDefault()?.ToLink(link, pov, this) ?? "UNKNOWN HISTORICAL FIGURE";
                 eventString += " was ";
             }
             switch (AbuseType)
@@ -149,7 +149,7 @@ namespace LegendsViewer.Legends.Events
 
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
                 if (Abuser != null)
                 {
                     eventString += " of ";
@@ -157,22 +157,22 @@ namespace LegendsViewer.Legends.Events
             }
             if (Abuser != null)
             {
-                eventString += Abuser.ToLink(link, pov);
+                eventString += Abuser.ToLink(link, pov, this);
             }
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
                 eventString += " in ";
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
                 eventString += " in ";
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

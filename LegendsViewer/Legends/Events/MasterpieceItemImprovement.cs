@@ -61,7 +61,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Improver != null ? Improver.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+            eventString += Improver != null ? Improver.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
             switch (ImprovementType)
             {
                 case "art image":
@@ -95,9 +95,9 @@ namespace LegendsViewer.Legends.Events
                 eventString += !string.IsNullOrWhiteSpace(ItemType) ? ItemType : "UNKNOWN ITEM";
             }
             eventString += " for ";
-            eventString += ImproverEntity != null ? ImproverEntity.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += ImproverEntity != null ? ImproverEntity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

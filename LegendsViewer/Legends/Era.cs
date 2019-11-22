@@ -45,7 +45,7 @@ namespace LegendsViewer.Legends
                                                                                                     || war.StartYear <= StartYear && war.EndYear == -1).ToList();
         }
         
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (Name != "")
             {

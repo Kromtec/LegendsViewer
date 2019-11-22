@@ -39,7 +39,7 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             if (OldJob != "standard" && NewJob != "standard")
             {
                 eventString += " gave up being " + Formatting.AddArticle(OldJob) + " to become " + Formatting.AddArticle(NewJob);
@@ -58,7 +58,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

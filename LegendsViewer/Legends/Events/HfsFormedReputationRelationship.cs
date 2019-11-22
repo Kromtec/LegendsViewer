@@ -70,13 +70,13 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += HistoricalFigure1.ToLink(link, pov);
+            eventString += HistoricalFigure1.ToLink(link, pov, this);
             if (IdentityId1 > 0)
             {
                 eventString += " as '" + IdentityId1 + "'";
             }
             eventString += ", formed a false friendship with ";
-            eventString += HistoricalFigure2.ToLink(link, pov);
+            eventString += HistoricalFigure2.ToLink(link, pov, this);
             if (IdentityId2 > 0)
             {
                 eventString += " as '" + IdentityId2 + "'";
@@ -92,15 +92,15 @@ namespace LegendsViewer.Legends.Events
             eventString += " in ";
             if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             else
             {

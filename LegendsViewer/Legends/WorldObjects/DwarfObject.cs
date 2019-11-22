@@ -1,4 +1,6 @@
-﻿namespace LegendsViewer.Legends.WorldObjects
+﻿using LegendsViewer.Legends.Events;
+
+namespace LegendsViewer.Legends.WorldObjects
 {
     public abstract class DwarfObject
     {
@@ -7,7 +9,7 @@
             return "";
         }
 
-        public virtual string ToLink(bool link = true, DwarfObject pov = null)
+        public virtual string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return "";
         }

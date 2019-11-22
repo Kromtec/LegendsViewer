@@ -136,7 +136,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public override string ToString() { return Name; }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (link)
             {

@@ -70,7 +70,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             else
             {
@@ -99,7 +99,7 @@ namespace LegendsViewer.Legends.Events
                     break;
             }
 
-            eventString += Entity.ToLink(link, pov);
+            eventString += Entity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

@@ -64,7 +64,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             if (Claim == Claim.Symbol ||
                 Claim == Claim.Heirloom && HistoricalFigure != null)
             {
@@ -99,12 +99,12 @@ namespace LegendsViewer.Legends.Events
             if (Entity != null)
             {
                 eventString += " by ";
-                eventString += Entity.ToLink(link, pov);
+                eventString += Entity.ToLink(link, pov, this);
             }
             if (HistoricalFigure != null)
             {
                 eventString += " by ";
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

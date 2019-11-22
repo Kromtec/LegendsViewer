@@ -36,22 +36,22 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
             eventString += " reached the summit";
             if (Region != null)
             {
                 eventString += ", which rises above ";
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
                 eventString += ", in the depths of ";
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             eventString += ".";
             return eventString;

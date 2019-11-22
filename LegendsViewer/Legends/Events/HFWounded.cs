@@ -53,7 +53,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Woundee != null)
             {
-                eventString += Woundee.ToLink(link, pov);
+                eventString += Woundee.ToLink(link, pov, this);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace LegendsViewer.Legends.Events
             eventString += " was wounded by ";
             if (Wounder != null)
             {
-                eventString += Wounder.ToLink(link, pov);
+                eventString += Wounder.ToLink(link, pov, this);
             }
             else
             {
@@ -72,15 +72,15 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += " in " + UndergroundRegion.ToLink(link, pov);
+                eventString += " in " + UndergroundRegion.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

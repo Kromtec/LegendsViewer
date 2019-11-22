@@ -50,24 +50,24 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Builder != null)
             {
-                eventString += Builder != null ? Builder.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += Builder != null ? Builder.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += ", thrust a spire of slade up from the underworld, naming it ";
-                eventString += Structure != null ? Structure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+                eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
                 eventString += ", and established a gateway between worlds in ";
-                eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+                eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             }
             else
             {
                 if (SiteEntity != null)
                 {
-                    eventString += SiteEntity.ToLink(link, pov);
+                    eventString += SiteEntity.ToLink(link, pov, this);
                     eventString += " of ";
                 }
-                eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+                eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
                 eventString += " constructed ";
-                eventString += Structure != null ? Structure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+                eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
                 eventString += " in ";
-                eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+                eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

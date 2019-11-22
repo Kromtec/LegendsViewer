@@ -54,11 +54,11 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             eventString += " was offered to ";
             if (HistoricalFigureReceiver != null)
             {
-                eventString += HistoricalFigureReceiver.ToLink(link, pov);
+                eventString += HistoricalFigureReceiver.ToLink(link, pov, this);
                 if (EntityReceiver != null)
                 {
                     eventString += " of ";
@@ -66,13 +66,13 @@ namespace LegendsViewer.Legends.Events
             }
             if (EntityReceiver != null)
             {
-                eventString += EntityReceiver.ToLink(link, pov);
+                eventString += EntityReceiver.ToLink(link, pov, this);
             }
 
             eventString += " by ";
             if (HistoricalFigureGiver != null)
             {
-                eventString += HistoricalFigureGiver.ToLink(link, pov);
+                eventString += HistoricalFigureGiver.ToLink(link, pov, this);
                 if (EntityGiver != null)
                 {
                     eventString += " of ";
@@ -80,7 +80,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (EntityGiver != null)
             {
-                eventString += EntityGiver.ToLink(link, pov);
+                eventString += EntityGiver.ToLink(link, pov, this);
             }
             if (Reason != Reason.Unknown)
             {

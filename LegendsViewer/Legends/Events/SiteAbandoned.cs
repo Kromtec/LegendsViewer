@@ -45,10 +45,10 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (SiteEntity != null && SiteEntity != Civ)
             {
-                eventString += SiteEntity.ToLink(link, pov) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
             }
 
-            eventString += Civ.ToLink(link, pov) + " abandoned the settlement at " + Site.ToLink(link, pov);
+            eventString += Civ.ToLink(link, pov, this) + " abandoned the settlement at " + Site.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

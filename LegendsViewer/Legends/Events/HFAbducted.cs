@@ -39,14 +39,14 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Snatcher != null)
             {
-                eventString += Snatcher.ToLink(link, pov);
+                eventString += Snatcher.ToLink(link, pov, this);
             }
             else
             {
                 eventString += "UNKNOWN HISTORICAL FIGURE";
             }
 
-            eventString += " abducted " + Target.ToLink(link, pov) + " from " + Site.ToLink(link, pov);
+            eventString += " abducted " + Target.ToLink(link, pov, this) + " from " + Site.ToLink(link, pov, this);
             if (!(ParentCollection is Abduction))
             {
                 eventString += PrintParentCollection(link, pov);

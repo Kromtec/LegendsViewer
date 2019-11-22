@@ -45,11 +45,11 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += SiteEntity != null ? SiteEntity.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += SiteEntity != null ? SiteEntity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " of ";
-            eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+            eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
             eventString += " at the settlement of ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += " regained their senses after an initial period of questionable judgment.";
             return eventString;
         }

@@ -74,7 +74,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += AttackerHistoricalFigure?.ToLink(link, pov) ?? "an unknown creature";
+            eventString += AttackerHistoricalFigure?.ToLink(link, pov, this) ?? "an unknown creature";
             if (AttackerLeader != null)
             {
                 eventString += " as part of a squad";
@@ -87,13 +87,13 @@ namespace LegendsViewer.Legends.Events
                     eventString += " ably";
                 }
                 eventString += " led by ";
-                eventString += AttackerLeader.ToLink(link, pov);
+                eventString += AttackerLeader.ToLink(link, pov, this);
                 eventString += ",";
             }
             eventString += " clashed with ";
             if (DefenderHistoricalFigure != null)
             {
-                eventString += DefenderHistoricalFigure.ToLink(link, pov);
+                eventString += DefenderHistoricalFigure.ToLink(link, pov, this);
                 eventString += " as part of squad";
             }
             else
@@ -110,7 +110,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             if (DefenderLeader != null)
             {
@@ -123,7 +123,7 @@ namespace LegendsViewer.Legends.Events
                     eventString += " ably";
                 }
                 eventString += " led by ";
-                eventString += DefenderLeader.ToLink(link, pov);
+                eventString += DefenderLeader.ToLink(link, pov, this);
             }
             if (DefenderNumber == DefenderSlain)
             {

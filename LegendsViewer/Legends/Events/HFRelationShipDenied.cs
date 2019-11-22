@@ -63,7 +63,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Seeker.ToLink(link, pov);
+            eventString += Seeker.ToLink(link, pov, this);
             eventString += " was denied ";
             switch (Relationship)
             {
@@ -73,21 +73,21 @@ namespace LegendsViewer.Legends.Events
                 default:
                     break;
             }
-            eventString += Target.ToLink(link, pov);
+            eventString += Target.ToLink(link, pov, this);
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             if (ReasonHf != null)
             {
                 switch (Reason)
                 {
                     case "jealousy":
-                        eventString += " due to jealousy of " + ReasonHf.ToLink(link, pov);
+                        eventString += " due to jealousy of " + ReasonHf.ToLink(link, pov, this);
                         break;
                     case "prefers working alone":
-                        eventString += " as " + ReasonHf.ToLink(link, pov) + " prefers to work alone";
+                        eventString += " as " + ReasonHf.ToLink(link, pov, this) + " prefers to work alone";
                         break;
                     default:
                         break;

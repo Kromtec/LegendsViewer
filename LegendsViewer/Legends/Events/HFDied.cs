@@ -160,7 +160,7 @@ namespace LegendsViewer.Legends.Events
         private string GetDeathString(bool link = true, DwarfObject pov = null)
         {
             string eventString = "";
-            eventString += HistoricalFigure.ToLink(link, pov) + " ";
+            eventString += HistoricalFigure.ToLink(link, pov, this) + " ";
             string deathString = "";
 
             if (Slayer != null || SlayerRace != "UNKNOWN" && SlayerRace != "-1")
@@ -172,7 +172,7 @@ namespace LegendsViewer.Legends.Events
                 }
                 else
                 {
-                    slayerString = Slayer.ToLink(link, pov);
+                    slayerString = Slayer.ToLink(link, pov, this);
                 }
 
                 switch (Cause)
@@ -366,7 +366,7 @@ namespace LegendsViewer.Legends.Events
             {
                 if (Artifact != null)
                 {
-                    eventString += " with " + Artifact.ToLink(link, pov);
+                    eventString += " with " + Artifact.ToLink(link, pov, this);
                 }
                 else if (!string.IsNullOrWhiteSpace(ItemType) || !string.IsNullOrWhiteSpace(ItemSubType))
                 {
@@ -379,7 +379,7 @@ namespace LegendsViewer.Legends.Events
             {
                 if (ShooterArtifact != null)
                 {
-                    eventString += " (shot) with " + ShooterArtifact.ToLink(link, pov);
+                    eventString += " (shot) with " + ShooterArtifact.ToLink(link, pov, this);
                 }
                 else if (!string.IsNullOrWhiteSpace(ShooterItemType) || !string.IsNullOrWhiteSpace(ShooterItemSubType))
                 {
@@ -399,15 +399,15 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += " in " + UndergroundRegion.ToLink(link, pov);
+                eventString += " in " + UndergroundRegion.ToLink(link, pov, this);
             }
 
             return eventString;

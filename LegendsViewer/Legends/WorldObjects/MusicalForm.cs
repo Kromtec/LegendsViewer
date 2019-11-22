@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
+using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 
 namespace LegendsViewer.Legends.WorldObjects
@@ -15,7 +16,7 @@ namespace LegendsViewer.Legends.WorldObjects
             FormType = FormType.Musical;
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (link)
             {

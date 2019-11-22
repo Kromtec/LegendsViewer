@@ -61,7 +61,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov) + " ";
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this) + " ";
             string stateString = "";
             switch (BodyState)
             {
@@ -71,16 +71,16 @@ namespace LegendsViewer.Legends.Events
             eventString += stateString;
             if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
 
             if (Site != null)
             {
-                eventString += " at " + Site.ToLink(link, pov);
+                eventString += " at " + Site.ToLink(link, pov, this);
             }
 
             eventString += " within ";
-            eventString += Structure != null ? Structure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+            eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

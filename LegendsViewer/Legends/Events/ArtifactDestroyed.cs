@@ -32,15 +32,15 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             eventString += " was destroyed";
             if (Destroyer != null)
             {
                 eventString += " by ";
-                eventString += Destroyer.ToLink(link, pov);
+                eventString += Destroyer.ToLink(link, pov, this);
             }
             eventString += " in ";
-            eventString += Site.ToLink(link, pov);
+            eventString += Site.ToLink(link, pov, this);
             eventString += ".";
             return eventString;
         }

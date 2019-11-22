@@ -45,13 +45,13 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += SiteEntity?.ToLink(link, pov);
+            eventString += SiteEntity?.ToLink(link, pov, this);
             eventString += " of ";
-            eventString += Defender?.ToLink(link, pov);
+            eventString += Defender?.ToLink(link, pov, this);
             eventString += " surrendered ";
-            eventString += Site?.ToLink(link, pov);
+            eventString += Site?.ToLink(link, pov, this);
             eventString += " to ";
-            eventString += Attacker?.ToLink(link, pov);
+            eventString += Attacker?.ToLink(link, pov, this);
             eventString += ".";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

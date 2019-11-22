@@ -36,9 +36,9 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Entity.ToLink(link, pov) + " razed ";
-            eventString += Structure != null ? Structure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
-            eventString += " in " + Site.ToLink(link, pov);
+            string eventString = GetYearTime() + Entity.ToLink(link, pov, this) + " razed ";
+            eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
+            eventString += " in " + Site.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

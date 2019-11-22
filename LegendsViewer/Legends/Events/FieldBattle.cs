@@ -42,16 +42,16 @@ namespace LegendsViewer.Legends.Events
             eventString += Attacker.ToLink(true, pov);
             eventString += " attacked ";
             eventString += Defender.ToLink(true, pov);
-            eventString += " in " + Region.ToLink(link, pov) + ". ";
+            eventString += " in " + Region.ToLink(link, pov, this) + ". ";
             if (AttackerGeneral != null)
             {
                 eventString += "Leader of the attack was ";
-                eventString += AttackerGeneral.ToLink(link, pov);
+                eventString += AttackerGeneral.ToLink(link, pov, this);
             }
             if (DefenderGeneral != null)
             {
                 eventString += ", and the defenders were led by ";
-                eventString += DefenderGeneral.ToLink(link, pov);
+                eventString += DefenderGeneral.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

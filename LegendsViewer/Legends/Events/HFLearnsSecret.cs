@@ -42,19 +42,19 @@ namespace LegendsViewer.Legends.Events
 
             if (Teacher != null)
             {
-                eventString += Teacher.ToLink(link, pov);
+                eventString += Teacher.ToLink(link, pov, this);
                 eventString += " taught ";
-                eventString += Student != null ? Student.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += Student != null ? Student.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += " ";
                 eventString += !string.IsNullOrWhiteSpace(SecretText) ? SecretText : "(" + Interaction + ")";
             }
             else
             {
-                eventString += Student != null ? Student.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += Student != null ? Student.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += " learned ";
                 eventString += !string.IsNullOrWhiteSpace(SecretText) ? SecretText : "(" + Interaction + ")";
                 eventString += " from ";
-                eventString += Artifact != null ? Artifact.ToLink(link, pov) : "UNKNOWN ARTIFACT";
+                eventString += Artifact != null ? Artifact.ToLink(link, pov, this) : "UNKNOWN ARTIFACT";
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

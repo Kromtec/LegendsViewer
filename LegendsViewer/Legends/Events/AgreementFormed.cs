@@ -44,7 +44,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Concluder != null)
             {
-                eventString += Concluder.ToLink(link, pov);
+                eventString += Concluder.ToLink(link, pov, this);
                 eventString += " formed an agreement";
             }
             else

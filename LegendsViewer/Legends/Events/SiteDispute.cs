@@ -96,13 +96,13 @@ namespace LegendsViewer.Legends.Events
             }
 
             string eventString = GetYearTime();
-            eventString += Entity1 != null ? Entity1.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Entity1 != null ? Entity1.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " of ";
-            eventString += Site1 != null ? Site1.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site1 != null ? Site1.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += " and ";
-            eventString += Entity2 != null ? Entity2.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Entity2 != null ? Entity2.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " of ";
-            eventString += Site2 != null ? Site2.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site2 != null ? Site2.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += " became embroiled in a dispute over " + dispute;
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

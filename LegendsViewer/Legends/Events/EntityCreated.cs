@@ -40,16 +40,16 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Entity.ToLink(link, pov) + " formed";
+            eventString += Entity.ToLink(link, pov, this) + " formed";
             if (Structure != null)
             {
                 eventString += " in ";
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
             }
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

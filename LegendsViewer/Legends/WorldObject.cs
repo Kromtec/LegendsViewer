@@ -33,7 +33,7 @@ namespace LegendsViewer.Legends
         }
         
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return "";
         }

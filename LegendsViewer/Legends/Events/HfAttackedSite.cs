@@ -41,12 +41,12 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Attacker.ToLink(link, pov) + " attacked " + SiteCiv.ToLink(link, pov);
+            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " attacked " + SiteCiv.ToLink(link, pov, this);
             if (DefenderCiv != null && DefenderCiv != SiteCiv)
             {
-                eventString += " of " + DefenderCiv.ToLink(link, pov);
+                eventString += " of " + DefenderCiv.ToLink(link, pov, this);
             }
-            eventString += " at " + Site.ToLink(link, pov);
+            eventString += " at " + Site.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

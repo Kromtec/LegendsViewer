@@ -63,28 +63,28 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             eventString += " was recovered by ";
-            eventString += HistoricalFigure.ToLink(link, pov);
+            eventString += HistoricalFigure.ToLink(link, pov, this);
             if (Structure != null)
             {
                 eventString += " from ";
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
             }
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
                 eventString += " in ";
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
                 eventString += " in ";
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

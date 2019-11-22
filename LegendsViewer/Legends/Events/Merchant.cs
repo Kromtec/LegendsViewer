@@ -82,11 +82,11 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += "merchants from ";
-            eventString += Source != null ? Source.ToLink(link, pov) : "UNKNOWN CIV";
+            eventString += Source != null ? Source.ToLink(link, pov, this) : "UNKNOWN CIV";
             eventString += " visited ";
-            eventString += Destination != null ? Destination.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Destination != null ? Destination.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             if (HardShip)
             {
                 eventString += " and suffered great hardships";

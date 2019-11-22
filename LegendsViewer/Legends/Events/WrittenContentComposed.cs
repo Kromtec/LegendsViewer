@@ -78,17 +78,17 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += WrittenContent != null ? WrittenContent.ToLink(link, pov) : "UNKNOWN WRITTEN CONTENT";
+            eventString += WrittenContent != null ? WrittenContent.ToLink(link, pov, this) : "UNKNOWN WRITTEN CONTENT";
             eventString += " was authored by ";
-            eventString += HistoricalFigure.ToLink(link, pov);
+            eventString += HistoricalFigure.ToLink(link, pov, this);
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             if (GlorifiedHf != null)
             {
-                eventString += " in order to glorify " + GlorifiedHf.ToLink(link, pov);
+                eventString += " in order to glorify " + GlorifiedHf.ToLink(link, pov, this);
             }
             if (!string.IsNullOrWhiteSpace(Circumstance))
             {
@@ -97,10 +97,10 @@ namespace LegendsViewer.Legends.Events
                     switch (Circumstance)
                     {
                         case "pray to hf":
-                            eventString += " after praying to " + CircumstanceHf.ToLink(link, pov);
+                            eventString += " after praying to " + CircumstanceHf.ToLink(link, pov, this);
                             break;
                         case "dream about hf":
-                            eventString += " after dreaming of " + CircumstanceHf.ToLink(link, pov);
+                            eventString += " after dreaming of " + CircumstanceHf.ToLink(link, pov, this);
                             break;
                     }
                 }

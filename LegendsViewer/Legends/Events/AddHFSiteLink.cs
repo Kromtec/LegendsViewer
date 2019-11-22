@@ -60,7 +60,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
             switch (LinkType)
             {
                 case SiteLinkType.HomeSiteAbstractBuilding:
@@ -80,14 +80,14 @@ namespace LegendsViewer.Legends.Events
                     eventString += " UNKNOWN LINKTYPE (" + LinkType + ") ";
                     break;
             }
-            eventString += Structure != null ? Structure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+            eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
             if (Civ != null)
             {
-                eventString += " of " + Civ.ToLink(link, pov);
+                eventString += " of " + Civ.ToLink(link, pov, this);
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

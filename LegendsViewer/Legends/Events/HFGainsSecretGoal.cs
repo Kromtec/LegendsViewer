@@ -39,7 +39,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             string goalString = "";
             switch (Goal)
             {

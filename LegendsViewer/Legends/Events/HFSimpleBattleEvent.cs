@@ -53,53 +53,53 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure1.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure1.ToLink(link, pov, this);
             if (SubType == HfSimpleBattleType.Hf2LostAfterGivingWounds)
             {
-                eventString = GetYearTime() + HistoricalFigure2.ToLink(link, pov) + " was forced to retreat from "
-                                                                                      + HistoricalFigure1.ToLink(link, pov) + " despite the latter's wounds";
+                eventString = GetYearTime() + HistoricalFigure2.ToLink(link, pov, this) + " was forced to retreat from "
+                                                                                      + HistoricalFigure1.ToLink(link, pov, this) + " despite the latter's wounds";
             }
             else if (SubType == HfSimpleBattleType.Hf2LostAfterMutualWounds)
             {
-                eventString += " eventually prevailed and " + HistoricalFigure2.ToLink(link, pov)
+                eventString += " eventually prevailed and " + HistoricalFigure2.ToLink(link, pov, this)
                                                                                             + " was forced to make a hasty escape";
             }
             else if (SubType == HfSimpleBattleType.Hf2LostAfterReceivingWounds)
             {
-                eventString = GetYearTime() + HistoricalFigure2.ToLink(link, pov) + " managed to escape from "
-                                                                                              + HistoricalFigure1.ToLink(link, pov) + "'s onslaught";
+                eventString = GetYearTime() + HistoricalFigure2.ToLink(link, pov, this) + " managed to escape from "
+                                                                                              + HistoricalFigure1.ToLink(link, pov, this) + "'s onslaught";
             }
             else if (SubType == HfSimpleBattleType.Scuffle)
             {
-                eventString += " fought with " + HistoricalFigure2.ToLink(link, pov) + ". While defeated, the latter escaped unscathed";
+                eventString += " fought with " + HistoricalFigure2.ToLink(link, pov, this) + ". While defeated, the latter escaped unscathed";
             }
             else if (SubType == HfSimpleBattleType.Attacked)
             {
-                eventString += " attacked " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " attacked " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.Confronted)
             {
-                eventString += " confronted " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " confronted " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.HappenedUpon)
             {
-                eventString += " happened upon " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " happened upon " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.Ambushed)
             {
-                eventString += " ambushed " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " ambushed " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.Cornered)
             {
-                eventString += " cornered " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " cornered " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.Surprised)
             {
-                eventString += " suprised " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " suprised " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else
             {
-                eventString += " fought (" + UnknownSubType + ") " + HistoricalFigure2.ToLink(link, pov);
+                eventString += " fought (" + UnknownSubType + ") " + HistoricalFigure2.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

@@ -75,34 +75,34 @@ namespace LegendsViewer.Legends.Events
             switch (FormType)
             {
                 case FormType.Musical:
-                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov) : "UNKNOWN MUSICAL FORM ";
+                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov, this) : "UNKNOWN MUSICAL FORM ";
                     break;
                 case FormType.Poetic:
-                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov) : "UNKNOWN POETIC FORM ";
+                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov, this) : "UNKNOWN POETIC FORM ";
                     break;
                 case FormType.Dance:
-                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov) : "UNKNOWN DANCE FORM ";
+                    eventString += ArtForm != null ? ArtForm.ToLink(link, pov, this) : "UNKNOWN DANCE FORM ";
                     break;
                 default:
                     eventString += "UNKNOWN FORM ";
                     break;
             }
             eventString += " was created by ";
-            eventString += HistoricalFigure.ToLink(link, pov);
+            eventString += HistoricalFigure.ToLink(link, pov, this);
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             if (GlorifiedHf != null)
             {
-                eventString += " in order to glorify " + GlorifiedHf.ToLink(link, pov);
+                eventString += " in order to glorify " + GlorifiedHf.ToLink(link, pov, this);
             }
             if (!string.IsNullOrWhiteSpace(Circumstance))
             {
                 if (PrayToHf != null)
                 {
-                    eventString += " after praying to " + PrayToHf.ToLink(link, pov);
+                    eventString += " after praying to " + PrayToHf.ToLink(link, pov, this);
                 }
                 else
                 {

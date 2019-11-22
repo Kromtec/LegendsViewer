@@ -95,7 +95,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Artifact.ToLink(link, pov);
+            string eventString = GetYearTime() + Artifact.ToLink(link, pov, this);
             switch (Reason)
             {
                 case Reason.ArtifactIsHeirloomOfFamilyHfid:
@@ -111,37 +111,37 @@ namespace LegendsViewer.Legends.Events
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
                 eventString += " in ";
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
                 eventString += " in ";
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
 
-            eventString += " by " + HistoricalFigure.ToLink(link, pov);
+            eventString += " by " + HistoricalFigure.ToLink(link, pov, this);
             switch (Reason)
             {
                 case Reason.ArtifactIsHeirloomOfFamilyHfid:
                     eventString += " as an heirloom of the ";
-                    eventString += FamilyFigure?.ToLink(link, pov);
+                    eventString += FamilyFigure?.ToLink(link, pov, this);
                     eventString += " family";
                     break;
                 case Reason.ArtifactIsSymbolOfEntityPosition:
                     eventString += " as a symbol of authority within ";
-                    eventString += SymbolEntity?.ToLink(link, pov);
+                    eventString += SymbolEntity?.ToLink(link, pov, this);
                     break;
             }
             switch (Circumstance)
             {
                 case Circumstance.HfIsDead:
                     eventString += " after the death of ";
-                    eventString += FormerHolder?.ToLink(link, pov);
+                    eventString += FormerHolder?.ToLink(link, pov, this);
                     break;
             }
             eventString += PrintParentCollection(link, pov);

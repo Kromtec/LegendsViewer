@@ -139,7 +139,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             if (State == HfState.Visiting)
             {
                 eventString += " visited ";
@@ -216,15 +216,15 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             else
             {

@@ -86,7 +86,7 @@ namespace LegendsViewer.Legends.EventCollections
             Coordinates = new Location(0, 0);
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             string name = "";
             name = "The " + GetOrdinal(Ordinal) + "rampage of ";

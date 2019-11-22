@@ -26,7 +26,7 @@ namespace LegendsViewer.Legends.EventCollections
                 }
             }
         }
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return "a journey";
         }

@@ -45,15 +45,15 @@ namespace LegendsViewer.Legends.Events
                     HistoricalFigure competitor = Competitors.ElementAt(i);
                     if (i == 0)
                     {
-                        eventString += competitor.ToLink(link, pov);
+                        eventString += competitor.ToLink(link, pov, this);
                     }
                     else if (i == Competitors.Count - 1)
                     {
-                        eventString += " and " + competitor.ToLink(link, pov);
+                        eventString += " and " + competitor.ToLink(link, pov, this);
                     }
                     else
                     {
-                        eventString += ", " + competitor.ToLink(link, pov);
+                        eventString += ", " + competitor.ToLink(link, pov, this);
                     }
                 }
                 eventString += ". ";
@@ -61,7 +61,7 @@ namespace LegendsViewer.Legends.Events
             if (Winner != null)
             {
                 eventString += "The winner was ";
-                eventString += Winner.ToLink(link, pov);
+                eventString += Winner.ToLink(link, pov, this);
                 eventString += ".";
             }
             return eventString;

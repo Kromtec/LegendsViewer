@@ -41,9 +41,9 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Changer?.ToLink(link, pov) ?? "An unknown creature";
+            eventString += Changer?.ToLink(link, pov, this) ?? "An unknown creature";
             eventString += " changed ";
-            eventString += Changee?.ToLink(link, pov) ?? "an unknown creature";
+            eventString += Changee?.ToLink(link, pov, this) ?? "an unknown creature";
             eventString += " from ";
             eventString += Formatting.AddArticle(OldRace).ToLower();
             eventString += " into ";

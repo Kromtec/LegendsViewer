@@ -73,7 +73,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             else
             {
@@ -115,7 +115,7 @@ namespace LegendsViewer.Legends.Events
                     break;
             }
 
-            eventString += Entity.ToLink(link, pov);
+            eventString += Entity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;
@@ -127,7 +127,7 @@ namespace LegendsViewer.Legends.Events
             eventString += "the ascension of ";
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             else
             {
@@ -153,7 +153,7 @@ namespace LegendsViewer.Legends.Events
                 eventString += "UNKNOWN POSITION";
             }
             eventString += " of ";
-            eventString += Entity?.ToLink(link, pov) ?? "UNKNOWN ENTITY";
+            eventString += Entity?.ToLink(link, pov, this) ?? "UNKNOWN ENTITY";
             eventString += " in ";
             eventString += Year;
             return eventString;

@@ -72,11 +72,11 @@ namespace LegendsViewer.Legends.Events
 
             if (pov == HistoricalFigureTarget)
             {
-                eventString += HistoricalFigureTarget?.ToLink(link, pov) ?? "an unknown creature";
+                eventString += HistoricalFigureTarget?.ToLink(link, pov, this) ?? "an unknown creature";
             }
             else
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
 
             switch (LinkType)
@@ -163,11 +163,11 @@ namespace LegendsViewer.Legends.Events
 
             if (pov == HistoricalFigureTarget)
             {
-                eventString += HistoricalFigure?.ToLink(link, pov) ?? "an unknown creature";
+                eventString += HistoricalFigure?.ToLink(link, pov, this) ?? "an unknown creature";
             }
             else
             {
-                eventString += HistoricalFigureTarget.ToLink(link, pov);
+                eventString += HistoricalFigureTarget.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

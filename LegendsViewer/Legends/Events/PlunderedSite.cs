@@ -79,7 +79,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Attacker.ToLink(link, pov);
+            eventString += Attacker.ToLink(link, pov, this);
             if (TookLiveStock || TookItems)
             {
                 eventString += " stole ";
@@ -98,7 +98,7 @@ namespace LegendsViewer.Legends.Events
                 }
                 if (SiteEntity != null)
                 {
-                    eventString += SiteEntity.ToLink(link, pov);
+                    eventString += SiteEntity.ToLink(link, pov, this);
                     if (Defender != SiteEntity && Defender != null)
                     {
                         eventString += " of ";
@@ -106,25 +106,25 @@ namespace LegendsViewer.Legends.Events
                 }
                 if (Defender != null)
                 {
-                    eventString += Defender.ToLink(link, pov);
+                    eventString += Defender.ToLink(link, pov, this);
                 }
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else
             {
                 eventString += " defeated ";
                 if (SiteEntity != null && Defender != SiteEntity)
                 {
-                    eventString += SiteEntity.ToLink(link, pov);
+                    eventString += SiteEntity.ToLink(link, pov, this);
                 }
                 if (Defender != null)
                 {
                     eventString += " of ";
-                    eventString += Defender.ToLink(link, pov);
+                    eventString += Defender.ToLink(link, pov, this);
                 }
                 eventString += " and pillaged ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

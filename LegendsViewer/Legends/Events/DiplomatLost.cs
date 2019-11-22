@@ -32,11 +32,11 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Entity != null ? Entity.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Entity != null ? Entity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " lost a diplomat at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += ". They suspected the involvement of ";
-            eventString += InvolvedEntity != null ? InvolvedEntity.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += InvolvedEntity != null ? InvolvedEntity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

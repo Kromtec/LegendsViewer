@@ -36,7 +36,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += HistoricalFigure.ToLink(link, pov);
+            eventString += HistoricalFigure.ToLink(link, pov, this);
             if (First)
             {
                 eventString += " was the first to discover ";

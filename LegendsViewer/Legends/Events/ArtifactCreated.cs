@@ -58,7 +58,7 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Artifact.ToLink(link, pov);
+            string eventString = GetYearTime() + Artifact.ToLink(link, pov, this);
             if (ReceivedName)
             {
                 eventString += " received its name";
@@ -70,7 +70,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
 
             if (ReceivedName)
@@ -82,11 +82,11 @@ namespace LegendsViewer.Legends.Events
                 eventString += " by ";
             }
 
-            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
             if (SanctifyFigure != null)
             {
                 eventString += " in order to sanctify ";
-                eventString += SanctifyFigure.ToLink(link, pov);
+                eventString += SanctifyFigure.ToLink(link, pov, this);
                 eventString += " by preserving a part of the body";
             }
             eventString += PrintParentCollection(link, pov);

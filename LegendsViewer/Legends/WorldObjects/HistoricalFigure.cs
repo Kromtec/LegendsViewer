@@ -352,7 +352,7 @@ namespace LegendsViewer.Legends.WorldObjects
             UsedIdentityIds = new List<int>();
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (this == Unknown)
             {
