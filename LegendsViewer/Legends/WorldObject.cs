@@ -21,7 +21,6 @@ namespace LegendsViewer.Legends
                 switch (property.Name)
                 {
                     case "id": Id = Convert.ToInt32(property.Value); break;
-                    default: break;
                 }
             }
         }
@@ -37,7 +36,7 @@ namespace LegendsViewer.Legends
         {
             return "";
         }
-        public abstract List<WorldEvent> FilteredEvents { get; }
 
+        public abstract List<WorldEvent> FilteredEvents { get; }
     }
 }

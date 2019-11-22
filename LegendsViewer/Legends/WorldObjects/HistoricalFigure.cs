@@ -78,6 +78,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public int CurrentIdentityId { get; set; }
         public List<Artifact> HoldingArtifacts { get; set; }
         public List<State> States { get; set; }
+        public List<CreatureType> CreatureTypes { get; set; }
         public List<HistoricalFigureLink> RelatedHistoricalFigures { get; set; }
         public List<EntityLink> RelatedEntities { get; set; }
         public List<EntityReputation> Reputations { get; set; }
@@ -334,6 +335,7 @@ namespace LegendsViewer.Legends.WorldObjects
             Spheres = new List<string>();
             BeastAttacks = new List<BeastAttack>();
             States = new List<State>();
+            CreatureTypes = new List<CreatureType>();
             RelatedHistoricalFigures = new List<HistoricalFigureLink>();
             RelatedEntities = new List<EntityLink>();
             Reputations = new List<EntityReputation>();
@@ -369,12 +371,20 @@ namespace LegendsViewer.Legends.WorldObjects
                         return icon + "<a href=\"hf#" + Id + "\" title=\"" + Title + "\"><font color=#339900>" + ShortName + "</font></a>";
                     }
 
+                    if (worldEvent != null)
+                    {
+                        return "the " + GetRaceStringByWorldEvent(worldEvent) + " " + icon + "<a href=\"hf#" + Id + "\" title=\"" + Title + "\">" + Name + "</a>";
+                    }
                     return "the " + RaceString + " " + icon + "<a href=\"hf#" + Id + "\" title=\"" + Title + "\">" + Name + "</a>";
                 }
                 return "<a href=\"hf#" + Id + "\" title=\"" + Title + "\">" + HtmlStyleUtil.CurrentDwarfObject(ShortName) + "</a>";
             }
             if (pov == null || pov != this)
             {
+                if (worldEvent != null)
+                {
+                    return GetRaceStringByWorldEvent(worldEvent) + " " + Name;
+                }
                 return RaceString + " " + Name;
             }
             return ShortName;
@@ -484,6 +494,26 @@ namespace LegendsViewer.Legends.WorldObjects
             }
         }
 
+        public class CreatureType
+        {
+            public string Type { get; set; }
+            public int StartYear { get; set; }
+            public int StartMonth { get; set; }
+            public int StartDay { get; set; }
+
+            public CreatureType(string type, int startYear, int startMonth, int startDay)
+            {
+                Type = type;
+                StartYear = startYear;
+                StartMonth = startMonth;
+                StartDay = startDay;
+            }
+
+            public CreatureType(string type, WorldEvent worldEvent) : this(type, worldEvent.Year, worldEvent.Month, worldEvent.Day)
+            {
+            }
+        }
+
         public string CasteNoun(bool owner = false)
         {
             if (Caste.ToLower() == "male")
@@ -546,39 +576,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 hfraceString += "female ";
             }
 
-            if (!string.IsNullOrWhiteSpace(PreviousRace))
-            {
-                hfraceString += PreviousRace.ToLower() + " turned ";
-            }
-
-            if (!string.IsNullOrWhiteSpace(AnimatedType))
-            {
-                hfraceString += AnimatedType.ToLower();
-            }
-            else
-            {
-                hfraceString += Race.ToLower();
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
-            {
-                hfraceString += " vampire";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("WEREBEAST")))
-            {
-                hfraceString += " werebeast";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE")))
-            {
-                hfraceString += " necromancer";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("ANIMATE")))
-            {
-                hfraceString += " animated corpse";
-            }
+            hfraceString += GetRaceString();
 
             return Formatting.AddArticle(hfraceString);
         }
@@ -592,7 +590,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
             if (Force)
             {
-                return "Force";
+                return "force";
             }
 
             string raceString = "";
@@ -600,8 +598,7 @@ namespace LegendsViewer.Legends.WorldObjects
             {
                 raceString += PreviousRace.ToLower() + " turned ";
             }
-
-            if (!string.IsNullOrWhiteSpace(AnimatedType))
+            else if (!string.IsNullOrWhiteSpace(AnimatedType) && !Name.Contains("Corpse"))
             {
                 raceString += AnimatedType.ToLower();
             }
@@ -610,27 +607,71 @@ namespace LegendsViewer.Legends.WorldObjects
                 raceString += Race.ToLower();
             }
 
-            if (ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
+            foreach (var creatureType in CreatureTypes)
             {
-                raceString += " vampire";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("WEREBEAST")))
-            {
-                raceString += " werebeast";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE")))
-            {
-                raceString += " necromancer";
-            }
-
-            if (ActiveInteractions.Any(it => it.Contains("ANIMATE")))
-            {
-                raceString += " animated corpse";
+                raceString += " " + creatureType.Type;
             }
 
             return raceString;
+        }
+
+        private string GetRaceStringByWorldEvent(WorldEvent worldEvent)
+        {
+            return GetRaceStringForTimeStamp(worldEvent.Year, worldEvent.Month, worldEvent.Day);
+        }
+
+        private string GetRaceStringForTimeStamp(int year, int month, int day)
+        {
+            if (!CreatureTypes.Any())
+            {
+                return RaceString;
+            }
+
+            List<CreatureType> relevantCreatureTypes = GetRelevantCreatureTypesByTimeStamp(year, month, day);
+            string raceString = "";
+            if (!string.IsNullOrWhiteSpace(PreviousRace))
+            {
+                raceString += PreviousRace.ToLower();
+            }
+            else if (!string.IsNullOrWhiteSpace(AnimatedType))
+            {
+                raceString += AnimatedType.ToLower();
+            }
+            else
+            {
+                raceString += Race.ToLower();
+            }
+
+            foreach (var creatureType in relevantCreatureTypes)
+            {
+                raceString += " " + creatureType.Type;
+            }
+
+            return raceString;
+        }
+
+        private List<CreatureType> GetRelevantCreatureTypesByTimeStamp(int year, int month, int day)
+        {
+            List<CreatureType> relevantCreatureTypes = new List<CreatureType>();
+            foreach (var creatureType in CreatureTypes)
+            {
+                if (creatureType.StartYear < year)
+                {
+                    relevantCreatureTypes.Add(creatureType);
+                }
+                else if (creatureType.StartYear == year)
+                {
+                    if (creatureType.StartMonth < month)
+                    {
+                        relevantCreatureTypes.Add(creatureType);
+                    }
+                    else if (creatureType.StartMonth == month && creatureType.StartDay < day)
+                    {
+                        relevantCreatureTypes.Add(creatureType);
+                    }
+                }
+            }
+            return relevantCreatureTypes;
         }
     }
 }

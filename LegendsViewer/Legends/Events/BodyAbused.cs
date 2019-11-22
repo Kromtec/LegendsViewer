@@ -80,6 +80,10 @@ namespace LegendsViewer.Legends.Events
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
             Bodies.ForEach(body => body.AddEvent(this));
+            if (AbuseType == AbuseType.Animated)
+            {
+                Bodies.ForEach(body => body.CreatureTypes.Add(new HistoricalFigure.CreatureType("animated corpse", this)));
+            }
             HistoricalFigure.AddEvent(this);
             Abuser.AddEvent(this);
         }

@@ -35,6 +35,7 @@ namespace LegendsViewer.Legends.Events
             }
 
             Changee.PreviousRace = OldRace;
+            Changee.CreatureTypes.Add(new HistoricalFigure.CreatureType(NewRace, this));
             Changee.AddEvent(this);
             Changer.AddEvent(this);
         }

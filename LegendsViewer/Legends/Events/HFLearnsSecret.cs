@@ -32,6 +32,7 @@ namespace LegendsViewer.Legends.Events
             }
 
             Student.AddEvent(this);
+            Student?.CreatureTypes.Add(new HistoricalFigure.CreatureType("necromancer", this));
             Teacher.AddEvent(this);
             Artifact.AddEvent(this);
         }
