@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends;
-using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.WorldObjects;
@@ -51,7 +50,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"container-fluid\">");
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-            Html.AppendLine("<h1>Events</h1> ");
+            Html.AppendLine("<h1>Events: " + _world.Events.Count + "</h1> ");
             Html.AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview));
             Html.AppendLine("</br>");
             Html.AppendLine("</br>");

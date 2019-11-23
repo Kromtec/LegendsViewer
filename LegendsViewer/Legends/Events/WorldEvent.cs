@@ -50,8 +50,6 @@ namespace LegendsViewer.Legends.Events
         public EventCollection ParentCollection { get; set; }
         public World World { get; set; }
 
-        public WorldEvent() { Id = -1; Year = -1; Seconds72 = -1; Type = "INVALID"; }
-
         public WorldEvent(List<Property> properties, World world)
         {
             World = world;

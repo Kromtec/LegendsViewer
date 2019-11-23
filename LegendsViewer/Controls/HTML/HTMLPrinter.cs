@@ -522,6 +522,13 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</div>" + LineBreak);
 
             Html.AppendLine("<b>Event Log</b> ");
+            Html.AppendLine("(");
+            if (filters != null && filters.Any())
+            {
+                Html.AppendLine(events.Count(e => !filters.Contains(e.Type)) + "/");
+            }
+            Html.AppendLine(events.Count.ToString());
+            Html.AppendLine(") ");
             Html.AppendLine(MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart));
             Html.AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview));
             Html.AppendLine("<br/><br/>");
