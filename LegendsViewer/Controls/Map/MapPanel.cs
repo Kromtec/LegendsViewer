@@ -474,6 +474,7 @@ namespace LegendsViewer.Controls.Map
             
             Rectangle rectangle = originalSize ? getOriginalSize(_map) : Source;
             SizeF scaleTileSize = new SizeF((float)(PixelWidth * TileSize), (float)(PixelHeight * TileSize));
+
             foreach (Site site in _displayObjects.OfType<Site>())
             {
                 PointF siteLocation = new PointF
@@ -602,7 +603,7 @@ namespace LegendsViewer.Controls.Map
                     X = (float)((site.Coordinates.X * TileSize - rectangle.X) * PixelWidth),
                     Y = (float)((site.Coordinates.Y * TileSize - rectangle.Y) * PixelHeight)
                 };
-                OwnerPeriod ownerPeriod = site.OwnerHistory.LastOrDefault(op => op.StartYear <= CurrentYear && op.EndYear >= CurrentYear || op.EndYear == -1);
+                OwnerPeriod ownerPeriod = site.OwnerHistory.LastOrDefault(op => op.StartYear <= CurrentYear && (op.EndYear >= CurrentYear || op.EndYear == -1));
                 Entity entity = ownerPeriod?.Owner as Entity;
                 if (entity == null)
                 {
