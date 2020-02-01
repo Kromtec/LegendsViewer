@@ -7,6 +7,14 @@ using System.Reflection;
 
 namespace LegendsViewer.Controls.Query
 {
+    public static class ExpressionExtensions
+    {
+        public static Expression AddNullCheck(this Expression property, Expression comparer)
+        {
+            return Expression.AndAlso(Expression.NotEqual(property, Expression.Constant(null, property.Type)), comparer);
+        }
+    }
+
     public abstract class SearchInfo
     {
         public SearchInfo Previous, Next;
@@ -308,6 +316,7 @@ namespace LegendsViewer.Controls.Query
             return valueArg as Expression<Func<T, double>>;
         }
 
+
         public override Expression GetComparer(Expression property)
         {
             Expression comparer;
@@ -325,11 +334,13 @@ namespace LegendsViewer.Controls.Query
                 case QueryComparer.NotEndsWith:
                 case QueryComparer.StringEquals:
                     methodInfo = GetMethodInfo();
+
                     comparer = Expression.Call(property, methodInfo, Expression.Constant(Value), Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
                     if (Comparer == QueryComparer.NotEndsWith || Comparer == QueryComparer.NotStartsWith)
                     {
                         comparer = Expression.Not(comparer);
                     }
+                    comparer = comparer.AddNullCheck(property);
 
                     break;
                 case QueryComparer.StringNotEqual:
@@ -385,6 +396,8 @@ namespace LegendsViewer.Controls.Query
             }
             return comparer;
         }
+
+        
 
         public override Expression GetTypeAs(Expression property)
         {
@@ -511,6 +524,8 @@ namespace LegendsViewer.Controls.Query
                 {
                     return baseList.Cast<object>().ToList();
                 }
+
+                baseList = baseList.Where(i => i != null).ToList();
 
                 if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType)
                 {
