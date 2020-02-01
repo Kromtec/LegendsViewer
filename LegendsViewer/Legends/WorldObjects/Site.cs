@@ -139,6 +139,8 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "labyrinth": SiteType = SiteType.Labyrinth; break;
                             case "shrine": SiteType = SiteType.Shrine; break;
                             case "important location": SiteType = SiteType.ImportantLocation; break;
+                            case "fort": SiteType = SiteType.Fort; break;
+                            case "monastery": SiteType = SiteType.Monastery; break;
                             default:
                                 property.Known = false;
                                 break;
