@@ -208,7 +208,7 @@ namespace LegendsViewer.Legends.Parser
             string eventType = "";
             if (CurrentSection == Section.Events || CurrentSection == Section.EventCollections)
             {
-                eventType = properties.Find(property => property.Name == "type").Value;
+                eventType = properties.Find(property => property.Name == "type")?.Value ?? "undefined";
             }
 
             if (CurrentSection != Section.Events && CurrentSection != Section.EventCollections)

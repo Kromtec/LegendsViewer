@@ -116,6 +116,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "underworld spire":
                                 Type = StructureType.UnderworldSpire; break;
                             case "library": Type = StructureType.Library; break;
+                            case "tower": Type = StructureType.Tower; break;
                             default:
                                 property.Known = false;
                                 break;

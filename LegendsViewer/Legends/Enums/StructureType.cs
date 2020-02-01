@@ -16,6 +16,7 @@ namespace LegendsViewer.Legends.Enums
         Tomb,
         [Description("Underworld Spire")]
         UnderworldSpire,
-        Library
+        Library,
+        Tower
     }
 }
