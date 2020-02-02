@@ -717,6 +717,10 @@ namespace LegendsViewer.Controls.HTML
                     {
                         Html.AppendLine("<li>");
                         Html.AppendLine(hf.ToLink());
+                        if (relationshipProfile.Type != RelationShipProfileType.Unknown)
+                        {
+                            Html.Append(" (" + relationshipProfile.Type.GetDescription() + ")");
+                        }
                         foreach (var reputation in relationshipProfile.Reputations)
                         {
                             Html.Append(", " + reputation.Print() + " ");

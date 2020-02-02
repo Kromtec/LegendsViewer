@@ -46,6 +46,11 @@ namespace LegendsViewer.Legends
                 case "rep_loyal_soldier": Type = ReputationType.LoyalSoldier; Strength = Convert.ToInt32(property.Value); break;
                 case "rep_bully": Type = ReputationType.Bully; Strength = Convert.ToInt32(property.Value); break;
                 case "rep_information_source": Type = ReputationType.InformationSource; Strength = Convert.ToInt32(property.Value); break;
+                case "love": Type = ReputationType.Love; Strength = Convert.ToInt32(property.Value); break;
+                case "respect": Type = ReputationType.Respect; Strength = Convert.ToInt32(property.Value); break;
+                case "trust": Type = ReputationType.Trust; Strength = Convert.ToInt32(property.Value); break;
+                case "loyalty": Type = ReputationType.Loyalty; Strength = Convert.ToInt32(property.Value); break;
+                case "fear": Type = ReputationType.Fear; Strength = Convert.ToInt32(property.Value); break;
             }
         }
 

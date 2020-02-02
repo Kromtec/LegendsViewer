@@ -246,11 +246,24 @@ namespace LegendsViewer.Legends.WorldObjects
 
                         break;
                     case "relationship_profile_hf":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Unknown));
+                        }
+                        break;
                     case "relationship_profile_hf_visual":
                         property.Known = true;
                         if (property.SubProperties != null)
                         {
-                            RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties));
+                            RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Visual));
+                        }
+                        break;
+                    case "relationship_profile_hf_historical":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Historical));
                         }
                         break;
                     case "site_link":

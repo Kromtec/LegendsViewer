@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 
 namespace LegendsViewer.Legends
@@ -12,9 +13,11 @@ namespace LegendsViewer.Legends
         public int HistoricalFigureId { get; set; }
         public int KnownIdentityId { get; set; } // TODO find the purpose of this property
         public List<Reputation> Reputations { get; set; }
+        public RelationShipProfileType Type { get; set; }
 
-        public RelationshipProfileHf(List<Property> properties)
+        public RelationshipProfileHf(List<Property> properties, RelationShipProfileType type)
         {
+            Type = type;
             Reputations = new List<Reputation>();
             foreach (Property property in properties)
             {
