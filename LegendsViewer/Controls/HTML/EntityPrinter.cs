@@ -458,7 +458,7 @@ namespace LegendsViewer.Controls.HTML
                 foreach (Honor honor in _entity.Honors)
                 {
                     Html.AppendLine("<li>");
-                    Html.AppendLine(honor.Print());
+                    Html.AppendLine(honor.Print(true));
                     Html.AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");

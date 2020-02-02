@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendsViewer.Controls.HTML;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Parser;
@@ -21,9 +22,11 @@ namespace LegendsViewer.Legends
         public int ExemptFormerEpId { get; set; }
         public bool GrantedToEverybody { get; set; }
         public Skill RequiredSkill { get; set; }
+        public List<HistoricalFigure> HonoredHfs { get; set; }
 
         public Honor(List<Property> properties, World world, Entity entity)
         {
+            HonoredHfs = new List<HistoricalFigure>();
             Entity = entity;
             foreach (Property property in properties)
             {
@@ -51,7 +54,7 @@ namespace LegendsViewer.Legends
             }
         }
 
-        public string Print()
+        public string Print(bool withHonoredHfs = false)
         {
             string html = "";
             html += Name;
@@ -61,6 +64,56 @@ namespace LegendsViewer.Legends
                 html += "<ol class='skills'>";
                 html += HtmlPrinter.SkillToString(SkillDictionary.LookupSkill(RequiredSkill));
                 html += "</ol>";
+            }
+
+            if (RequiredBattles > 0 || RequiredYears > 0 || GivesPrecedence > 0 || GrantedToEverybody)
+            {
+                html += "<br/>";
+                html += "<ul>";
+                if (GivesPrecedence > 0)
+                {
+                    html += "<li>";
+                    html += "Gives Precedence: " + GivesPrecedence;
+                    html += "</li>";
+                }
+                if (RequiredBattles > 0 )
+                {
+                    html += "<li>";
+                    html += "Required Battles: " + RequiredBattles;
+                    html += "</li>";
+                }
+                if (RequiredYears > 0)
+                {
+                    html += "<li>";
+                    html += "Required Years: " + RequiredYears;
+                    html += "</li>";
+                }
+
+                if (GrantedToEverybody)
+                {
+                    html += "<li>";
+                    html += "Granted to everybody";
+                    html += "</li>";
+                }
+                html += "</ul>";
+            }
+
+            if (withHonoredHfs)
+            {
+                if (HonoredHfs.Any())
+                {
+                    html += "<ul>";
+                    html += "<li><b>Honored Historical Figures:</b></li>";
+                    html += "<ul>";
+                    foreach (HistoricalFigure honoredHf in HonoredHfs)
+                    {
+                        html += "<li>";
+                        html += honoredHf.ToLink();
+                        html += "</li>";
+                    }
+                    html += "</ul>";
+                    html += "</ul>";
+                }
             }
             return html;
         }

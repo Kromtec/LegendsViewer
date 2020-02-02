@@ -36,6 +36,7 @@ namespace LegendsViewer.Controls.HTML
             PrintRelatedHistoricalFigures();
             PrintRelationships();
             PrintVagueRelationships();
+            PrintHonorEntity();
             PrintRelatedPopulation();
             PrintRelatedEntities();
             PrintReputations();
@@ -755,6 +756,23 @@ namespace LegendsViewer.Controls.HTML
                         }
                         Html.AppendLine("</li>");
                     }
+                }
+                Html.AppendLine("</ul>");
+            }
+        }
+
+        private void PrintHonorEntity()
+        {
+            if (_historicalFigure.HonorEntity != null)
+            {
+                Html.AppendLine(Bold("Honors") + LineBreak);
+                Html.AppendLine("<ul>");
+                Html.AppendLine(_historicalFigure.HonorEntity.Entity.ToLink() + LineBreak);
+                foreach (var honor in _historicalFigure.HonorEntity.Honors)
+                {
+                    Html.AppendLine("<li>");
+                    Html.AppendLine(honor.Print());
+                    Html.AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }

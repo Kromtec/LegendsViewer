@@ -116,6 +116,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Position> Positions { get; set; }
         public Entity WorshippedBy { get; set; }
         public List<BeastAttack> BeastAttacks { get; set; }
+        public HonorEntity HonorEntity { get; set; }
         public bool Alive
         {
             get
@@ -346,6 +347,13 @@ namespace LegendsViewer.Legends.WorldObjects
                         {
                             var vagueRelationship = new VagueRelationship(property.SubProperties);
                             VagueRelationships.Add(vagueRelationship);
+                        }
+                        break;
+                    case "honor_entity":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            HonorEntity = new HonorEntity(property.SubProperties, world);
                         }
                         break;
                 }

@@ -99,6 +99,7 @@ namespace LegendsViewer.Legends
             ResolveHfToEntityPopulation();
             ResolveStructureProperties();
             ResolveSitePropertyOwners();
+            ResolveHonorEntities();
             ResolveMountainPeakToRegionLinks();
             ResolveSiteToRegionLinks();
             ResolveArtifactProperties();
@@ -690,7 +691,7 @@ namespace LegendsViewer.Legends
             {
                 _worker.ReportProgress(0, "... Structure Owners");
             }
-            foreach (Site site in Sites)
+            foreach (var site in Sites)
             {
                 if (site.SiteProperties.Any())
                 {
@@ -699,6 +700,18 @@ namespace LegendsViewer.Legends
                         siteProperty.Resolve(this);
                     }
                 }
+            }
+        }
+
+        private void ResolveHonorEntities()
+        {
+            if (HistoricalFigures.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Historical Figure Honors");
+            }
+            foreach (var historicalFigure in HistoricalFigures.Where(hf => hf.HonorEntity != null))
+            {
+                historicalFigure.HonorEntity.Resolve(this, historicalFigure);
             }
         }
 

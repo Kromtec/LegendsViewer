@@ -246,6 +246,7 @@
     <Compile Include="Legends\Enums\SitePropertyType.cs" />
     <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
     <Compile Include="Legends\Honor.cs" />
+    <Compile Include="Legends\HonorEntity.cs" />
     <Compile Include="Legends\SiteProperty.cs" />
     <Compile Include="Legends\VagueRelationship.cs" />
     <Compile Include="Legends\WorldObjects\Artifact.cs" />
