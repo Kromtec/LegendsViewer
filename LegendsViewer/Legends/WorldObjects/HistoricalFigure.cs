@@ -283,10 +283,10 @@ namespace LegendsViewer.Legends.WorldObjects
 
                         break;
                     case "hf_skill":
+                        property.Known = true;
                         if (property.SubProperties != null)
                         {
                             var skill = new Skill(property.SubProperties);
-                            property.Known = SkillDictionary.IsKnownSkill(skill);
                             Skills.Add(skill);
                         }
                         break;
