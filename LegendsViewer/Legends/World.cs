@@ -98,6 +98,7 @@ namespace LegendsViewer.Legends
             ProcessHFtoEntityLinks();
             ResolveHfToEntityPopulation();
             ResolveStructureProperties();
+            ResolveSitePropertyOwners();
             ResolveMountainPeakToRegionLinks();
             ResolveSiteToRegionLinks();
             ResolveArtifactProperties();
@@ -680,6 +681,24 @@ namespace LegendsViewer.Legends
             foreach (Structure structure in Structures)
             {
                 structure.Resolve(this);
+            }
+        }
+
+        private void ResolveSitePropertyOwners()
+        {
+            if (Sites.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Structure Owners");
+            }
+            foreach (Site site in Sites)
+            {
+                if (site.SiteProperties.Any())
+                {
+                    foreach (SiteProperty siteProperty in site.SiteProperties)
+                    {
+                        siteProperty.Resolve(this);
+                    }
+                }
             }
         }
 

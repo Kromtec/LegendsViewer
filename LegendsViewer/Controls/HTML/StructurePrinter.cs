@@ -47,6 +47,13 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<li>" + _structure.Entity.ToLink() + "</li>");
                 Html.AppendLine("</ul>");
             }
+            if (_structure.Owner != null)
+            {
+                Html.AppendLine("<b>Owner:</b><br/>");
+                Html.AppendLine("<ul>");
+                Html.AppendLine("<li>" + _structure.Owner.ToLink() + "</li>");
+                Html.AppendLine("</ul>");
+            }
             if (_structure.Inhabitants.Any())
             {
                 Html.AppendLine("<b>Inhabitants:</b><br/>");

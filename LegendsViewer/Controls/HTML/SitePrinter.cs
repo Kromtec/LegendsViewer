@@ -59,6 +59,7 @@ namespace LegendsViewer.Controls.HTML
 
             PrintGeographyInfo();
             PrintStructures();
+            PrintSiteProperties();
             PrintRelatedArtifacts();
             PrintRelatedHistoricalFigures();
             PrintWarfareInfo();
@@ -359,6 +360,44 @@ namespace LegendsViewer.Controls.HTML
                 {
                     Html.AppendLine("<li>" + structure.ToLink() + ", ");
                     Html.AppendLine(structure.TypeAsString);
+                    Html.AppendLine("</li>");
+                }
+                Html.AppendLine("</ul>");
+                Html.AppendLine("</div>");
+                Html.AppendLine("</div>");
+            }
+        }
+
+        private void PrintSiteProperties()
+        {
+            if (_site.SiteProperties.Any())
+            {
+                Html.AppendLine("<div class=\"row\">");
+                Html.AppendLine("<div class=\"col-md-12\">");
+                Html.AppendLine("<b>Site Properties</b><br/>");
+                Html.AppendLine("<ul>");
+                foreach (SiteProperty siteProperty in _site.SiteProperties)
+                {
+                    Html.AppendLine("<li>");
+                    if (siteProperty.Structure != null)
+                    {
+                        Html.AppendLine(siteProperty.Structure.Type.GetDescription());
+                        Html.AppendLine(" (" + siteProperty.Structure.ToLink() + ")");
+                    }
+                    else if (siteProperty.Type != SitePropertyType.Unknown)
+                    {
+                        Html.AppendLine(siteProperty.Type.GetDescription());
+                    }
+                    else
+                    {
+                        Html.AppendLine("Property");
+                    }
+                    if (siteProperty.Owner != null)
+                    {
+                        Html.AppendLine(", ");
+                        Html.AppendLine(siteProperty.Owner.ToLink());
+                    }
+
                     Html.AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");

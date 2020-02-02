@@ -28,6 +28,8 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<SiteConquered> Conquerings { get { return Warfare.OfType<SiteConquered>().ToList(); } set { } }
         public List<OwnerPeriod> OwnerHistory { get; set; }
         public List<HistoricalFigure> RelatedHistoricalFigures { get; set; }
+        public List<SiteProperty> SiteProperties { get; set; }
+
         public static List<string> Filters;
         public DwarfObject CurrentOwner
         {
@@ -113,6 +115,7 @@ namespace LegendsViewer.Legends.WorldObjects
             BeastAttacks = new List<BeastAttack>();
             Structures = new List<Structure>();
             RelatedHistoricalFigures = new List<HistoricalFigure>();
+            SiteProperties = new List<SiteProperty>();
 
             foreach (Property property in properties)
             {
@@ -178,6 +181,17 @@ namespace LegendsViewer.Legends.WorldObjects
                             property.Known = false;
                         }
                         break;
+                    case "site_properties":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            foreach (Property subProperty in property.SubProperties)
+                            {
+                                subProperty.Known = true;
+                                SiteProperties.Add(new SiteProperty(subProperty.SubProperties, world, this));
+                            }
+                        }
+                        break;
                 }
             }
             SetIconByType(SiteType);
@@ -234,6 +248,12 @@ namespace LegendsViewer.Legends.WorldObjects
                     break;
                 case SiteType.Shrine:
                     Icon = "<i class=\"glyphicon fa-fw glyphicon-screenshot\"></i>";
+                    break;
+                case SiteType.Fort:
+                    Icon = "<i class=\"fa fa-fw fa-th-list fa-rotate-270\"></i>";
+                    break;
+                case SiteType.Monastery:
+                    Icon = "<i class=\"fa fa-fw fa-viacoin fa-flip-vertical\"></i>";
                     break;
             }
         }

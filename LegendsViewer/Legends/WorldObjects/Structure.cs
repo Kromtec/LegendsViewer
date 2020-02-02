@@ -21,6 +21,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public int ReligionId { get; set; } // legends_plus.xml
         public Entity Religion { get; set; } // legends_plus.xml
         public StructureSubType StructureSubType { get; set; } // legends_plus.xml
+        public HistoricalFigure Owner { get; set; } // resolved from site properties
 
         public string TypeAsString
         {
@@ -154,6 +155,12 @@ namespace LegendsViewer.Legends.WorldObjects
                     break;
                 case StructureType.Library:
                     icon = "<i class=\"fa fa-fw fa-graduation-cap\"></i>";
+                    break;
+                case StructureType.Tower:
+                    icon = "<i class=\"fa fa-fw fa-building-o\"></i>";
+                    break;
+                case StructureType.CountingHouse:
+                    icon = "<i class=\"fa fa-fw fa-tty fa-flip-vertical\"></i>";
                     break;
                 default:
                     icon = "";
