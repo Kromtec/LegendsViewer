@@ -332,7 +332,7 @@ namespace LegendsViewer.Controls.HTML
             return html;
         }
 
-        protected string SkillToString(SkillDescription desc)
+        public static string SkillToString(SkillDescription desc)
         {
             string subrank = desc.Rank.ToLower().Replace(" ", string.Empty).Substring(0, 5);
 

@@ -50,5 +50,11 @@ namespace LegendsViewer.Legends
                 }
             }
         }
+
+        public Skill(string skillName, int totalIp)
+        {
+            Name = string.Intern(Formatting.InitCaps(skillName.Replace('_', ' ').ToLower()));
+            Points = totalIp;
+        }
     }
 }

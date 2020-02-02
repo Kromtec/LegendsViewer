@@ -65,6 +65,7 @@ namespace LegendsViewer.Controls.HTML
             PrintOriginStructure();
             PrintWorships();
             PrintLeaders();
+            PrintHonors();
             PrintCurrentLeadership();
             Html.AppendLine("</div>");
 
@@ -445,6 +446,22 @@ namespace LegendsViewer.Controls.HTML
                     }
                     Html.AppendLine(leaderTable.GetTable() + LineBreak);
                 }
+            }
+        }
+
+        private void PrintHonors()
+        {
+            if (_entity.Honors.Count > 0)
+            {
+                Html.AppendLine(Bold("Honors") + " " + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (Honor honor in _entity.Honors)
+                {
+                    Html.AppendLine("<li>");
+                    Html.AppendLine(honor.Print());
+                    Html.AppendLine("</li>");
+                }
+                Html.AppendLine("</ul>");
             }
         }
 

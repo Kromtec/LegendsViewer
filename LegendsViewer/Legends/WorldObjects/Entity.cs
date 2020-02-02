@@ -28,6 +28,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Site> CurrentSites { get { return SiteHistory.Where(site => site.EndYear == -1).Select(site => site.Site).ToList(); } set { } }
         public List<Site> LostSites { get { return SiteHistory.Where(site => site.EndYear >= 0).Select(site => site.Site).ToList(); } set { } }
         public List<Site> Sites { get { return SiteHistory.Select(site => site.Site).ToList(); } set { } }
+        public List<Honor> Honors { get; set; }
 
         public EntityType Type { get; set; } // legends_plus.xml
         public string TypeAsString { get { return Type.GetDescription(); } set { } }
@@ -143,6 +144,7 @@ namespace LegendsViewer.Legends.WorldObjects
             EntityPositionAssignments = new List<EntityPositionAssignment>();
             Claims = new List<Location>();
             Occassions = new List<EntityOccasion>();
+            Honors = new List<Honor>();
 
             foreach (Property property in properties)
             {
@@ -227,7 +229,6 @@ namespace LegendsViewer.Legends.WorldObjects
                         {
                             EntityPositions.Add(new EntityPosition(property.SubProperties, world));
                         }
-
                         break;
                     case "entity_position_assignment":
                         property.Known = true;
@@ -235,7 +236,6 @@ namespace LegendsViewer.Legends.WorldObjects
                         {
                             EntityPositionAssignments.Add(new EntityPositionAssignment(property.SubProperties, world));
                         }
-
                         break;
                     case "histfig_id":
                         property.Known = true; // historical figure == last known entitymember?
@@ -245,6 +245,14 @@ namespace LegendsViewer.Legends.WorldObjects
                         if (property.SubProperties != null)
                         {
                             Occassions.Add(new EntityOccasion(property.SubProperties, world, this));
+                        }
+
+                        break;
+                    case "honor":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            Honors.Add(new Honor(property.SubProperties, world, this));
                         }
 
                         break;
