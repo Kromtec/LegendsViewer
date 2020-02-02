@@ -244,7 +244,9 @@
     <Compile Include="Legends\ArtForm.cs" />
     <Compile Include="Legends\Enums\RelationShipProfileType.cs" />
     <Compile Include="Legends\Enums\SitePropertyType.cs" />
+    <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
     <Compile Include="Legends\SiteProperty.cs" />
+    <Compile Include="Legends\VagueRelationship.cs" />
     <Compile Include="Legends\WorldObjects\Artifact.cs" />
     <Compile Include="Legends\WorldObjects\DanceForm.cs" />
     <Compile Include="Legends\WorldObjects\DwarfObject.cs" />

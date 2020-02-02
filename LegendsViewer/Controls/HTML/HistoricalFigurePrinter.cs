@@ -35,6 +35,7 @@ namespace LegendsViewer.Controls.HTML
             PrintPositions();
             PrintRelatedHistoricalFigures();
             PrintRelationships();
+            PrintVagueRelationships();
             PrintRelatedPopulation();
             PrintRelatedEntities();
             PrintReputations();
@@ -723,12 +724,39 @@ namespace LegendsViewer.Controls.HTML
                         }
                         foreach (var reputation in relationshipProfile.Reputations)
                         {
-                            Html.Append(", " + reputation.Print() + " ");
+                            if (reputation.Strength != 0)
+                            {
+                                Html.Append(", " + reputation.Print() + " ");
+                            }
                         }
                         Html.AppendLine("</li>");
                     }
                 }
                 Html.AppendLine("</ol>");
+            }
+        }
+
+        private void PrintVagueRelationships()
+        {
+            if (_historicalFigure.VagueRelationships.Count > 0)
+            {
+                Html.AppendLine(Bold("Vague Relationships") + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (var vagueRelationship in _historicalFigure.VagueRelationships)
+                {
+                    HistoricalFigure hf = _world.GetHistoricalFigure(vagueRelationship.HfId);
+                    if (hf != null)
+                    {
+                        Html.AppendLine("<li>");
+                        Html.AppendLine(hf.ToLink());
+                        if (vagueRelationship.Type != VagueRelationshipType.Unknown)
+                        {
+                            Html.Append(" (" + vagueRelationship.Type.GetDescription() + ")");
+                        }
+                        Html.AppendLine("</li>");
+                    }
+                }
+                Html.AppendLine("</ul>");
             }
         }
 

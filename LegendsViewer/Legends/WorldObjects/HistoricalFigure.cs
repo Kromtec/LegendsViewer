@@ -86,6 +86,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<RelationshipProfileHf> RelationshipProfiles { get; set; }
         public List<SiteLink> RelatedSites { get; set; }
         public List<Skill> Skills { get; set; }
+        public List<VagueRelationship> VagueRelationships { get; set; }
         public List<Structure> DedicatedStructures { get; set; }
         public int Age { get; set; }
         public int Appeared { get; set; }
@@ -324,6 +325,29 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
                         break;
                     case "sex": property.Known = true; break;
+                    case "site_property": 
+                        // is resolved in SiteProperty.Resolve()
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            foreach (Property subProperty in property.SubProperties)
+                            {
+                                switch (subProperty.Name)
+                                {
+                                    case "site_id": subProperty.Known = true; break;
+                                    case "property_id": subProperty.Known = true; break;
+                                }
+                            }
+                        }
+                        break;
+                    case "vague_relationship":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            var vagueRelationship = new VagueRelationship(property.SubProperties);
+                            VagueRelationships.Add(vagueRelationship);
+                        }
+                        break;
                 }
             }
 
@@ -367,6 +391,7 @@ namespace LegendsViewer.Legends.WorldObjects
             DedicatedStructures = new List<Structure>();
             UsedIdentityIds = new List<int>();
             SiteProperties = new List<SiteProperty>();
+            VagueRelationships = new List<VagueRelationship>();
         }
 
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)

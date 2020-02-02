@@ -11,7 +11,7 @@ namespace LegendsViewer.Legends
     {
         public int Id { get; set; }
         public SitePropertyType Type { get; set; }
-        public int OwnerId { get; set; }
+        private int OwnerId { get; set; }
         public HistoricalFigure Owner { get; set; }
         public Structure Structure { get; set; }
         public Site Site { get; set; }
