@@ -80,6 +80,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<State> States { get; set; }
         public List<CreatureType> CreatureTypes { get; set; }
         public List<HistoricalFigureLink> RelatedHistoricalFigures { get; set; }
+        public List<SiteProperty> SiteProperties { get; set; }
         public List<EntityLink> RelatedEntities { get; set; }
         public List<EntityReputation> Reputations { get; set; }
         public List<RelationshipProfileHf> RelationshipProfiles { get; set; }
@@ -352,6 +353,7 @@ namespace LegendsViewer.Legends.WorldObjects
             LineageCurseChilds = new List<HistoricalFigure>();
             DedicatedStructures = new List<Structure>();
             UsedIdentityIds = new List<int>();
+            SiteProperties = new List<SiteProperty>();
         }
 
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)

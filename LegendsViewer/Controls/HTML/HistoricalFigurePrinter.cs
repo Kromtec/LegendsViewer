@@ -29,6 +29,7 @@ namespace LegendsViewer.Controls.HTML
             PrintMiscInfo();
             PrintRelatedArtifacts();
             PrintBreedInfo();
+            PrintSiteProperties();
             PrintFamilyGraph();
             PrintCurseLineage();
             PrintPositions();
@@ -352,6 +353,39 @@ namespace LegendsViewer.Controls.HTML
                     Html.AppendLine("<li>" + hfOfSameBreed.ToLink() + "</li>");
                 }
                 Html.AppendLine("</ol>");
+            }
+        }
+        private void PrintSiteProperties()
+        {
+            if (_historicalFigure.SiteProperties.Any())
+            {
+                Html.AppendLine(Bold("Site Properties") + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (SiteProperty siteProperty in _historicalFigure.SiteProperties)
+                {
+                    Html.AppendLine("<li>");
+                    if (siteProperty.Structure != null)
+                    {
+                        Html.AppendLine(siteProperty.Structure.Type.GetDescription());
+                        Html.AppendLine(" (" + siteProperty.Structure.ToLink() + ")");
+                    }
+                    else if (siteProperty.Type != SitePropertyType.Unknown)
+                    {
+                        Html.AppendLine(siteProperty.Type.GetDescription());
+                    }
+                    else
+                    {
+                        Html.AppendLine("Property");
+                    }
+                    if (siteProperty.Site != null)
+                    {
+                        Html.AppendLine(" in ");
+                        Html.AppendLine(siteProperty.Site.ToLink());
+                    }
+
+                    Html.AppendLine("</li>");
+                }
+                Html.AppendLine("</ul>");
             }
         }
 

@@ -14,6 +14,7 @@ namespace LegendsViewer.Legends
         public int OwnerId { get; set; }
         public HistoricalFigure Owner { get; set; }
         public Structure Structure { get; set; }
+        public Site Site { get; set; }
 
         public SiteProperty(List<Property> properties, World world, Site site)
         {
@@ -45,11 +46,14 @@ namespace LegendsViewer.Legends
                         break;
                 }
             }
+
+            Site = site;
         }
 
         public void Resolve(World world)
         {
             Owner = world.GetHistoricalFigure(OwnerId);
+            Owner?.SiteProperties.Add(this);
             if (Structure != null && Owner != null)
             {
                 Structure.Owner = Owner;
