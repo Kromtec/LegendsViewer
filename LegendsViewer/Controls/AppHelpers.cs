@@ -128,6 +128,9 @@ namespace LegendsViewer.Controls
             new[] { "entity expels hf",                   "Entity Expels Historical Figure", ""},
             new[] { "site surrendered",                   "Site Surrendered", ""},
 
+            // new 0.47.XX events
+            new[] { "remove hf hf link",                  "Historical Figures unlinked", ""},
+
             new[] { "INVALID",                     "INVALID EVENT",                            ""}
         };
 

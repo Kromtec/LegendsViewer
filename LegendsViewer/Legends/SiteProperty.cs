@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -48,6 +49,16 @@ namespace LegendsViewer.Legends
             }
 
             Site = site;
+        }
+
+        public string Print(bool link = true, DwarfObject pov = null)
+        {
+            if (Structure != null)
+            {
+                return Structure.ToLink(link, pov);
+            }
+
+            return "a " + Type.GetDescription();
         }
 
         public void Resolve(World world)

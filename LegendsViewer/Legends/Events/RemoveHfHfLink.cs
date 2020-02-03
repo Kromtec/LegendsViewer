@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
@@ -7,16 +7,15 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
-    public class AddHfhfLink : WorldEvent
+    public class RemoveHfHfLink : WorldEvent
     {
         public HistoricalFigure HistoricalFigure { get; set; }
         public HistoricalFigure HistoricalFigureTarget { get; set; }
         public HistoricalFigureLinkType LinkType { get; set; }
 
-        public AddHfhfLink(List<Property> properties, World world)
+        public RemoveHfHfLink(List<Property> properties, World world)
             : base(properties, world)
         {
-            LinkType = HistoricalFigureLinkType.Unknown;
             foreach (Property property in properties)
             {
                 switch (property.Name)
@@ -34,12 +33,6 @@ namespace LegendsViewer.Legends.Events
                             world.ParsingErrors.Report("Unknown HF HF Link Type: " + property.Value);
                         }
                         break;
-                    case "histfig1":
-                    case "histfig2":
-                        property.Known = true;
-                        break;
-                    case "hf": if (HistoricalFigure == null) { HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "hf_target": if (HistoricalFigureTarget == null) { HistoricalFigureTarget = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                 }
             }
 
@@ -78,33 +71,11 @@ namespace LegendsViewer.Legends.Events
             }
             else
             {
-                eventString += HistoricalFigure.ToLink(link, pov, this);
+                eventString += HistoricalFigure?.ToLink(link, pov, this) ?? "an unknown creature";
             }
 
             switch (LinkType)
             {
-                case HistoricalFigureLinkType.Apprentice:
-                    if (pov == HistoricalFigureTarget)
-                    {
-                        eventString += " began an apprenticeship under ";
-                    }
-                    else
-                    {
-                        eventString += " became the master of ";
-                    }
-
-                    break;
-                case HistoricalFigureLinkType.Master:
-                    if (pov == HistoricalFigureTarget)
-                    {
-                        eventString += " became the master of ";
-                    }
-                    else
-                    {
-                        eventString += " began an apprenticeship under ";
-                    }
-
-                    break;
                 case HistoricalFigureLinkType.FormerApprentice:
                     if (pov == HistoricalFigure)
                     {
@@ -127,39 +98,11 @@ namespace LegendsViewer.Legends.Events
                     }
 
                     break;
-                case HistoricalFigureLinkType.Deity:
-                    if (pov == HistoricalFigureTarget)
-                    {
-                        eventString += " received the worship of ";
-                    }
-                    else
-                    {
-                        eventString += " began worshipping ";
-                    }
-
-                    break;
-                case HistoricalFigureLinkType.Lover:
-                    eventString += " became romantically involved with ";
-                    break;
-                case HistoricalFigureLinkType.Spouse:
-                    eventString += " married ";
-                    break;
-                case HistoricalFigureLinkType.Prisoner:
-                    if (pov == HistoricalFigureTarget)
-                    {
-                        eventString += " was imprisoned by ";
-                    }
-                    else
-                    {
-                        eventString += " imprisoned ";
-                    }
-
-                    break;
-                case HistoricalFigureLinkType.PetOwner:
-                    eventString += " became the owner of ";
+                case HistoricalFigureLinkType.FormerSpouse:
+                    eventString += " divorced ";
                     break;
                 default:
-                    eventString += " linked ("+ LinkType + ") to ";
+                    eventString += " unlinked (" + LinkType + ") to ";
                     break;
             }
 
@@ -169,7 +112,7 @@ namespace LegendsViewer.Legends.Events
             }
             else
             {
-                eventString += HistoricalFigureTarget.ToLink(link, pov, this);
+                eventString += HistoricalFigureTarget?.ToLink(link, pov, this) ?? "an unknown creature";
             }
 
             eventString += PrintParentCollection(link, pov);

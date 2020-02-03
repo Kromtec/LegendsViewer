@@ -8,6 +8,8 @@ namespace LegendsViewer.Legends.Events
     public class AttackedSite : WorldEvent
     {
         public Entity Attacker, Defender, SiteEntity;
+        public Entity AttackerMercenaries;
+        public Entity DefenderMercenaries;
         public Site Site;
         public HistoricalFigure AttackerGeneral, DefenderGeneral;
         public AttackedSite(List<Property> properties, World world)
@@ -23,6 +25,8 @@ namespace LegendsViewer.Legends.Events
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "attacker_general_hfid": AttackerGeneral = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "defender_general_hfid": DefenderGeneral = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
+                    case "attacker_merc_enid": AttackerMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "defender_merc_enid": DefenderMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
                 }
             }
 
@@ -32,6 +36,8 @@ namespace LegendsViewer.Legends.Events
             Site.AddEvent(this);
             AttackerGeneral.AddEvent(this);
             DefenderGeneral.AddEvent(this);
+            AttackerMercenaries.AddEvent(this);
+            DefenderMercenaries.AddEvent(this);
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
@@ -59,6 +65,18 @@ namespace LegendsViewer.Legends.Events
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
+            if (AttackerMercenaries != null)
+            {
+                eventString += " ";
+                eventString += AttackerMercenaries.ToLink(true, pov);
+                eventString += " were hired by the attackers.";
+            }
+            if (DefenderMercenaries != null)
+            {
+                eventString += " ";
+                eventString += DefenderMercenaries.ToLink(true, pov);
+                eventString += " were hired by the defenders.";
+            }
             return eventString;
         }
     }

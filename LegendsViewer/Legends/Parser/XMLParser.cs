@@ -634,6 +634,9 @@ namespace LegendsViewer.Legends.Parser
                 case "site surrendered":
                     World.Events.Add(new SiteSurrendered(properties, World));
                     break;
+                case "remove hf hf link":
+                    World.Events.Add(new RemoveHfHfLink(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);
                     break;

@@ -7,11 +7,16 @@ namespace LegendsViewer.Legends.Events
 {
     public class FieldBattle : WorldEvent
     {
-        public Entity Attacker, Defender;
+        public Entity Attacker;
+        public Entity Defender;
+        public Entity AttackerMercenaries;
+        public Entity DefenderMercenaries;
         public WorldRegion Region;
-        public HistoricalFigure AttackerGeneral, DefenderGeneral;
+        public HistoricalFigure AttackerGeneral;
+        public HistoricalFigure DefenderGeneral;
         public UndergroundRegion UndergroundRegion;
         public Location Coordinates;
+
         public FieldBattle(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -26,6 +31,8 @@ namespace LegendsViewer.Legends.Events
                     case "attacker_general_hfid": AttackerGeneral = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "defender_general_hfid": DefenderGeneral = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;
+                    case "attacker_merc_enid": AttackerMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "defender_merc_enid": DefenderMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
                 }
             }
 
@@ -35,6 +42,8 @@ namespace LegendsViewer.Legends.Events
             DefenderGeneral.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
+            AttackerMercenaries.AddEvent(this);
+            DefenderMercenaries.AddEvent(this);
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
@@ -55,6 +64,18 @@ namespace LegendsViewer.Legends.Events
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
+            if (AttackerMercenaries != null)
+            {
+                eventString += " ";
+                eventString += AttackerMercenaries.ToLink(true, pov);
+                eventString += " were hired by the attackers.";
+            }
+            if (DefenderMercenaries != null)
+            {
+                eventString += " ";
+                eventString += DefenderMercenaries.ToLink(true, pov);
+                eventString += " were hired by the defenders.";
+            }
             return eventString;
         }
     }
