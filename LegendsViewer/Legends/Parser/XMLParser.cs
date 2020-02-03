@@ -640,6 +640,9 @@ namespace LegendsViewer.Legends.Parser
                 case "holy city declaration":
                     World.Events.Add(new HolyCityDeclaration(properties, World));
                     break;
+                case "hf performed horrible experiments":
+                    World.Events.Add(new HfPerformedHorribleExperiments(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);
                     break;
