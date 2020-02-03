@@ -19,6 +19,7 @@ namespace LegendsViewer.Legends.Enums
         Library,
         Tower,
         [Description("Counting House")]
-        CountingHouse
+        CountingHouse,
+        Guildhall
     }
 }

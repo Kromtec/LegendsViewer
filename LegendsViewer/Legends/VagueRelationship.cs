@@ -55,6 +55,10 @@ namespace LegendsViewer.Legends
                         property.Known = true;
                         Type = VagueRelationshipType.Grudge;
                         break;
+                    case "jealous_relationship_grudge":
+                        property.Known = true;
+                        Type = VagueRelationshipType.JealousRelationshipGrudge;
+                        break;
                 }
             }
         }

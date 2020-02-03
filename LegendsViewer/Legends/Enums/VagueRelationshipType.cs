@@ -21,6 +21,8 @@ namespace LegendsViewer.Legends.Enums
         ArtisticBuddy,
         [Description("Jealous Obsession")]
         JealousObsession,
-        Grudge
+        Grudge,
+        [Description("Jealous Relationship Grudge")]
+        JealousRelationshipGrudge
     }
 }

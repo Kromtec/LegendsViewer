@@ -18,6 +18,7 @@ namespace LegendsViewer.Legends.Enums
         [Description("Happened Upon")]
         HappenedUpon,
         Cornered,
-        Surprised
+        Surprised,
+        GotIntoABrawl
     }
 }

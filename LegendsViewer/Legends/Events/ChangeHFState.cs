@@ -110,6 +110,9 @@ namespace LegendsViewer.Legends.Events
                             case "great deal of stress":
                                 Reason = ChangeHfStateReason.GreatDealOfStress;
                                 break;
+                            case "exiled after conviction":
+                                Reason = ChangeHfStateReason.ExiledAfterConviction;
+                                break;
                             default:
                                 if (property.Value != "-1")
                                 {
@@ -258,6 +261,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case ChangeHfStateReason.GreatDealOfStress:
                         eventString += " after a great deal of stress";
+                        break;
+                    case ChangeHfStateReason.ExiledAfterConviction:
+                        eventString += " after being exiled following a criminal conviction";
                         break;
                 }
             }

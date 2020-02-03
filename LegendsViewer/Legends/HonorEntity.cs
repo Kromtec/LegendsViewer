@@ -25,7 +25,7 @@ namespace LegendsViewer.Legends
                 {
                     case "entity": EntityId = Convert.ToInt32(property.Value); break;
                     case "battles": Battles = Convert.ToInt32(property.Value); break;
-                    case "Kills": Kills = Convert.ToInt32(property.Value); break;
+                    case "kills": Kills = Convert.ToInt32(property.Value); break;
                     case "honor_id": HonorIds.Add(Convert.ToInt32(property.Value)); break;
                 }
             }

@@ -73,6 +73,7 @@ namespace LegendsViewer.Legends.Events
                             case "crushed": Cause = DeathCause.CaveIn; break;
                             case "cage blasted": Cause = DeathCause.InACage; break;
                             case "freezing water": Cause = DeathCause.FrozenInWater; break;
+                            case "exec generic": Cause = DeathCause.ExecutedGeneric; break;
                             case "exec fed to beasts": Cause = DeathCause.ExecutedFedToBeasts; break;
                             case "exec burned alive": Cause = DeathCause.ExecutedBurnedAlive; break;
                             case "exec crucified": Cause = DeathCause.ExecutedCrucified; break;
@@ -192,6 +193,9 @@ namespace LegendsViewer.Legends.Events
                     case DeathCause.Struck:
                         deathString = "was struck down by " + slayerString;
                         break;
+                    case DeathCause.ExecutedGeneric:
+                        deathString = "was executed by " + slayerString;
+                        break;
                     case DeathCause.ExecutedBuriedAlive:
                         deathString = "was buried alive by " + slayerString;
                         break;
@@ -293,6 +297,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case DeathCause.FlyingObject:
                         deathString = "was killed by a flying object";
+                        break;
+                    case DeathCause.ExecutedGeneric:
+                        deathString = "was executed";
                         break;
                     case DeathCause.ExecutedBuriedAlive:
                         deathString = "was buried alive";

@@ -21,6 +21,8 @@ namespace LegendsViewer.Legends
         public int ExemptEpId { get; set; }
         public int ExemptFormerEpId { get; set; }
         public bool GrantedToEverybody { get; set; }
+        public bool RequiresAnyMeleeOrRangedSkill { get; set; }
+
         public Skill RequiredSkill { get; set; }
         public List<HistoricalFigure> HonoredHfs { get; set; }
 
@@ -43,7 +45,11 @@ namespace LegendsViewer.Legends
                     case "exempt_former_epid": ExemptFormerEpId = Convert.ToInt32(property.Value); break;
                     case "granted_to_everybody":
                         property.Known = true;
-                        GrantedToEverybody = true; 
+                        GrantedToEverybody = true;
+                        break;
+                    case "requires_any_melee_or_ranged_skill":
+                        property.Known = true;
+                        RequiresAnyMeleeOrRangedSkill = true;
                         break;
                 }
             }
@@ -66,7 +72,7 @@ namespace LegendsViewer.Legends
                 html += "</ol>";
             }
 
-            if (RequiredBattles > 0 || RequiredYears > 0 || GivesPrecedence > 0 || GrantedToEverybody)
+            if (RequiredBattles > 0 || RequiredYears > 0 || GivesPrecedence > 0 || GrantedToEverybody || RequiresAnyMeleeOrRangedSkill)
             {
                 html += "<br/>";
                 html += "<ul>";
@@ -93,6 +99,12 @@ namespace LegendsViewer.Legends
                 {
                     html += "<li>";
                     html += "Granted to everybody";
+                    html += "</li>";
+                }
+                if (RequiresAnyMeleeOrRangedSkill)
+                {
+                    html += "<li>";
+                    html += "Requires any melee or ranged skill";
                     html += "</li>";
                 }
                 html += "</ul>";

@@ -10,14 +10,17 @@ namespace LegendsViewer.Legends.Events
 {
     public class AddHfEntityLink : WorldEvent, IFeatured
     {
-        public Entity Entity;
-        public HistoricalFigure HistoricalFigure;
-        public HfEntityLinkType LinkType;
-        public string Position;
+        public Entity Entity { get; set; }
+        public HistoricalFigure HistoricalFigure { get; set; }
+        public HfEntityLinkType LinkType { get; set; }
+        public string Position { get; set; }
+        public int PositionId { get; set; }
+
         public AddHfEntityLink(List<Property> properties, World world)
             : base(properties, world)
         {
             LinkType = HfEntityLinkType.Unknown;
+            PositionId = -1;
             foreach (Property property in properties)
             {
                 switch (property.Name)
@@ -26,9 +29,14 @@ namespace LegendsViewer.Legends.Events
                     case "civ_id":
                         Entity = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
+                    case "hfid":
                     case "histfig":
-                        HistoricalFigure = world.GetHistoricalFigure(property.ValueAsInt());
+                        if (HistoricalFigure == null)
+                        {
+                            HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
+                        }
                         break;
+                    case "link":
                     case "link_type":
                         switch (property.Value.Replace("_"," "))
                         {
@@ -60,6 +68,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "position":
                         Position = property.Value;
+                        break;
+                    case "position_id":
+                        PositionId = Convert.ToInt32(property.Value);
                         break;
                 }
             }
@@ -99,15 +110,19 @@ namespace LegendsViewer.Legends.Events
                     break;
                 case HfEntityLinkType.Squad:
                 case HfEntityLinkType.Position:
-                    EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower());
+                    EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower() || pos.Id == PositionId);
                     if (position != null)
                     {
-                        string positionName = position.GetTitleByCaste(HistoricalFigure.Caste);
+                        string positionName = position.GetTitleByCaste(HistoricalFigure?.Caste);
                         eventString += " became the " + positionName + " of ";
+                    }
+                    else if(!string.IsNullOrWhiteSpace(Position))
+                    {
+                        eventString += " became the " + Position + " of ";
                     }
                     else
                     {
-                        eventString += " became the " + Position + " of ";
+                        eventString += " became an unspecified position of ";
                     }
                     break;
                 default:

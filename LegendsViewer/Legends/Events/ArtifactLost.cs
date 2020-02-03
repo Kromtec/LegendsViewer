@@ -10,6 +10,9 @@ namespace LegendsViewer.Legends.Events
     {
         public Artifact Artifact { get; set; }
         public Site Site { get; set; }
+        public WorldRegion Region { get; set; }
+        public UndergroundRegion UndergroundRegion { get; set; }
+
         public ArtifactLost(List<Property> properties, World world) : base(properties, world)
         {
             foreach (Property property in properties)
@@ -18,11 +21,15 @@ namespace LegendsViewer.Legends.Events
                 {
                     case "artifact_id": Artifact = world.GetArtifact(Convert.ToInt32(property.Value)); break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
+                    case "subregion_id": Region = world.GetRegion(Convert.ToInt32(property.Value)); break;
+                    case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;
                 }
             }
 
             Artifact.AddEvent(this);
             Site.AddEvent(this);
+            Region.AddEvent(this);
+            UndergroundRegion.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
@@ -32,11 +39,18 @@ namespace LegendsViewer.Legends.Events
             eventString += " was lost";
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov, this);
+                eventString += " in ";
+                eventString += Site.ToLink(link, pov, this);
             }
-            else if (Artifact != null && Artifact.Events.Last() == this && Artifact.Region != null)
+            else if (Region != null)
             {
-                eventString += " in " + Artifact.Region.ToLink(link, pov, this);
+                eventString += " in ";
+                eventString += Region.ToLink(link, pov, this);
+            }
+            else if (UndergroundRegion != null)
+            {
+                eventString += " in ";
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

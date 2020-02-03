@@ -14,6 +14,7 @@ namespace LegendsViewer.Legends.Events
         public Entity SiteEntity { get; set; }
         public Site Site { get; set; }
         public HistoricalFigure Builder { get; set; }
+        public bool Rebuilt { get; set; }
 
         public CreatedStructure(List<Property> properties, World world) : base(properties, world)
         {
@@ -31,6 +32,10 @@ namespace LegendsViewer.Legends.Events
                     case "civ": if (Civ == null) { Civ = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site_civ": if (SiteEntity == null) { SiteEntity = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "builder_hf": if (Builder == null) { Builder = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
+                    case "rebuilt": 
+                        property.Known = true;
+                        Rebuilt = true;
+                        break;
                 }
             }
 
@@ -61,10 +66,21 @@ namespace LegendsViewer.Legends.Events
                 if (SiteEntity != null)
                 {
                     eventString += SiteEntity.ToLink(link, pov, this);
-                    eventString += " of ";
                 }
-                eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
-                eventString += " constructed ";
+
+                if (Civ != null)
+                {
+                    eventString += " of ";
+                    eventString += Civ.ToLink(link, pov, this);
+                }
+                if (Rebuilt)
+                {
+                    eventString += " rebuilt ";
+                }
+                else
+                {
+                    eventString += " constructed ";
+                }
                 eventString += Structure != null ? Structure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
                 eventString += " in ";
                 eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";

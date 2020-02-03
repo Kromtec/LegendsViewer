@@ -119,6 +119,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "library": Type = StructureType.Library; break;
                             case "tower": Type = StructureType.Tower; break;
                             case "counting house": Type = StructureType.CountingHouse; break;
+                            case "guildhall": Type = StructureType.Guildhall; break;
                             default:
                                 property.Known = false;
                                 break;
@@ -160,6 +161,9 @@ namespace LegendsViewer.Legends.WorldObjects
                     icon = "<i class=\"fa fa-fw fa-building-o\"></i>";
                     break;
                 case StructureType.CountingHouse:
+                    icon = "<i class=\"glyphicon fa-fw glyphicon-piggy-bank\"></i>";
+                    break;
+                case StructureType.Guildhall:
                     icon = "<i class=\"fa fa-fw fa-tty fa-flip-vertical\"></i>";
                     break;
                 default:

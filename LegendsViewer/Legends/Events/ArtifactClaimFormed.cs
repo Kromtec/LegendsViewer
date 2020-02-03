@@ -15,6 +15,7 @@ namespace LegendsViewer.Legends.Events
         public Entity Entity { get; set; }
         public Claim Claim { get; set; }
         public int PositionProfileId { get; set; }
+        public string Circumstance { get; set; }
 
         public ArtifactClaimFormed(List<Property> properties, World world)
             : base(properties, world)
@@ -52,6 +53,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "position_profile_id":
                         PositionProfileId = Convert.ToInt32(property.Value);
+                        break;
+                    case "circumstance":
+                        Circumstance = property.Value;
                         break;
                 }
             }
@@ -105,6 +109,12 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " by ";
                 eventString += HistoricalFigure.ToLink(link, pov, this);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Circumstance))
+            {
+                eventString += " ";
+                eventString += Circumstance;
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

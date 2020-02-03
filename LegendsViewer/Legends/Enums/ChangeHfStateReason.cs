@@ -10,6 +10,7 @@
         Scholarship,
         Pilgrimage,
         LackOfSleep,
-        GreatDealOfStress
+        GreatDealOfStress,
+        ExiledAfterConviction
     }
 }

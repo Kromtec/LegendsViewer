@@ -34,6 +34,7 @@ namespace LegendsViewer.Legends.Events
                             case "ambushed": SubType = HfSimpleBattleType.Ambushed; break;
                             case "corner": SubType = HfSimpleBattleType.Cornered; break;
                             case "surprised": SubType = HfSimpleBattleType.Surprised; break;
+                            case "got into a brawl": SubType = HfSimpleBattleType.GotIntoABrawl; break;
                             default: SubType = HfSimpleBattleType.Unknown; UnknownSubType = property.Value; property.Known = false; break;
                         }
                         break;
@@ -96,6 +97,10 @@ namespace LegendsViewer.Legends.Events
             else if (SubType == HfSimpleBattleType.Surprised)
             {
                 eventString += " suprised " + HistoricalFigure2.ToLink(link, pov, this);
+            }
+            else if (SubType == HfSimpleBattleType.GotIntoABrawl)
+            {
+                eventString += " got into a brawl with " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else
             {

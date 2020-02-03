@@ -117,6 +117,8 @@ namespace LegendsViewer.Legends.WorldObjects
         public Entity WorshippedBy { get; set; }
         public List<BeastAttack> BeastAttacks { get; set; }
         public HonorEntity HonorEntity { get; set; }
+        public List<IntrigueActor> IntrigueActors { get; set; }
+        public List<IntriguePlot> IntriguePlots { get; set; }
         public bool Alive
         {
             get
@@ -345,8 +347,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         property.Known = true;
                         if (property.SubProperties != null)
                         {
-                            var vagueRelationship = new VagueRelationship(property.SubProperties);
-                            VagueRelationships.Add(vagueRelationship);
+                            VagueRelationships.Add(new VagueRelationship(property.SubProperties));
                         }
                         break;
                     case "honor_entity":
@@ -354,6 +355,20 @@ namespace LegendsViewer.Legends.WorldObjects
                         if (property.SubProperties != null)
                         {
                             HonorEntity = new HonorEntity(property.SubProperties, world);
+                        }
+                        break;
+                    case "intrigue_actor":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            IntrigueActors.Add(new IntrigueActor(property.SubProperties));
+                        }
+                        break;
+                    case "intrigue_plot":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            IntriguePlots.Add(new IntriguePlot(property.SubProperties));
                         }
                         break;
                 }
@@ -400,6 +415,8 @@ namespace LegendsViewer.Legends.WorldObjects
             UsedIdentityIds = new List<int>();
             SiteProperties = new List<SiteProperty>();
             VagueRelationships = new List<VagueRelationship>();
+            IntrigueActors = new List<IntrigueActor>();
+            IntriguePlots = new List<IntriguePlot>();
         }
 
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)

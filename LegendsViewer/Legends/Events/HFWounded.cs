@@ -15,10 +15,14 @@ namespace LegendsViewer.Legends.Events
         public int InjuryType { get; set; } // legends_plus.xml
         public int PartLost { get; set; } // legends_plus.xml
 
-        public HistoricalFigure Woundee, Wounder;
-        public Site Site;
-        public WorldRegion Region;
-        public UndergroundRegion UndergroundRegion;
+        public HistoricalFigure Woundee { get; set; }
+        public HistoricalFigure Wounder { get; set; }
+        public Site Site { get; set; }
+        public WorldRegion Region { get; set; }
+        public UndergroundRegion UndergroundRegion { get; set; }
+        public bool WasTorture { get; set; }
+
+
         public HfWounded(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -39,6 +43,10 @@ namespace LegendsViewer.Legends.Events
                     case "body_part": BodyPart = Convert.ToInt32(property.Value); break;
                     case "injury_type": InjuryType = Convert.ToInt32(property.Value); break;
                     case "part_lost": PartLost = Convert.ToInt32(property.Value); break;
+                    case "was_torture":
+                        property.Known = true; 
+                        WasTorture = true; 
+                        break;
                 }
             }
 
@@ -81,6 +89,11 @@ namespace LegendsViewer.Legends.Events
             else if (UndergroundRegion != null)
             {
                 eventString += " in " + UndergroundRegion.ToLink(link, pov, this);
+            }
+
+            if (WasTorture)
+            {
+                eventString += " as a means of torture";
             }
 
             eventString += PrintParentCollection(link, pov);

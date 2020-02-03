@@ -50,6 +50,9 @@ namespace LegendsViewer.Legends.Events
                             case "buddy":
                                 HfRep2Of1 = ReputationType.Buddy;
                                 break;
+                            case "friendly":
+                                HfRep2Of1 = ReputationType.Friendly;
+                                break;
                             default:
                                 property.Known = false;
                                 break;
@@ -81,7 +84,7 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " as '" + IdentityId2 + "'";
             }
-            if (HfRep2Of1 == ReputationType.Buddy)
+            if (HfRep2Of1 == ReputationType.Buddy || HfRep2Of1 == ReputationType.Friendly)
             {
                 eventString += " in order to extract information";
             }
