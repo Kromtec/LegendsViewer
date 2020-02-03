@@ -130,6 +130,7 @@ namespace LegendsViewer.Controls
 
             // new 0.47.XX events
             new[] { "remove hf hf link",                  "Historical Figures unlinked", ""},
+            new[] { "holy city declaration",              "Holy City Declaration", ""},
 
             new[] { "INVALID",                     "INVALID EVENT",                            ""}
         };

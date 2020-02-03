@@ -637,6 +637,9 @@ namespace LegendsViewer.Legends.Parser
                 case "remove hf hf link":
                     World.Events.Add(new RemoveHfHfLink(properties, World));
                     break;
+                case "holy city declaration":
+                    World.Events.Add(new HolyCityDeclaration(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);
                     break;
