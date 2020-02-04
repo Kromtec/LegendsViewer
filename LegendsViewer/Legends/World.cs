@@ -86,7 +86,7 @@ namespace LegendsViewer.Legends
 
             CreateUnknowns();
 
-            XmlParser xml = new XmlParser(worker, this, xmlFile);
+            XmlParser xml = new XmlParser(worker, this, xmlFile, xmlPlusFile);
             xml.Parse();
 
             HistoryParser history = new HistoryParser(worker, this, historyFile);

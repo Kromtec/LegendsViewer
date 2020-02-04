@@ -32,13 +32,12 @@ namespace LegendsViewer.Legends.Parser
             };
         }
 
-        public XmlParser(BackgroundWorker worker, World world, string xmlFile) : this(xmlFile)
+        public XmlParser(BackgroundWorker worker, World world, string xmlFile, string xmlPlusFile) : this(xmlFile)
         {
             _worker = worker;
             World = world;
             _worker.ReportProgress(0, "Parsing XML Sections...");
-            string xmlPlusFile = xmlFile.Replace(".xml", "_plus.xml");
-            if (File.Exists(xmlPlusFile))
+            if (xmlPlusFile != xmlFile && File.Exists(xmlPlusFile))
             {
                 _xmlPlusParser = new XmlPlusParser(worker, world, xmlPlusFile);
                 World.Log.AppendLine("Found LEGENDS_PLUS.XML!");
@@ -642,6 +641,12 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case "hf performed horrible experiments":
                     World.Events.Add(new HfPerformedHorribleExperiments(properties, World));
+                    break;
+                case "entity incorporated":
+                    World.Events.Add(new EntityIncorporated(properties, World));
+                    break;
+                case "gamble":
+                    World.Events.Add(new Gamble(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);

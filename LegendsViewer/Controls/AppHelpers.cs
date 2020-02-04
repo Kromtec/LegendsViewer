@@ -132,6 +132,8 @@ namespace LegendsViewer.Controls
             new[] { "remove hf hf link",                  "Historical Figures unlinked", ""},
             new[] { "holy city declaration",              "Holy City Declaration", ""},
             new[] { "hf performed horrible experiments",  "Historical Figure performed horrible experiments", ""},
+            new[] { "entity incorporated",                "Entity Incorporated", ""},
+            new[] { "gamble",                             "Gamble", ""},
 
             new[] { "INVALID",                     "INVALID EVENT",                            ""}
         };

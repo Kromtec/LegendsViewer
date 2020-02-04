@@ -245,6 +245,8 @@
     <Compile Include="Legends\Enums\RelationShipProfileType.cs" />
     <Compile Include="Legends\Enums\SitePropertyType.cs" />
     <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
+    <Compile Include="Legends\Events\EntityIncorporated.cs" />
+    <Compile Include="Legends\Events\Gamble.cs" />
     <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />
     <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
     <Compile Include="Legends\Events\RemoveHfHfLink.cs" />
