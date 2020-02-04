@@ -94,17 +94,17 @@ namespace LegendsViewer.Controls
             new[] {"hf reach summit",              "Historical Figure Reach Summit",           ""},
 
             // new 0.42.XX events
-            new[] { "procession",                  "Procession",                               ""},
-            new[] { "ceremony",                    "Ceremony",                                 ""},
-            new[] { "performance",                 "Performance",                              ""},
-            new[] { "competition",                 "Competition",                              ""},
-            new[] { "written content composed",    "Written Content Composed",                 ""},
-            new[] { "knowledge discovered",        "Knowledge Discovered",                     ""},
-            new[] { "hf relationship denied",      "Historical Figure Relationship Denied",    ""},
-            new[] { "poetic form created",         "Poetic Form Created",                      ""},
-            new[] { "musical form created",        "Musical Form Created",                     ""},
-            new[] { "dance form created",          "Dance Form Created",                       ""},
-            new[] { "regionpop incorporated into entity", "Regionpop Incorporated Into Entity",""},
+            new[] { "procession",                         "Procession",                               ""},
+            new[] { "ceremony",                           "Ceremony",                                 ""},
+            new[] { "performance",                        "Performance",                              ""},
+            new[] { "competition",                        "Competition",                              ""},
+            new[] { "written content composed",           "Written Content Composed",                 ""},
+            new[] { "knowledge discovered",               "Knowledge Discovered",                     ""},
+            new[] { "hf relationship denied",             "Historical Figure Relationship Denied",    ""},
+            new[] { "poetic form created",                "Poetic Form Created",                      ""},
+            new[] { "musical form created",               "Musical Form Created",                     ""},
+            new[] { "dance form created",                 "Dance Form Created",                       ""},
+            new[] { "regionpop incorporated into entity", "Regionpop Incorporated Into Entity",       ""},
 
             // new 0.44.XX events
             new[] { "hfs formed reputation relationship", "Reputation Relationship Formed", ""},
@@ -129,13 +129,17 @@ namespace LegendsViewer.Controls
             new[] { "site surrendered",                   "Site Surrendered", ""},
 
             // new 0.47.XX events
-            new[] { "remove hf hf link",                  "Historical Figures unlinked", ""},
+            new[] { "remove hf hf link",                  "Historical Figures Unlinked", ""},
             new[] { "holy city declaration",              "Holy City Declaration", ""},
-            new[] { "hf performed horrible experiments",  "Historical Figure performed horrible experiments", ""},
+            new[] { "hf performed horrible experiments",  "Historical Figure Performed Horrible Experiments", ""},
             new[] { "entity incorporated",                "Entity Incorporated", ""},
             new[] { "gamble",                             "Gamble", ""},
+            new[] { "trade",                              "Trade", ""},
+            new[] { "hf equipment purchase",              "Historical Figure Equipment Purchase", ""},
+            new[] { "entity overthrown",                  "Entity Overthrown", ""},
+            new[] { "failed frame attempt",               "Failed Frame Attempt", ""},
 
-            new[] { "INVALID",                     "INVALID EVENT",                            ""}
+            new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
 
         private class ColumnBinding

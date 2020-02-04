@@ -648,6 +648,18 @@ namespace LegendsViewer.Legends.Parser
                 case "gamble":
                     World.Events.Add(new Gamble(properties, World));
                     break;
+                case "trade":
+                    World.Events.Add(new Trade(properties, World));
+                    break;
+                case "hf equipment purchase":
+                    World.Events.Add(new HfEquipmentPurchase(properties, World));
+                    break;
+                case "entity overthrown":
+                    World.Events.Add(new EntityOverthrown(properties, World));
+                    break;
+                case "failed frame attempt":
+                    World.Events.Add(new FailedFrameAttempt(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);
                     break;

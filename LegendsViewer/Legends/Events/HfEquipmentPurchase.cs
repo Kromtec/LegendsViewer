@@ -6,30 +6,28 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
-    public class Gamble : WorldEvent
+    public class HfEquipmentPurchase : WorldEvent
     {
+        public HistoricalFigure GroupHistoricalFigure { get; set; }
+        public Site Site { get; set; }
         public int StructureId { get; set; }
         public Structure Structure { get; set; }
-        public Site Site { get; set; }
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
-        public HistoricalFigure Gambler { get; set; }
-        public int OldAccount { get; set; }
-        public int NewAccount { get; set; }
+        public int Quality { get; set; }
 
-        public Gamble(List<Property> properties, World world) : base(properties, world)
+        public HfEquipmentPurchase(List<Property> properties, World world) : base(properties, world)
         {
             foreach (Property property in properties)
             {
                 switch (property.Name)
                 {
+                    case "quality": Quality = Convert.ToInt32(property.Value); break;
+                    case "group_hfid": GroupHistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
+                    case "structure_id": StructureId = Convert.ToInt32(property.Value); break;
                     case "subregion_id": Region = world.GetRegion(Convert.ToInt32(property.Value)); break;
                     case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;
-                    case "old_account": OldAccount = Convert.ToInt32(property.Value); break;
-                    case "new_account": NewAccount = Convert.ToInt32(property.Value); break;
-                    case "gambler_hfid": Gambler = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
-                    case "structure_id": StructureId = Convert.ToInt32(property.Value); break;
                 }
             }
 
@@ -41,36 +39,35 @@ namespace LegendsViewer.Legends.Events
             Site.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
-            Gambler.AddEvent(this);
+            GroupHistoricalFigure.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Gambler.ToLink(link, pov, this);
-            // same ranges like in "trade" event
-            var balance = NewAccount - OldAccount;
-            if (balance >= 5000)
+            eventString += GroupHistoricalFigure.ToLink(link, pov, this);
+            eventString += " purchased ";
+            if (Quality == 1)
             {
-                eventString += " made a fortune";
+                eventString += "well-crafted ";
             }
-            else if (balance >= 1000)
+            else if (Quality == 2)
             {
-                eventString += " did well";
+                eventString += "finely-crafted ";
             }
-            else if (balance <= -1000)
+            else if (Quality == 3)
             {
-                eventString += " did poorly";
+                eventString += "superior quality ";
             }
-            else if (balance <= -5000)
+            else if (Quality == 4)
             {
-                eventString += " lost a fortune";
+                eventString += "exceptional ";
             }
-            else
+            else if (Quality == 5)
             {
-                eventString += " broke even";
+                eventString += "masterwork ";
             }
-            eventString += " gambling";
+            eventString += "equipment";
             if (Site != null)
             {
                 eventString += " in ";
