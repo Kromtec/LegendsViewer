@@ -660,6 +660,9 @@ namespace LegendsViewer.Legends.Parser
                 case "failed frame attempt":
                     World.Events.Add(new FailedFrameAttempt(properties, World));
                     break;
+                case "hf convicted":
+                    World.Events.Add(new HfConvicted(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("Unknown Event: " + type);
                     break;

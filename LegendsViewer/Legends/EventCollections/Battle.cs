@@ -72,6 +72,13 @@ namespace LegendsViewer.Legends.EventCollections
 
         public List<string> DefendersAsList { get; set; }
 
+        public bool IndividualMercenaries { get; set; }
+        public bool CompanyMercenaries { get; set; }
+        public Entity AttackingMercenaryEntity { get; set; }
+        public Entity DefendingMercenaryEntity { get; set; }
+        public bool AttackingSquadAnimated { get; set; }
+        public bool DefendingSquadAnimated { get; set; }
+
         public static List<string> Filters;
         public override List<WorldEvent> FilteredEvents
         {
@@ -125,6 +132,12 @@ namespace LegendsViewer.Legends.EventCollections
                     case "defending_squad_deaths": defenderSquadDeaths.Add(Convert.ToInt32(property.Value)); break;
                     case "defending_squad_site": defenderSquadSite.Add(Convert.ToInt32(property.Value)); break;
                     case "noncom_hfid": NonCombatants.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
+                    case "individual_merc": property.Known = true; IndividualMercenaries = true; break;
+                    case "company_merc": property.Known = true; CompanyMercenaries = true; break;
+                    case "attacking_merc_enid": AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "defending_merc_enid": AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "attacking_squad_animated": property.Known = true; AttackingSquadAnimated = true; break;
+                    case "defending_squad_animated": property.Known = true; DefendingSquadAnimated = true; break;
                 }
             }
 
