@@ -24,7 +24,7 @@ namespace LegendsViewer.Legends.Events
                 switch (property.Name)
                 {
                     case "entity_id": Entity = world.GetEntity(Convert.ToInt32(property.Value)); break;
-                    case "structure_id": PositionProfileId = Convert.ToInt32(property.Value); break;
+                    case "position_profile_id": PositionProfileId = Convert.ToInt32(property.Value); break;
                     case "overthrown_hfid": OverthrownHistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "pos_taker_hfid": PositionTaker = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;

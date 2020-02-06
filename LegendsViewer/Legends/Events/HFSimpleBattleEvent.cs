@@ -35,6 +35,7 @@ namespace LegendsViewer.Legends.Events
                             case "corner": SubType = HfSimpleBattleType.Cornered; break;
                             case "surprised": SubType = HfSimpleBattleType.Surprised; break;
                             case "got into a brawl": SubType = HfSimpleBattleType.GotIntoABrawl; break;
+                            case "subdued": SubType = HfSimpleBattleType.Subdued; break;
                             default: SubType = HfSimpleBattleType.Unknown; UnknownSubType = property.Value; property.Known = false; break;
                         }
                         break;
@@ -52,6 +53,7 @@ namespace LegendsViewer.Legends.Events
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
         }
+
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime() + HistoricalFigure1.ToLink(link, pov, this);
@@ -96,11 +98,15 @@ namespace LegendsViewer.Legends.Events
             }
             else if (SubType == HfSimpleBattleType.Surprised)
             {
-                eventString += " suprised " + HistoricalFigure2.ToLink(link, pov, this);
+                eventString += " surprised " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else if (SubType == HfSimpleBattleType.GotIntoABrawl)
             {
                 eventString += " got into a brawl with " + HistoricalFigure2.ToLink(link, pov, this);
+            }
+            else if (SubType == HfSimpleBattleType.Subdued)
+            {
+                eventString += " fought with and subdued " + HistoricalFigure2.ToLink(link, pov, this);
             }
             else
             {

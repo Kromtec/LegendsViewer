@@ -238,7 +238,7 @@ namespace LegendsViewer.Legends.Parser
             {
                 if (!property.Known)
                 {
-                    World.ParsingErrors.Report("|==> " + path + " \nUnknown Property: " + property.Name, property.Value);
+                    World.ParsingErrors.Report("|==> " + path + " --- Unknown Property: " + property.Name, property.Value);
                 }
                 if (property.SubProperties != null)
                 {
@@ -663,8 +663,14 @@ namespace LegendsViewer.Legends.Parser
                 case "hf convicted":
                     World.Events.Add(new HfConvicted(properties, World));
                     break;
+                case "failed intrigue corruption":
+                    World.Events.Add(new FailedIntrigueCorruption(properties, World));
+                    break;
+                case "hfs formed intrigue relationship":
+                    World.Events.Add(new HfsFormedIntrigueRelationship(properties, World));
+                    break;
                 default:
-                    World.ParsingErrors.Report("Unknown Event: " + type);
+                    World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;
             }
         }
@@ -721,8 +727,14 @@ namespace LegendsViewer.Legends.Parser
                 case "raid":
                     World.EventCollections.Add(new Raid(properties, World));
                     break;
+                case "persecution":
+                    World.EventCollections.Add(new Persecution(properties, World));
+                    break;
+                case "entity overthrown":
+                    World.EventCollections.Add(new EntityOverthrownCollection(properties, World));
+                    break;
                 default:
-                    World.ParsingErrors.Report("Unknown Event Collection: " + type);
+                    World.ParsingErrors.Report("\nUnknown Event Collection: " + type);
                     break;
             }
         }

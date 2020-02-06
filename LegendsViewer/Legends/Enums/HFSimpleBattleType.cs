@@ -19,6 +19,7 @@ namespace LegendsViewer.Legends.Enums
         HappenedUpon,
         Cornered,
         Surprised,
-        GotIntoABrawl
+        GotIntoABrawl,
+        Subdued
     }
 }
