@@ -23,6 +23,12 @@ namespace LegendsViewer.Legends.Enums
         JealousObsession,
         Grudge,
         [Description("Jealous Relationship Grudge")]
-        JealousRelationshipGrudge
+        JealousRelationshipGrudge,
+        [Description("Scholar Buddy")]
+        ScholarBuddy,
+        [Description("Business Rival")]
+        BusinessRival,
+        [Description("Athletic Rival")]
+        AthleticRival,
     }
 }

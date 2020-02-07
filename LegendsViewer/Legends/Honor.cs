@@ -18,6 +18,7 @@ namespace LegendsViewer.Legends
         public int RequiredSkillIpTotal { get; set; }
         public int RequiredBattles { get; set; }
         public int RequiredYears { get; set; }
+        public int RequiredKills { get; set; }
         public int ExemptEpId { get; set; }
         public int ExemptFormerEpId { get; set; }
         public bool GrantedToEverybody { get; set; }
@@ -41,16 +42,11 @@ namespace LegendsViewer.Legends
                     case "required_skill_ip_total": RequiredSkillIpTotal = Convert.ToInt32(property.Value); break;
                     case "required_battles": RequiredBattles = Convert.ToInt32(property.Value); break;
                     case "required_years": RequiredYears = Convert.ToInt32(property.Value); break;
+                    case "required_kills": RequiredKills = Convert.ToInt32(property.Value); break;
                     case "exempt_epid": ExemptEpId = Convert.ToInt32(property.Value); break;
                     case "exempt_former_epid": ExemptFormerEpId = Convert.ToInt32(property.Value); break;
-                    case "granted_to_everybody":
-                        property.Known = true;
-                        GrantedToEverybody = true;
-                        break;
-                    case "requires_any_melee_or_ranged_skill":
-                        property.Known = true;
-                        RequiresAnyMeleeOrRangedSkill = true;
-                        break;
+                    case "granted_to_everybody": property.Known = true; GrantedToEverybody = true; break;
+                    case "requires_any_melee_or_ranged_skill": property.Known = true; RequiresAnyMeleeOrRangedSkill = true; break;
                 }
             }
 
@@ -72,7 +68,7 @@ namespace LegendsViewer.Legends
                 html += "</ol>";
             }
 
-            if (RequiredBattles > 0 || RequiredYears > 0 || GivesPrecedence > 0 || GrantedToEverybody || RequiresAnyMeleeOrRangedSkill)
+            if (RequiredBattles > 0 || RequiredYears > 0 || RequiredKills > 0 || GivesPrecedence > 0 || GrantedToEverybody || RequiresAnyMeleeOrRangedSkill)
             {
                 html += "<br/>";
                 html += "<ul>";
@@ -92,6 +88,12 @@ namespace LegendsViewer.Legends
                 {
                     html += "<li>";
                     html += "Required Years: " + RequiredYears;
+                    html += "</li>";
+                }
+                if (RequiredKills > 0)
+                {
+                    html += "<li>";
+                    html += "Required Kills: " + RequiredKills;
                     html += "</li>";
                 }
 

@@ -28,6 +28,7 @@ namespace LegendsViewer.Legends.Enums
         [Description("Important Location")]
         ImportantLocation,
         Fort,
-        Monastery
+        Monastery,
+        Castle
     }
 }

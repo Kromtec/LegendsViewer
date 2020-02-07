@@ -7,15 +7,17 @@ namespace LegendsViewer.Legends.Events
 {
     public class FieldBattle : WorldEvent
     {
-        public Entity Attacker;
-        public Entity Defender;
-        public Entity AttackerMercenaries;
-        public Entity DefenderMercenaries;
-        public WorldRegion Region;
-        public HistoricalFigure AttackerGeneral;
-        public HistoricalFigure DefenderGeneral;
-        public UndergroundRegion UndergroundRegion;
-        public Location Coordinates;
+        public Entity Attacker { get; set; }
+        public Entity Defender { get; set; }
+        public Entity AttackerMercenaries { get; set; }
+        public Entity DefenderMercenaries { get; set; }
+        public Entity AttackerSupportMercenaries { get; set; }
+        public Entity DefenderSupportMercenaries { get; set; }
+        public WorldRegion Region { get; set; }
+        public HistoricalFigure AttackerGeneral { get; set; }
+        public HistoricalFigure DefenderGeneral { get; set; }
+        public UndergroundRegion UndergroundRegion { get; set; }
+        public Location Coordinates { get; set; }
 
         public FieldBattle(List<Property> properties, World world)
             : base(properties, world)
@@ -33,6 +35,8 @@ namespace LegendsViewer.Legends.Events
                     case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;
                     case "attacker_merc_enid": AttackerMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "defender_merc_enid": DefenderMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "a_support_merc_enid": AttackerSupportMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "d_support_merc_enid": DefenderSupportMercenaries = world.GetEntity(Convert.ToInt32(property.Value)); break;
                 }
             }
 
@@ -44,6 +48,8 @@ namespace LegendsViewer.Legends.Events
             UndergroundRegion.AddEvent(this);
             AttackerMercenaries.AddEvent(this);
             DefenderMercenaries.AddEvent(this);
+            AttackerSupportMercenaries.AddEvent(this);
+            DefenderSupportMercenaries.AddEvent(this);
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
@@ -75,6 +81,18 @@ namespace LegendsViewer.Legends.Events
                 eventString += " ";
                 eventString += DefenderMercenaries.ToLink(true, pov);
                 eventString += " were hired by the defenders.";
+            }
+            if (AttackerSupportMercenaries != null)
+            {
+                eventString += " ";
+                eventString += AttackerSupportMercenaries.ToLink(true, pov);
+                eventString += " were hired as scouts by the attackers.";
+            }
+            if (DefenderSupportMercenaries != null)
+            {
+                eventString += " ";
+                eventString += DefenderSupportMercenaries.ToLink(true, pov);
+                eventString += " were hired as scouts by the defenders.";
             }
             return eventString;
         }

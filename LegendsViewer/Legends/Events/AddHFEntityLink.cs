@@ -12,6 +12,8 @@ namespace LegendsViewer.Legends.Events
     {
         public Entity Entity { get; set; }
         public HistoricalFigure HistoricalFigure { get; set; }
+        public HistoricalFigure AppointerHf { get; set; }
+        public HistoricalFigure PromiseToHf { get; set; }
         public HfEntityLinkType LinkType { get; set; }
         public string Position { get; set; }
         public int PositionId { get; set; }
@@ -31,10 +33,7 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "hfid":
                     case "histfig":
-                        if (HistoricalFigure == null)
-                        {
-                            HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
-                        }
+                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
                         break;
                     case "link":
                     case "link_type":
@@ -66,17 +65,17 @@ namespace LegendsViewer.Legends.Events
                                 break;
                         }
                         break;
-                    case "position":
-                        Position = property.Value;
-                        break;
-                    case "position_id":
-                        PositionId = Convert.ToInt32(property.Value);
-                        break;
+                    case "position": Position = property.Value; break;
+                    case "position_id": PositionId = Convert.ToInt32(property.Value); break;
+                    case "appointer_hfid": AppointerHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
+                    case "promise_to_hfid": PromiseToHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                 }
             }
 
             HistoricalFigure.AddEvent(this);
             Entity.AddEvent(this);
+            AppointerHf.AddEvent(this);
+            PromiseToHf.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
@@ -122,7 +121,7 @@ namespace LegendsViewer.Legends.Events
                     }
                     else
                     {
-                        eventString += " became an unspecified position of ";
+                        eventString += " got an honorable position in ";
                     }
                     break;
                 default:
@@ -132,6 +131,16 @@ namespace LegendsViewer.Legends.Events
 
             eventString += Entity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
+            if (AppointerHf != null)
+            {
+                eventString += ", appointed by ";
+                eventString += AppointerHf.ToLink(link, pov, this);
+            }
+            if (PromiseToHf != null)
+            {
+                eventString += " as promised to ";
+                eventString += PromiseToHf.ToLink(link, pov, this);
+            }
             eventString += ".";
             return eventString;
         }

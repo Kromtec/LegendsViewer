@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -38,6 +39,11 @@ namespace LegendsViewer.Legends.Events
         public int CorruptorIdentityId { get; set; }
         public int TargetIdentityId { get; set; }
 
+        public Entity RelevantEntity { get; set; }
+        public int RelevantPositionProfileId { get; set; }
+        public int RelevantIdForMethod { get; set; }
+
+        // Similar to hfs formed intrigue relationship
         public FailedIntrigueCorruption(List<Property> properties, World world) : base(properties, world)
         {
             foreach (Property property in properties)
@@ -68,7 +74,11 @@ namespace LegendsViewer.Legends.Events
                             case "intimidate": Method = IntrigueMethod.Intimidate; break;
                             case "flatter": Method = IntrigueMethod.Flatter; break;
                             case "bribe": Method = IntrigueMethod.Bribe; break;
+                            case "precedence": Method = IntrigueMethod.Precedence; break;
                             case "offer immortality": Method = IntrigueMethod.OfferImmortality; break;
+                            case "religious sympathy": Method = IntrigueMethod.ReligiousSympathy; break;
+                            case "blackmail over embezzlement": Method = IntrigueMethod.BlackmailOverEmbezzlement; break;
+                            case "revenge on grudge": Method = IntrigueMethod.RevengeOnGrudge; break;
                             default:
                                 property.Known = false;
                                 break;
@@ -88,6 +98,9 @@ namespace LegendsViewer.Legends.Events
                     case "lure_hfid": LureHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "corruptor_identity": CorruptorIdentityId = Convert.ToInt32(property.Value); break;
                     case "target_identity": TargetIdentityId = Convert.ToInt32(property.Value); break;
+                    case "relevant_entity_id": RelevantEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "relevant_position_profile_id": RelevantPositionProfileId = Convert.ToInt32(property.Value); break;
+                    case "relevant_id_for_method": RelevantIdForMethod = Convert.ToInt32(property.Value); break;
                 }
             }
 
@@ -159,50 +172,63 @@ namespace LegendsViewer.Legends.Events
             {
                 case IntrigueMethod.Intimidate:
                     eventString += "made a threat. ";
-                    eventString += TargetHf.ToLink(link, pov, this).ToUpperFirstLetter();
-                    eventString += " was unfraid and refused.";
+                    //eventString += TargetHf.ToLink(link, pov, this).ToUpperFirstLetter();
+                    //eventString += " was unfraid and refused.";
                     break;
                 case IntrigueMethod.Flatter:
                     eventString += "made flattering remarks. ";
-                    eventString += TargetHf.ToLink(link, pov, this).ToUpperFirstLetter();
-                    eventString += " hated ";
-                    eventString += CorruptorHf.ToLink(link, pov, this);
-                    eventString += " and refused.";
+                    //eventString += TargetHf.ToLink(link, pov, this).ToUpperFirstLetter();
+                    //eventString += " hated ";
+                    //eventString += CorruptorHf.ToLink(link, pov, this);
+                    //eventString += " and refused.";
                     break;
                 case IntrigueMethod.Bribe:
                     eventString += "offered a bribe. ";
-                    eventString += "The plan failed.";
+                    break;
+                case IntrigueMethod.Precedence:
+                    eventString += "pulled rank. ";
                     break;
                 case IntrigueMethod.OfferImmortality:
                     eventString += "offered immortality. ";
-                    eventString += "The plan failed.";
+                    break;
+                case IntrigueMethod.ReligiousSympathy:
+                    eventString += $"played on sympathy by appealing to a shared worship of {World.GetHistoricalFigure(RelevantIdForMethod)?.ToLink(link, pov, this)}. ";
+                    break;
+                case IntrigueMethod.BlackmailOverEmbezzlement:
+                    var position = RelevantEntity?.EntityPositions.FirstOrDefault(p => p.Id == RelevantPositionProfileId);
+                    eventString += $"made a blackmail threat, due to embezzlement using the position {position?.Name} of {RelevantEntity?.ToLink(link, pov, this)}. ";
+                    break;
+                case IntrigueMethod.RevengeOnGrudge:
+                    eventString += $"offered revenge upon  {World.GetHistoricalFigure(RelevantIdForMethod)?.ToLink(link, pov, this)}. ";
                     break;
             }
-            eventString += "<br/>";
-            if (TopFacet != null)
-            {
-                eventString += $" TopFacet: {TopFacet} ({TopFacetRating}/{TopFacetModifier}) ";
-            }
-            if (TopValue != null)
-            {
-                eventString += $" TopValue: {TopValue} ({TopValueRating}/{TopValueModifier}) ";
-            }
-            if (TopRelationshipFactor != null)
-            {
-                eventString += $" TopRelationshipFactor: {TopRelationshipFactor} ({TopRelationshipRating}/{TopRelationshipModifier}) ";
-            }
-            if (FailedJudgmentTest)
-            {
-                eventString += " FailedJudgmentTest ";
-            }
-            if (AllyDefenseBonus != 0)
-            {
-                eventString += $" AllyDefenseBonus: {AllyDefenseBonus}";
-            }
-            if (CoConspiratorBonus != 0)
-            {
-                eventString += $" CoConspiratorBonus: {CoConspiratorBonus}";
-            }
+            eventString += "The plan failed.";
+            // TODO create the right sentences for facet, value and relationship factors
+            //eventString += "<br/>";
+            //if (TopFacet != null)
+            //{
+            //    eventString += $" TopFacet: {TopFacet} ({TopFacetRating}/{TopFacetModifier}) ";
+            //}
+            //if (TopValue != null)
+            //{
+            //    eventString += $" TopValue: {TopValue} ({TopValueRating}/{TopValueModifier}) ";
+            //}
+            //if (TopRelationshipFactor != null)
+            //{
+            //    eventString += $" TopRelationshipFactor: {TopRelationshipFactor} ({TopRelationshipRating}/{TopRelationshipModifier}) ";
+            //}
+            //if (FailedJudgmentTest)
+            //{
+            //    eventString += " FailedJudgmentTest ";
+            //}
+            //if (AllyDefenseBonus != 0)
+            //{
+            //    eventString += $" AllyDefenseBonus: {AllyDefenseBonus}";
+            //}
+            //if (CoConspiratorBonus != 0)
+            //{
+            //    eventString += $" CoConspiratorBonus: {CoConspiratorBonus}";
+            //}
             return eventString;
         }
     }

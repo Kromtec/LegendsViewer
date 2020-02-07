@@ -49,6 +49,7 @@ namespace LegendsViewer.Legends.Events
         public int RelevantPositionProfileId { get; set; }
         public int RelevantIdForMethod { get; set; }
 
+        // Similar to failed intrigue corruption
         public HfsFormedIntrigueRelationship(List<Property> properties, World world) : base(properties, world)
         {
             foreach (Property property in properties)
@@ -183,7 +184,6 @@ namespace LegendsViewer.Legends.Events
             {
                 case IntrigueMethod.Intimidate:
                     eventString += "made a threat. ";
-                    eventString += "The plan worked.";
                     break;
                 case IntrigueMethod.Flatter:
                     eventString += "made flattering remarks. ";
@@ -210,31 +210,33 @@ namespace LegendsViewer.Legends.Events
                     eventString += $"offered revenge upon  {World.GetHistoricalFigure(RelevantIdForMethod)?.ToLink(link, pov, this)}. ";
                     break;
             }
-            eventString += "<br/>";
-            if (TopFacet != null)
-            {
-                eventString += $" TopFacet: {TopFacet} ({TopFacetRating}/{TopFacetModifier}) ";
-            }
-            if (TopValue != null)
-            {
-                eventString += $" TopValue: {TopValue} ({TopValueRating}/{TopValueModifier}) ";
-            }
-            if (TopRelationshipFactor != null)
-            {
-                eventString += $" TopRelationshipFactor: {TopRelationshipFactor} ({TopRelationshipRating}/{TopRelationshipModifier}) ";
-            }
-            if (FailedJudgmentTest)
-            {
-                eventString += " FailedJudgmentTest ";
-            }
-            if (AllyDefenseBonus != 0)
-            {
-                eventString += $" AllyDefenseBonus: {AllyDefenseBonus}";
-            }
-            if (CoConspiratorBonus != 0)
-            {
-                eventString += $" CoConspiratorBonus: {CoConspiratorBonus}";
-            }
+            eventString += "The plan worked.";
+            // TODO create the right sentences for facet, value and relationship factors
+            //eventString += "<br/>";
+            //if (TopFacet != null)
+            //{
+            //    eventString += $" TopFacet: {TopFacet} ({TopFacetRating}/{TopFacetModifier}) ";
+            //}
+            //if (TopValue != null)
+            //{
+            //    eventString += $" TopValue: {TopValue} ({TopValueRating}/{TopValueModifier}) ";
+            //}
+            //if (TopRelationshipFactor != null)
+            //{
+            //    eventString += $" TopRelationshipFactor: {TopRelationshipFactor} ({TopRelationshipRating}/{TopRelationshipModifier}) ";
+            //}
+            //if (FailedJudgmentTest)
+            //{
+            //    eventString += " FailedJudgmentTest ";
+            //}
+            //if (AllyDefenseBonus != 0)
+            //{
+            //    eventString += $" AllyDefenseBonus: {AllyDefenseBonus}";
+            //}
+            //if (CoConspiratorBonus != 0)
+            //{
+            //    eventString += $" CoConspiratorBonus: {CoConspiratorBonus}";
+            //}
             return eventString;
         }
     }

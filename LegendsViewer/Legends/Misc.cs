@@ -8,12 +8,26 @@ namespace LegendsViewer.Legends
     {
         public static void AddEvent(this WorldObject worldObject, WorldEvent worldEvent)
         {
-            worldObject?.Events.Add(worldEvent);
+            if (worldObject == null ||worldEvent == null)
+            {
+                return;
+            }
+            if (!worldObject.Events.Contains(worldEvent))
+            {
+                worldObject.Events.Add(worldEvent);
+            }
         }
 
         public static void AddEventCollection(this WorldObject worldObject, EventCollection eventCollection)
         {
-            worldObject?.EventCollectons.Add(eventCollection);
+            if (worldObject == null || eventCollection == null)
+            {
+                return;
+            }
+            if (!worldObject.EventCollectons.Contains(eventCollection))
+            {
+                worldObject.EventCollectons.Add(eventCollection);
+            }
         }
 
         public static T GetWorldObject<T>(this List<T> list, int id) where T : WorldObject

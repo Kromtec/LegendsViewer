@@ -144,6 +144,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "important location": SiteType = SiteType.ImportantLocation; break;
                             case "fort": SiteType = SiteType.Fort; break;
                             case "monastery": SiteType = SiteType.Monastery; break;
+                            case "castle": SiteType = SiteType.Castle; break;
                             default:
                                 property.Known = false;
                                 break;
@@ -254,6 +255,9 @@ namespace LegendsViewer.Legends.WorldObjects
                     break;
                 case SiteType.Monastery:
                     Icon = "<i class=\"fa fa-fw fa-viacoin fa-flip-vertical\"></i>";
+                    break;
+                case SiteType.Castle:
+                    Icon = "<i class=\"fa fa-fw fa-outdent fa-rotate-90\"></i>";
                     break;
             }
         }
