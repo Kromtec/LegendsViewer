@@ -675,6 +675,9 @@ namespace LegendsViewer.Legends.Parser
                 case "entity dissolved":
                     World.Events.Add(new EntityDissolved(properties, World));
                     break;
+                case "add hf entity honor":
+                    World.Events.Add(new AddHfEntityHonor(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

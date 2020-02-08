@@ -34,7 +34,6 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-
             Entity.AddEvent(this);
         }
 

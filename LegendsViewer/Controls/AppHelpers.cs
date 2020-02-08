@@ -143,6 +143,7 @@ namespace LegendsViewer.Controls
             new[] { "hfs formed intrigue relationship",   "Historical Figures formed Intrigue Relationship", ""},
             new[] { "entity alliance formed",             "Entities formed Alliance", ""},
             new[] { "entity dissolved",                   "Entity Dissolved", ""},
+            new[] { "add hf entity honor",                "Add Historical Figure Honor", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };

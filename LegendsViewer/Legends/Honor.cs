@@ -131,5 +131,63 @@ namespace LegendsViewer.Legends
             }
             return html;
         }
+
+        public string PrintRequirementsAsString()
+        {
+            string requirementsString = "";
+            List<string> requirements = new List<string>();
+            if (RequiredSkill != null)
+            {
+                requirements.Add($"attaining sufficient skill with the {RequiredSkill.Name.ToLower()}");
+            }
+            else if (RequiresAnyMeleeOrRangedSkill)
+            {
+                requirements.Add("attaining sufficient skill with a weapon or technique");
+            }
+
+            if (RequiredBattles == 1)
+            {
+                requirements.Add("serving in combat");
+            }
+            else if (RequiredBattles > 1)
+            {
+                requirements.Add($"serving in {RequiredBattles} battles");
+            }
+            if (RequiredKills == 1)
+            {
+                requirements.Add("killing an enemy");
+            }
+            else if (RequiredKills > 1)
+            {
+                requirements.Add($"killing {RequiredKills} enemies");
+            }
+            if (RequiredYears == 1)
+            {
+                requirements.Add("being enlisted for a year");
+            }
+            else if (RequiredYears > 1)
+            {
+                requirements.Add($"being enlisted for {RequiredYears} years");
+            }
+
+            if (requirements.Count == 1)
+            {
+                return requirements[0];
+            }
+            for (int i = 0; i < requirements.Count; i++)
+            {
+                requirementsString += requirements[i];
+                if (i == requirements.Count - 2)
+                {
+                    requirementsString += " and ";
+                }
+                else if (i < requirements.Count - 2)
+                {
+                    requirementsString += ", ";
+                }
+            }
+
+            return requirementsString;
+        }
     }
 }
