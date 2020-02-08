@@ -678,6 +678,9 @@ namespace LegendsViewer.Legends.Parser
                 case "add hf entity honor":
                     World.Events.Add(new AddHfEntityHonor(properties, World));
                     break;
+                case "entity breach feature layer":
+                    World.Events.Add(new EntityBreachFeatureLayer(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;
