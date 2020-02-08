@@ -18,9 +18,9 @@ namespace LegendsViewer.Legends.Events
             {
                 switch (property.Name)
                 {
-                    case "initiating_enid": PayerEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "ransomed_hfid": RansomedHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "ransomer_hfid": RansomerHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
+                    case "payer_entity_id": PayerEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "moved_to_site_id": MovedToSite = world.GetSite(Convert.ToInt32(property.Value)); break;
                 }
             }
@@ -29,6 +29,7 @@ namespace LegendsViewer.Legends.Events
             PayerEntity.AddEvent(this);
             RansomedHf.AddEvent(this);
             RansomerHf.AddEvent(this);
+            MovedToSite.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
@@ -37,17 +38,19 @@ namespace LegendsViewer.Legends.Events
             eventString += RansomerHf.ToLink(link, pov, this);
             eventString += " ransomed ";
             eventString += RansomedHf.ToLink(link, pov, this);
-            eventString += " of ";
-            eventString += PayerEntity.ToLink(link, pov, this);
-            eventString += " for money";
+            if (PayerEntity != null)
+            {
+                eventString += " to ";
+                eventString += PayerEntity.ToLink(link, pov, this);
+            }
+            eventString += PrintParentCollection(link, pov);
+            eventString += ". ";
             if (MovedToSite != null)
             {
-                eventString += " in ";
+                eventString += RansomedHf.ToLink(link, pov, this).ToUpperFirstLetter();
+                eventString += " was sent to ";
                 eventString += MovedToSite.ToLink(link, pov, this);
             }
-
-            eventString += PrintParentCollection(link, pov);
-            eventString += ".";
             return eventString;
         }
     }
