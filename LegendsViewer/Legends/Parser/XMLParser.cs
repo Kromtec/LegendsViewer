@@ -684,6 +684,9 @@ namespace LegendsViewer.Legends.Parser
                 case "entity equipment purchase":
                     World.Events.Add(new EntityEquipmentPurchase(properties, World));
                     break;
+                case "hf ransomed":
+                    World.Events.Add(new HfRansomed(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

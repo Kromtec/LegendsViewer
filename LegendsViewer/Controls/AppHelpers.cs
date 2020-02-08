@@ -146,6 +146,7 @@ namespace LegendsViewer.Controls
             new[] { "add hf entity honor",                "Add Historical Figure Honor", ""},
             new[] { "entity breach feature layer",        "Entity Breach Caverns", ""},
             new[] { "entity equipment purchase",          "Entity Equipment Purchase", ""},
+            new[] { "hf ransomed",                        "Historical Figure Ransomed", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
