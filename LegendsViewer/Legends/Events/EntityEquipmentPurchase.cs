@@ -19,7 +19,7 @@ namespace LegendsViewer.Legends.Events
                 {
                     case "entity_id": Entity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "hfid": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
-                    case "NewEquipmentLevel": Quality = Convert.ToInt32(property.Value); break;
+                    case "new_equipment_level": Quality = Convert.ToInt32(property.Value); break;
                 }
             }
 

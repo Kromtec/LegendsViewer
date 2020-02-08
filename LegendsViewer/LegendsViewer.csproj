@@ -253,6 +253,7 @@
     <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
     <Compile Include="Legends\EventCollections\EntityOverthrownCollection.cs" />
     <Compile Include="Legends\EventCollections\Persecution.cs" />
+    <Compile Include="Legends\Events\BuildingProfileAcquired.cs" />
     <Compile Include="Legends\Events\EntityAllianceFormed.cs" />
     <Compile Include="Legends\Events\EntityBreachFeatureLayer.cs" />
     <Compile Include="Legends\Events\EntityDissolved.cs" />

@@ -699,6 +699,9 @@ namespace LegendsViewer.Legends.Parser
                 case "entity persecuted":
                     World.Events.Add(new EntityPersecuted(properties, World));
                     break;
+                case "building profile acquired":
+                    World.Events.Add(new BuildingProfileAcquired(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;
