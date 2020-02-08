@@ -78,6 +78,10 @@ namespace LegendsViewer.Legends.EventCollections
         public Entity DefendingMercenaryEntity { get; set; }
         public bool AttackingSquadAnimated { get; set; }
         public bool DefendingSquadAnimated { get; set; }
+        public List<Entity> AttackerSupportMercenaryEntities { get; set; }
+        public List<Entity> DefenderSupportMercenaryEntities { get; set; }
+        public List<HistoricalFigure> AttackerSupportMercenaryHfs { get; set; }
+        public List<HistoricalFigure> DefenderSupportMercenaryHfs { get; set; }
 
         public static List<string> Filters;
         public override List<WorldEvent> FilteredEvents
@@ -138,6 +142,10 @@ namespace LegendsViewer.Legends.EventCollections
                     case "defending_merc_enid": AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "attacking_squad_animated": property.Known = true; AttackingSquadAnimated = true; break;
                     case "defending_squad_animated": property.Known = true; DefendingSquadAnimated = true; break;
+                    case "a_support_merc_enid": AttackerSupportMercenaryEntities.Add(world.GetEntity(Convert.ToInt32(property.Value))); break;
+                    case "d_support_merc_enid": DefenderSupportMercenaryEntities.Add(world.GetEntity(Convert.ToInt32(property.Value))); break;
+                    case "a_support_merc_hfid": AttackerSupportMercenaryHfs.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
+                    case "d_support_merc_hfid": DefenderSupportMercenaryHfs.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                 }
             }
 
@@ -267,20 +275,9 @@ namespace LegendsViewer.Legends.EventCollections
                 }
             }
 
-            if (Site != null)
-            {
-                Site.Warfare.Add(this);
-            }
-
-            if (Region != null)
-            {
-                Region.Battles.Add(this);
-            }
-
-            if (UndergroundRegion != null)
-            {
-                UndergroundRegion.Battles.Add(this);
-            }
+            Site?.Warfare.Add(this);
+            Region?.Battles.Add(this);
+            UndergroundRegion?.Battles.Add(this);
 
             if (attackerSquadDeaths.Sum() + defenderSquadDeaths.Sum() + Collection.OfType<HfDied>().Count() == 0)
             {
@@ -289,7 +286,7 @@ namespace LegendsViewer.Legends.EventCollections
 
             if (attackerSquadNumbers.Sum() + NotableAttackers.Count > (defenderSquadNumbers.Sum() + NotableDefenders.Count) * 10 //NotableDefenders outnumbered 10 to 1
                 && Victor == Attacker
-                && AttackerDeathCount < (NotableAttackers.Count + attackerSquadNumbers.Sum()) * 0.1) //NotableAttackers lossses < 10%
+                && AttackerDeathCount < (NotableAttackers.Count + attackerSquadNumbers.Sum()) * 0.1) //NotableAttackers losses < 10%
             {
                 Notable = false;
             }
@@ -315,6 +312,10 @@ namespace LegendsViewer.Legends.EventCollections
             Attackers = new List<Squad>();
             Defenders = new List<Squad>();
             NonCombatants = new List<HistoricalFigure>();
+            AttackerSupportMercenaryEntities = new List<Entity>();
+            DefenderSupportMercenaryEntities = new List<Entity>();
+            AttackerSupportMercenaryHfs = new List<HistoricalFigure>();
+            DefenderSupportMercenaryHfs = new List<HistoricalFigure>();
         }
 
         public class Squad

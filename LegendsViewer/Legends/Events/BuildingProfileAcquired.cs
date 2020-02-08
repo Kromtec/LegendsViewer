@@ -54,7 +54,7 @@ namespace LegendsViewer.Legends.Events
             }
             else if (Inherited)
             {
-                eventString += " purchased ";
+                eventString += " inherited ";
             }
             else if (RebuiltRuined)
             {
