@@ -669,6 +669,9 @@ namespace LegendsViewer.Legends.Parser
                 case "hfs formed intrigue relationship":
                     World.Events.Add(new HfsFormedIntrigueRelationship(properties, World));
                     break;
+                case "entity alliance formed":
+                    World.Events.Add(new EntityAllianceFormed(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

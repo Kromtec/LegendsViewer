@@ -250,6 +250,7 @@
     <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
     <Compile Include="Legends\EventCollections\EntityOverthrownCollection.cs" />
     <Compile Include="Legends\EventCollections\Persecution.cs" />
+    <Compile Include="Legends\Events\EntityAllianceFormed.cs" />
     <Compile Include="Legends\Events\EntityIncorporated.cs" />
     <Compile Include="Legends\Events\EntityOverthrown.cs" />
     <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
