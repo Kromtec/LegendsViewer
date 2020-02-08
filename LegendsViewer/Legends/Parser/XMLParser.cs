@@ -687,6 +687,9 @@ namespace LegendsViewer.Legends.Parser
                 case "hf ransomed":
                     World.Events.Add(new HfRansomed(properties, World));
                     break;
+                case "hf preach":
+                    World.Events.Add(new HfPreach(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

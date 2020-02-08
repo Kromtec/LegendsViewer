@@ -242,6 +242,7 @@
       <DependentUpon>LegendsViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Legends\ArtForm.cs" />
+    <Compile Include="Legends\Enums\PreachTopic.cs" />
     <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
     <Compile Include="Legends\Enums\AgreementReason.cs" />
     <Compile Include="Legends\Enums\DissolveReason.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Legends\Events\HfConvicted.cs" />
     <Compile Include="Legends\Events\HfEquipmentPurchase.cs" />
     <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />
+    <Compile Include="Legends\Events\HfPreach.cs" />
     <Compile Include="Legends\Events\HfRansomed.cs" />
     <Compile Include="Legends\Events\HfsFormedIntrigueRelationship.cs" />
     <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
