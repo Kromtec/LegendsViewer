@@ -690,6 +690,9 @@ namespace LegendsViewer.Legends.Parser
                 case "hf preach":
                     World.Events.Add(new HfPreach(properties, World));
                     break;
+                case "modified building":
+                    World.Events.Add(new ModifiedBuilding(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

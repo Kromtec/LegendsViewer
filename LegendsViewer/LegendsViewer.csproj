@@ -269,6 +269,7 @@
     <Compile Include="Legends\Events\HfRansomed.cs" />
     <Compile Include="Legends\Events\HfsFormedIntrigueRelationship.cs" />
     <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
+    <Compile Include="Legends\Events\ModifiedBuilding.cs" />
     <Compile Include="Legends\Events\RemoveHfHfLink.cs" />
     <Compile Include="Legends\Events\Trade.cs" />
     <Compile Include="Legends\Honor.cs" />

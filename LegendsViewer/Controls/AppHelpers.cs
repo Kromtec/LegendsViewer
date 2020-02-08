@@ -148,6 +148,7 @@ namespace LegendsViewer.Controls
             new[] { "entity equipment purchase",          "Entity Equipment Purchase", ""},
             new[] { "hf ransomed",                        "Historical Figure Ransomed", ""},
             new[] { "hf preach",                          "Historical Figure Preach", ""},
+            new[] { "modified building",                  "Modified Building", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
