@@ -672,6 +672,9 @@ namespace LegendsViewer.Legends.Parser
                 case "entity alliance formed":
                     World.Events.Add(new EntityAllianceFormed(properties, World));
                     break;
+                case "entity dissolved":
+                    World.Events.Add(new EntityDissolved(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

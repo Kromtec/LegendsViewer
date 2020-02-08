@@ -142,6 +142,7 @@ namespace LegendsViewer.Controls
             new[] { "failed intrigue corruption",         "Failed Intrigue Corruption", ""},
             new[] { "hfs formed intrigue relationship",   "Historical Figures formed Intrigue Relationship", ""},
             new[] { "entity alliance formed",             "Entities formed Alliance", ""},
+            new[] { "entity dissolved",                   "Entity Dissolved", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
