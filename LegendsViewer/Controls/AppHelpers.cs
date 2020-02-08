@@ -150,6 +150,7 @@ namespace LegendsViewer.Controls
             new[] { "hf preach",                          "Historical Figure Preach", ""},
             new[] { "modified building",                  "Modified Building", ""},
             new[] { "hf interrogated",                    "Historical Figure Interrogated", ""},
+            new[] { "entity persecuted",                  "Entity Persecuted", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };

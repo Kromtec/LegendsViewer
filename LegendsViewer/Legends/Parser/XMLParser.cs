@@ -696,6 +696,9 @@ namespace LegendsViewer.Legends.Parser
                 case "hf interrogated":
                     World.Events.Add(new HfInterrogated(properties, World));
                     break;
+                case "entity persecuted":
+                    World.Events.Add(new EntityPersecuted(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

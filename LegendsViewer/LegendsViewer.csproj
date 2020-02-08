@@ -259,6 +259,7 @@
     <Compile Include="Legends\Events\EntityEquipmentPurchase.cs" />
     <Compile Include="Legends\Events\EntityIncorporated.cs" />
     <Compile Include="Legends\Events\EntityOverthrown.cs" />
+    <Compile Include="Legends\Events\EntityPersecuted.cs" />
     <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
     <Compile Include="Legends\Events\FailedIntrigueCorruption.cs" />
     <Compile Include="Legends\Events\Gamble.cs" />

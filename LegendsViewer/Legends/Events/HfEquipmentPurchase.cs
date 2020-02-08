@@ -40,6 +40,7 @@ namespace LegendsViewer.Legends.Events
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
             GroupHistoricalFigure.AddEvent(this);
+            Structure.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

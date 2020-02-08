@@ -33,6 +33,7 @@ namespace LegendsViewer.Legends.Events
             }
             ModifierHf.AddEvent(this);
             Site.AddEvent(this);
+            Structure.AddEvent(this);
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
