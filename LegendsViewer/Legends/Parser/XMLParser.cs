@@ -681,6 +681,9 @@ namespace LegendsViewer.Legends.Parser
                 case "entity breach feature layer":
                     World.Events.Add(new EntityBreachFeatureLayer(properties, World));
                     break;
+                case "entity equipment purchase":
+                    World.Events.Add(new EntityEquipmentPurchase(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

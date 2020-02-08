@@ -255,6 +255,7 @@
     <Compile Include="Legends\Events\EntityAllianceFormed.cs" />
     <Compile Include="Legends\Events\EntityBreachFeatureLayer.cs" />
     <Compile Include="Legends\Events\EntityDissolved.cs" />
+    <Compile Include="Legends\Events\EntityEquipmentPurchase.cs" />
     <Compile Include="Legends\Events\EntityIncorporated.cs" />
     <Compile Include="Legends\Events\EntityOverthrown.cs" />
     <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
