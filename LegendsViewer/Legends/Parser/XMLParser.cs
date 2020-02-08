@@ -693,6 +693,9 @@ namespace LegendsViewer.Legends.Parser
                 case "modified building":
                     World.Events.Add(new ModifiedBuilding(properties, World));
                     break;
+                case "hf interrogated":
+                    World.Events.Add(new HfInterrogated(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

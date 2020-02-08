@@ -264,6 +264,7 @@
     <Compile Include="Legends\Events\Gamble.cs" />
     <Compile Include="Legends\Events\HfConvicted.cs" />
     <Compile Include="Legends\Events\HfEquipmentPurchase.cs" />
+    <Compile Include="Legends\Events\HfInterrogated.cs" />
     <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />
     <Compile Include="Legends\Events\HfPreach.cs" />
     <Compile Include="Legends\Events\HfRansomed.cs" />
