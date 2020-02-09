@@ -40,12 +40,21 @@ namespace LegendsViewer.Legends.Events
 
             Attacker.AddEvent(this);
             Defender.AddEvent(this);
-            SiteEntity.AddEvent(this);
+            if (SiteEntity != Defender)
+            {
+                SiteEntity.AddEvent(this);
+            }
             Site.AddEvent(this);
             AttackerGeneral.AddEvent(this);
             DefenderGeneral.AddEvent(this);
-            AttackerMercenaries.AddEvent(this);
-            DefenderMercenaries.AddEvent(this);
+            if (AttackerMercenaries != Defender && AttackerMercenaries != Attacker)
+            {
+                AttackerMercenaries.AddEvent(this);
+            }
+            if (DefenderMercenaries != Defender && DefenderMercenaries != Attacker)
+            {
+                DefenderMercenaries.AddEvent(this);
+            }
             AttackerSupportMercenaries.AddEvent(this);
             DefenderSupportMercenaries.AddEvent(this);
         }

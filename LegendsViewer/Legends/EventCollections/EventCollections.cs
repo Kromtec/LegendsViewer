@@ -22,7 +22,8 @@ namespace LegendsViewer.Legends.EventCollections
         public bool Notable { get; set; }
         public List<WorldEvent> AllEvents { get { return GetSubEvents(); } set { } }
         public abstract List<WorldEvent> FilteredEvents { get; }
-        protected World World;
+        public World World { get; }
+
         protected EventCollection(List<Property> properties, World world)
         {
             Initialize();

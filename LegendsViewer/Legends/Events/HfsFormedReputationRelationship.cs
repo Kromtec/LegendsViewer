@@ -65,7 +65,10 @@ namespace LegendsViewer.Legends.Events
                 }
             }
             HistoricalFigure1.AddEvent(this);
-            HistoricalFigure2.AddEvent(this);
+            if (HistoricalFigure1 != HistoricalFigure2)
+            {
+                HistoricalFigure2.AddEvent(this);
+            }
             Site.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);

@@ -35,7 +35,10 @@ namespace LegendsViewer.Legends.Events
 
             Attacker.AddEvent(this);
             DefenderCiv.AddEvent(this);
-            SiteCiv.AddEvent(this);
+            if (SiteCiv != DefenderCiv)
+            {
+                SiteCiv.AddEvent(this);
+            }
             Site.AddEvent(this);
         }
 

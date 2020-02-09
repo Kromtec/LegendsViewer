@@ -66,12 +66,22 @@ namespace LegendsViewer.Legends.Events
             FooledHf.AddEvent(this);
             FramerHf.AddEvent(this);
             CorruptConvictorHf.AddEvent(this);
-            PlotterHf.AddEvent(this);
-            ConfessedAfterApbArrestEntity.AddEvent(this);
+            if (PlotterHf != CorruptConvictorHf)
+            {
+                PlotterHf.AddEvent(this);
+            }
+
+            if (ConvicterEntity != ConfessedAfterApbArrestEntity)
+            {
+                ConfessedAfterApbArrestEntity.AddEvent(this);
+            }
             CoConspiratorHf.AddEvent(this);
             ImplicatedHf.AddEvent(this);
             InterrogatorHf.AddEvent(this);
-            ContactHf.AddEvent(this);
+            if (ImplicatedHf != ContactHf)
+            {
+                ContactHf.AddEvent(this);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

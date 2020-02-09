@@ -131,7 +131,10 @@ namespace LegendsViewer.Legends.Events
 
             if (Slayer != null)
             {
-                Slayer.AddEvent(this);
+                if (HistoricalFigure != Slayer)
+                {
+                    Slayer.AddEvent(this);
+                }
                 Slayer.NotableKills.Add(this);
             }
             Site.AddEvent(this);

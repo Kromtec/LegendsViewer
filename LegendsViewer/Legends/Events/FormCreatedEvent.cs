@@ -65,7 +65,10 @@ namespace LegendsViewer.Legends.Events
             if (Circumstance == "pray to hf")
             {
                 PrayToHf = world.GetHistoricalFigure(CircumstanceId);
-                PrayToHf.AddEvent(this);
+                if (PrayToHf != GlorifiedHf)
+                {
+                    PrayToHf.AddEvent(this);
+                }
             }
         }
 

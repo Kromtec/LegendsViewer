@@ -27,7 +27,10 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            SiteEntity.AddEvent(this);
+            if (SiteEntity != CivEntity)
+            {
+                SiteEntity.AddEvent(this);
+            }
             CivEntity.AddEvent(this);
             Site.AddEvent(this);
             UndergroundRegion.AddEvent(this);

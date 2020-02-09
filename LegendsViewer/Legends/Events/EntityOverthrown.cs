@@ -37,7 +37,10 @@ namespace LegendsViewer.Legends.Events
             OverthrownHistoricalFigure.AddEvent(this);
             Site.AddEvent(this);
             PositionTaker.AddEvent(this);
-            Instigator.AddEvent(this);
+            if (Instigator != PositionTaker)
+            {
+                Instigator.AddEvent(this);
+            }
             foreach (HistoricalFigure conspirator in Conspirators)
             {
                 conspirator.AddEvent(this);

@@ -30,7 +30,13 @@ namespace LegendsViewer.Legends.Events
             }
 
             Winner.AddEvent(this);
-            Competitors.ForEach(competitor => competitor.AddEvent(this));
+            Competitors.ForEach(competitor =>
+            {
+                if (competitor != Winner)
+                {
+                    competitor.AddEvent(this);
+                }
+            });
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

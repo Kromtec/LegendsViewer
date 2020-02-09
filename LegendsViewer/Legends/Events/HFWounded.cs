@@ -51,7 +51,10 @@ namespace LegendsViewer.Legends.Events
             }
 
             Woundee.AddEvent(this);
-            Wounder.AddEvent(this);
+            if (Woundee != Wounder)
+            {
+                Wounder.AddEvent(this);
+            }
             Site.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);

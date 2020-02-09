@@ -46,8 +46,14 @@ namespace LegendsViewer.Legends.Events
             DefenderGeneral.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
-            AttackerMercenaries.AddEvent(this);
-            DefenderMercenaries.AddEvent(this);
+            if (AttackerMercenaries != Defender && AttackerMercenaries != Attacker)
+            {
+                AttackerMercenaries.AddEvent(this);
+            }
+            if (DefenderMercenaries != Defender && DefenderMercenaries != Attacker)
+            {
+                DefenderMercenaries.AddEvent(this);
+            }
             AttackerSupportMercenaries.AddEvent(this);
             DefenderSupportMercenaries.AddEvent(this);
         }

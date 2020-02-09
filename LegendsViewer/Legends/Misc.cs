@@ -12,10 +12,18 @@ namespace LegendsViewer.Legends
             {
                 return;
             }
+#if DEBUG
             if (!worldObject.Events.Contains(worldEvent))
             {
+#endif
                 worldObject.Events.Add(worldEvent);
+#if DEBUG
             }
+            else
+            {
+                worldEvent.World.ParsingErrors.Report($"Already added event {worldEvent.Id} '{worldEvent.Type}' to object {worldObject.Id} '{worldObject.GetType()}'");
+            }
+#endif
         }
 
         public static void AddEventCollection(this WorldObject worldObject, EventCollection eventCollection)
@@ -28,6 +36,12 @@ namespace LegendsViewer.Legends
             {
                 worldObject.EventCollectons.Add(eventCollection);
             }
+#if DEBUG
+            else
+            {
+                eventCollection.World.ParsingErrors.Report($"Already added eventCollection {eventCollection.Id} '{eventCollection.Type}' to object {worldObject.Id} '{worldObject.GetType()}'");
+            }
+#endif
         }
 
         public static T GetWorldObject<T>(this List<T> list, int id) where T : WorldObject
