@@ -31,8 +31,14 @@ namespace LegendsViewer.Legends.Events
 
             TargetHf.AddEvent(this);
             ConvicterEntity.AddEvent(this);
-            FooledHf.AddEvent(this);
-            FramerHf.AddEvent(this);
+            if (FooledHf != TargetHf)
+            {
+                FooledHf.AddEvent(this);
+            }
+            if (FramerHf != FooledHf)
+            {
+                FramerHf.AddEvent(this);
+            }
             PlotterHf.AddEvent(this);
         }
 

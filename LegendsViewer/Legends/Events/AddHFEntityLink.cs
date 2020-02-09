@@ -75,7 +75,10 @@ namespace LegendsViewer.Legends.Events
             HistoricalFigure.AddEvent(this);
             Entity.AddEvent(this);
             AppointerHf.AddEvent(this);
-            PromiseToHf.AddEvent(this);
+            if (PromiseToHf != HistoricalFigure)
+            {
+                PromiseToHf.AddEvent(this);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

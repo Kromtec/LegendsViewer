@@ -43,7 +43,10 @@ namespace LegendsViewer.Legends.Events
             }
             foreach (HistoricalFigure conspirator in Conspirators)
             {
-                conspirator.AddEvent(this);
+                if (conspirator != PositionTaker && conspirator != Instigator)
+                {
+                    conspirator.AddEvent(this);
+                }
             }
         }
 

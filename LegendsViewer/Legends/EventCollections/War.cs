@@ -16,19 +16,31 @@ namespace LegendsViewer.Legends.EventCollections
         public string Name { get; set; }
         public int Length { get; set; }
         public int DeathCount { get; set; }
-        public List<string> Deaths
+        private readonly Dictionary<string, int> _deaths = new Dictionary<string, int>();
+        public Dictionary<string, int> Deaths
         {
             get
             {
-                List<string> deaths = new List<string>();
-
+                if (_deaths.Count > 0)
+                {
+                    return _deaths;
+                }
                 foreach (Battle battle in Battles)
                 {
-                    deaths.AddRange(battle.Deaths);
+                    foreach (KeyValuePair<string, int> deathByRace in battle.Deaths)
+                    {
+                        if (_deaths.ContainsKey(deathByRace.Key))
+                        {
+                            _deaths[deathByRace.Key] += deathByRace.Value;
+                        }
+                        else
+                        {
+                            _deaths[deathByRace.Key] = deathByRace.Value;
+                        }
+                    }
                 }
-                return deaths;
+                return _deaths;
             }
-            set { }
         }
         public int AttackerDeathCount { get; set; }
         public int DefenderDeathCount { get; set; }

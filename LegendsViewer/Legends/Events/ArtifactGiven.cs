@@ -15,6 +15,8 @@ namespace LegendsViewer.Legends.Events
         public Entity EntityReceiver { get; set; }
         public Reason Reason { get; set; }
 
+        // http://www.bay12games.com/dwarves/mantisbt/view.php?id=11350
+        // 0011350: "artifact given" event sometimes has the same <giver_hist_figure_id> and <receiver_hist_figure_id>
         public ArtifactGiven(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -46,7 +48,10 @@ namespace LegendsViewer.Legends.Events
 
             Artifact.AddEvent(this);
             HistoricalFigureGiver.AddEvent(this);
-            HistoricalFigureReceiver.AddEvent(this);
+            if (HistoricalFigureGiver != HistoricalFigureReceiver)
+            {
+                HistoricalFigureReceiver.AddEvent(this);
+            }
             EntityGiver.AddEvent(this);
             EntityReceiver.AddEvent(this);
         }

@@ -85,7 +85,10 @@ namespace LegendsViewer.Legends.Events
             {
                 case Circumstance.HfIsDead:
                     FormerHolder = world.GetHistoricalFigure(CircumstanceId);
-                    FormerHolder.AddEvent(this);
+                    if (FormerHolder != FamilyFigure)
+                    {
+                        FormerHolder.AddEvent(this);
+                    }
                     break;
             }
             Artifact.AddEvent(this);

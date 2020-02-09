@@ -35,7 +35,7 @@ namespace LegendsViewer.Legends.EventCollections
         public int AttackersRemainingCount { get { return Attackers.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
         public int DefendersRemainingCount { get { return Defenders.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
         public int DeathCount { get { return AttackerDeathCount + DefenderDeathCount; } set { } }
-        public List<string> Deaths { get; set; }
+        public Dictionary<string, int> Deaths { get; set; }
         public List<HistoricalFigure> NotableDeaths {
             get
             {
@@ -127,13 +127,25 @@ namespace LegendsViewer.Legends.EventCollections
                     case "defending_hfid": NotableDefenders.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "attacking_squad_race": attackerSquadRace.Add(Formatting.FormatRace(property.Value)); break;
                     case "attacking_squad_entity_pop": attackerSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
-                    case "attacking_squad_number": attackerSquadNumbers.Add(Convert.ToInt32(property.Value)); break;
-                    case "attacking_squad_deaths": attackerSquadDeaths.Add(Convert.ToInt32(property.Value)); break;
+                    case "attacking_squad_number":
+                        int attackerSquadNumber = Convert.ToInt32(property.Value);
+                        attackerSquadNumbers.Add(attackerSquadNumber > 1000 ? 0 : attackerSquadNumber);
+                        break;
+                    case "attacking_squad_deaths":
+                        int attackerSquadDeath = Convert.ToInt32(property.Value);
+                        attackerSquadDeaths.Add(attackerSquadDeath > 1000 ? 0 : attackerSquadDeath);
+                        break;
                     case "attacking_squad_site": attackerSquadSite.Add(Convert.ToInt32(property.Value)); break;
                     case "defending_squad_race": defenderSquadRace.Add(Formatting.FormatRace(property.Value)); break;
                     case "defending_squad_entity_pop": defenderSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
-                    case "defending_squad_number": defenderSquadNumbers.Add(Convert.ToInt32(property.Value)); break;
-                    case "defending_squad_deaths": defenderSquadDeaths.Add(Convert.ToInt32(property.Value)); break;
+                    case "defending_squad_number":
+                        int defenderSquadNumber = Convert.ToInt32(property.Value);
+                        defenderSquadNumbers.Add(defenderSquadNumber > 1000 ? 0 : defenderSquadNumber);
+                        break;
+                    case "defending_squad_deaths":
+                        int defenderSquadDeath = Convert.ToInt32(property.Value);
+                        defenderSquadDeaths.Add(defenderSquadDeath > 1000 ? 0 : defenderSquadDeath);
+                        break;
                     case "defending_squad_site": defenderSquadSite.Add(Convert.ToInt32(property.Value)); break;
                     case "noncom_hfid": NonCombatants.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "individual_merc": property.Known = true; IndividualMercenaries = true; break;
@@ -230,12 +242,16 @@ namespace LegendsViewer.Legends.EventCollections
                 }
             }
 
-            Deaths = new List<string>();
+            Deaths = new Dictionary<string, int>();
             foreach (Squad squad in Attackers.Concat(Defenders))
             {
-                for (int i = 0; i < squad.Deaths; i++)
+                if (Deaths.ContainsKey(squad.Race))
                 {
-                    Deaths.Add(squad.Race);
+                    Deaths[squad.Race] += squad.Deaths;
+                }
+                else
+                {
+                    Deaths[squad.Race] = squad.Deaths;
                 }
             }
 

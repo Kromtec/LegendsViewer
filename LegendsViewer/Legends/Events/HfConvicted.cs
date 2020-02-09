@@ -8,6 +8,7 @@ namespace LegendsViewer.Legends.Events
 {
     public class HfConvicted : WorldEvent
     {
+        public HistoricalFigure TargetHf { get; set; }
         public HistoricalFigure ConvictedHf { get; set; }
         public Entity ConvicterEntity { get; set; }
         public string Crime { get; set; }
@@ -30,6 +31,7 @@ namespace LegendsViewer.Legends.Events
         public HistoricalFigure InterrogatorHf { get; set; }
         public HistoricalFigure ContactHf { get; set; }
         public bool SurveiledContact { get; set; }
+        public bool SurveiledTarget { get; set; }
 
         public HfConvicted(List<Property> properties, World world) : base(properties, world)
         {
@@ -37,6 +39,7 @@ namespace LegendsViewer.Legends.Events
             {
                 switch (property.Name)
                 {
+                    case "target_hfid": TargetHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "convicted_hfid": ConvictedHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "convicter_enid": ConvicterEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "crime": Crime = property.Value; break;
@@ -54,6 +57,7 @@ namespace LegendsViewer.Legends.Events
                     case "surveiled_convicted": property.Known = true; SurveiledConvicted = true; break;
                     case "surveiled_coconspirator": property.Known = true; SurveiledCoConspirator = true; break;
                     case "surveiled_contact": property.Known = true; SurveiledContact = true; break;
+                    case "surveiled_target": property.Known = true; SurveiledContact = true; break;
                     case "confessed_after_apb_arrest_enid": ConfessedAfterApbArrestEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "coconspirator_hfid": CoConspiratorHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "implicated_hfid": ImplicatedHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
@@ -61,9 +65,13 @@ namespace LegendsViewer.Legends.Events
                     case "contact_hfid": ContactHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                 }
             }
+            TargetHf.AddEvent(this);
             ConvictedHf.AddEvent(this);
             ConvicterEntity.AddEvent(this);
-            FooledHf.AddEvent(this);
+            if (FooledHf != ConvictedHf)
+            {
+                FooledHf.AddEvent(this);
+            }
             FramerHf.AddEvent(this);
             CorruptConvictorHf.AddEvent(this);
             if (PlotterHf != CorruptConvictorHf)
@@ -99,6 +107,11 @@ namespace LegendsViewer.Legends.Events
                 {
                     eventString += " on a coconspirator ";
                     eventString += CoConspiratorHf.ToLink(link, pov, this);
+                }
+                if (SurveiledTarget & TargetHf != null)
+                {
+                    eventString += " on a target ";
+                    eventString += TargetHf.ToLink(link, pov, this);
                 }
                 eventString += " as the plot unfolded, ";
             }

@@ -18,6 +18,8 @@ namespace LegendsViewer.Legends.Events
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
 
+        // http://www.bay12games.com/dwarves/mantisbt/view.php?id=11343
+        // 0011343: "hfs formed reputation relationship" event sometimes has the same <hfid1> and <hfid2>
         public HfsFormedReputationRelationship(List<Property> properties, World world)
             : base(properties, world)
         {

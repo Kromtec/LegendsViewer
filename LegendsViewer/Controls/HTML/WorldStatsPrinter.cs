@@ -470,28 +470,31 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<li>Deaths</li>");
             Html.AppendLine("<ul>");
             Html.AppendLine("<li>Historical Figures: " + _world.EventCollections.OfType<Battle>().Sum(battle => battle.Collection.OfType<HfDied>().Count()) + "</li>");
-            Html.AppendLine("<li>Populations: " + _world.EventCollections.OfType<Battle>().Sum(battle => battle.AttackerSquads.Sum(squad => squad.Deaths) + battle.DefenderSquads.Sum(squad => squad.Deaths)) + "</li>");
             Html.AppendLine("</ul>");
             Html.AppendLine("</ul>");
             Html.AppendLine("</br>");
 
-            List<string> deaths = new List<string>();
-            _world.Battles.SelectMany(battle => battle.GetSubEvents().OfType<HfDied>()).Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deaths.Add(death));
-            var popDeaths = _world.Battles.SelectMany(battle => battle.AttackerSquads.Concat(battle.DefenderSquads)).GroupBy(squad => squad.Race).Select(squad => new { Type = squad.Key, Count = squad.Sum(population => population.Deaths) });
-            foreach (var pop in popDeaths)
+            Dictionary<string, int> deaths = new Dictionary<string, int>();
+            foreach (Battle battle in _world.Battles)
             {
-                for (int i = 0; i < pop.Count; i++)
+                foreach (KeyValuePair<string, int> deathByRace in battle.Deaths)
                 {
-                    deaths.Add(pop.Type);
+                    if (deaths.ContainsKey(deathByRace.Key))
+                    {
+                        deaths[deathByRace.Key] += deathByRace.Value;
+                    }
+                    else
+                    {
+                        deaths[deathByRace.Key] = deathByRace.Value;
+                    }
                 }
             }
 
-            var deathsGrouped = deaths.GroupBy(race => race).Select(race => new { Type = race.Key, Count = race.Count() }).OrderByDescending(race => race.Count);
             Html.AppendLine("<h1><b>Battle Deaths by Race: " + deaths.Count + "</b></h2>");
             Html.AppendLine("<ol>");
-            foreach (var race in deathsGrouped)
+            foreach (var raceDeath in deaths)
             {
-                Html.AppendLine("<li>" + race.Type + ": " + race.Count + "</li>");
+                Html.AppendLine("<li>" + raceDeath.Key + ": " + raceDeath.Value + "</li>");
             }
 
             Html.AppendLine("</ol>");
