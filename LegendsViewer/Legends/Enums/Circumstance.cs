@@ -6,6 +6,7 @@
         HistoricalEventCollection,
         DefeatedHf,
         MurderedHf,
-        HfIsDead
+        HfIsDead,
+        AbductedHf
     }
 }

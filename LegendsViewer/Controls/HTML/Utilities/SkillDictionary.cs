@@ -164,6 +164,7 @@ namespace LegendsViewer.Controls.HTML.Utilities
             {"Papermaking", new SkillDescription("ppr", "PAPERMAKING", "Paper Maker", "Paper Making")},
             {"Bookbinding", new SkillDescription("ppr", "BOOKBINDING", "Book Binder", "Book Binding")},
             {"Intrigue", new SkillDescription("soc", "INTRIGUE", "Schemer", "Scheming")},
+            {"Riding", new SkillDescription("msc", "RIDING", "Rider", "Riding")}
         };
 
         public static SkillDescription LookupSkill(Skill skill)

@@ -340,7 +340,7 @@ namespace LegendsViewer.Controls.Query
                     {
                         comparer = Expression.Not(comparer);
                     }
-                    comparer = comparer.AddNullCheck(property);
+                    //comparer = comparer.AddNullCheck(property);
 
                     break;
                 case QueryComparer.StringNotEqual:
@@ -361,10 +361,8 @@ namespace LegendsViewer.Controls.Query
                 case QueryComparer.Equals:
                     methodInfo = GetMethodInfo();
                     comparer = Expression.Equal(property, Expression.Constant(Value)); break;
-                //comparer = Expression.Call(property, methodInfo, Expression.Constant(Value)); break;
                 case QueryComparer.NotEqual:
                     methodInfo = GetMethodInfo();
-                    //comparer = Expression.Not(Expression.Call(property, methodInfo, Expression.Constant(Value))); break;
                     comparer = Expression.Not(Expression.Equal(property, Expression.Constant(Value))); break;
                 case QueryComparer.Count:
                 case QueryComparer.ListGreaterThan:

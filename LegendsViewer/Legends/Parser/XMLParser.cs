@@ -702,6 +702,15 @@ namespace LegendsViewer.Legends.Parser
                 case "building profile acquired":
                     World.Events.Add(new BuildingProfileAcquired(properties, World));
                     break;
+                case "hf enslaved":
+                    World.Events.Add(new HfEnslaved(properties, World));
+                    break;
+                case "hf asked about artifact":
+                    World.Events.Add(new HfAskedAboutArtifact(properties, World));
+                    break;
+                case "hf carouse":
+                    World.Events.Add(new HfCarouse(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

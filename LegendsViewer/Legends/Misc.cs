@@ -32,11 +32,13 @@ namespace LegendsViewer.Legends
             {
                 return;
             }
+#if DEBUG
             if (!worldObject.EventCollectons.Contains(eventCollection))
             {
+#endif
                 worldObject.EventCollectons.Add(eventCollection);
-            }
 #if DEBUG
+            }
             else
             {
                 eventCollection.World.ParsingErrors.Report($"Already added eventCollection {eventCollection.Id} '{eventCollection.Type}' to object {worldObject.Id} '{worldObject.GetType()}'");

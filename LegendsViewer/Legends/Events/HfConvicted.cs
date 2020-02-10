@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
 
@@ -16,6 +15,8 @@ namespace LegendsViewer.Legends.Events
         public HistoricalFigure FramerHf { get; set; }
         public int PrisonMonth { get; set; }
         public bool DeathPenalty { get; set; }
+        public bool Beating { get; set; }
+        public int Hammerstrokes { get; set; }
         public bool WrongfulConviction { get; set; }
         public HistoricalFigure CorruptConvictorHf { get; set; }
         public HistoricalFigure PlotterHf { get; set; }
@@ -47,6 +48,8 @@ namespace LegendsViewer.Legends.Events
                     case "fooled_hfid": FooledHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "framer_hfid": FramerHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "death_penalty": property.Known = true; DeathPenalty = true; break;
+                    case "beating": property.Known = true; Beating = true; break;
+                    case "hammerstrokes": Hammerstrokes = Convert.ToInt32(property.Value); break;
                     case "wrongful_conviction": property.Known = true; WrongfulConviction = true; break;
                     case "corrupt_convicter_hfid": CorruptConvictorHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "plotter_hfid": PlotterHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
@@ -148,6 +151,15 @@ namespace LegendsViewer.Legends.Events
                 eventString += " fooled ";
                 eventString += FooledHf.ToLink(link, pov, this);
                 eventString += " with fabricated evidence";
+            }
+
+            if (Beating)
+            {
+                eventString += ", beaten";
+            }
+            else if (Hammerstrokes > 0)
+            {
+                eventString += $", sentenced to {Hammerstrokes} hammerstrokes";
             }
             if (PrisonMonth > 0)
             {

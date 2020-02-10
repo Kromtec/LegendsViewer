@@ -53,7 +53,7 @@ namespace LegendsViewer.Legends.Events
                     historicalFigureToTargetLink = historicalFigureToTargetLinks.FirstOrDefault();
                 }
 
-                HfAbducted abduction = HistoricalFigureTarget.Events.OfType<HfAbducted>().SingleOrDefault(abduction1 => abduction1.Snatcher == HistoricalFigure);
+                HfAbducted abduction = HistoricalFigureTarget.Events.OfType<HfAbducted>().FirstOrDefault(a => a.Snatcher == HistoricalFigure);
                 if (historicalFigureToTargetLink != null && abduction == null)
                 {
                     LinkType = historicalFigureToTargetLink.Type;

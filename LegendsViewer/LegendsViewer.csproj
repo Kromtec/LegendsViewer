@@ -264,7 +264,10 @@
     <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
     <Compile Include="Legends\Events\FailedIntrigueCorruption.cs" />
     <Compile Include="Legends\Events\Gamble.cs" />
+    <Compile Include="Legends\Events\HfAskedAboutArtifact.cs" />
+    <Compile Include="Legends\Events\HfCarouse.cs" />
     <Compile Include="Legends\Events\HfConvicted.cs" />
+    <Compile Include="Legends\Events\HfEnslaved.cs" />
     <Compile Include="Legends\Events\HfEquipmentPurchase.cs" />
     <Compile Include="Legends\Events\HfInterrogated.cs" />
     <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />

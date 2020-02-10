@@ -57,6 +57,9 @@ namespace LegendsViewer.Legends.Events
                             case "murdered hf":
                                 Circumstance = Circumstance.MurderedHf;
                                 break;
+                            case "abducted hf":
+                                Circumstance = Circumstance.AbductedHf;
+                                break;
                             default:
                                 if (property.Value != "-1")
                                 {

@@ -33,6 +33,7 @@ namespace LegendsViewer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLegendsViewer));
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.hint = new System.Windows.Forms.ToolTip(this.components);
             this.lblVersion = new System.Windows.Forms.Label();
@@ -85,7 +86,7 @@ namespace LegendsViewer
             this.lblVersion.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.lblVersion.Location = new System.Drawing.Point(930, 9);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(55, 17);
+            this.lblVersion.Size = new System.Drawing.Size(48, 13);
             this.lblVersion.TabIndex = 34;
             this.lblVersion.Text = "v1.00.00";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -139,9 +140,9 @@ namespace LegendsViewer
             // tpSummary
             // 
             this.tpSummary.Controls.Add(this.summaryTab1);
-            this.tpSummary.Location = new System.Drawing.Point(4, 64);
+            this.tpSummary.Location = new System.Drawing.Point(4, 58);
             this.tpSummary.Name = "tpSummary";
-            this.tpSummary.Size = new System.Drawing.Size(271, 613);
+            this.tpSummary.Size = new System.Drawing.Size(271, 619);
             this.tpSummary.TabIndex = 0;
             this.tpSummary.Text = "Summary";
             this.tpSummary.UseVisualStyleBackColor = true;
@@ -151,7 +152,7 @@ namespace LegendsViewer
             this.summaryTab1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.summaryTab1.Location = new System.Drawing.Point(0, 0);
             this.summaryTab1.Name = "summaryTab1";
-            this.summaryTab1.Size = new System.Drawing.Size(271, 613);
+            this.summaryTab1.Size = new System.Drawing.Size(271, 619);
             this.summaryTab1.TabIndex = 0;
             // 
             // tpHF
@@ -339,12 +340,13 @@ namespace LegendsViewer
             // 
             // FrmLegendsViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.scWorld);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmLegendsViewer";
             this.Text = "Legends Viewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

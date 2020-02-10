@@ -67,8 +67,15 @@ namespace LegendsViewer.Legends.Events
             Structure.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
-            AttackerLeader.AddEvent(this);
-            DefenderLeader.AddEvent(this);
+            if (AttackerLeader != AttackerHistoricalFigure)
+            {
+                AttackerLeader.AddEvent(this);
+            }
+
+            if (DefenderLeader != DefenderHistoricalFigure)
+            {
+                DefenderLeader.AddEvent(this);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

@@ -152,6 +152,9 @@ namespace LegendsViewer.Controls
             new[] { "hf interrogated",                    "Historical Figure Interrogated", ""},
             new[] { "entity persecuted",                  "Entity Persecuted", ""},
             new[] { "building profile acquired",          "Building Profile Acquired", ""},
+            new[] { "hf enslaved",                        "Historical Figure Enslaved", ""},
+            new[] { "hf asked about artifact",            "Historical Figure Asked About Artifact", ""},
+            new[] { "hf carouse",                         "Historical Figure Carouse", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };

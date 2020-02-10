@@ -129,22 +129,22 @@ namespace LegendsViewer.Legends.EventCollections
                     case "attacking_squad_entity_pop": attackerSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
                     case "attacking_squad_number":
                         int attackerSquadNumber = Convert.ToInt32(property.Value);
-                        attackerSquadNumbers.Add(attackerSquadNumber > 1000 ? 0 : attackerSquadNumber);
+                        attackerSquadNumbers.Add(attackerSquadNumber < 0 || attackerSquadNumber > Squad.MAX_SIZE ? Squad.MAX_SIZE : attackerSquadNumber);
                         break;
                     case "attacking_squad_deaths":
                         int attackerSquadDeath = Convert.ToInt32(property.Value);
-                        attackerSquadDeaths.Add(attackerSquadDeath > 1000 ? 0 : attackerSquadDeath);
+                        attackerSquadDeaths.Add(attackerSquadDeath < 0 || attackerSquadDeath > Squad.MAX_SIZE ? Squad.MAX_SIZE : attackerSquadDeath);
                         break;
                     case "attacking_squad_site": attackerSquadSite.Add(Convert.ToInt32(property.Value)); break;
                     case "defending_squad_race": defenderSquadRace.Add(Formatting.FormatRace(property.Value)); break;
                     case "defending_squad_entity_pop": defenderSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
                     case "defending_squad_number":
                         int defenderSquadNumber = Convert.ToInt32(property.Value);
-                        defenderSquadNumbers.Add(defenderSquadNumber > 1000 ? 0 : defenderSquadNumber);
+                        defenderSquadNumbers.Add(defenderSquadNumber < 0 || defenderSquadNumber > Squad.MAX_SIZE ? Squad.MAX_SIZE : defenderSquadNumber);
                         break;
                     case "defending_squad_deaths":
                         int defenderSquadDeath = Convert.ToInt32(property.Value);
-                        defenderSquadDeaths.Add(defenderSquadDeath > 1000 ? 0 : defenderSquadDeath);
+                        defenderSquadDeaths.Add(defenderSquadDeath < 0 || defenderSquadDeath > Squad.MAX_SIZE ? Squad.MAX_SIZE : defenderSquadDeath);
                         break;
                     case "defending_squad_site": defenderSquadSite.Add(Convert.ToInt32(property.Value)); break;
                     case "noncom_hfid": NonCombatants.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
@@ -172,22 +172,10 @@ namespace LegendsViewer.Legends.EventCollections
                 Defender = Collection.OfType<FieldBattle>().First().Defender;
             }
 
-            foreach (HistoricalFigure attacker in NotableAttackers)
+            foreach (HistoricalFigure involvedHf in NotableAttackers.Union(NotableDefenders).Union(NonCombatants))
             {
-                attacker.Battles.Add(this);
-                attacker.AddEventCollection(this);
-            }
-
-            foreach (HistoricalFigure defender in NotableDefenders)
-            {
-                defender.Battles.Add(this);
-                defender.AddEventCollection(this);
-            }
-
-            foreach (HistoricalFigure nonCombatant in NonCombatants)
-            {
-                nonCombatant.Battles.Add(this);
-                nonCombatant.AddEventCollection(this);
+                involvedHf.Battles.Add(this);
+                involvedHf.AddEventCollection(this);
             }
 
             for (int i = 0; i < attackerSquadRace.Count; i++)
@@ -336,6 +324,7 @@ namespace LegendsViewer.Legends.EventCollections
 
         public class Squad
         {
+            public const int MAX_SIZE = 100;
             public string Race { get; set; }
             public int Numbers { get; set; }
             public int Deaths { get; set; }
@@ -377,7 +366,7 @@ namespace LegendsViewer.Legends.EventCollections
                 title += "&#13";
                 title += "Kills: " + AttackerDeathCount;
 
-                string linkedString = "";
+                string linkedString;
                 if (pov != this)
                 {
                     linkedString = Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>";
