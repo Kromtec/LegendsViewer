@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -49,7 +50,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += HistoricalFigure.ToLink(link, pov);
+            eventString += HistoricalFigure.ToLink(link, pov, this);
             eventString += " recruited ";
             switch (UnitType)
             {
@@ -63,21 +64,21 @@ namespace LegendsViewer.Legends.Events
             if (Entity != null)
             {
                 eventString += " into ";
-                eventString += Entity.ToLink(link, pov);
+                eventString += Entity.ToLink(link, pov, this);
             }
 
             eventString += " in ";
             if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             else
             {

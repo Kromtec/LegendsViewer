@@ -5,6 +5,7 @@ using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Interfaces;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -106,7 +107,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+            eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
             eventString += " held a ";
             if (Schedule != null)
             {
@@ -120,7 +121,7 @@ namespace LegendsViewer.Legends.Events
             if (ReferencedArtForm != null)
             {
                 eventString += " of ";
-                eventString += ReferencedArtForm.ToLink(link, pov);
+                eventString += ReferencedArtForm.ToLink(link, pov, this);
             }
             else if (Schedule != null && Schedule.Type == ScheduleType.Storytelling && Schedule.Reference != -1)
             {
@@ -132,9 +133,9 @@ namespace LegendsViewer.Legends.Events
                 }
             }
             eventString += " in ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += " as part of ";
-            eventString += EntityOccasion != null ? EntityOccasion.ToLink(link, pov) : "UNKNOWN OCCASION";
+            eventString += EntityOccasion != null ? EntityOccasion.ToLink(link, pov, this) : "UNKNOWN OCCASION";
             eventString += ".";
             if (Schedule != null)
             {
@@ -146,9 +147,9 @@ namespace LegendsViewer.Legends.Events
                         if (startStructure != null || endStructure != null)
                         {
                             eventString += " It started at ";
-                            eventString += startStructure != null ? startStructure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+                            eventString += startStructure != null ? startStructure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
                             eventString += " and ended at ";
-                            eventString += endStructure != null ? endStructure.ToLink(link, pov) : "UNKNOWN STRUCTURE";
+                            eventString += endStructure != null ? endStructure.ToLink(link, pov, this) : "UNKNOWN STRUCTURE";
                             eventString += ".";
                         }
                         break;

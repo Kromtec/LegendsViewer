@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -33,14 +34,14 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + " " + HistoricalFigure1.ToLink(link, pov) + " was reunited with " + HistoricalFigure2.ToLink(link, pov);
+            string eventString = GetYearTime() + " " + HistoricalFigure1.ToLink(link, pov, this) + " was reunited with " + HistoricalFigure2.ToLink(link, pov, this);
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

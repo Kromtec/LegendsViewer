@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Interfaces;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -72,6 +73,7 @@ namespace LegendsViewer.Legends.Events
                             case "crushed": Cause = DeathCause.CaveIn; break;
                             case "cage blasted": Cause = DeathCause.InACage; break;
                             case "freezing water": Cause = DeathCause.FrozenInWater; break;
+                            case "exec generic": Cause = DeathCause.ExecutedGeneric; break;
                             case "exec fed to beasts": Cause = DeathCause.ExecutedFedToBeasts; break;
                             case "exec burned alive": Cause = DeathCause.ExecutedBurnedAlive; break;
                             case "exec crucified": Cause = DeathCause.ExecutedCrucified; break;
@@ -129,7 +131,10 @@ namespace LegendsViewer.Legends.Events
 
             if (Slayer != null)
             {
-                Slayer.AddEvent(this);
+                if (HistoricalFigure != Slayer)
+                {
+                    Slayer.AddEvent(this);
+                }
                 Slayer.NotableKills.Add(this);
             }
             Site.AddEvent(this);
@@ -159,7 +164,7 @@ namespace LegendsViewer.Legends.Events
         private string GetDeathString(bool link = true, DwarfObject pov = null)
         {
             string eventString = "";
-            eventString += HistoricalFigure.ToLink(link, pov) + " ";
+            eventString += HistoricalFigure.ToLink(link, pov, this) + " ";
             string deathString = "";
 
             if (Slayer != null || SlayerRace != "UNKNOWN" && SlayerRace != "-1")
@@ -171,7 +176,7 @@ namespace LegendsViewer.Legends.Events
                 }
                 else
                 {
-                    slayerString = Slayer.ToLink(link, pov);
+                    slayerString = Slayer.ToLink(link, pov, this);
                 }
 
                 switch (Cause)
@@ -190,6 +195,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case DeathCause.Struck:
                         deathString = "was struck down by " + slayerString;
+                        break;
+                    case DeathCause.ExecutedGeneric:
+                        deathString = "was executed by " + slayerString;
                         break;
                     case DeathCause.ExecutedBuriedAlive:
                         deathString = "was buried alive by " + slayerString;
@@ -293,6 +301,9 @@ namespace LegendsViewer.Legends.Events
                     case DeathCause.FlyingObject:
                         deathString = "was killed by a flying object";
                         break;
+                    case DeathCause.ExecutedGeneric:
+                        deathString = "was executed";
+                        break;
                     case DeathCause.ExecutedBuriedAlive:
                         deathString = "was buried alive";
                         break;
@@ -365,7 +376,7 @@ namespace LegendsViewer.Legends.Events
             {
                 if (Artifact != null)
                 {
-                    eventString += " with " + Artifact.ToLink(link, pov);
+                    eventString += " with " + Artifact.ToLink(link, pov, this);
                 }
                 else if (!string.IsNullOrWhiteSpace(ItemType) || !string.IsNullOrWhiteSpace(ItemSubType))
                 {
@@ -378,7 +389,7 @@ namespace LegendsViewer.Legends.Events
             {
                 if (ShooterArtifact != null)
                 {
-                    eventString += " (shot) with " + ShooterArtifact.ToLink(link, pov);
+                    eventString += " (shot) with " + ShooterArtifact.ToLink(link, pov, this);
                 }
                 else if (!string.IsNullOrWhiteSpace(ShooterItemType) || !string.IsNullOrWhiteSpace(ShooterItemSubType))
                 {
@@ -398,15 +409,15 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += " in " + UndergroundRegion.ToLink(link, pov);
+                eventString += " in " + UndergroundRegion.ToLink(link, pov, this);
             }
 
             return eventString;

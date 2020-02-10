@@ -2,29 +2,19 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
     public class WorldEvent : IComparable<WorldEvent>
     {
         private static readonly string[] MonthNames = { "Granite", "Slate", "Felsite", "Hematite", "Malachite", "Galena", "Limestone", "Sandstone", "Timber", "Moonstone", "Opal", "Obsidian" };
+        private int _seconds72;
 
         public int Id { get; set; }
         public int Year { get; set; }
-        public int Month
-        {
-            get
-            {
-                return 1 + Seconds72 / (28 * 1200);
-            }
-        }
-        public int Day
-        {
-            get
-            {
-                return 1 + Seconds72 % (28 * 1200) / 1200;
-            }
-        }
+        public int Month { get; set; }
+        public int Day { get; set; }
         public string MonthName
         {
             get
@@ -44,12 +34,21 @@ namespace LegendsViewer.Legends.Events
                 return $"{Year:0000}-{Month:00}-{Day:00}";
             }
         }
-        public int Seconds72 { get; set; }
+
+        public int Seconds72
+        {
+            get => _seconds72;
+            set
+            {
+                _seconds72 = value;
+                Month = 1 + _seconds72 / (28 * 1200);
+                Day = 1 + _seconds72 % (28 * 1200) / 1200;
+            }
+        }
+
         public string Type { get; set; }
         public EventCollection ParentCollection { get; set; }
         public World World { get; set; }
-
-        public WorldEvent() { Id = -1; Year = -1; Seconds72 = -1; Type = "INVALID"; }
 
         public WorldEvent(List<Property> properties, World world)
         {
@@ -136,7 +135,7 @@ namespace LegendsViewer.Legends.Events
                 {
                     collectionString += " as part of ";
                 }
-                collectionString += parent.ToLink(link, pov);
+                collectionString += parent.ToLink(link, pov, this);
                 parent = parent.ParentCollection;
             }
             return " during " + collectionString;

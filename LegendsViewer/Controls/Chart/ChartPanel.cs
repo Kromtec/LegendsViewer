@@ -7,6 +7,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Chart
 {

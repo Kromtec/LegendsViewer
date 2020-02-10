@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -43,11 +44,11 @@ namespace LegendsViewer.Legends.Events
                     eventString += !string.IsNullOrWhiteSpace(CreationEvent.ItemType) ? CreationEvent.ItemType : "UNKNOWN ITEM";
                 }
                 eventString += " created by ";
-                eventString += CreationEvent.Maker != null ? CreationEvent.Maker.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += CreationEvent.Maker != null ? CreationEvent.Maker.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += " for ";
-                eventString += CreationEvent.MakerEntity != null ? CreationEvent.MakerEntity.ToLink(link, pov) : "UNKNOWN ENTITY";
+                eventString += CreationEvent.MakerEntity != null ? CreationEvent.MakerEntity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
                 eventString += " at ";
-                eventString += CreationEvent.Site != null ? CreationEvent.Site.ToLink(link, pov) : "UNKNOWN SITE";
+                eventString += CreationEvent.Site != null ? CreationEvent.Site.ToLink(link, pov, this) : "UNKNOWN SITE";
                 eventString += " ";
                 eventString += CreationEvent.GetYearTime();
             }
@@ -56,9 +57,9 @@ namespace LegendsViewer.Legends.Events
                 eventString += "UNKNOWN ITEM";
             }
             eventString += " was destroyed by ";
-            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "an unknown creature";
+            eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "an unknown creature";
             eventString += " in ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += ".";
             return eventString;
         }

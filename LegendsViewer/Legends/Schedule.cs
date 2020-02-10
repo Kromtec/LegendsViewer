@@ -5,6 +5,7 @@ using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {
@@ -73,7 +74,7 @@ namespace LegendsViewer.Legends
 
         public override string ToString() { return Type.GetDescription(); }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return Type.GetDescription();
         }

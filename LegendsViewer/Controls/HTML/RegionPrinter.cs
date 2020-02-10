@@ -6,6 +6,7 @@ using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -29,7 +30,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _region.Name + ", " + _region.Type + "</h1><br />");
+            Html.AppendLine("<h1>" + _region.GetIcon() + " " + _region.Name + ", " + _region.Type + "</h1><br />");
 
             if (_region.Coordinates.Any())
             {
@@ -50,7 +51,7 @@ namespace LegendsViewer.Controls.HTML
             if (_region.Battles.Count(battle => !_world.FilterBattles || battle.Notable) > 0)
             {
                 int battleCount = 1;
-                Html.AppendLine("<b>Warfare</b> " + MakeLink("[Load]", LinkOption.LoadRegionBattles));
+                Html.AppendLine("<b>Warfare</b> ");
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");
@@ -155,7 +156,7 @@ namespace LegendsViewer.Controls.HTML
                 }
             }
 
-            PrintEventLog(_region.Events, WorldRegion.Filters, _region);
+            PrintEventLog(_world, _region.Events, WorldRegion.Filters, _region);
 
             return Html.ToString();
         }

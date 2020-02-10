@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -36,11 +37,11 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Source != null && Destination != null)
             {
-                eventString += Destination.ToLink(link, pov) + " " + Decision + " an offer of peace from " + Source.ToLink(link, pov) + " in " + ParentCollection.ToLink(link, pov) + ".";
+                eventString += Destination.ToLink(link, pov, this) + " " + Decision + " an offer of peace from " + Source.ToLink(link, pov, this) + " in " + ParentCollection.ToLink(link, pov, this) + ".";
             }
             else
             {
-                eventString += "Peace " + Decision + " in " + ParentCollection.ToLink(link, pov) + ".";
+                eventString += "Peace " + Decision + " in " + ParentCollection.ToLink(link, pov, this) + ".";
             }
             return eventString;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -62,23 +63,23 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += DestEntity.ToLink(link, pov);
+            eventString += DestEntity.ToLink(link, pov, this);
             eventString += " made a copy of ";
             if (FromOriginal)
             {
                 eventString += "the original ";
             }
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             eventString += " from ";
-            eventString += SourceStructure.ToLink(link, pov);
+            eventString += SourceStructure.ToLink(link, pov, this);
             eventString += " in ";
-            eventString += SourceSite.ToLink(link, pov);
+            eventString += SourceSite.ToLink(link, pov, this);
             eventString += " of ";
-            eventString += SourceEntity.ToLink(link, pov);
+            eventString += SourceEntity.ToLink(link, pov, this);
             eventString += " keeping it within ";
-            eventString += DestStructure.ToLink(link, pov);
+            eventString += DestStructure.ToLink(link, pov, this);
             eventString += " in ";
-            eventString += DestSite.ToLink(link, pov);
+            eventString += DestSite.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

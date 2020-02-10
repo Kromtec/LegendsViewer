@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
@@ -46,6 +47,11 @@ namespace LegendsViewer.Legends.EventCollections
                     case "defending_enid": Defender = world.GetEntity(Convert.ToInt32(property.Value)); break;
                 }
             }
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()
@@ -54,7 +60,7 @@ namespace LegendsViewer.Legends.EventCollections
             Coordinates = new Location(0, 0);
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (link)
             {
@@ -79,6 +85,11 @@ namespace LegendsViewer.Legends.EventCollections
         public override string ToString()
         {
             return Name;
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

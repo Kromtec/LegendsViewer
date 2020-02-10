@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -11,6 +12,7 @@ namespace LegendsViewer.Legends.Events
         public Site Site { get; set; }
         public int StructureId { get; set; }
         public Structure Structure { get; set; }
+        public HistoricalFigure Creator { get; set; }
 
         public EntityCreated(List<Property> properties, World world)
             : base(properties, world)
@@ -22,6 +24,7 @@ namespace LegendsViewer.Legends.Events
                     case "entity_id": Entity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "structure_id": StructureId = Convert.ToInt32(property.Value); break;
+                    case "creator_hfid": Creator = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                 }
             }
             if (Site != null)
@@ -39,16 +42,26 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Entity.ToLink(link, pov) + " formed";
+            if (Creator != null)
+            {
+                eventString += Creator.ToLink(link, pov, this);
+                eventString += " formed ";
+                eventString += Entity.ToLink(link, pov, this);
+            }
+            else
+            {
+                eventString += Entity.ToLink(link, pov, this);
+                eventString += " formed";
+            }
             if (Structure != null)
             {
                 eventString += " in ";
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
             }
             if (Site != null)
             {
                 eventString += " in ";
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

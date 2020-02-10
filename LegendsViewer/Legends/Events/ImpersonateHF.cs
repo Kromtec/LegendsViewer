@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -27,8 +28,8 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Trickster.ToLink(link, pov) + " fooled " + Target.ToLink(link, pov)
-                                 + " into believing he/she was a manifestation of the deity " + Cover.ToLink(link, pov);
+            string eventString = GetYearTime() + Trickster.ToLink(link, pov, this) + " fooled " + Target.ToLink(link, pov, this)
+                                 + " into believing he/she was a manifestation of the deity " + Cover.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

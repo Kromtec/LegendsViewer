@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -44,7 +45,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             if (LawLaid)
             {
                 eventString += " laid a series of ";
@@ -68,7 +69,7 @@ namespace LegendsViewer.Legends.Events
                 eventString += " laws from ";
             }
 
-            eventString += Entity.ToLink(link, pov);
+            eventString += Entity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

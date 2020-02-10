@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -66,7 +67,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             string situationString = "";
             switch (Situation)
             {
@@ -77,12 +78,12 @@ namespace LegendsViewer.Legends.Events
 
             if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
 
             if (Site != null)
             {
-                eventString += " at " + Site.ToLink(link, pov);
+                eventString += " at " + Site.ToLink(link, pov, this);
             }
 
             string reasonString = "after ";

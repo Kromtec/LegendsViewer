@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -82,11 +83,11 @@ namespace LegendsViewer.Legends.Events
             {
                 if (AttackerTacticsRoll > DefenderTacticsRoll)
                 {
-                    eventString += AttackerTactician.ToLink(link, pov);
+                    eventString += AttackerTactician.ToLink(link, pov, this);
                 }
                 else
                 {
-                    eventString += DefenderTactician.ToLink(link, pov);
+                    eventString += DefenderTactician.ToLink(link, pov, this);
                 }
                 if (Situation.ToString().Contains("Strongly"))
                 {
@@ -98,23 +99,23 @@ namespace LegendsViewer.Legends.Events
                 }
                 if (AttackerTacticsRoll > DefenderTacticsRoll)
                 {
-                    eventString += DefenderTactician?.ToLink(link, pov) ?? "an unknown creature";
+                    eventString += DefenderTactician?.ToLink(link, pov, this) ?? "an unknown creature";
                 }
                 else
                 {
-                    eventString += AttackerTactician?.ToLink(link, pov) ?? "an unknown creature";
+                    eventString += AttackerTactician?.ToLink(link, pov, this) ?? "an unknown creature";
                 }
             }
             else if (AttackerTactician != null)
             {
-                eventString += AttackerTactician.ToLink(link, pov);
+                eventString += AttackerTactician.ToLink(link, pov, this);
                 eventString += " used ";
                 eventString += AttackerTacticsRoll > DefenderTacticsRoll ? "good" : "poor";
                 eventString += " tactics";
             }
             else if (DefenderTactician != null)
             {
-                eventString += DefenderTactician.ToLink(link, pov);
+                eventString += DefenderTactician.ToLink(link, pov, this);
                 eventString += " used ";
                 eventString += AttackerTacticsRoll > DefenderTacticsRoll ? "poor" : "good";
                 eventString += " tactics";
@@ -143,7 +144,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

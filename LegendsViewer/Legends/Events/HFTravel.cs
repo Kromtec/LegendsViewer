@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -37,10 +38,10 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             if (Escaped)
             {
-                return GetYearTime() + HistoricalFigure.ToLink(link, pov) + " escaped from the " + UndergroundRegion.ToLink(link, pov);
+                return GetYearTime() + HistoricalFigure.ToLink(link, pov, this) + " escaped from the " + UndergroundRegion.ToLink(link, pov, this);
             }
 
             if (Returned)
@@ -54,15 +55,15 @@ namespace LegendsViewer.Legends.Events
 
             if (UndergroundRegion != null)
             {
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             else if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
 
             if (!(ParentCollection is Journey))

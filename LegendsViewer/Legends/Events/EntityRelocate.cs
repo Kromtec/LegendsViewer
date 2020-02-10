@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -40,16 +41,16 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Entity.ToLink(link, pov) + " moved to ";
+            string eventString = GetYearTime() + Entity.ToLink(link, pov, this) + " moved to ";
             if (Structure != null)
             {
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
             }
             else
             {
                 eventString += "UNKNOWN STRUCTURE";
             }
-            eventString += " in " + Site.ToLink(link, pov);
+            eventString += " in " + Site.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

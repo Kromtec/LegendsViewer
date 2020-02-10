@@ -247,7 +247,7 @@ namespace LegendsViewer.Controls.Query
                 if (available != null)
                 {
                     options = available.Select(options);
-                    options = options.GroupBy(option => option).Select(option => option.Key);
+                    options = options.Where(o => o != null).GroupBy(option => option).Select(option => option.Key);
                     if (options.FirstOrDefault() != null && (options.First().GetType() == typeof(int) || options.First().GetType() == typeof(double)))
                     {
                         options = options.OrderBy(option => option);

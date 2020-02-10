@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -37,38 +38,38 @@ namespace LegendsViewer.Legends.Events
             switch (Reason)
             {
                 case 0:
-                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                     eventString += " of ";
-                    eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+                    eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
                     eventString += " created the position of ";
                     eventString += !string.IsNullOrWhiteSpace(Position) ? Position : "UNKNOWN POSITION";
                     eventString += " through force of argument";
                     break;
                 case 1:
-                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                     eventString += " of ";
-                    eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+                    eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
                     eventString += " compelled the creation of the position of ";
                     eventString += !string.IsNullOrWhiteSpace(Position) ? Position : "UNKNOWN POSITION";
                     eventString += " with threats of violence";
                     break;
                 case 2:
-                    eventString += SiteCiv != null ? SiteCiv.ToLink(link, pov) : "UNKNOWN ENTITY";
+                    eventString += SiteCiv != null ? SiteCiv.ToLink(link, pov, this) : "UNKNOWN ENTITY";
                     eventString += " collaborated to create the position of ";
                     eventString += !string.IsNullOrWhiteSpace(Position) ? Position : "UNKNOWN POSITION";
                     break;
                 case 3:
-                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                     eventString += " of ";
-                    eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+                    eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
                     eventString += " created the position of ";
                     eventString += !string.IsNullOrWhiteSpace(Position) ? Position : "UNKNOWN POSITION";
                     eventString += ", pushed by a wave of popular support";
                     break;
                 case 4:
-                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                    eventString += HistoricalFigure != null ? HistoricalFigure.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                     eventString += " of ";
-                    eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIV";
+                    eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIV";
                     eventString += " created the position of ";
                     eventString += !string.IsNullOrWhiteSpace(Position) ? Position : "UNKNOWN POSITION";
                     eventString += " as a matter of course";

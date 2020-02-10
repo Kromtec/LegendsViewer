@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using LegendsViewer.Legends;
-using WFC;
 
 namespace LegendsViewer.Controls.Tabs
 {
@@ -47,7 +46,6 @@ namespace LegendsViewer.Controls.Tabs
             this.olvType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.txtSiteSearch = new System.Windows.Forms.TextBox();
             this.btnSiteListReset = new System.Windows.Forms.Button();
-            this.filterPanel = new WFC.RichPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.radSiteBeastAttacks = new System.Windows.Forms.RadioButton();
@@ -103,7 +101,6 @@ namespace LegendsViewer.Controls.Tabs
             this.tpSiteSearch.SuspendLayout();
             this.listPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listSiteSearch)).BeginInit();
-            this.filterPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tpStructures.SuspendLayout();
@@ -158,7 +155,6 @@ namespace LegendsViewer.Controls.Tabs
             // tpSiteSearch
             // 
             this.tpSiteSearch.Controls.Add(this.listPanel);
-            this.tpSiteSearch.Controls.Add(this.filterPanel);
             this.tpSiteSearch.Location = new System.Drawing.Point(4, 22);
             this.tpSiteSearch.Name = "tpSiteSearch";
             this.tpSiteSearch.Size = new System.Drawing.Size(253, 466);
@@ -168,6 +164,7 @@ namespace LegendsViewer.Controls.Tabs
             // 
             // listPanel
             // 
+            this.listPanel.Controls.Add(this.groupBox1);
             this.listPanel.Controls.Add(this.lnkMaxResults);
             this.listPanel.Controls.Add(this.lblShownResults);
             this.listPanel.Controls.Add(this.btnSiteSearch);
@@ -177,7 +174,7 @@ namespace LegendsViewer.Controls.Tabs
             this.listPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listPanel.Location = new System.Drawing.Point(0, 0);
             this.listPanel.Name = "listPanel";
-            this.listPanel.Size = new System.Drawing.Size(253, 233);
+            this.listPanel.Size = new System.Drawing.Size(253, 466);
             this.listPanel.TabIndex = 45;
             // 
             // lnkMaxResults
@@ -185,7 +182,7 @@ namespace LegendsViewer.Controls.Tabs
             this.lnkMaxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkMaxResults.AutoSize = true;
             this.lnkMaxResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lnkMaxResults.Location = new System.Drawing.Point(233, 196);
+            this.lnkMaxResults.Location = new System.Drawing.Point(234, 241);
             this.lnkMaxResults.Name = "lnkMaxResults";
             this.lnkMaxResults.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lnkMaxResults.Size = new System.Drawing.Size(17, 9);
@@ -199,7 +196,7 @@ namespace LegendsViewer.Controls.Tabs
             // 
             this.lblShownResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShownResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShownResults.Location = new System.Drawing.Point(130, 196);
+            this.lblShownResults.Location = new System.Drawing.Point(131, 241);
             this.lblShownResults.Name = "lblShownResults";
             this.lblShownResults.Size = new System.Drawing.Size(95, 10);
             this.lblShownResults.TabIndex = 52;
@@ -232,13 +229,14 @@ namespace LegendsViewer.Controls.Tabs
             this.listSiteSearch.FullRowSelect = true;
             this.listSiteSearch.GridLines = true;
             this.listSiteSearch.HeaderWordWrap = true;
+            this.listSiteSearch.HideSelection = false;
             this.listSiteSearch.Location = new System.Drawing.Point(3, 30);
             this.listSiteSearch.Name = "listSiteSearch";
             this.listSiteSearch.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
             this.listSiteSearch.ShowCommandMenuOnRightClick = true;
             this.listSiteSearch.ShowImagesOnSubItems = true;
             this.listSiteSearch.ShowItemCountOnGroups = true;
-            this.listSiteSearch.Size = new System.Drawing.Size(247, 163);
+            this.listSiteSearch.Size = new System.Drawing.Size(247, 197);
             this.listSiteSearch.TabIndex = 43;
             this.listSiteSearch.UseAlternatingBackColors = true;
             this.listSiteSearch.UseCompatibleStateImageBehavior = false;
@@ -278,39 +276,13 @@ namespace LegendsViewer.Controls.Tabs
             // btnSiteListReset
             // 
             this.btnSiteListReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSiteListReset.Location = new System.Drawing.Point(3, 203);
+            this.btnSiteListReset.Location = new System.Drawing.Point(2, 233);
             this.btnSiteListReset.Name = "btnSiteListReset";
             this.btnSiteListReset.Size = new System.Drawing.Size(50, 20);
             this.btnSiteListReset.TabIndex = 43;
             this.btnSiteListReset.Text = "Reset";
             this.btnSiteListReset.UseVisualStyleBackColor = true;
             this.btnSiteListReset.Click += new System.EventHandler(this.ResetSiteBaseList);
-            // 
-            // filterPanel
-            // 
-            this.filterPanel.AutoSize = true;
-            this.filterPanel.BackgroundColor1 = System.Drawing.SystemColors.Control;
-            this.filterPanel.BackgroundColor2 = System.Drawing.Color.White;
-            this.filterPanel.BorderColor = System.Drawing.SystemColors.Control;
-            this.filterPanel.Controls.Add(this.groupBox1);
-            this.filterPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.filterPanel.FillStyle = WFC.Utils.FillStyle.Solid;
-            this.filterPanel.HeaderBackColor = System.Drawing.Color.Gray;
-            this.filterPanel.HeaderFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.filterPanel.HeaderIcon = null;
-            this.filterPanel.HeaderIconAlign = WFC.Utils.Align.Right;
-            this.filterPanel.HeaderText = "Filter / Sort";
-            this.filterPanel.HeaderTextAlign = WFC.Utils.Align.Left;
-            this.filterPanel.HeaderTextColor = System.Drawing.Color.Black;
-            this.filterPanel.Location = new System.Drawing.Point(0, 233);
-            this.filterPanel.Name = "filterPanel";
-            this.filterPanel.RoundCornerType = WFC.Utils.RoundRectType.Upper;
-            this.filterPanel.SeparatorColor = System.Drawing.Color.Gray;
-            this.filterPanel.SeparatorPos = WFC.RichPanel.SeparatorPosition.Bottom;
-            this.filterPanel.ShadowOffSet = 0;
-            this.filterPanel.Size = new System.Drawing.Size(253, 233);
-            this.filterPanel.TabIndex = 44;
-            this.filterPanel.OnPanelExpand += new System.EventHandler(this.filterPanel_OnPanelExpand);
             // 
             // groupBox1
             // 
@@ -319,7 +291,7 @@ namespace LegendsViewer.Controls.Tabs
             this.groupBox1.Controls.Add(this.groupBox6);
             this.groupBox1.Controls.Add(this.label26);
             this.groupBox1.Controls.Add(this.cmbSiteType);
-            this.groupBox1.Location = new System.Drawing.Point(1, 29);
+            this.groupBox1.Location = new System.Drawing.Point(0, 264);
             this.groupBox1.MinimumSize = new System.Drawing.Size(254, 202);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(254, 202);
@@ -559,6 +531,7 @@ namespace LegendsViewer.Controls.Tabs
             this.listStructureSearch.FullRowSelect = true;
             this.listStructureSearch.GridLines = true;
             this.listStructureSearch.HeaderWordWrap = true;
+            this.listStructureSearch.HideSelection = false;
             this.listStructureSearch.Location = new System.Drawing.Point(3, 31);
             this.listStructureSearch.Name = "listStructureSearch";
             this.listStructureSearch.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
@@ -768,6 +741,7 @@ namespace LegendsViewer.Controls.Tabs
             this.listWorldConstructionsSearch.FullRowSelect = true;
             this.listWorldConstructionsSearch.GridLines = true;
             this.listWorldConstructionsSearch.HeaderWordWrap = true;
+            this.listWorldConstructionsSearch.HideSelection = false;
             this.listWorldConstructionsSearch.Location = new System.Drawing.Point(3, 31);
             this.listWorldConstructionsSearch.Name = "listWorldConstructionsSearch";
             this.listWorldConstructionsSearch.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
@@ -924,11 +898,9 @@ namespace LegendsViewer.Controls.Tabs
             this.tpSites.ResumeLayout(false);
             this.tcSites.ResumeLayout(false);
             this.tpSiteSearch.ResumeLayout(false);
-            this.tpSiteSearch.PerformLayout();
             this.listPanel.ResumeLayout(false);
             this.listPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listSiteSearch)).EndInit();
-            this.filterPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -1004,7 +976,6 @@ namespace LegendsViewer.Controls.Tabs
         private OLVColumn olvType;
         private TextBox txtSiteSearch;
         private Button btnSiteListReset;
-        private RichPanel filterPanel;
         private GroupBox groupBox1;
         private GroupBox groupBox6;
         private RadioButton radSiteBeastAttacks;

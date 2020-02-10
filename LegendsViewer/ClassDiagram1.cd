@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LegendsViewer.Legends.WorldObjects.DwarfObject">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\DwarfObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.EntitySiteLink" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Legends\EntitySiteLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.EventCollections.EventCollection">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAkSAAAAABEAQQgAAEICBAAAAAAAAAAAAQAEAIQCAAA=</HashCode>
+      <FileName>Legends\EventCollections\EventCollections.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObject">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAIAAACAAgAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Legends\WorldObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.ArtForm" Collapsed="true">
+    <Position X="11" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAgAAAEAIIAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Legends\ArtForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.EntityOccasion" Collapsed="true">
+    <Position X="13.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAgAAAAAAAEAIIAAAQAAEAAAAAAAAAAAAEQAAA=</HashCode>
+      <FileName>Legends\EntityOccasion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.EntityPopulation" Collapsed="true">
+    <Position X="15.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UAAAAAAAAAIAAAAAAIIAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Legends\EntityPopulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.Era" Collapsed="true">
+    <Position X="17.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAEAIICAAQAIAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Legends\Era.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.Feature" Collapsed="true">
+    <Position X="20" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAEAIIAAAAAAAAAAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>Legends\Feature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.Schedule" Collapsed="true">
+    <Position X="22.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAQECIIBAAAAAAAAAAAAAQAAAAAQAgA=</HashCode>
+      <FileName>Legends\Schedule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.Artifact" Collapsed="true">
+    <Position X="24.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFEAAAABoCCggAAEAMIAAAQEIAAAABAAEQIAAAEQAAI=</HashCode>
+      <FileName>Legends\WorldObjects\Artifact.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.Entity" Collapsed="true">
+    <Position X="26.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QRAoZGCASAYAAAYkgMIgQARAsAgIAgSEs4AYAAEQAAg=</HashCode>
+      <FileName>Legends\WorldObjects\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.HistoricalFigure" Collapsed="true">
+    <Position X="29" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>U1EDCRCDl9A4C0AkDMJQDK1GhQAEAIQYLEAdxEAaELA=</HashCode>
+      <FileName>Legends\WorldObjects\HistoricalFigure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.Landmass" Collapsed="true">
+    <Position X="31.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAEAIIAAAQAIAAAAAAAAAAAAAEQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\Landmass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.MountainPeak" Collapsed="true">
+    <Position X="33.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAhAAAAAAEAIIAAAQAIAAIAAAAAAAAAAEQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\MountainPeak.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.WorldRegion" Collapsed="true">
+    <Position X="35.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAABAAAAAAQEAIIAAAQIIAAAAAAgAUAEAAEQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\Region.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.Site" Collapsed="true">
+    <Position X="38" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAIAABhCQABQAEAJIQCCRIIAAgAAQgAQCAAGURAAA=</HashCode>
+      <FileName>Legends\WorldObjects\Site.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.Structure" Collapsed="true">
+    <Position X="40.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FBAQAAAAEAKEgAAEAIIBAATABAAAAIAAAYAACAEQACA=</HashCode>
+      <FileName>Legends\WorldObjects\Structure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.UndergroundRegion" Collapsed="true">
+    <Position X="42.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAABAAAAAAAEAIIAAAAAIAAAAAAgAUAAAAEQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\UndergroundRegion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.WorldConstruction" Collapsed="true">
+    <Position X="44.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAABAAAAAAAAAEAIKAQAQAIAAAAAAAAcAAAAEQAAA=</HashCode>
+      <FileName>Legends\WorldObjects\WorldConstruction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LegendsViewer.Legends.WorldObjects.WrittenContent" Collapsed="true">
+    <Position X="47" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAIAAAAAAAAAAEgMIAAAQAACAUAAAABYAAAAEQQAA=</HashCode>
+      <FileName>Legends\WorldObjects\WrittenContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

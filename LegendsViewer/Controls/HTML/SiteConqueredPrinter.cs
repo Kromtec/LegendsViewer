@@ -27,7 +27,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            Html.AppendLine("<h1>" + _conquering.GetIcon() + " " + GetTitle() + "</h1></br>");
 
             Html.AppendLine(_conquering.GetYearTime() + "The " + _conquering.GetOrdinal(_conquering.Ordinal) + _conquering.ConquerType + " of " + _conquering.Site.ToLink() + " occurred as a result of " + _conquering.Battle.ToLink() 
                 + (_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity() )
@@ -44,7 +44,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<b>" + _conquering.Attacker.PrintEntity() + " (Attacker)</b></br>");
             Html.AppendLine("<b>" + _conquering.Defender.PrintEntity() + " (Defender)</b></br></br>");
 
-            PrintEventLog(_conquering.GetSubEvents(), SiteConquered.Filters, _conquering);
+            PrintEventLog(_world, _conquering.GetSubEvents(), SiteConquered.Filters, _conquering);
 
             return Html.ToString();
         }

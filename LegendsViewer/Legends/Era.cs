@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {
@@ -44,7 +45,7 @@ namespace LegendsViewer.Legends
                                                                                                     || war.StartYear <= StartYear && war.EndYear == -1).ToList();
         }
         
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             if (Name != "")
             {

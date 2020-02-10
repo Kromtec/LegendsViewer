@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
     public class AddHfhfLink : WorldEvent
     {
-        public HistoricalFigure HistoricalFigure, HistoricalFigureTarget;
-        public HistoricalFigureLinkType LinkType;
+        public HistoricalFigure HistoricalFigure { get; set; }
+        public HistoricalFigure HistoricalFigureTarget { get; set; }
+        public HistoricalFigureLinkType LinkType { get; set; }
+
         public AddHfhfLink(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -50,7 +53,7 @@ namespace LegendsViewer.Legends.Events
                     historicalFigureToTargetLink = historicalFigureToTargetLinks.FirstOrDefault();
                 }
 
-                HfAbducted abduction = HistoricalFigureTarget.Events.OfType<HfAbducted>().SingleOrDefault(abduction1 => abduction1.Snatcher == HistoricalFigure);
+                HfAbducted abduction = HistoricalFigureTarget.Events.OfType<HfAbducted>().FirstOrDefault(a => a.Snatcher == HistoricalFigure);
                 if (historicalFigureToTargetLink != null && abduction == null)
                 {
                     LinkType = historicalFigureToTargetLink.Type;
@@ -71,11 +74,11 @@ namespace LegendsViewer.Legends.Events
 
             if (pov == HistoricalFigureTarget)
             {
-                eventString += HistoricalFigureTarget?.ToLink(link, pov) ?? "an unknown creature";
+                eventString += HistoricalFigureTarget?.ToLink(link, pov, this) ?? "an unknown creature";
             }
             else
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
 
             switch (LinkType)
@@ -162,11 +165,11 @@ namespace LegendsViewer.Legends.Events
 
             if (pov == HistoricalFigureTarget)
             {
-                eventString += HistoricalFigure?.ToLink(link, pov) ?? "an unknown creature";
+                eventString += HistoricalFigure?.ToLink(link, pov, this) ?? "an unknown creature";
             }
             else
             {
-                eventString += HistoricalFigureTarget.ToLink(link, pov);
+                eventString += HistoricalFigureTarget.ToLink(link, pov, this);
             }
 
             eventString += PrintParentCollection(link, pov);

@@ -36,6 +36,8 @@ namespace LegendsViewer.Legends.Enums
         CaveIn,
         [Description("Frozen in Water")]
         FrozenInWater,
+        [Description("Executed - Generic")]
+        ExecutedGeneric,
         [Description("Executed - Fed To Beasts")]
         ExecutedFedToBeasts,
         [Description("Executed - Burned Alive")]

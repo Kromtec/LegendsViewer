@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using LegendsViewer.Legends;
-using WFC;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Tabs
 {
@@ -181,17 +181,6 @@ namespace LegendsViewer.Controls.Tabs
         private void ListHFSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListSearch_SelectedIndexChanged(sender, e);
-        }
-
-        private void FilterPanel_OnPanelExpand(object sender, EventArgs e)
-        {
-            if (sender is RichPanel panel)
-            {
-                foreach (var control in panel.Controls.OfType<Control>())
-                {
-                    control.Visible = panel.Expanded;
-                }
-            }
         }
 
         private void LnkMaxResults_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

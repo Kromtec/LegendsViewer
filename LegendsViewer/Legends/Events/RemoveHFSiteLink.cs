@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -60,7 +61,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             else
             {
@@ -87,7 +88,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Structure != null)
             {
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
             }
             else
             {
@@ -95,11 +96,11 @@ namespace LegendsViewer.Legends.Events
             }
             if (Civ != null)
             {
-                eventString += " of " + Civ.ToLink(link, pov);
+                eventString += " of " + Civ.ToLink(link, pov, this);
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

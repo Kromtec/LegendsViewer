@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Interfaces;
+using LegendsViewer.Legends.WorldObjects;
 using SevenZip;
 
 namespace LegendsViewer.Controls.Map
@@ -1015,7 +1016,7 @@ namespace LegendsViewer.Controls.Map
                     foreach (Location coordinates in _world.Sites.GroupBy(site => site.Coordinates).Select(site => site.Key).ToList())
                     {
                         coordinatesList.Add(coordinates);
-                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Events.Count(dEvent => !Legends.Site.Filters.Contains(dEvent.Type))));
+                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Events.Count(dEvent => !Legends.WorldObjects.Site.Filters.Contains(dEvent.Type))));
                     }
                     break;
                 case "Beast Attacks":

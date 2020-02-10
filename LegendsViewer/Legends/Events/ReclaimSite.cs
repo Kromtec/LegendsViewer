@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -62,9 +63,9 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (SiteEntity != null && SiteEntity != Civ)
             {
-                eventString += SiteEntity.ToLink(link, pov) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
             }
-            eventString += Civ != null ? Civ.ToLink(link, pov) : "UNKNOWN CIVILISATION";
+            eventString += Civ != null ? Civ.ToLink(link, pov, this) : "UNKNOWN CIVILISATION";
             if (Unretired)
             {
                 eventString += " were taken by a mood to act against their better judgment at ";
@@ -73,7 +74,7 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " launched an expedition to reclaim ";
             }
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -40,7 +41,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Entity.ToLink(link, pov) + " became the primary criminal organization in " + Site.ToLink();
+            string eventString = GetYearTime() + Entity.ToLink(link, pov, this) + " became the primary criminal organization in " + Site.ToLink();
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

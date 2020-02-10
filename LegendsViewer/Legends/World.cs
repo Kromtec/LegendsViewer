@@ -13,6 +13,7 @@ using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {
@@ -85,7 +86,7 @@ namespace LegendsViewer.Legends
 
             CreateUnknowns();
 
-            XmlParser xml = new XmlParser(worker, this, xmlFile);
+            XmlParser xml = new XmlParser(worker, this, xmlFile, xmlPlusFile);
             xml.Parse();
 
             HistoryParser history = new HistoryParser(worker, this, historyFile);
@@ -97,6 +98,8 @@ namespace LegendsViewer.Legends
             ProcessHFtoEntityLinks();
             ResolveHfToEntityPopulation();
             ResolveStructureProperties();
+            ResolveSitePropertyOwners();
+            ResolveHonorEntities();
             ResolveMountainPeakToRegionLinks();
             ResolveSiteToRegionLinks();
             ResolveArtifactProperties();
@@ -679,6 +682,36 @@ namespace LegendsViewer.Legends
             foreach (Structure structure in Structures)
             {
                 structure.Resolve(this);
+            }
+        }
+
+        private void ResolveSitePropertyOwners()
+        {
+            if (Sites.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Structure Owners");
+            }
+            foreach (var site in Sites)
+            {
+                if (site.SiteProperties.Any())
+                {
+                    foreach (SiteProperty siteProperty in site.SiteProperties)
+                    {
+                        siteProperty.Resolve(this);
+                    }
+                }
+            }
+        }
+
+        private void ResolveHonorEntities()
+        {
+            if (HistoricalFigures.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Historical Figure Honors");
+            }
+            foreach (var historicalFigure in HistoricalFigures.Where(hf => hf.HonorEntity != null))
+            {
+                historicalFigure.HonorEntity.Resolve(this, historicalFigure);
             }
         }
 

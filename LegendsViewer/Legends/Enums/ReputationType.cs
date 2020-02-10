@@ -32,6 +32,11 @@ namespace LegendsViewer.Legends.Enums
         [Description("Knowledge Preserver")]
         KnowledgePreserver,
         [Description("Protector Of The Weak")]
-        ProtectorOfWeak
+        ProtectorOfWeak,
+        Love,
+        Respect,
+        Trust,
+        Loyalty,
+        Fear
     }
 }

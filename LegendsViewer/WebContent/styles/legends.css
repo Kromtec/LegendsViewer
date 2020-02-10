@@ -60,7 +60,11 @@ h3 {
 }
 
 .bar-chart {
-    padding-right: 20px;
+	padding-right: 20px;
+}
+
+.line-chart {
+	max-height: 250px;
 }
 
 /* TABLES*/

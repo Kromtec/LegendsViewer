@@ -4,6 +4,7 @@ using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls
 {
@@ -74,7 +75,7 @@ namespace LegendsViewer.Controls
 
             if (Animated)
             {
-                filtered = filtered.Where(hf => hf.ActiveInteractions.Any(x => x.Contains("ANIMATE")));
+                filtered = filtered.Where(hf => hf.Animated || hf.ActiveInteractions.Any(x => x.Contains("ANIMATE")));
             }
 
             if (Force)
@@ -766,7 +767,7 @@ namespace LegendsViewer.Controls
 
             if (Type != "All")
             {
-                filtered = filtered.Where(element => element.Type.GetDescription() == Type);
+                filtered = filtered.Where(element => element.TypeAsString == Type);
             }
 
             if (SortEvents)

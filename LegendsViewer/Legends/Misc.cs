@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 
 namespace LegendsViewer.Legends
@@ -7,10 +8,42 @@ namespace LegendsViewer.Legends
     {
         public static void AddEvent(this WorldObject worldObject, WorldEvent worldEvent)
         {
-            if (worldObject != null)
+            if (worldObject == null ||worldEvent == null)
             {
-                worldObject.Events.Add(worldEvent);
+                return;
             }
+#if DEBUG
+            if (!worldObject.Events.Contains(worldEvent))
+            {
+#endif
+                worldObject.Events.Add(worldEvent);
+#if DEBUG
+            }
+            else
+            {
+                worldEvent.World.ParsingErrors.Report($"Already added event {worldEvent.Id} '{worldEvent.Type}' to object {worldObject.Id} '{worldObject.GetType()}'");
+            }
+#endif
+        }
+
+        public static void AddEventCollection(this WorldObject worldObject, EventCollection eventCollection)
+        {
+            if (worldObject == null || eventCollection == null)
+            {
+                return;
+            }
+#if DEBUG
+            if (!worldObject.EventCollectons.Contains(eventCollection))
+            {
+#endif
+                worldObject.EventCollectons.Add(eventCollection);
+#if DEBUG
+            }
+            else
+            {
+                eventCollection.World.ParsingErrors.Report($"Already added eventCollection {eventCollection.Id} '{eventCollection.Type}' to object {worldObject.Id} '{worldObject.GetType()}'");
+            }
+#endif
         }
 
         public static T GetWorldObject<T>(this List<T> list, int id) where T : WorldObject

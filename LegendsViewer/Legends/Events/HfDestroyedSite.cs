@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -63,12 +64,12 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            String eventString = GetYearTime() + Attacker.ToLink(link, pov) + " routed " + SiteCiv.ToLink(link, pov);
+            String eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " routed " + SiteCiv.ToLink(link, pov, this);
             if (DefenderCiv != null)
             {
-                eventString += " of " + DefenderCiv.ToLink(link, pov);
+                eventString += " of " + DefenderCiv.ToLink(link, pov, this);
             }
-            eventString += " and destroyed " + Site.ToLink(link, pov);
+            eventString += " and destroyed " + Site.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -14,6 +15,7 @@ namespace LegendsViewer.Legends.Events
         public Entity Entity { get; set; }
         public Claim Claim { get; set; }
         public int PositionProfileId { get; set; }
+        public string Circumstance { get; set; }
 
         public ArtifactClaimFormed(List<Property> properties, World world)
             : base(properties, world)
@@ -52,6 +54,9 @@ namespace LegendsViewer.Legends.Events
                     case "position_profile_id":
                         PositionProfileId = Convert.ToInt32(property.Value);
                         break;
+                    case "circumstance":
+                        Circumstance = property.Value;
+                        break;
                 }
             }
 
@@ -63,7 +68,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Artifact.ToLink(link, pov);
+            eventString += Artifact.ToLink(link, pov, this);
             if (Claim == Claim.Symbol ||
                 Claim == Claim.Heirloom && HistoricalFigure != null)
             {
@@ -98,12 +103,18 @@ namespace LegendsViewer.Legends.Events
             if (Entity != null)
             {
                 eventString += " by ";
-                eventString += Entity.ToLink(link, pov);
+                eventString += Entity.ToLink(link, pov, this);
             }
             if (HistoricalFigure != null)
             {
                 eventString += " by ";
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Circumstance))
+            {
+                eventString += " ";
+                eventString += Circumstance;
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

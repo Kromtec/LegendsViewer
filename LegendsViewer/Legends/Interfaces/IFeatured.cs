@@ -1,4 +1,6 @@
-﻿namespace LegendsViewer.Legends.Interfaces
+﻿using LegendsViewer.Legends.WorldObjects;
+
+namespace LegendsViewer.Legends.Interfaces
 {
     interface IFeatured
     {

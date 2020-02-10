@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -31,6 +32,7 @@ namespace LegendsViewer.Legends.Events
             }
 
             Student.AddEvent(this);
+            Student?.CreatureTypes.Add(new HistoricalFigure.CreatureType("necromancer", this));
             Teacher.AddEvent(this);
             Artifact.AddEvent(this);
         }
@@ -41,19 +43,19 @@ namespace LegendsViewer.Legends.Events
 
             if (Teacher != null)
             {
-                eventString += Teacher.ToLink(link, pov);
+                eventString += Teacher.ToLink(link, pov, this);
                 eventString += " taught ";
-                eventString += Student != null ? Student.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += Student != null ? Student.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += " ";
                 eventString += !string.IsNullOrWhiteSpace(SecretText) ? SecretText : "(" + Interaction + ")";
             }
             else
             {
-                eventString += Student != null ? Student.ToLink(link, pov) : "UNKNOWN HISTORICAL FIGURE";
+                eventString += Student != null ? Student.ToLink(link, pov, this) : "UNKNOWN HISTORICAL FIGURE";
                 eventString += " learned ";
                 eventString += !string.IsNullOrWhiteSpace(SecretText) ? SecretText : "(" + Interaction + ")";
                 eventString += " from ";
-                eventString += Artifact != null ? Artifact.ToLink(link, pov) : "UNKNOWN ARTIFACT";
+                eventString += Artifact != null ? Artifact.ToLink(link, pov, this) : "UNKNOWN ARTIFACT";
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

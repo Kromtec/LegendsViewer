@@ -26,6 +26,9 @@ namespace LegendsViewer.Legends.Enums
         Labyrinth,
         Shrine,
         [Description("Important Location")]
-        ImportantLocation
+        ImportantLocation,
+        Fort,
+        Monastery,
+        Castle
     }
 }

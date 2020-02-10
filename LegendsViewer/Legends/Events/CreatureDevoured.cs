@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -45,7 +46,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Eater != null)
             {
-                eventString += Eater.ToLink(link, pov);
+                eventString += Eater.ToLink(link, pov, this);
             }
             else
             {
@@ -54,7 +55,7 @@ namespace LegendsViewer.Legends.Events
             eventString += " devoured ";
             if (Victim != null)
             {
-                eventString += Victim.ToLink(link, pov);
+                eventString += Victim.ToLink(link, pov, this);
             }
             else if (!string.IsNullOrWhiteSpace(Race))
             {
@@ -72,15 +73,15 @@ namespace LegendsViewer.Legends.Events
             eventString += " in ";
             if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += Region.ToLink(link, pov);
+                eventString += Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += UndergroundRegion.ToLink(link, pov);
+                eventString += UndergroundRegion.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

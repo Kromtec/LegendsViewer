@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using LegendsViewer.Legends;
-using WFC;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Tabs
 {
@@ -99,8 +99,8 @@ namespace LegendsViewer.Controls.Tabs
             _structureSearch = new StructuresList(World);
 
             var structures = from structure in World.Structures
-                             orderby structure.Type.GetDescription()
-                             group structure by structure.Type.GetDescription() into structuretype
+                             orderby structure.TypeAsString
+                             group structure by structure.TypeAsString into structuretype
                              select structuretype;
             var worldconstructions = from construction in World.WorldConstructions
                                      orderby construction.Type.GetDescription()
@@ -313,17 +313,6 @@ namespace LegendsViewer.Controls.Tabs
         private void listSiteSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListSearch_SelectedIndexChanged(sender, e);
-        }
-
-        private void filterPanel_OnPanelExpand(object sender, EventArgs e)
-        {
-            if (sender is RichPanel panel)
-            {
-                foreach (var control in panel.Controls.OfType<Control>())
-                {
-                    control.Visible = panel.Expanded;
-                }
-            }
         }
     }
 }

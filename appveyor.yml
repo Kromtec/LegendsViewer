@@ -1,13 +1,13 @@
 # version format
 # {major_release}.{feature_release}.{minor_release}.{build}
-version: 1.19.10.{build}
+version: 1.20.01.{build}
 
 branches:
   only:
     - master
     - develop
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 before_build:
   - where msbuild
@@ -16,7 +16,6 @@ before_build:
 build:
   project: LegendsViewer.sln        # path to Visual Studio solution or project
   verbosity: minimal                # quiet|minimal|normal|detailed
-
 
 
 # Operating system (build VM template)

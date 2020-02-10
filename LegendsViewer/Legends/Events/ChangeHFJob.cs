@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -38,18 +39,18 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov);
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this);
             if (OldJob != "standard" && NewJob != "standard")
             {
-                eventString += " gave up being a " + OldJob + " to become a " + NewJob;
+                eventString += " gave up being " + Formatting.AddArticle(OldJob) + " to become " + Formatting.AddArticle(NewJob);
             }
             else if (NewJob != "standard")
             {
-                eventString += " became a " + NewJob;
+                eventString += " became " + Formatting.AddArticle(NewJob);
             }
             else if (OldJob != "standard")
             {
-                eventString += " stopped being a " + OldJob;
+                eventString += " stopped being " + Formatting.AddArticle(OldJob);
             }
             else
             {
@@ -57,7 +58,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -33,13 +34,13 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Trickster?.ToLink(link, pov) ?? "an unknown creature";
+            eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
             eventString += " fooled ";
-            eventString += Target?.ToLink(link, pov) ?? "an unknown civilization";
+            eventString += Target?.ToLink(link, pov, this) ?? "an unknown civilization";
             eventString += " into believing ";
-            eventString += Trickster?.ToLink(link, pov) ?? "an unknown creature";
+            eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
             eventString += " was ";
-            eventString += Identity.ToLink(link, pov);
+            eventString += Identity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

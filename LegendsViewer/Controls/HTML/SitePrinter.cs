@@ -8,6 +8,7 @@ using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -31,10 +32,26 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
+            LoadCustomScripts();
+
             Html.AppendLine("<div class=\"container-fluid\">");
 
             PrintTitle();
-            PrintMaps();
+
+            Html.AppendLine("<div class=\"row\">");
+
+            string siteMapPath = GetSiteMapPath();
+            string colClassMaps = string.IsNullOrEmpty(siteMapPath) ? "col-md-6 col-sm-12" : "col-lg-9 col-md-12 col-sm-12";
+            Html.AppendLine("<div class=\"" + colClassMaps + "\">");
+            PrintMaps(siteMapPath);
+            Html.AppendLine("</div>");
+
+            string colClassChart = string.IsNullOrEmpty(siteMapPath) ? "col-md-3 col-sm-12" : "col-lg-3 col-md-6 col-sm-6";
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"" + colClassChart + "\" style=\"height: 250px\">");
+            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("</div>");
 
             Html.AppendLine("<div class=\"row\">");
             PrintPopulations(_site.Populations);
@@ -42,6 +59,7 @@ namespace LegendsViewer.Controls.HTML
 
             PrintGeographyInfo();
             PrintStructures();
+            PrintSiteProperties();
             PrintRelatedArtifacts();
             PrintRelatedHistoricalFigures();
             PrintWarfareInfo();
@@ -54,7 +72,7 @@ namespace LegendsViewer.Controls.HTML
             PrintDeaths();
             Html.AppendLine("</div>");
 
-            PrintEventLog(_site.Events, Site.Filters, _site);
+            PrintEventLog(_world, _site.Events, Site.Filters, _site);
             Html.AppendLine("</div>");
 
             return Html.ToString();
@@ -98,6 +116,17 @@ namespace LegendsViewer.Controls.HTML
             EndList(ListType.Unordered);
             Html.AppendLine("</div>");
             Html.AppendLine("</div>");
+        }
+
+        private void LoadCustomScripts()
+        {
+            Html.AppendLine("<script>");
+            Html.AppendLine("window.onload = function(){");
+
+            PopulatePopulationChartData(_site.Populations.Where(pop => pop.IsMainRace || pop.IsAnimalPeople).ToList());
+
+            Html.AppendLine("}");
+            Html.AppendLine("</script>");
         }
 
         private void PrintRelatedArtifacts()
@@ -258,7 +287,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<div class=\"row\">");
                 Html.AppendLine("<div class=\"col-md-12\">");
                 int warfareCount = 1;
-                Html.AppendLine("<b>Warfare</b> " + MakeLink("[Load]", LinkOption.LoadSiteBattles));
+                Html.AppendLine("<b>Warfare</b> ");
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");
@@ -330,14 +359,45 @@ namespace LegendsViewer.Controls.HTML
                 foreach (Structure structure in _site.Structures)
                 {
                     Html.AppendLine("<li>" + structure.ToLink() + ", ");
-                    if (structure.DungeonType != DungeonType.Unknown)
+                    Html.AppendLine(structure.TypeAsString);
+                    Html.AppendLine("</li>");
+                }
+                Html.AppendLine("</ul>");
+                Html.AppendLine("</div>");
+                Html.AppendLine("</div>");
+            }
+        }
+
+        private void PrintSiteProperties()
+        {
+            if (_site.SiteProperties.Any())
+            {
+                Html.AppendLine("<div class=\"row\">");
+                Html.AppendLine("<div class=\"col-md-12\">");
+                Html.AppendLine("<b>Site Properties</b><br/>");
+                Html.AppendLine("<ul>");
+                foreach (SiteProperty siteProperty in _site.SiteProperties)
+                {
+                    Html.AppendLine("<li>");
+                    if (siteProperty.Structure != null)
                     {
-                        Html.AppendLine(structure.DungeonType.GetDescription());
+                        Html.AppendLine(siteProperty.Structure.Type.GetDescription());
+                        Html.AppendLine(" (" + siteProperty.Structure.ToLink() + ")");
+                    }
+                    else if (siteProperty.Type != SitePropertyType.Unknown)
+                    {
+                        Html.AppendLine(siteProperty.Type.GetDescription());
                     }
                     else
                     {
-                        Html.AppendLine(structure.Type.GetDescription());
+                        Html.AppendLine("Property");
                     }
+                    if (siteProperty.Owner != null)
+                    {
+                        Html.AppendLine(", ");
+                        Html.AppendLine(siteProperty.Owner.ToLink());
+                    }
+
                     Html.AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
@@ -372,14 +432,14 @@ namespace LegendsViewer.Controls.HTML
             }
         }
 
-        private void PrintMaps()
+        private void PrintMaps(string siteMapPath)
         {
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _site);
             Html.AppendLine("<table>");
             Html.AppendLine("<tr>");
-            PrintSiteMap();
+            PrintSiteMap(siteMapPath);
             Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
             Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
             Html.AppendLine("</tr></table></br>");
@@ -393,7 +453,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"col-md-12\">");
             if (!string.IsNullOrWhiteSpace(_site.Name))
             {
-                Html.AppendLine("<h1>" + _site.UntranslatedName + ", \"" + _site.Name + "\"</h1>");
+                Html.AppendLine("<h1>" + _site.GetIcon() + " " + _site.UntranslatedName + ", \"" + _site.Name + "\"</h1>");
                 Html.AppendLine("<b>" + _site.ToLink(false) + " is a " + _site.Type + "</b><br /><br />");
             }
             else
@@ -465,46 +525,58 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</div>");
         }
 
-        private void PrintSiteMap()
+        private string GetSiteMapPath()
         {
             if (string.IsNullOrEmpty(FileLoader.SaveDirectory) || string.IsNullOrEmpty(FileLoader.RegionId))
             {
-                return;
+                return null;
             }
             string sitemapPath = Path.Combine(FileLoader.SaveDirectory, FileLoader.RegionId + "-site_map-" + _site.Id);
             string sitemapPathFromProcessScript = Path.Combine(FileLoader.SaveDirectory, "site_maps\\" + FileLoader.RegionId + "-site_map-" + _site.Id);
             if (File.Exists(sitemapPath + ".bmp"))
             {
-                CreateSitemapBitmap(sitemapPath + ".bmp");
+                return sitemapPath + ".bmp";
             }
-            else if (File.Exists(sitemapPath + ".png"))
+
+            if (File.Exists(sitemapPath + ".png"))
             {
-                CreateSitemapBitmap(sitemapPath + ".png");
+                return sitemapPath + ".png";
             }
-            else if (File.Exists(sitemapPath + ".jpg"))
+            if (File.Exists(sitemapPath + ".jpg"))
             {
-                CreateSitemapBitmap(sitemapPath + ".jpg");
+                return sitemapPath + ".jpg";
             }
-            else if (File.Exists(sitemapPath + ".jpeg"))
+            if (File.Exists(sitemapPath + ".jpeg"))
             {
-                CreateSitemapBitmap(sitemapPath + ".jpeg");
+                return sitemapPath + ".jpeg";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".bmp"))
+            if (File.Exists(sitemapPathFromProcessScript + ".bmp"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".bmp");
+                return sitemapPathFromProcessScript + ".bmp";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".png"))
+            if (File.Exists(sitemapPathFromProcessScript + ".png"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".png");
+                return sitemapPathFromProcessScript + ".png";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".jpg"))
+            if (File.Exists(sitemapPathFromProcessScript + ".jpg"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".jpg");
+                return sitemapPathFromProcessScript + ".jpg";
             }
-            else if (File.Exists(sitemapPathFromProcessScript + ".jpeg"))
+            if (File.Exists(sitemapPathFromProcessScript + ".jpeg"))
             {
-                CreateSitemapBitmap(sitemapPathFromProcessScript + ".jpeg");
+                return sitemapPathFromProcessScript + ".jpeg";
             }
+
+            return null;
+        }
+
+        private void PrintSiteMap(string siteMapPath)
+        {
+            if (string.IsNullOrEmpty(siteMapPath))
+            {
+                return;
+            }
+            CreateSitemapBitmap(siteMapPath);
         }
 
         private void CreateSitemapBitmap(string sitemapPath)
@@ -523,7 +595,6 @@ namespace LegendsViewer.Controls.HTML
             if (sitemap != null)
             {
                 string htmlImage = BitmapToHtml(sitemap);
-                //string mapLink = MakeFileLink(htmlImage, sitemapPath);
                 string mapLink = MakeLink(htmlImage, LinkOption.LoadSiteMap);
                 Html.AppendLine("<td>" + mapLink + "</td>");
             }

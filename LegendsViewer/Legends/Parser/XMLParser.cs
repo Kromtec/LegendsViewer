@@ -9,6 +9,7 @@ using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Parser
 {
@@ -31,13 +32,12 @@ namespace LegendsViewer.Legends.Parser
             };
         }
 
-        public XmlParser(BackgroundWorker worker, World world, string xmlFile) : this(xmlFile)
+        public XmlParser(BackgroundWorker worker, World world, string xmlFile, string xmlPlusFile) : this(xmlFile)
         {
             _worker = worker;
             World = world;
             _worker.ReportProgress(0, "Parsing XML Sections...");
-            string xmlPlusFile = xmlFile.Replace(".xml", "_plus.xml");
-            if (File.Exists(xmlPlusFile))
+            if (xmlPlusFile != xmlFile && File.Exists(xmlPlusFile))
             {
                 _xmlPlusParser = new XmlPlusParser(worker, world, xmlPlusFile);
                 World.Log.AppendLine("Found LEGENDS_PLUS.XML!");
@@ -207,7 +207,7 @@ namespace LegendsViewer.Legends.Parser
             string eventType = "";
             if (CurrentSection == Section.Events || CurrentSection == Section.EventCollections)
             {
-                eventType = properties.Find(property => property.Name == "type").Value;
+                eventType = properties.Find(property => property.Name == "type")?.Value ?? "undefined";
             }
 
             if (CurrentSection != Section.Events && CurrentSection != Section.EventCollections)
@@ -238,7 +238,7 @@ namespace LegendsViewer.Legends.Parser
             {
                 if (!property.Known)
                 {
-                    World.ParsingErrors.Report("|==> " + path + " \nUnknown Property: " + property.Name, property.Value);
+                    World.ParsingErrors.Report("|==> " + path + " --- Unknown Property: " + property.Name, property.Value);
                 }
                 if (property.SubProperties != null)
                 {
@@ -633,8 +633,86 @@ namespace LegendsViewer.Legends.Parser
                 case "site surrendered":
                     World.Events.Add(new SiteSurrendered(properties, World));
                     break;
+                case "remove hf hf link":
+                    World.Events.Add(new RemoveHfHfLink(properties, World));
+                    break;
+                case "holy city declaration":
+                    World.Events.Add(new HolyCityDeclaration(properties, World));
+                    break;
+                case "hf performed horrible experiments":
+                    World.Events.Add(new HfPerformedHorribleExperiments(properties, World));
+                    break;
+                case "entity incorporated":
+                    World.Events.Add(new EntityIncorporated(properties, World));
+                    break;
+                case "gamble":
+                    World.Events.Add(new Gamble(properties, World));
+                    break;
+                case "trade":
+                    World.Events.Add(new Trade(properties, World));
+                    break;
+                case "hf equipment purchase":
+                    World.Events.Add(new HfEquipmentPurchase(properties, World));
+                    break;
+                case "entity overthrown":
+                    World.Events.Add(new EntityOverthrown(properties, World));
+                    break;
+                case "failed frame attempt":
+                    World.Events.Add(new FailedFrameAttempt(properties, World));
+                    break;
+                case "hf convicted":
+                    World.Events.Add(new HfConvicted(properties, World));
+                    break;
+                case "failed intrigue corruption":
+                    World.Events.Add(new FailedIntrigueCorruption(properties, World));
+                    break;
+                case "hfs formed intrigue relationship":
+                    World.Events.Add(new HfsFormedIntrigueRelationship(properties, World));
+                    break;
+                case "entity alliance formed":
+                    World.Events.Add(new EntityAllianceFormed(properties, World));
+                    break;
+                case "entity dissolved":
+                    World.Events.Add(new EntityDissolved(properties, World));
+                    break;
+                case "add hf entity honor":
+                    World.Events.Add(new AddHfEntityHonor(properties, World));
+                    break;
+                case "entity breach feature layer":
+                    World.Events.Add(new EntityBreachFeatureLayer(properties, World));
+                    break;
+                case "entity equipment purchase":
+                    World.Events.Add(new EntityEquipmentPurchase(properties, World));
+                    break;
+                case "hf ransomed":
+                    World.Events.Add(new HfRansomed(properties, World));
+                    break;
+                case "hf preach":
+                    World.Events.Add(new HfPreach(properties, World));
+                    break;
+                case "modified building":
+                    World.Events.Add(new ModifiedBuilding(properties, World));
+                    break;
+                case "hf interrogated":
+                    World.Events.Add(new HfInterrogated(properties, World));
+                    break;
+                case "entity persecuted":
+                    World.Events.Add(new EntityPersecuted(properties, World));
+                    break;
+                case "building profile acquired":
+                    World.Events.Add(new BuildingProfileAcquired(properties, World));
+                    break;
+                case "hf enslaved":
+                    World.Events.Add(new HfEnslaved(properties, World));
+                    break;
+                case "hf asked about artifact":
+                    World.Events.Add(new HfAskedAboutArtifact(properties, World));
+                    break;
+                case "hf carouse":
+                    World.Events.Add(new HfCarouse(properties, World));
+                    break;
                 default:
-                    World.ParsingErrors.Report("Unknown Event: " + type);
+                    World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;
             }
         }
@@ -691,8 +769,14 @@ namespace LegendsViewer.Legends.Parser
                 case "raid":
                     World.EventCollections.Add(new Raid(properties, World));
                     break;
+                case "persecution":
+                    World.EventCollections.Add(new Persecution(properties, World));
+                    break;
+                case "entity overthrown":
+                    World.EventCollections.Add(new EntityOverthrownCollection(properties, World));
+                    break;
                 default:
-                    World.ParsingErrors.Report("Unknown Event Collection: " + type);
+                    World.ParsingErrors.Report("\nUnknown Event Collection: " + type);
                     break;
             }
         }

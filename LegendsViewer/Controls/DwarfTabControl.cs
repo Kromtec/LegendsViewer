@@ -6,6 +6,7 @@ using LegendsViewer.Controls.HTML;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Controls.Query;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls
 {
@@ -19,15 +20,16 @@ namespace LegendsViewer.Controls
             World = world;
         }
 
-        public void Navigate(ControlOption control, object navigateObject = null)
+        public void Navigate(ControlOption controlOption, object navigateObject = null)
         {
             PageControl newControl = null;
-            switch (control)
+            switch (controlOption)
             {
+                case ControlOption.EventOverview:
                 case ControlOption.Html:
                     if (navigateObject != null)
                     {
-                        newControl = new HtmlControl(navigateObject, this, World);
+                        newControl = new HtmlControl(navigateObject, this, World, controlOption);
                     }
                     break;
                 case ControlOption.Chart:

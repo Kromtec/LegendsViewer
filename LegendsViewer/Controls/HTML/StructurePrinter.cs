@@ -2,6 +2,7 @@
 using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -20,16 +21,9 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _structure.Name + "</h1>");
+            Html.AppendLine("<h1>" + _structure.GetIcon() + " " + _structure.Name + "</h1>");
             Html.AppendLine("<b>");
-            if (_structure.DungeonType != DungeonType.Unknown)
-            {
-                Html.AppendLine(_structure.DungeonType.GetDescription());
-            }
-            else
-            {
-                Html.AppendLine(_structure.Type.GetDescription());
-            }
+            Html.AppendLine(_structure.TypeAsString);
             Html.AppendLine(" in " + _structure.Site.ToLink() + "</b><br/><br/>");
 
             if (_structure.Deity != null)
@@ -53,6 +47,13 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<li>" + _structure.Entity.ToLink() + "</li>");
                 Html.AppendLine("</ul>");
             }
+            if (_structure.Owner != null)
+            {
+                Html.AppendLine("<b>Owner:</b><br/>");
+                Html.AppendLine("<ul>");
+                Html.AppendLine("<li>" + _structure.Owner.ToLink() + "</li>");
+                Html.AppendLine("</ul>");
+            }
             if (_structure.Inhabitants.Any())
             {
                 Html.AppendLine("<b>Inhabitants:</b><br/>");
@@ -74,7 +75,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
-            PrintEventLog(_structure.Events, Structure.Filters, _structure);
+            PrintEventLog(_world, _structure.Events, Structure.Filters, _structure);
             return Html.ToString();
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -44,12 +45,12 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Attacker.ToLink(link, pov) + " secured tribute from " + SiteEntity.ToLink(link, pov);
+            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " secured tribute from " + SiteEntity.ToLink(link, pov, this);
             if (Defender != null)
             {
-                eventString += " of " + Defender.ToLink(link, pov);
+                eventString += " of " + Defender.ToLink(link, pov, this);
             }
-            eventString += ", to be delivered from " + Site.ToLink(link, pov);
+            eventString += ", to be delivered from " + Site.ToLink(link, pov, this);
             if (!string.IsNullOrWhiteSpace(Season))
             {
                 eventString += " every " + Season.Trim();

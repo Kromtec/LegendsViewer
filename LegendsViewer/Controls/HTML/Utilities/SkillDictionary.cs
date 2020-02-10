@@ -162,7 +162,9 @@ namespace LegendsViewer.Controls.HTML.Utilities
             {"Optics Engineer", new SkillDescription("eng", "OPTICS_ENGINEER", "Optician", "Optics Engineer")},
             {"Fluid Engineer", new SkillDescription("eng", "FLUID_ENGINEER", "Fluids Engineer", "Fluid Engineering")},
             {"Papermaking", new SkillDescription("ppr", "PAPERMAKING", "Paper Maker", "Paper Making")},
-            {"Bookbinding", new SkillDescription("ppr", "BOOKBINDING", "Book Binder", "Book Binding")}
+            {"Bookbinding", new SkillDescription("ppr", "BOOKBINDING", "Book Binder", "Book Binding")},
+            {"Intrigue", new SkillDescription("soc", "INTRIGUE", "Schemer", "Scheming")},
+            {"Riding", new SkillDescription("msc", "RIDING", "Rider", "Riding")}
         };
 
         public static SkillDescription LookupSkill(Skill skill)
@@ -178,6 +180,11 @@ namespace LegendsViewer.Controls.HTML.Utilities
             desc.Points = skill.Points;
 
             return desc;
+        }
+
+        public static bool IsKnownSkill(Skill skill)
+        {
+            return Dict.ContainsKey(skill.Name);
         }
     }
 }

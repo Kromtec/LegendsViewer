@@ -12,6 +12,7 @@ using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Controls.Tabs;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer
 {

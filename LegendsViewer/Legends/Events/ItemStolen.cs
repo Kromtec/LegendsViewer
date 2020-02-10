@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -56,6 +57,9 @@ namespace LegendsViewer.Legends.Events
                             case "murdered hf":
                                 Circumstance = Circumstance.MurderedHf;
                                 break;
+                            case "abducted hf":
+                                Circumstance = Circumstance.AbductedHf;
+                                break;
                             default:
                                 if (property.Value != "-1")
                                 {
@@ -96,7 +100,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (Artifact != null)
             {
-                eventString += Artifact.ToLink(link, pov);
+                eventString += Artifact.ToLink(link, pov, this);
             }
             else
             {
@@ -118,13 +122,13 @@ namespace LegendsViewer.Legends.Events
             if (Structure != null)
             {
                 eventString += "from ";
-                eventString += Structure.ToLink(link, pov);
+                eventString += Structure.ToLink(link, pov, this);
                 eventString += " ";
             }
             eventString += "in ";
             if (Site != null)
             {
-                eventString += Site.ToLink(link, pov);
+                eventString += Site.ToLink(link, pov, this);
             }
             else
             {
@@ -133,7 +137,7 @@ namespace LegendsViewer.Legends.Events
             eventString += " by ";
             if (Thief != null)
             {
-                eventString += Thief.ToLink(link, pov);
+                eventString += Thief.ToLink(link, pov, this);
             }
             else
             {

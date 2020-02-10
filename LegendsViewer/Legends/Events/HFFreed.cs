@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -41,7 +42,7 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += "the forces of ";
-            eventString += FreeingCiv?.ToLink(link, pov) ?? "an unknown civilization";
+            eventString += FreeingCiv?.ToLink(link, pov, this) ?? "an unknown civilization";
             eventString += " freed ";
             for (int i = 0; i < RescuedHistoricalFigures.Count; i++)
             {
@@ -49,19 +50,19 @@ namespace LegendsViewer.Legends.Events
                 {
                     eventString += " and ";
                 }
-                eventString += RescuedHistoricalFigures[i]?.ToLink(link, pov) ?? "an unknown creature";
+                eventString += RescuedHistoricalFigures[i]?.ToLink(link, pov, this) ?? "an unknown creature";
             }
             if (Site != null)
             {
-                eventString += " from " + Site.ToLink(link, pov);
+                eventString += " from " + Site.ToLink(link, pov, this);
             }
             if (SiteCiv != null)
             {
-                eventString += " and " + SiteCiv.ToLink(link, pov);
+                eventString += " and " + SiteCiv.ToLink(link, pov, this);
             }
             if (HoldingCiv != null)
             {
-                eventString += " of " + HoldingCiv.ToLink(link, pov);
+                eventString += " of " + HoldingCiv.ToLink(link, pov, this);
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";

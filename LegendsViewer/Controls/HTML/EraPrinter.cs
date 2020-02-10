@@ -8,11 +8,13 @@ namespace LegendsViewer.Controls.HTML
 {
     public class EraPrinter : HtmlPrinter
     {
-        Era _era;
+        private readonly Era _era;
+        private readonly World _world;
 
-        public EraPrinter(Era era)
+        public EraPrinter(Era era, World world)
         {
             _era = era;
+            _world = world;
         }
 
         public override string GetTitle()
@@ -32,7 +34,7 @@ namespace LegendsViewer.Controls.HTML
             string timespan = "(" + _era.StartYear + " - " + _era.EndYear + ")";
             Html.AppendLine("<h1>" + title + timespan + "</h1></br></br>");
 
-            PrintEventLog(_era.Events, Era.Filters, _era);
+            PrintEventLog(_world, _era.Events, Era.Filters, _era);
             PrintWars();
 
             return Html.ToString();

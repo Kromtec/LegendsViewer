@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -34,13 +35,24 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Spotter.ToLink(true, pov);
-            eventString += " of ";
-            eventString += SiteCiv.ToLink(true, pov);
-            eventString += " spotted the forces of ";
-            eventString += LeaverCiv?.ToLink(true, pov) ?? "an unknown civilization";
-            eventString += " slipping out of ";
-            eventString += Site?.ToLink(true, pov);
+            eventString += Spotter?.ToLink(true, pov) ?? "An unknown creature";
+            if (SiteCiv != null)
+            {
+                eventString += " of ";
+                eventString += SiteCiv.ToLink(true, pov);
+            }
+            eventString += " spotted the forces";
+            if (LeaverCiv != null)
+            {
+                eventString += " of ";
+                eventString += LeaverCiv.ToLink(true, pov);
+            }
+            eventString += " slipping out";
+            if (Site != null)
+            {
+                eventString += " of ";
+                eventString += Site.ToLink(true, pov);
+            }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

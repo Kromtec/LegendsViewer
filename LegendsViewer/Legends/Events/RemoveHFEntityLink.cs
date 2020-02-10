@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
     public class RemoveHfEntityLink : WorldEvent
     {
-        public Entity Entity;
-        public HistoricalFigure HistoricalFigure;
-        public HfEntityLinkType LinkType;
-        public string Position;
+        public Entity Entity { get; set; }
+        public HistoricalFigure HistoricalFigure { get; set; }
+        public HfEntityLinkType LinkType { get; set; }
+        public string Position { get; set; }
+        public int PositionId { get; set; }
+
         public RemoveHfEntityLink(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -23,9 +27,11 @@ namespace LegendsViewer.Legends.Events
                     case "civ_id":
                         Entity = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
+                    case "hfid":
                     case "histfig":
                         HistoricalFigure = world.GetHistoricalFigure(property.ValueAsInt());
                         break;
+                    case "link":
                     case "link_type":
                         switch (property.Value.Replace("_", " "))
                         {
@@ -58,6 +64,9 @@ namespace LegendsViewer.Legends.Events
                     case "position":
                         Position = property.Value;
                         break;
+                    case "position_id":
+                        PositionId = Convert.ToInt32(property.Value);
+                        break;
                 }
             }
 
@@ -69,7 +78,7 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (HistoricalFigure != null)
             {
-                eventString += HistoricalFigure.ToLink(link, pov);
+                eventString += HistoricalFigure.ToLink(link, pov, this);
             }
             else
             {
@@ -91,14 +100,27 @@ namespace LegendsViewer.Legends.Events
                     break;
                 case HfEntityLinkType.Squad:
                 case HfEntityLinkType.Position:
-                    eventString += " stopped being the " + Position + " of ";
+                    EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower() || pos.Id == PositionId);
+                    if (position != null)
+                    {
+                        string positionName = position.GetTitleByCaste(HistoricalFigure?.Caste);
+                        eventString += " stopped being the " + positionName + " of ";
+                    }
+                    else if (!string.IsNullOrWhiteSpace(Position))
+                    {
+                        eventString += " stopped being the " + Position + " of ";
+                    }
+                    else
+                    {
+                        eventString += " stopped being an unspecified position of ";
+                    }
                     break;
                 default:
                     eventString += " stopped being linked to ";
                     break;
             }
 
-            eventString += Entity.ToLink(link, pov);
+            eventString += Entity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

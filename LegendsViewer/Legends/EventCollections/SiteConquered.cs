@@ -6,6 +6,7 @@ using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
@@ -92,7 +93,9 @@ namespace LegendsViewer.Legends.EventCollections
                     war.DefenderVictories.Add(this);
                 }
             }
-
+            Attacker.AddEventCollection(this);
+            Defender.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()
@@ -100,7 +103,7 @@ namespace LegendsViewer.Legends.EventCollections
             Ordinal = 1;
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             string name = "The ";
             name += GetOrdinal(Ordinal);
@@ -141,5 +144,9 @@ namespace LegendsViewer.Legends.EventCollections
             return ToLink(false);
         }
 
+        public override string GetIcon()
+        {
+            return Icon;
+        }
     }
 }

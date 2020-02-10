@@ -13,6 +13,18 @@ namespace LegendsViewer.Legends
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name).Replace(" The", " the").Replace(" Of", " of");
         }
 
+        public static string ToUpperFirstLetter(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return string.Empty;
+            // convert to char array of the string
+            char[] letters = source.ToCharArray();
+            // upper case the first char
+            letters[0] = char.ToUpper(letters[0]);
+            // return the array made of the new char array
+            return new string(letters);
+        }
+
         public static string MakePopulationPlural(string population)
         {
             string ending = "";
@@ -116,6 +128,24 @@ namespace LegendsViewer.Legends
             }
 
             return sb.ToString();
+        }
+
+        public static string AddArticle(string text)
+        {
+            if (text.ToLower().StartsWith("a") || 
+                text.ToLower().StartsWith("e") || 
+                text.ToLower().StartsWith("i") || 
+                text.ToLower().StartsWith("o") || 
+                text.ToLower().StartsWith("u"))
+            {
+                text = "an " + text;
+            }
+            else
+            {
+                text = "a " + text;
+            }
+
+            return text;
         }
 
         public static string ReplaceNonAscii(string name)

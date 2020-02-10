@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LegendsViewer.Legends.Enums;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Parser
 {
@@ -63,23 +65,35 @@ namespace LegendsViewer.Legends.Parser
             {
                 _currentCiv = entities.First();
             }
-            else if (entities.Count == 0)
+            else if (!entities.Any())
             {
-                _world.ParsingErrors.Report($"Couldn\'t Find Civilization:\n{civName}");
+                _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name:\n{civName}");
             }
             else
             {
-                var currentEntity = entities.Where(entity =>
+                var possibleEntities = entities.Where(entity =>
                     string.Compare(entity.Race, civRace, StringComparison.OrdinalIgnoreCase) == 0).ToList();
-                if (currentEntity.Count == 1)
+                if (possibleEntities.Count == 1)
                 {
-                    _currentCiv = entities.First();
+                    _currentCiv = possibleEntities.First();
+                }
+                else if (!possibleEntities.Any())
+                {
+                    _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}");
                 }
                 else
                 {
+                    var possibleCivilizations = possibleEntities.Where(entity => entity.Type == EntityType.Civilization).ToList();
+                    if (possibleCivilizations.Count == 1)
+                    {
+                        _currentCiv = possibleEntities.First();
+                    }
+                    else
+                    {
 #if DEBUG
-                    _world.ParsingErrors.Report($"Ambiguous ({entities.Count}) Civilization Name:\n{civName}");
+                        _world.ParsingErrors.Report($"Ambiguous Civilizations ({entities.Count}) Name:\n{civName}");
 #endif
+                    }
                 }
             }
             if (_currentCiv != null)
@@ -91,6 +105,7 @@ namespace LegendsViewer.Legends.Parser
                 }
 
                 _currentCiv.IsCiv = true;
+                _currentCiv.Type = EntityType.Civilization;
             }
             ReadLine();
             return true;

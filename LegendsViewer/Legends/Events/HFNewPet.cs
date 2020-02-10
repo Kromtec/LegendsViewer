@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -38,7 +39,7 @@ namespace LegendsViewer.Legends.Events
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov) + " tamed the creatures named ";
+            string eventString = GetYearTime() + HistoricalFigure.ToLink(link, pov, this) + " tamed the creatures named ";
             if (!string.IsNullOrWhiteSpace(Pet))
             {
                 eventString += Pet;
@@ -49,15 +50,15 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                eventString += " in " + Site.ToLink(link, pov);
+                eventString += " in " + Site.ToLink(link, pov, this);
             }
             else if (Region != null)
             {
-                eventString += " in " + Region.ToLink(link, pov);
+                eventString += " in " + Region.ToLink(link, pov, this);
             }
             else if (UndergroundRegion != null)
             {
-                eventString += " in " + UndergroundRegion.ToLink(link, pov);
+                eventString += " in " + UndergroundRegion.ToLink(link, pov, this);
             }
             if (!(ParentCollection is Journey))
             {

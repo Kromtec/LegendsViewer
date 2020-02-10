@@ -7,6 +7,7 @@ using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -31,15 +32,25 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/Chart.bundle.min.js\"></script>");
-
             LoadCustomScripts();
 
             Html.AppendLine("<div class=\"container-fluid\">");
 
             PrintTitle();
 
+
+            Html.AppendLine("<div class=\"row\">");
+
+            Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
             PrintMaps();
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">");
+            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
+            Html.AppendLine("</div>");
+
+            Html.AppendLine("</div>");
+
 
             Html.AppendLine("<div class=\"row\">");
 
@@ -54,6 +65,7 @@ namespace LegendsViewer.Controls.HTML
             PrintOriginStructure();
             PrintWorships();
             PrintLeaders();
+            PrintHonors();
             PrintCurrentLeadership();
             Html.AppendLine("</div>");
 
@@ -61,7 +73,7 @@ namespace LegendsViewer.Controls.HTML
             PrintWars();
             PrintWarfareInfo();
             PrintSiteHistory();
-            PrintEventLog(_entity.Events, Entity.Filters, _entity);
+            PrintEventLog(_world, _entity.Events, Entity.Filters, _entity);
 
             Html.AppendLine("</div>");
             return Html.ToString();
@@ -73,8 +85,7 @@ namespace LegendsViewer.Controls.HTML
             {
                 return;
             }
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-lg-12\">");
+
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _entity);
             TableMaker mapTable = new TableMaker();
             mapTable.StartRow();
@@ -84,8 +95,6 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine(mapTable.GetTable() + "</br>");
             maps[0].Dispose();
             maps[1].Dispose();
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
         }
 
         private void PrintOriginStructure()
@@ -140,6 +149,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<script>");
             Html.AppendLine("window.onload = function(){");
 
+            PopulatePopulationChartData(_entity.Populations.Where(pop => pop.IsMainRace || pop.IsAnimalPeople).ToList());
             if (_entity.Wars.Any())
             {
                 PopulateWarOverview();
@@ -353,7 +363,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
-            string title = _entity.ToLink(false);
+            string title = _entity.GetIcon() + " " + _entity.ToLink(false);
             if (_entity.IsCiv)
             {
                 title += " is a civilization";
@@ -422,7 +432,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Leaders != null && _entity.Leaders.Count > 0)
             {
-                Html.AppendLine(Bold("Leaderhistory") + " " + MakeLink("[Load]", LinkOption.LoadEntityLeaders) + LineBreak);
+                Html.AppendLine(Bold("Leaderhistory") + " " + LineBreak);
                 foreach (string leaderType in _entity.LeaderTypes)
                 {
                     Html.AppendLine(leaderType + "s" + LineBreak);
@@ -436,6 +446,22 @@ namespace LegendsViewer.Controls.HTML
                     }
                     Html.AppendLine(leaderTable.GetTable() + LineBreak);
                 }
+            }
+        }
+
+        private void PrintHonors()
+        {
+            if (_entity.Honors.Count > 0)
+            {
+                Html.AppendLine(Bold("Honors") + " " + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (Honor honor in _entity.Honors)
+                {
+                    Html.AppendLine("<li>");
+                    Html.AppendLine(honor.Print(true));
+                    Html.AppendLine("</li>");
+                }
+                Html.AppendLine("</ul>");
             }
         }
 
@@ -501,7 +527,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Wars.Count(war => !_world.FilterBattles || war.Notable) > 0)
             {
-                Html.AppendLine(Bold("Wars") + " " + MakeLink("[Load]", LinkOption.LoadEntityWars) + LineBreak);
+                Html.AppendLine(Bold("Wars") + LineBreak);
                 TableMaker warTable = new TableMaker(true);
                 foreach (War war in _entity.Wars.Where(war => !_world.FilterBattles || war.Notable))
                 {

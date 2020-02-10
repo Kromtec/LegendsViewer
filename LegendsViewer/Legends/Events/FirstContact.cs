@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -28,11 +29,11 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Contactor != null ? Contactor.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Contactor != null ? Contactor.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " made contact with ";
-            eventString += Contacted != null ? Contacted.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Contacted != null ? Contacted.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             return eventString;
         }
     }

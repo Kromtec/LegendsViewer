@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -55,21 +56,21 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             if (ActualStart)
             {
-                eventString += "an insurrection against " + Civ.ToLink(link, pov) + " began in " + Site.ToLink(link, pov);
+                eventString += "an insurrection against " + Civ.ToLink(link, pov, this) + " began in " + Site.ToLink(link, pov, this);
             }
             else
             {
-                eventString += "the insurrection in " + Site.ToLink(link, pov);
+                eventString += "the insurrection in " + Site.ToLink(link, pov, this);
                 switch (Outcome)
                 {
                     case InsurrectionOutcome.LeadershipOverthrown:
-                        eventString += " concluded with " + Civ.ToLink(link, pov) + " overthrown";
+                        eventString += " concluded with " + Civ.ToLink(link, pov, this) + " overthrown";
                         break;
                     case InsurrectionOutcome.PopulationGone:
                         eventString += " ended with the disappearance of the rebelling population";
                         break;
                     default:
-                        eventString += " against " + Civ.ToLink(link, pov) + " concluded with (" + _unknownOutcome + ")";
+                        eventString += " against " + Civ.ToLink(link, pov, this) + " concluded with (" + _unknownOutcome + ")";
                         break;
                 }
             }

@@ -4,14 +4,15 @@ using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
     public class BeastAttack : EventCollection
     {
-        public static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
+        private static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
 
-        public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "UNKNOWN BEAST"); } set { } }
+        public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
         public int DeathCount { get { return Deaths.Count; } set { } }
 
         public int Ordinal { get; set; }
@@ -20,7 +21,18 @@ namespace LegendsViewer.Legends.EventCollections
         public UndergroundRegion UndergroundRegion { get; set; }
         public Site Site { get; set; }
         public Entity Defender { get; set; }
-        public HistoricalFigure Beast { get; set; }
+
+        private HistoricalFigure _beast;
+        public HistoricalFigure Beast
+        {
+            get => _beast;
+            set
+            {
+                _beast = value;
+                _beast.AddEventCollection(this);
+            }
+        }
+
         public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
 
         // BUG in XML? 
@@ -30,6 +42,7 @@ namespace LegendsViewer.Legends.EventCollections
         public EventCollection ParentEventCol { get; set; }
 
         public static List<string> Filters;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
@@ -61,6 +74,10 @@ namespace LegendsViewer.Legends.EventCollections
 
             //-------Fill in some missing event details with details from collection
             //-------Filled in after parsing event collections in ParseXML()
+            Defender.AddEventCollection(this);
+            Region.AddEventCollection(this);
+            UndergroundRegion.AddEventCollection(this);
+            Site.AddEventCollection(this);
         }
 
         private void Initialize()
@@ -69,7 +86,7 @@ namespace LegendsViewer.Legends.EventCollections
             Coordinates = new Location(0, 0);
         }
 
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             string name = "";
             name = "The " + GetOrdinal(Ordinal) + "rampage of ";
@@ -83,7 +100,7 @@ namespace LegendsViewer.Legends.EventCollections
             }
             else
             {
-                name += "UNKNOWN BEAST";
+                name += "an unknown creature";
             }
 
             if (pov != Site)
@@ -119,6 +136,11 @@ namespace LegendsViewer.Legends.EventCollections
         public override string ToString()
         {
             return ToLink(false);
+        }
+
+        public override string GetIcon()
+        {
+            return Icon;
         }
     }
 }

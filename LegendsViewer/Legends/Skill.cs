@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Parser;
 
 namespace LegendsViewer.Legends
@@ -38,12 +39,22 @@ namespace LegendsViewer.Legends
                 {
                     case "skill":
                         Name = string.Intern(Formatting.InitCaps(property.Value.Replace('_', ' ').ToLower()));
+                        if (!SkillDictionary.IsKnownSkill(this))
+                        {
+                            property.Known = false;
+                        }
                         break;
                     case "total_ip":
                         Points = Convert.ToInt32(property.Value);
                         break;
                 }
             }
+        }
+
+        public Skill(string skillName, int totalIp)
+        {
+            Name = string.Intern(Formatting.InitCaps(skillName.Replace('_', ' ').ToLower()));
+            Points = totalIp;
         }
     }
 }

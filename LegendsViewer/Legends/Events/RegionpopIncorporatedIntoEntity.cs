@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -68,11 +69,11 @@ namespace LegendsViewer.Legends.Events
             }
             eventString += "UNKNOWN RACE";
             eventString += " from ";
-            eventString += PopSourceRegion != null ? PopSourceRegion.ToLink(link, pov) : "UNKNOWN REGION";
+            eventString += PopSourceRegion != null ? PopSourceRegion.ToLink(link, pov, this) : "UNKNOWN REGION";
             eventString += " joined with ";
-            eventString += JoinEntity != null ? JoinEntity.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += JoinEntity != null ? JoinEntity.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += ".";
             return eventString;
         }

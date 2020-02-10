@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -14,11 +15,11 @@ namespace LegendsViewer.Controls.HTML
         public int BrowserScrollPosition;
         public object HtmlObject;
 
-        public HtmlControl(object htmlObject, DwarfTabControl tabControl, World world)
+        public HtmlControl(object htmlObject, DwarfTabControl tabControl, World world, ControlOption controlOption)
         {
             _world = world;
             HtmlObject = htmlObject;
-            _printer = HtmlPrinter.GetPrinter(htmlObject, world);
+            _printer = HtmlPrinter.GetPrinter(htmlObject, world, controlOption);
             Title = _printer.GetTitle();
             TabControl = tabControl;
         }
@@ -143,12 +144,14 @@ namespace LegendsViewer.Controls.HTML
                     case LinkOption.LoadChart:
                         TabControl.Navigate(ControlOption.Chart, HtmlObject);
                         break;
-                    case LinkOption.LoadSearch:
-                        TabControl.Navigate(ControlOption.Search);
+                    case LinkOption.LoadEventOverview:
+                        TabControl.Navigate(ControlOption.EventOverview, HtmlObject);
                         break;
                     case LinkOption.LoadSiteMap:
-                        Site currentSite = HtmlObject as Site;
-                        Process.Start(currentSite.SiteMapPath);
+                        if (HtmlObject is Site currentSite)
+                        {
+                            Process.Start(currentSite.SiteMapPath);
+                        }
                         break;
                 }
                 return true;

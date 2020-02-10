@@ -30,7 +30,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            Html.AppendLine("<h1>" + _war.GetIcon() + " " + GetTitle() + "</h1></br>");
             Html.AppendLine("Started " + _war.GetYearTime().ToLower() + "and ");
             if (_war.EndYear == -1)
             {
@@ -76,7 +76,7 @@ namespace LegendsViewer.Controls.HTML
             if (_war.Collections.Count(battle => !_world.FilterBattles || battle.Notable) > 0)
             {
                 int warfareCount = 1;
-                Html.AppendLine("<b>Warfare</b> " + MakeLink("[Load]", LinkOption.LoadWarBattles));
+                Html.AppendLine("<b>Warfare</b>");
                 if (_world.FilterBattles)
                 {
                     Html.Append(" (Notable)");
@@ -133,7 +133,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
-            PrintEventLog(_war.GetSubEvents(), War.Filters, _war);
+            PrintEventLog(_world, _war.GetSubEvents(), War.Filters, _war);
 
             return Html.ToString();
         }

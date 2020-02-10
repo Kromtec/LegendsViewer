@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -29,7 +30,13 @@ namespace LegendsViewer.Legends.Events
             }
 
             Winner.AddEvent(this);
-            Competitors.ForEach(competitor => competitor.AddEvent(this));
+            Competitors.ForEach(competitor =>
+            {
+                if (competitor != Winner)
+                {
+                    competitor.AddEvent(this);
+                }
+            });
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
@@ -44,15 +51,15 @@ namespace LegendsViewer.Legends.Events
                     HistoricalFigure competitor = Competitors.ElementAt(i);
                     if (i == 0)
                     {
-                        eventString += competitor.ToLink(link, pov);
+                        eventString += competitor.ToLink(link, pov, this);
                     }
                     else if (i == Competitors.Count - 1)
                     {
-                        eventString += " and " + competitor.ToLink(link, pov);
+                        eventString += " and " + competitor.ToLink(link, pov, this);
                     }
                     else
                     {
-                        eventString += ", " + competitor.ToLink(link, pov);
+                        eventString += ", " + competitor.ToLink(link, pov, this);
                     }
                 }
                 eventString += ". ";
@@ -60,7 +67,7 @@ namespace LegendsViewer.Legends.Events
             if (Winner != null)
             {
                 eventString += "The winner was ";
-                eventString += Winner.ToLink(link, pov);
+                eventString += Winner.ToLink(link, pov, this);
                 eventString += ".";
             }
             return eventString;

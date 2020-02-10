@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -66,10 +67,10 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Attacker.ToLink(link, pov) + " defeated ";
+            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " defeated ";
             if (SiteEntity != null && SiteEntity != Defender)
             {
-                eventString += SiteEntity.ToLink(link, pov) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
             }
 
             if (Defender == null)
@@ -78,9 +79,9 @@ namespace LegendsViewer.Legends.Events
             }
             else
             {
-                eventString += Defender.ToLink(link, pov);
+                eventString += Defender.ToLink(link, pov, this);
             }
-            eventString += " and took over " + Site.ToLink(link, pov) + ". The new government was called " + NewSiteEntity.ToLink(link, pov);
+            eventString += " and took over " + Site.ToLink(link, pov, this) + ". The new government was called " + NewSiteEntity.ToLink(link, pov, this);
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

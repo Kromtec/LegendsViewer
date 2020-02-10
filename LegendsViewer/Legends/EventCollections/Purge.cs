@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
@@ -13,10 +14,12 @@ namespace LegendsViewer.Legends.EventCollections
         public Site Site;
 
         public List<string> Filters;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
         }
+
         public Purge(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -29,8 +32,10 @@ namespace LegendsViewer.Legends.EventCollections
                     case "adjective": Adjective = property.Value; break;
                 }
             }
+            Site.AddEventCollection(this);
         }
-        public override string ToLink(bool link = true, DwarfObject pov = null)
+
+        public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return "a "+(!string.IsNullOrWhiteSpace(Adjective) ? Adjective.ToLower()+" " : "")+"purge";
         }

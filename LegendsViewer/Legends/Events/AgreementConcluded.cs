@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -67,11 +68,11 @@ namespace LegendsViewer.Legends.Events
                     eventString += "UNKNOWN AGREEMENT";
                     break;
             }
-            eventString += Source != null ? Source.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Source != null ? Source.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " and ";
-            eventString += Destination != null ? Destination.ToLink(link, pov) : "UNKNOWN ENTITY";
+            eventString += Destination != null ? Destination.ToLink(link, pov, this) : "UNKNOWN ENTITY";
             eventString += " at ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += " concluded";
             switch (Result)
             {

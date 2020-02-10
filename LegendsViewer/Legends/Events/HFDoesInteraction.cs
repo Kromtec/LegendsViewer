@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Legends.Parser;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Events
 {
@@ -35,27 +36,58 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            if (Target != null && !string.IsNullOrWhiteSpace(Interaction))
+            if (Target != null)
             {
-                if (!Target.ActiveInteractions.Contains(Interaction))
+                string creatureType = "";
+                if (!string.IsNullOrWhiteSpace(Interaction))
                 {
-                    Target.ActiveInteractions.Add(Interaction);
+                    if (!Target.ActiveInteractions.Contains(Interaction))
+                    {
+                        Target.ActiveInteractions.Add(Interaction);
+                    }
+                    if (Doer != null)
+                    {
+                        Doer.LineageCurseChilds.Add(Target);
+                        Target.LineageCurseParent = Doer;
+                    }
+
+                    if (Interaction.Contains("VAMPIRE"))
+                    {
+                        creatureType = "vampire";
+                    }
+                    if (Interaction.Contains("WEREBEAST"))
+                    {
+                        creatureType = "werebeast";
+                    }
+                    if (Interaction.Contains("SECRET"))
+                    {
+                        creatureType = "necromancer";
+                    }
+                    if (Interaction.Contains("ANIMATE"))
+                    {
+                        creatureType = "animated corpse";
+                    }
                 }
-                if (Doer != null)
-                {
-                    Doer.LineageCurseChilds.Add(Target);
-                    Target.LineageCurseParent = Doer;
-                }
-            }
-            if (Target != null && !string.IsNullOrWhiteSpace(InteractionAction))
-            {
-                if (InteractionAction.Contains(", passing on the "))
+                if (!string.IsNullOrWhiteSpace(InteractionAction) && InteractionAction.Contains(", passing on the "))
                 {
                     Target.Interaction = InteractionAction.Replace(", passing on the ", "");
+                    if (!string.IsNullOrEmpty(Target.Interaction))
+                    {
+                        creatureType = "were" + Target.Interaction.Replace(" monster curse", " ");
+                    }
                 }
-                else if(InteractionString.Contains(" to assume the form of a "))
+                else if (!string.IsNullOrWhiteSpace(InteractionString) && InteractionString.Contains(" to assume the form of a "))
                 {
                     Target.Interaction = InteractionString.Replace(" to assume the form of a ", "").Replace("-like", "").Replace(" every full moon", " curse");
+                    if (!string.IsNullOrEmpty(Target.Interaction))
+                    {
+                        creatureType = "were" + Target.Interaction.Replace(" monster curse"," ");
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(creatureType))
+                {
+                    Target.CreatureTypes.Add(new HistoricalFigure.CreatureType(creatureType, this));
                 }
             }
             Doer.AddEvent(this);
@@ -67,21 +99,21 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += Doer.ToLink(link, pov);
+            eventString += Doer.ToLink(link, pov, this);
             if (InteractionString == "")
             {
                 eventString += " bit ";
-                eventString += Target.ToLink(link, pov);
+                eventString += Target.ToLink(link, pov, this);
                 eventString += !string.IsNullOrWhiteSpace(InteractionAction) ? InteractionAction : ", passing on the " + Interaction + " ";
             }
             else
             {
                 eventString += !string.IsNullOrWhiteSpace(InteractionAction) ? InteractionAction : " put " + Interaction + " on ";
-                eventString += Target.ToLink(link, pov);
+                eventString += Target.ToLink(link, pov, this);
                 eventString += !string.IsNullOrWhiteSpace(InteractionString) ? InteractionString : "";
             }
             eventString += " in ";
-            eventString += Site != null ? Site.ToLink(link, pov) : "UNKNOWN SITE";
+            eventString += Site != null ? Site.ToLink(link, pov, this) : "UNKNOWN SITE";
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

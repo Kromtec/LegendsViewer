@@ -55,11 +55,11 @@
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net40-client\CommonMark.dll</HintPath>
     </Reference>
-    <Reference Include="Jdenticon, Version=1.0.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon-net.1.0.1\lib\net40\Jdenticon.dll</HintPath>
+    <Reference Include="Jdenticon, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jdenticon-net.2.2.1\lib\net40\Jdenticon.dll</HintPath>
     </Reference>
-    <Reference Include="Jdenticon.Gdi, Version=1.0.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon.Gdi.1.0.1\lib\net40\Jdenticon.Gdi.dll</HintPath>
+    <Reference Include="Jdenticon.Gdi, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jdenticon.Gdi.2.2.1\lib\net40\Jdenticon.Gdi.dll</HintPath>
     </Reference>
     <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
       <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
@@ -82,10 +82,6 @@
     </Reference>
     <Reference Include="System.Xml">
     </Reference>
-    <Reference Include="WFC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\WFC.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AppHelpers.cs" />
@@ -101,6 +97,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\EventArgs.cs" />
+    <Compile Include="Controls\HTML\EventOverviewPrinter.cs" />
     <Compile Include="Controls\HTML\ArtifactPrinter.cs" />
     <Compile Include="Controls\HTML\ArtFormPrinter.cs" />
     <Compile Include="Controls\HTML\LandmassPrinter.cs" />
@@ -245,10 +242,53 @@
       <DependentUpon>LegendsViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Legends\ArtForm.cs" />
-    <Compile Include="Legends\Artifact.cs" />
-    <Compile Include="Legends\DanceForm.cs" />
-    <Compile Include="Legends\DwarfObject.cs" />
-    <Compile Include="Legends\Entity.cs" />
+    <Compile Include="Legends\Enums\PreachTopic.cs" />
+    <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
+    <Compile Include="Legends\Enums\AgreementReason.cs" />
+    <Compile Include="Legends\Enums\DissolveReason.cs" />
+    <Compile Include="Legends\Enums\IntrigueAction.cs" />
+    <Compile Include="Legends\Enums\IntrigueMethod.cs" />
+    <Compile Include="Legends\Enums\RelationShipProfileType.cs" />
+    <Compile Include="Legends\Enums\SitePropertyType.cs" />
+    <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
+    <Compile Include="Legends\EventCollections\EntityOverthrownCollection.cs" />
+    <Compile Include="Legends\EventCollections\Persecution.cs" />
+    <Compile Include="Legends\Events\BuildingProfileAcquired.cs" />
+    <Compile Include="Legends\Events\EntityAllianceFormed.cs" />
+    <Compile Include="Legends\Events\EntityBreachFeatureLayer.cs" />
+    <Compile Include="Legends\Events\EntityDissolved.cs" />
+    <Compile Include="Legends\Events\EntityEquipmentPurchase.cs" />
+    <Compile Include="Legends\Events\EntityIncorporated.cs" />
+    <Compile Include="Legends\Events\EntityOverthrown.cs" />
+    <Compile Include="Legends\Events\EntityPersecuted.cs" />
+    <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
+    <Compile Include="Legends\Events\FailedIntrigueCorruption.cs" />
+    <Compile Include="Legends\Events\Gamble.cs" />
+    <Compile Include="Legends\Events\HfAskedAboutArtifact.cs" />
+    <Compile Include="Legends\Events\HfCarouse.cs" />
+    <Compile Include="Legends\Events\HfConvicted.cs" />
+    <Compile Include="Legends\Events\HfEnslaved.cs" />
+    <Compile Include="Legends\Events\HfEquipmentPurchase.cs" />
+    <Compile Include="Legends\Events\HfInterrogated.cs" />
+    <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />
+    <Compile Include="Legends\Events\HfPreach.cs" />
+    <Compile Include="Legends\Events\HfRansomed.cs" />
+    <Compile Include="Legends\Events\HfsFormedIntrigueRelationship.cs" />
+    <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
+    <Compile Include="Legends\Events\ModifiedBuilding.cs" />
+    <Compile Include="Legends\Events\RemoveHfHfLink.cs" />
+    <Compile Include="Legends\Events\Trade.cs" />
+    <Compile Include="Legends\Honor.cs" />
+    <Compile Include="Legends\HonorEntity.cs" />
+    <Compile Include="Legends\IntrigueActor.cs" />
+    <Compile Include="Legends\IntriguePlot.cs" />
+    <Compile Include="Legends\PlotActor.cs" />
+    <Compile Include="Legends\SiteProperty.cs" />
+    <Compile Include="Legends\VagueRelationship.cs" />
+    <Compile Include="Legends\WorldObjects\Artifact.cs" />
+    <Compile Include="Legends\WorldObjects\DanceForm.cs" />
+    <Compile Include="Legends\WorldObjects\DwarfObject.cs" />
+    <Compile Include="Legends\WorldObjects\Entity.cs" />
     <Compile Include="Legends\EntityEntityLink.cs" />
     <Compile Include="Legends\Enums\AbuseType.cs" />
     <Compile Include="Legends\Events\EntityExpelsHf.cs" />
@@ -260,7 +300,6 @@
     <Compile Include="Legends\EntityPositionAssignment.cs" />
     <Compile Include="Legends\EntityReputation.cs" />
     <Compile Include="Legends\EntitySiteLink.cs" />
-    <Compile Include="Legends\Enums\AgreementReason.cs" />
     <Compile Include="Legends\Enums\AgreementTopic.cs" />
     <Compile Include="Legends\Enums\BattleOutcome.cs" />
     <Compile Include="Legends\Enums\BodyState.cs" />
@@ -271,7 +310,7 @@
     <Compile Include="Legends\Enums\ConfrontSituation.cs" />
     <Compile Include="Legends\Enums\DeathCause.cs" />
     <Compile Include="Legends\Enums\Dispute.cs" />
-    <Compile Include="Legends\Enums\DungeonType.cs" />
+    <Compile Include="Legends\Enums\StructureSubType.cs" />
     <Compile Include="Legends\Enums\EntityLawType.cs" />
     <Compile Include="Legends\Enums\EntityLinkType.cs" />
     <Compile Include="Legends\Enums\EntityType.cs" />
@@ -428,15 +467,15 @@
     <Compile Include="Legends\Events\WrittenContentComposed.cs" />
     <Compile Include="Legends\Feature.cs" />
     <Compile Include="Legends\Formatting.cs" />
-    <Compile Include="Legends\HistoricalFigure.cs" />
+    <Compile Include="Legends\WorldObjects\HistoricalFigure.cs" />
     <Compile Include="Legends\HistoricalFigureLink.cs" />
     <Compile Include="Legends\Interfaces\IFeatured.cs" />
     <Compile Include="Legends\Interfaces\IHasCoordinates.cs" />
-    <Compile Include="Legends\Landmass.cs" />
+    <Compile Include="Legends\WorldObjects\Landmass.cs" />
     <Compile Include="Legends\Location.cs" />
     <Compile Include="Legends\Misc.cs" />
-    <Compile Include="Legends\MountainPeak.cs" />
-    <Compile Include="Legends\MusicalForm.cs" />
+    <Compile Include="Legends\WorldObjects\MountainPeak.cs" />
+    <Compile Include="Legends\WorldObjects\MusicalForm.cs" />
     <Compile Include="Legends\OwnerPeriod.cs" />
     <Compile Include="Legends\Parser\HistoryParser.cs" />
     <Compile Include="Legends\Parser\ParsingErrors.cs" />
@@ -445,22 +484,22 @@
     <Compile Include="Legends\Parser\SitesAndPopsParser.cs" />
     <Compile Include="Legends\Parser\XMLParser.cs" />
     <Compile Include="Legends\Parser\XMLPlusParser.cs" />
-    <Compile Include="Legends\PoeticForm.cs" />
+    <Compile Include="Legends\WorldObjects\PoeticForm.cs" />
     <Compile Include="Legends\Population.cs" />
     <Compile Include="Legends\Reference.cs" />
-    <Compile Include="Legends\Region.cs" />
+    <Compile Include="Legends\WorldObjects\Region.cs" />
     <Compile Include="Legends\RelationshipProfileHF.cs" />
     <Compile Include="Legends\Reputation.cs" />
     <Compile Include="Legends\Schedule.cs" />
-    <Compile Include="Legends\Site.cs" />
+    <Compile Include="Legends\WorldObjects\Site.cs" />
     <Compile Include="Legends\SiteLink.cs" />
     <Compile Include="Legends\Skill.cs" />
-    <Compile Include="Legends\Structure.cs" />
-    <Compile Include="Legends\UndergroundRegion.cs" />
+    <Compile Include="Legends\WorldObjects\Structure.cs" />
+    <Compile Include="Legends\WorldObjects\UndergroundRegion.cs" />
     <Compile Include="Legends\World.cs" />
-    <Compile Include="Legends\WorldConstruction.cs" />
+    <Compile Include="Legends\WorldObjects\WorldConstruction.cs" />
     <Compile Include="Legends\WorldObject.cs" />
-    <Compile Include="Legends\WrittenContent.cs" />
+    <Compile Include="Legends\WorldObjects\WrittenContent.cs" />
     <Compile Include="LocalFileProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -642,9 +681,6 @@
     <None Include="Resources\arrow_back16x16.png" />
     <None Include="Resources\arrow_forward16x16.png" />
     <None Include="Resources\chart16x16.png" />
-    <Content Include="WFC.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="WebContent\styles\github-markdown.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

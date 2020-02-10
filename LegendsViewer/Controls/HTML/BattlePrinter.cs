@@ -6,6 +6,7 @@ using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
@@ -29,7 +30,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + GetTitle() + "</h1></br>");
+            Html.AppendLine("<h1>" + _battle.GetIcon() + " " + GetTitle() + "</h1></br>");
 
             string battleDescription = _battle.GetYearTime() + _battle.ToLink(false);
             if (_battle.ParentCollection != null)
@@ -78,7 +79,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.AppendLine("<b>" + (_battle.Attacker?.PrintEntity() ?? "an unknown civilization") + " (Attacker) " + (_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.AttackerDeathCount + " Losses</b> " + MakeLink("[Load]", LinkOption.LoadBattleAttackers) + LineBreak);
+            Html.AppendLine("<b>" + (_battle.Attacker?.PrintEntity() ?? "an unknown civilization") + " (Attacker) " + (_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.AttackerDeathCount + " Losses</b> " + LineBreak);
             Html.AppendLine("<ul>");
             var squadRaces = from squad in _battle.AttackerSquads
                              group squad by squad.Race into squads
@@ -117,7 +118,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.AppendLine("<b>" + (_battle.Defender?.PrintEntity() ?? "an unknown civilization") + " (Defender) " + (_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.DefenderDeathCount + " Losses</b> " + MakeLink("[Load]", LinkOption.LoadBattleDefenders) + LineBreak);
+            Html.AppendLine("<b>" + (_battle.Defender?.PrintEntity() ?? "an unknown civilization") + " (Defender) " + (_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.DefenderDeathCount + " Losses</b> "+ LineBreak);
             Html.AppendLine("<ul>");
             squadRaces = from squad in _battle.DefenderSquads
                          group squad by squad.Race into squads
@@ -161,7 +162,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ol>");
             }
 
-            PrintEventLog(_battle.GetSubEvents(), Battle.Filters, _battle);
+            PrintEventLog(_world, _battle.GetSubEvents(), Battle.Filters, _battle);
 
             return Html.ToString();
         }

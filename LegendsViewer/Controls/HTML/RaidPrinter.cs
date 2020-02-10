@@ -25,11 +25,11 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _raid.Name + "</h1><br />");
+            Html.AppendLine("<h1>" + _raid.GetIcon() + " " + _raid.Name + "</h1><br />");
 
             PrintMaps();
 
-            PrintEventLog(_raid.GetSubEvents(), Raid.Filters, _raid);
+            PrintEventLog(_world, _raid.GetSubEvents(), Raid.Filters, _raid);
 
             return Html.ToString();
         }

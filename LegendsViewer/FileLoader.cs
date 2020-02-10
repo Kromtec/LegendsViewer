@@ -469,21 +469,32 @@ namespace LegendsViewer
                         string currentLine;
                         while (null != (currentLine = inputReader.ReadLine()))
                         {
-                            outputWriter.WriteLine(Regex.Replace(currentLine, "[\x00-\x08\x0B\x0C\x0E-\x1F\x26]",
-                                string.Empty));
+                            var replacedSpecialChars = Regex.Replace(currentLine, "[\x00-\x08\x0B\x0C\x0E-\x1F\x26]", string.Empty);
+                            var fixedConspirator = replacedSpecialChars.Replace("</conspirator>", "</conspirator_hfid>");
+                            if (fixedConspirator.Contains("<interrogator_hfid>"))
+                            {
+                                var fixedInterrogator = fixedConspirator.Replace("</convicted_hfid>", "</interrogator_hfid>");
+                                outputWriter.WriteLine(fixedInterrogator);
+                            }
+                            else
+                            {
+                                outputWriter.WriteLine(fixedConspirator);
+                            }
                         }
+                        outputWriter.Close();
                     }
+                    inputReader.Close();
                 }
-                DialogResult overwrite =
-                    MessageBox.Show(
-                        "Repair completed. Would you like to overwrite the original file with the repaired version? (Note: No effect if opened from an archive)",
-                        "Repair Completed", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (overwrite == DialogResult.Yes)
-                {
-                    File.Delete(xmlFile);
-                    File.Copy(safeFile, xmlFile);
-                    return xmlFile;
-                }
+                //DialogResult overwrite =
+                //    MessageBox.Show(
+                //        "Repair completed. Would you like to overwrite the original file with the repaired version? (Note: No effect if opened from an archive)",
+                //        "Repair Completed", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                //if (overwrite == DialogResult.Yes)
+                //{
+                //    File.Delete(xmlFile);
+                //    File.Copy(safeFile, xmlFile);
+                //    return xmlFile;
+                //}
                 return safeFile;
             }
             return null;

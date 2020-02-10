@@ -6,6 +6,7 @@ using System.Linq;
 using LegendsViewer.Controls.HTML;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
+using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Map
 {
