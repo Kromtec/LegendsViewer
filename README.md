@@ -12,7 +12,7 @@ Recreates Legends Mode from exported data. Browser like navigation, including ta
 > * Abandon or retire your fortress/adventure on the copy
 > * Enter DF legends mode on the copy
 
-**Recommended:** (requires [DFHack](https://github.com/DFHack/dfhack/releases) which is usually included in [Lazy Newb Pack](http://lazynewbpack.com/))
+**Recommended:** (requires [DFHack](https://github.com/DFHack/dfhack/releases) which is usually included in the Lazy Newb Pack)
 
 1. Enter DF legends mode on the save you want to export 
 1. Switch to the DFHack window
