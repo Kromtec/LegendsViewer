@@ -55,7 +55,10 @@ namespace LegendsViewer.Legends.Events
             Site.OwnerHistory.Add(new OwnerPeriod(Site, NewSiteEntity, Year, "took over"));
 
             Attacker.AddEvent(this);
-            Defender.AddEvent(this);
+            if (Defender != Attacker)
+            {
+                Defender.AddEvent(this);
+            }
             NewSiteEntity.AddEvent(this);
             if (SiteEntity != Defender)
             {

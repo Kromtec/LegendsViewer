@@ -295,7 +295,10 @@ namespace LegendsViewer.Legends.EventCollections
                 Notable = false;
             }
             Attacker.AddEventCollection(this);
-            Defender.AddEventCollection(this);
+            if (Defender != Attacker)
+            {
+                Defender.AddEventCollection(this);
+            }
             Region.AddEventCollection(this);
             UndergroundRegion.AddEventCollection(this);
             Site.AddEventCollection(this);

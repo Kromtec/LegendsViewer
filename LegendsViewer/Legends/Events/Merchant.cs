@@ -13,6 +13,7 @@ namespace LegendsViewer.Legends.Events
         public bool Seizure { get; set; }
         public bool LostValue { get; set; }
         public bool HardShip { get; set; }
+        public bool AllDead { get; set; }
 
         public Merchant(List<Property> properties, World world)
             : base(properties, world)
@@ -23,35 +24,11 @@ namespace LegendsViewer.Legends.Events
                 {
                     case "source":
                     case "trader_entity_id":
-                        Entity source = world.GetEntity(Convert.ToInt32(property.Value));
-                        if (Source == null)
-                        {
-                            Source = source;
-                        }
-                        else if (Source != source)
-                        {
-                            property.Known = false;
-                        }
-                        else
-                        {
-                            property.Known = true;
-                        }
+                        Source = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
                     case "destination":
                     case "depot_entity_id":
-                        Entity destination = world.GetEntity(Convert.ToInt32(property.Value));
-                        if (Destination == null)
-                        {
-                            Destination = destination;
-                        }
-                        else if (Destination != destination)
-                        {
-                            property.Known = false;
-                        }
-                        else
-                        {
-                            property.Known = true;
-                        }
+                        Destination = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
                     case "site":
                         Site = world.GetSite(Convert.ToInt32(property.Value));
@@ -60,18 +37,10 @@ namespace LegendsViewer.Legends.Events
                         // points to wrong site
                         property.Known = true;
                         break;
-                    case "seizure":
-                        Seizure = true;
-                        property.Known = true;
-                        break;
-                    case "lost_value":
-                        LostValue = true;
-                        property.Known = true;
-                        break;
-                    case "hardship":
-                        HardShip = true;
-                        property.Known = true;
-                        break;
+                    case "seizure": Seizure = true; property.Known = true; break;
+                    case "lost_value": LostValue = true; property.Known = true; break;
+                    case "hardship": HardShip = true; property.Known = true; break;
+                    case "all_dead": AllDead = true; property.Known = true; break;
                 }
             }
             Source.AddEvent(this);
@@ -92,6 +61,10 @@ namespace LegendsViewer.Legends.Events
                 eventString += " and suffered great hardships";
             }
             eventString += ".";
+            if (AllDead)
+            {
+                eventString += " They never returned.";
+            }
             if (Seizure)
             {
                 eventString += " They reported a seizure of goods.";

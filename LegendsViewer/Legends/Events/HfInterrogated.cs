@@ -28,7 +28,10 @@ namespace LegendsViewer.Legends.Events
             }
 
             TargetHf.AddEvent(this);
-            InterrogatorHf.AddEvent(this);
+            if (InterrogatorHf != TargetHf)
+            {
+                InterrogatorHf.AddEvent(this);
+            }
             ArrestingEntity.AddEvent(this);
         }
 

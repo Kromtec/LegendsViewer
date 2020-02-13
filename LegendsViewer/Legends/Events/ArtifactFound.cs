@@ -16,6 +16,8 @@ namespace LegendsViewer.Legends.Events
         public Structure Structure { get; set; }
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
+        public int SitePropertyId { get; set; }
+        public SiteProperty SiteProperty { get; set; }
 
         public ArtifactFound(List<Property> properties, World world)
             : base(properties, world)
@@ -32,6 +34,9 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "site_id":
                         Site = world.GetSite(Convert.ToInt32(property.Value));
+                        break;
+                    case "site_property_id":
+                        SitePropertyId = Convert.ToInt32(property.Value);
                         break;
                     case "structure_id":
                         StructureId = Convert.ToInt32(property.Value);
@@ -51,6 +56,7 @@ namespace LegendsViewer.Legends.Events
             if (Site != null)
             {
                 Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                SiteProperty = Site.SiteProperties.FirstOrDefault(sp => sp.Id == SitePropertyId);
             }
             Artifact.AddEvent(this);
             HistoricalFigure.AddEvent(this);
@@ -64,9 +70,19 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += Artifact.ToLink(link, pov, this);
-            eventString += " was found by ";
-            eventString += HistoricalFigure.ToLink(link, pov, this);
-            if (Structure != null)
+            eventString += " was found";
+            if (HistoricalFigure != null)
+            {
+                eventString += " by ";
+                eventString += HistoricalFigure.ToLink(link, pov, this);
+            }
+
+            if (SiteProperty != null)
+            {
+                eventString += " in ";
+                eventString += SiteProperty.Print(link, pov);
+            }
+            else if (Structure != null)
             {
                 eventString += " inside ";
                 eventString += Structure.ToLink(link, pov, this);
