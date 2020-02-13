@@ -4,6 +4,7 @@ using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.IncidentalEvents;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
 
@@ -150,12 +151,38 @@ namespace LegendsViewer.Legends.EventCollections
                     case "noncom_hfid": NonCombatants.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "individual_merc": property.Known = true; IndividualMercenaries = true; break;
                     case "company_merc": property.Known = true; CompanyMercenaries = true; break;
-                    case "attacking_merc_enid": AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
-                    case "defending_merc_enid": AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "attacking_merc_enid": 
+                        AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
+                        if (AttackingMercenaryEntity != null)
+                        {
+                            AttackingMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        }
+                        break;
+                    case "defending_merc_enid": 
+                        DefendingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
+                        if (DefendingMercenaryEntity != null)
+                        {
+                            DefendingMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        }
+                        break;
                     case "attacking_squad_animated": property.Known = true; AttackingSquadAnimated = true; break;
                     case "defending_squad_animated": property.Known = true; DefendingSquadAnimated = true; break;
-                    case "a_support_merc_enid": AttackerSupportMercenaryEntities.Add(world.GetEntity(Convert.ToInt32(property.Value))); break;
-                    case "d_support_merc_enid": DefenderSupportMercenaryEntities.Add(world.GetEntity(Convert.ToInt32(property.Value))); break;
+                    case "a_support_merc_enid":
+                        var attackerSupportMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
+                        if (attackerSupportMercenaryEntity != null)
+                        {
+                            AttackerSupportMercenaryEntities.Add(attackerSupportMercenaryEntity);
+                            attackerSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        }
+                        break;
+                    case "d_support_merc_enid": 
+                        var defenderSupportMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
+                        if (defenderSupportMercenaryEntity != null)
+                        {
+                            DefenderSupportMercenaryEntities.Add(defenderSupportMercenaryEntity);
+                            defenderSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        }
+                        break;
                     case "a_support_merc_hfid": AttackerSupportMercenaryHfs.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "d_support_merc_hfid": DefenderSupportMercenaryHfs.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                 }
@@ -172,10 +199,18 @@ namespace LegendsViewer.Legends.EventCollections
                 Defender = Collection.OfType<FieldBattle>().First().Defender;
             }
 
-            foreach (HistoricalFigure involvedHf in NotableAttackers.Union(NotableDefenders).Union(NonCombatants))
+            foreach (HistoricalFigure involvedHf in NotableAttackers.Union(NotableDefenders))
             {
                 involvedHf.Battles.Add(this);
                 involvedHf.AddEventCollection(this);
+                involvedHf.AddEvent(new BattleFought(involvedHf, this, World));
+            }
+
+            foreach (HistoricalFigure involvedSupportMercenaries in AttackerSupportMercenaryHfs.Union(DefenderSupportMercenaryHfs))
+            {
+                involvedSupportMercenaries.Battles.Add(this);
+                involvedSupportMercenaries.AddEventCollection(this);
+                involvedSupportMercenaries.AddEvent(new BattleFought(involvedSupportMercenaries, this, World, true, true));
             }
 
             for (int i = 0; i < attackerSquadRace.Count; i++)

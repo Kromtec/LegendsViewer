@@ -536,7 +536,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<script>");
             Html.AppendLine("$(document).ready(function() {");
             Html.AppendLine("   var dataSet = [");
-            foreach (var e in events)
+            foreach (var e in events.OrderBy(e => e.Year).ThenBy(e => e.Id))
             {
                 if (filters == null || !filters.Contains(e.Type))
                 {

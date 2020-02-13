@@ -398,6 +398,9 @@ namespace LegendsViewer.Legends.WorldObjects
                     case EntityType.PerformanceTroupe:
                         title += "Performance troupe";
                         break;
+                    case EntityType.MercenaryCompany:
+                        title += "Mercenary company";
+                        break;
                     default:
                         title += "Group";
                         break;

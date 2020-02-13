@@ -157,6 +157,9 @@ namespace LegendsViewer.Controls
             new[] { "hf carouse",                         "Historical Figure Carouse", ""},
             new[] { "sabotage",                           "Sabotage", ""},
 
+            // incidental events from event collections
+            new[] { "battle fought",                      "Historical Figure Fought In Battle", ""},
+
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
 
