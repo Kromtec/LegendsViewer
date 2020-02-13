@@ -711,6 +711,9 @@ namespace LegendsViewer.Legends.Parser
                 case "hf carouse":
                     World.Events.Add(new HfCarouse(properties, World));
                     break;
+                case "sabotage":
+                    World.Events.Add(new Sabotage(properties, World));
+                    break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);
                     break;

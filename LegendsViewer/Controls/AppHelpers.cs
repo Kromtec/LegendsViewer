@@ -155,6 +155,7 @@ namespace LegendsViewer.Controls
             new[] { "hf enslaved",                        "Historical Figure Enslaved", ""},
             new[] { "hf asked about artifact",            "Historical Figure Asked About Artifact", ""},
             new[] { "hf carouse",                         "Historical Figure Carouse", ""},
+            new[] { "sabotage",                           "Sabotage", ""},
 
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
