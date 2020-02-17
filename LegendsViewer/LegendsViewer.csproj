@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>book.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net40-client\CommonMark.dll</HintPath>
@@ -560,6 +563,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="book.ico" />
     <Content Include="WebContent\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
