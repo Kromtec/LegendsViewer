@@ -28,6 +28,7 @@ namespace LegendsViewer.Controls.HTML
             PrintTitle();
             PrintMiscInfo();
             PrintRelatedArtifacts();
+            PrintIdentities();
             PrintBreedInfo();
             PrintSiteProperties();
             PrintFamilyGraph();
@@ -357,6 +358,21 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ol>");
             }
         }
+
+        private void PrintIdentities()
+        {
+            if (_historicalFigure.Identities.Any())
+            {
+                Html.AppendLine(Bold("Secret Identities") + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (Identity identity in _historicalFigure.Identities)
+                {
+                    Html.AppendLine("<li>" + identity.Print() + "</li>");
+                }
+                Html.AppendLine("</ul>");
+            }
+        }
+
         private void PrintSiteProperties()
         {
             if (_historicalFigure.SiteProperties.Any())
