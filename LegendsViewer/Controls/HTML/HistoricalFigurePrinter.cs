@@ -152,7 +152,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<ul>");
                 Html.AppendLine("<li>");
                 Html.AppendLine(_historicalFigure.EntityPopulation.Entity.ToLink());
-                Html.AppendLine(" (" + Formatting.MakePopulationPlural(Formatting.InitCaps(_historicalFigure.EntityPopulation.Race.Replace("_", " "))) + ")");
+                Html.AppendLine(" (" + _historicalFigure.EntityPopulation.Race.NamePlural + ")");
                 Html.AppendLine("</li>");
                 Html.AppendLine("</ul>");
             }

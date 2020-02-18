@@ -9,7 +9,7 @@ namespace LegendsViewer.Legends
 {
     public class EntityPopulation : WorldObject
     {
-        public string Race { get; set; } // legends_plus.xml
+        public CreatureInfo Race { get; set; } // legends_plus.xml
         public int Count { get; set; } // legends_plus.xml
         public int EntityId { get; set; } // legends_plus.xml
         public Entity Entity { get; set; } // legends_plus.xml
@@ -30,7 +30,7 @@ namespace LegendsViewer.Legends
                 {
                     case "race":
                         var raceCount = property.Value.Split(':');
-                        Race = raceCount[0];
+                        Race = world.GetCreatureInfo(raceCount[0]);
                         Count = Convert.ToInt32(raceCount[1]);
                         break;
                     case "civ_id":
