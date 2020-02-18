@@ -12,6 +12,7 @@ namespace LegendsViewer.Legends
         Child,
         [Description("Parentgroup")]
         Parent,
+        Religious,
         Unknown
     }
 
@@ -32,6 +33,9 @@ namespace LegendsViewer.Legends
                                 break;
                             case "PARENT":
                                 Type = EntityEntityLinkType.Parent;
+                                break;
+                            case "RELIGIOUS":
+                                Type = EntityEntityLinkType.Religious;
                                 break;
                             default:
                                 world.ParsingErrors.Report("Unknown Entity Entity Link Type: " + property.Value);

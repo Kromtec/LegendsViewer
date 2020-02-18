@@ -141,6 +141,11 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine(ListItem + childLink.Target.ToLink(true, _entity) + " (" + childLink.Target.Type.GetDescription() + ")");
                 PrintChildEntites(childLink.Target);
             }
+            foreach (EntityEntityLink religiousLink in _entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Religious)))
+            {
+                Html.AppendLine(ListItem + religiousLink.Target.ToLink(true, _entity) + " (" + religiousLink.Target.Type.GetDescription() + ")");
+                PrintChildEntites(religiousLink.Target);
+            }
             EndList(ListType.Unordered);
         }
 
@@ -364,7 +369,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
             string title = _entity.GetIcon() + " " + _entity.ToLink(false);
-            title += " is a " + _entity.GetTitle();
+            title += " is a " + _entity.GetTitle().ToLower();
             if (_entity.Parent != null)
             {
                 title += " of " + _entity.Parent.ToLink(true, _entity);
