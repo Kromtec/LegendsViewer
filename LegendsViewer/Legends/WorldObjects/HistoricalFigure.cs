@@ -119,6 +119,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public HonorEntity HonorEntity { get; set; }
         public List<IntrigueActor> IntrigueActors { get; set; }
         public List<IntriguePlot> IntriguePlots { get; set; }
+        public readonly List<Identity> Identities = new List<Identity>();
         public bool Alive
         {
             get

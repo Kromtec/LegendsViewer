@@ -247,6 +247,7 @@
     <Compile Include="Legends\ArtForm.cs" />
     <Compile Include="Legends\CreatureInfo.cs" />
     <Compile Include="Legends\Enums\PreachTopic.cs" />
+    <Compile Include="Legends\Identity.cs" />
     <Compile Include="Legends\IncidentalEvents\BattleFought.cs" />
     <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
     <Compile Include="Legends\Enums\AgreementReason.cs" />

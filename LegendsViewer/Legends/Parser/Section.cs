@@ -20,6 +20,7 @@ namespace LegendsViewer.Legends.Parser
         Artifacts,
         [Description("Historical Figures")]
         HistoricalFigures,
+        Identities,
         [Description("Entity Populations")]
         EntityPopulations,
         Entities,
