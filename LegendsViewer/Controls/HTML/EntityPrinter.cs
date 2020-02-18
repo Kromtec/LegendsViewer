@@ -364,46 +364,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
             string title = _entity.GetIcon() + " " + _entity.ToLink(false);
-            if (_entity.IsCiv)
-            {
-                title += " is a civilization";
-            }
-            else
-            {
-                title += " is a ";
-                switch (_entity.Type)
-                {
-                    case EntityType.Civilization:
-                        title += "civilization";
-                        break;
-                    case EntityType.NomadicGroup:
-                        title += "nomadic group";
-                        break;
-                    case EntityType.MigratingGroup:
-                        title += "migrating group";
-                        break;
-                    case EntityType.Outcast:
-                        title += "collection of outcasts";
-                        break;
-                    case EntityType.Religion:
-                        title += "religious group";
-                        break;
-                    case EntityType.SiteGovernment:
-                        title += "site government";
-                        break;
-                    case EntityType.PerformanceTroupe:
-                        title += "performance troupe";
-                        break;
-                    default:
-                        title += "group";
-                        break;
-                }
-            }
-            if (_entity.Race != null && _entity.Race != CreatureInfo.Unknown)
-            {
-                title += " of ";
-                title += _entity.Race.NamePlural.ToLower();
-            }
+            title += " is a " + _entity.GetTitle();
             if (_entity.Parent != null)
             {
                 title += " of " + _entity.Parent.ToLink(true, _entity);

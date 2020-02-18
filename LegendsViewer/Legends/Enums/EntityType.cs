@@ -19,6 +19,9 @@ namespace LegendsViewer.Legends.Enums
         [Description("Performers")]
         PerformanceTroupe,
         [Description("Mercenary Company")]
-        MercenaryCompany
+        MercenaryCompany,
+        Guild,
+        [Description("Military Unit")]
+        MilitaryUnit
     }
 }

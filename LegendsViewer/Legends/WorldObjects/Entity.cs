@@ -178,6 +178,12 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "performancetroupe":
                                 Type = EntityType.PerformanceTroupe;
                                 break;
+                            case "guild":
+                                Type = EntityType.Guild;
+                                break;
+                            case "militaryunit":
+                                Type = EntityType.MilitaryUnit;
+                                break;
                             default:
                                 Type = EntityType.Unknown;
                                 property.Known = false;
@@ -366,7 +372,7 @@ namespace LegendsViewer.Legends.WorldObjects
             return title;
         }
 
-        private string GetTitle()
+        public string GetTitle()
         {
             string title = "";
             if (IsCiv)
@@ -400,6 +406,12 @@ namespace LegendsViewer.Legends.WorldObjects
                         break;
                     case EntityType.MercenaryCompany:
                         title += "Mercenary company";
+                        break;
+                    case EntityType.MilitaryUnit:
+                        title += "Mercenary order";
+                        break;
+                    case EntityType.Guild:
+                        title += "Guild";
                         break;
                     default:
                         title += "Group";
