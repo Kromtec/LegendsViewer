@@ -29,7 +29,10 @@ namespace LegendsViewer.Legends.Events
             }
             HistoricalFigure.AddEvent(this);
             Civ.AddEvent(this);
-            SiteCiv.AddEvent(this);
+            if (SiteCiv != Civ)
+            {
+                SiteCiv.AddEvent(this);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

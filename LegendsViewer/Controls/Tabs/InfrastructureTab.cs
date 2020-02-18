@@ -136,7 +136,7 @@ namespace LegendsViewer.Controls.Tabs
                         select sitetype;
 
             var populationTypes = from population in World.SitePopulations
-                                  orderby population.Race
+                                  orderby population.Race.NamePlural
                                   group population by population.Race into type
                                   select type;
 

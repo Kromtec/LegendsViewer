@@ -14,7 +14,7 @@
         {
             get
             {
-                return Race.Contains("Outcasts");
+                return Race.NamePlural.Contains("Outcasts");
             }
         }
 
@@ -22,7 +22,7 @@
         {
             get
             {
-                return Race.Contains("Prisoners");
+                return Race.NamePlural.Contains("Prisoners");
             }
         }
 
@@ -30,7 +30,7 @@
         {
             get
             {
-                return Race.Contains("Slaves");
+                return Race.NamePlural.Contains("Slaves");
             }
         }
 
@@ -38,7 +38,7 @@
         {
             get
             {
-                return Race.Contains("Visitors");
+                return Race.NamePlural.Contains("Visitors");
             }
         }
 
@@ -46,14 +46,14 @@
         {
             get
             {
-                return Race.Contains(" Men") && !IsSlaves && !IsPrisoners && !IsOutcasts && !IsVisitors;
+                return Race.NamePlural.Contains(" Men") && !IsSlaves && !IsPrisoners && !IsOutcasts && !IsVisitors;
             }
         }
 
-        public string Race { get; set; }
+        public CreatureInfo Race { get; set; }
         public int Count { get; set; }
 
-        public Population(string type, int count)
+        public Population(CreatureInfo type, int count)
         {
             Race = type;
             Count = count;

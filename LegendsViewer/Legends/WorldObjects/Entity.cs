@@ -16,7 +16,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public string Name { get; set; }
         public Entity Parent { get; set; }
         public bool IsCiv { get; set; }
-        public string Race { get; set; }
+        public CreatureInfo Race { get; set; }
         public List<HistoricalFigure> Worshipped { get; set; }
         public List<string> LeaderTypes { get; set; }
         public List<List<HistoricalFigure>> Leaders { get; set; }
@@ -56,7 +56,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 {
                     for (var i = 0; i < population.Count; i++)
                     {
-                        populations.Add(population.Race);
+                        populations.Add(population.Race.NamePlural);
                     }
                 }
 
@@ -128,7 +128,7 @@ namespace LegendsViewer.Legends.WorldObjects
             : base(properties, world)
         {
             Name = "";
-            Race = "Unknown";
+            Race = CreatureInfo.Unknown;
             Type = EntityType.Unknown;
             Parent = null;
             Worshipped = new List<HistoricalFigure>();
@@ -152,7 +152,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 {
                     case "name": Name = Formatting.InitCaps(property.Value); break;
                     case "race":
-                        Race = Formatting.MakePopulationPlural(Formatting.FormatRace(property.Value));
+                        Race = world.GetCreatureInfo(property.Value);
                         break;
                     case "type":
                         switch (property.Value)
@@ -306,7 +306,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             foreach (Population population in populations)
             {
-                Population popMatch = Populations.FirstOrDefault(pop => pop.Race == population.Race);
+                Population popMatch = Populations.FirstOrDefault(pop => pop.Race.NamePlural.Equals(population.Race.NamePlural, StringComparison.InvariantCultureIgnoreCase));
                 if (popMatch != null)
                 {
                     popMatch.Count += population.Count;
@@ -406,10 +406,10 @@ namespace LegendsViewer.Legends.WorldObjects
                         break;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(Race) && Race != "Unknown")
+            if (Race != null && Race != CreatureInfo.Unknown)
             {
                 title += " of ";
-                title += Race;
+                title += Race.NamePlural;
             }
             return title;
         }

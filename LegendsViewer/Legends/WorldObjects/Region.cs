@@ -20,12 +20,12 @@ namespace LegendsViewer.Legends.WorldObjects
             get
             {
                 List<string> deaths = new List<string>();
-                deaths.AddRange(NotableDeaths.Select(death => death.Race));
+                deaths.AddRange(NotableDeaths.Select(death => death.Race.Id));
                 foreach (Battle.Squad squad in Battles.SelectMany(battle => battle.AttackerSquads.Concat(battle.DefenderSquads)))
                 {
                     for (int i = 0; i < squad.Deaths; i++)
                     {
-                        deaths.Add(squad.Race);
+                        deaths.Add(squad.Race.Id);
                     }
                 }
 

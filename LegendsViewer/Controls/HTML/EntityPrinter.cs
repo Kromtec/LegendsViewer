@@ -171,9 +171,9 @@ namespace LegendsViewer.Controls.HTML
                 .Select(x => x.Attacker)
                 .Concat(allBattles.Where(x => x.Defender != null).Select(x => x.Defender))
                 .Distinct()
-                .OrderBy(entity => entity.Race)
+                .OrderBy(entity => entity.Race.NamePlural)
                 .ToList();
-            var entityLabels = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"'{x.Name} - {x.Race}'"));
+            var entityLabels = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"'{x.Name} - {x.Race.NamePlural}'"));
             var battleVictorData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor == _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
             var battleLoserData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor != _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
 
@@ -332,9 +332,9 @@ namespace LegendsViewer.Controls.HTML
             string classes = entity.Equals(_entity) ? " current" : "";
             string faveColor = GetHtmlColorByEntity(entity);
             string title = "";
-            if (!string.IsNullOrEmpty(entity.Race))
+            if (entity.Race != null && entity.Race != CreatureInfo.Unknown)
             {
-                title += entity.Race;
+                title += entity.Race.NamePlural;
                 title += "\\n--------------------\\n";
             }
             title += entity.Name;
@@ -399,10 +399,10 @@ namespace LegendsViewer.Controls.HTML
                         break;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(_entity.Race) && _entity.Race != "Unknown")
+            if (_entity.Race != null && _entity.Race != CreatureInfo.Unknown)
             {
                 title += " of ";
-                title += _entity.Race.ToLower();
+                title += _entity.Race.NamePlural.ToLower();
             }
             if (_entity.Parent != null)
             {

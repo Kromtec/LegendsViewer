@@ -96,12 +96,12 @@ namespace LegendsViewer.Legends.EventCollections
 
             Initialize();
 
-            var attackerSquadRace = new List<string>();
+            var attackerSquadRace = new List<CreatureInfo>();
             var attackerSquadEntityPopulation = new List<int>();
             var attackerSquadNumbers = new List<int>();
             var attackerSquadDeaths = new List<int>();
             var attackerSquadSite = new List<int>();
-            var defenderSquadRace = new List<string>();
+            var defenderSquadRace = new List<CreatureInfo>();
             var defenderSquadEntityPopulation = new List<int>();
             var defenderSquadNumbers = new List<int>();
             var defenderSquadDeaths = new List<int>();
@@ -126,7 +126,7 @@ namespace LegendsViewer.Legends.EventCollections
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "attacking_hfid": NotableAttackers.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "defending_hfid": NotableDefenders.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
-                    case "attacking_squad_race": attackerSquadRace.Add(Formatting.FormatRace(property.Value)); break;
+                    case "attacking_squad_race": attackerSquadRace.Add(world.GetCreatureInfo(property.Value)); break;
                     case "attacking_squad_entity_pop": attackerSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
                     case "attacking_squad_number":
                         int attackerSquadNumber = Convert.ToInt32(property.Value);
@@ -137,7 +137,7 @@ namespace LegendsViewer.Legends.EventCollections
                         attackerSquadDeaths.Add(attackerSquadDeath < 0 || attackerSquadDeath > Squad.MAX_SIZE ? Squad.MAX_SIZE : attackerSquadDeath);
                         break;
                     case "attacking_squad_site": attackerSquadSite.Add(Convert.ToInt32(property.Value)); break;
-                    case "defending_squad_race": defenderSquadRace.Add(Formatting.FormatRace(property.Value)); break;
+                    case "defending_squad_race": defenderSquadRace.Add(world.GetCreatureInfo(property.Value)); break;
                     case "defending_squad_entity_pop": defenderSquadEntityPopulation.Add(Convert.ToInt32(property.Value)); break;
                     case "defending_squad_number":
                         int defenderSquadNumber = Convert.ToInt32(property.Value);
@@ -228,7 +228,7 @@ namespace LegendsViewer.Legends.EventCollections
                                         select new { Race = squadRace.Key, Count = squadRace.Sum(squad => squad.Numbers), Deaths = squadRace.Sum(squad => squad.Deaths) };
             foreach (var squad in groupedAttackerSquads)
             {
-                Attackers.Add(new Squad(squad.Race, squad.Count + NotableAttackers.Count(attacker => attacker.Race == squad.Race), squad.Deaths + Collection.OfType<HfDied>().Count(death => death.HistoricalFigure.Race == squad.Race && NotableAttackers.Contains(death.HistoricalFigure)), -1, -1));
+                Attackers.Add(new Squad(squad.Race, squad.Count + NotableAttackers.Count(attacker => attacker.Race.Id == squad.Race.Id), squad.Deaths + Collection.OfType<HfDied>().Count(death => death.HistoricalFigure.Race == squad.Race && NotableAttackers.Contains(death.HistoricalFigure)), -1, -1));
             }
 
             foreach (var attacker in NotableAttackers.Where(hf => Attackers.Count(squad => squad.Race == hf.Race) == 0).GroupBy(hf => hf.Race).Select(race => new { Race = race.Key, Count = race.Count() }))
@@ -240,7 +240,7 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 for (int i = 0; i < squad.Numbers; i++)
                 {
-                    AttackersAsList.Add(squad.Race);
+                    AttackersAsList.Add(squad.Race.Id);
                 }
             }
 
@@ -261,20 +261,20 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 for (int i = 0; i < squad.Numbers; i++)
                 {
-                    DefendersAsList.Add(squad.Race);
+                    DefendersAsList.Add(squad.Race.Id);
                 }
             }
 
             Deaths = new Dictionary<string, int>();
             foreach (Squad squad in Attackers.Concat(Defenders))
             {
-                if (Deaths.ContainsKey(squad.Race))
+                if (Deaths.ContainsKey(squad.Race.Id))
                 {
-                    Deaths[squad.Race] += squad.Deaths;
+                    Deaths[squad.Race.Id] += squad.Deaths;
                 }
                 else
                 {
-                    Deaths[squad.Race] = squad.Deaths;
+                    Deaths[squad.Race.Id] = squad.Deaths;
                 }
             }
 
@@ -363,14 +363,14 @@ namespace LegendsViewer.Legends.EventCollections
         public class Squad
         {
             public const int MAX_SIZE = 100;
-            public string Race { get; set; }
+            public CreatureInfo Race { get; set; }
             public int Numbers { get; set; }
             public int Deaths { get; set; }
             public int Site { get; set; }
             public int Population { get; set; }
-            public Squad(string race, int numbers, int deaths, int site, int population)
+            public Squad(CreatureInfo race, int numbers, int deaths, int site, int population)
             {
-                Race = string.Intern(race);
+                Race = race;
                 Numbers = numbers;
                 Deaths = deaths;
                 Site = site;

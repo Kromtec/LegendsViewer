@@ -40,7 +40,7 @@ namespace LegendsViewer.Controls
 
             if (Race != "All")
             {
-                filtered = filtered.Where(hf => hf.Race == Race);
+                filtered = filtered.Where(hf => hf.Race.NameSingular == Race);
             }
 
             if (Caste != "All")
@@ -173,7 +173,7 @@ namespace LegendsViewer.Controls
             {
                 if (PopulationType != "All")
                 {
-                    filtered = filtered.Where(site => site.Populations.Count(population => population.Race == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race == PopulationType).Sum(population => population.Count));
+                    filtered = filtered.Where(site => site.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
                 }
                 else
                 {
@@ -372,7 +372,7 @@ namespace LegendsViewer.Controls
 
             if (Race != "All")
             {
-                filtered = filtered.Where(e => e.Race == Race);
+                filtered = filtered.Where(e => e.Race.NamePlural == Race);
             }
 
             if (Civs)
@@ -404,7 +404,7 @@ namespace LegendsViewer.Controls
             {
                 if (PopulationType != "All")
                 {
-                    filtered = filtered.Where(entity => entity.Populations.Count(population => population.Race == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race == PopulationType).Sum(population => population.Count));
+                    filtered = filtered.Where(entity => entity.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
                 }
                 else
                 {

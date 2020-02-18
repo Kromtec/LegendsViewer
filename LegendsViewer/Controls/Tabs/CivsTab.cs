@@ -48,11 +48,11 @@ namespace LegendsViewer.Controls.Tabs
             _entitySearch = new EntitiesList(World);
 
             var civRaces = from civ in World.Entities.Where(entity => !string.IsNullOrWhiteSpace(entity.Name))
-                           orderby civ.Race
+                           orderby civ.Race.NamePlural
                            group civ by civ.Race into civRace
                            select civRace;
             var populationTypes = from population in World.SitePopulations
-                                  orderby population.Race
+                                  orderby population.Race.NamePlural
                                   group population by population.Race into type
                                   select type;
             var civPopulationTypes = from civPopulation in populationTypes
@@ -66,13 +66,13 @@ namespace LegendsViewer.Controls.Tabs
             cmbCivRace.Items.Add("All"); cmbCivRace.SelectedIndex = 0;
             foreach (var civRace in civRaces)
             {
-                cmbCivRace.Items.Add(civRace.Key);
+                cmbCivRace.Items.Add(civRace.Key.NamePlural);
             }
 
             cmbEntityPopulation.Items.Add("All"); cmbEntityPopulation.SelectedIndex = 0;
             foreach (var civPopulation in civPopulationTypes)
             {
-                cmbEntityPopulation.Items.Add(civPopulation.Key);
+                cmbEntityPopulation.Items.Add(civPopulation.Key.NamePlural);
             }
 
             cmbEntityType.Items.Add("All"); cmbEntityType.SelectedIndex = 0;

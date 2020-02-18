@@ -88,7 +88,7 @@ namespace LegendsViewer.Controls.HTML
 
             foreach (var squadRace in squadRaces)
             {
-                Html.AppendLine("<li>" + squadRace.Numbers + " " + Formatting.MakePopulationPlural(squadRace.Race));
+                Html.AppendLine("<li>" + squadRace.Numbers + " " + squadRace.Race.NamePlural);
                 Html.Append(", " + squadRace.Deaths + " Losses</br>");
             }
             foreach (HistoricalFigure attacker in _battle.NotableAttackers)
@@ -127,7 +127,7 @@ namespace LegendsViewer.Controls.HTML
 
             foreach (var squadRace in squadRaces)
             {
-                Html.AppendLine("<li>" + squadRace.Numbers + " " + Formatting.MakePopulationPlural(squadRace.Race));
+                Html.AppendLine("<li>" + squadRace.Numbers + " " + squadRace.Race.NamePlural);
                 Html.Append(", " + squadRace.Deaths + " Losses</br>");
             }
             foreach (HistoricalFigure defender in _battle.NotableDefenders)

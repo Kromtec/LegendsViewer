@@ -110,6 +110,8 @@ namespace LegendsViewer.Legends.Parser
                     return Section.Landmasses;
                 case "mountain_peaks":
                     return Section.MountainPeaks;
+                case "creature_raw":
+                    return Section.CreatureRaw;
                 case "name":
                 case "altname":
                 case "xml":
@@ -295,6 +297,9 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case Section.MountainPeaks:
                     World.MountainPeaks.Add(new MountainPeak(properties, World));
+                    break;
+                case Section.CreatureRaw:
+                    World.CreatureInfos.Add(new CreatureInfo(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("Unknown XML Section: " + section);

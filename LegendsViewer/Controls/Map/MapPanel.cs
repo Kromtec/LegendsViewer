@@ -1002,7 +1002,7 @@ namespace LegendsViewer.Controls.Map
                     foreach (Location coordinates in _world.Sites.GroupBy(site => site.Coordinates).Select(site => site.Key).ToList())
                     {
                         coordinatesList.Add(coordinates);
-                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Populations.Where(population => selectPopulations.SelectedPopulations.Contains(population.Race)).Sum(population => population.Count)));
+                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Populations.Where(population => selectPopulations.SelectedPopulations.Contains(population.Race.NamePlural)).Sum(population => population.Count)));
                     }
                     break;
                 case "Site Events":

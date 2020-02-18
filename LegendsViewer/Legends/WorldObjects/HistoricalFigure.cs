@@ -67,7 +67,7 @@ namespace LegendsViewer.Legends.WorldObjects
             }
         }
 
-        public string Race { get; set; }
+        public CreatureInfo Race { get; set; }
         public string PreviousRace { get; set; }
         public string Caste { get; set; }
         public string AssociatedType { get; set; }
@@ -155,7 +155,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             Initialize();
             Name = "an unknown creature";
-            Race = "UNKNOWN";
+            Race = CreatureInfo.Unknown;
             Caste = "UNKNOWN";
             AssociatedType = "UNKNOWN";
         }
@@ -174,12 +174,12 @@ namespace LegendsViewer.Legends.WorldObjects
                     case "death_year": DeathYear = Convert.ToInt32(property.Value); break;
                     case "death_seconds72": DeathSeconds72 = Convert.ToInt32(property.Value); break;
                     case "name": Name = Formatting.InitCaps(property.Value.Replace("'", "`")); break;
-                    case "race": Race = string.Intern(Formatting.FormatRace(property.Value)); break;
+                    case "race": Race = world.GetCreatureInfo(property.Value); break;
                     case "caste": Caste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
                     case "associated_type": AssociatedType = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
                     case "deity": Deity = true; property.Known = true; break;
                     case "skeleton": Skeleton = true; property.Known = true; break;
-                    case "force": Force = true; property.Known = true; Race = "Force"; break;
+                    case "force": Force = true; property.Known = true; Race = world.GetCreatureInfo("Force"); break;
                     case "zombie": Zombie = true; property.Known = true; break;
                     case "ghost": Ghost = true; property.Known = true; break;
                     case "hf_link": //Will be processed after all HFs have been loaded
@@ -387,7 +387,8 @@ namespace LegendsViewer.Legends.WorldObjects
         private void Initialize()
         {
             Appeared = BirthYear = BirthSeconds72 = DeathYear = DeathSeconds72 = EntityPopulationId = -1;
-            Name = Race = Caste = AssociatedType = "";
+            Name = Caste = AssociatedType = "";
+            Race = CreatureInfo.Unknown;
             DeathCause = DeathCause.None;
             CurrentState = HfState.None;
             NotableKills = new List<HfDied>();
@@ -650,7 +651,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             if (Deity)
             {
-                return Race.ToLower() + " deity";
+                return Race.NameSingular.ToLower() + " deity";
             }
 
             if (Force)
@@ -669,7 +670,7 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             else
             {
-                raceString += Race.ToLower();
+                raceString += Race.NameSingular.ToLower();
             }
 
             foreach (var creatureType in CreatureTypes)
@@ -704,7 +705,7 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             else
             {
-                raceString += Race.ToLower();
+                raceString += Race.NameSingular.ToLower();
             }
 
             foreach (var creatureType in relevantCreatureTypes)

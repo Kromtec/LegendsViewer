@@ -13,6 +13,7 @@ namespace LegendsViewer.Legends.Parser
         Regions,
         [Description("Underground Regions")]
         UndergroundRegions,
+        CreatureRaw,
         Sites,
         [Description("World Constructions")]
         WorldConstructions,

@@ -60,7 +60,7 @@ namespace LegendsViewer.Controls.Map
         {
             for (int i = 0; i < listPopulations.SelectedIndices.Count; i++)
             {
-                SelectedPopulations.Add(_populations[listPopulations.SelectedIndices[i]].Race);
+                SelectedPopulations.Add(_populations[listPopulations.SelectedIndices[i]].Race.NamePlural);
             }
 
             Close();

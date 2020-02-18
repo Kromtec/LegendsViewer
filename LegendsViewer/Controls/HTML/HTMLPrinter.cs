@@ -414,6 +414,22 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</div>");
         }
 
+        private void PrintPopulationEntry(CreatureInfo creatureInfo, int count)
+        {
+            if (count == int.MaxValue)
+            {
+                Html.AppendLine("<li>Unnumbered " + creatureInfo.NamePlural + "</li>");
+            }
+            else if (count == 1)
+            {
+                Html.AppendLine("<li>" + count + " " + creatureInfo.NameSingular + "</li>");
+            }
+            else
+            {
+                Html.AppendLine("<li>" + count + " " + creatureInfo.NamePlural + "</li>");
+            }
+        }
+
         private void AddPopulationList(List<Population> populations, string populationName)
         {
             if (!populations.Any())
@@ -424,7 +440,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<ul>");
             foreach (Population population in populations)
             {
-                Html.AppendLine("<li>" + population.Count + " " + population.Race + "</li>");
+                PrintPopulationEntry(population.Race, population.Count);
             }
 
             Html.AppendLine("</ul>");
@@ -450,7 +466,7 @@ namespace LegendsViewer.Controls.HTML
 
                 Color darkenedPopColor = HtmlStyleUtil.ChangeColorBrightness(civilizedPopColor, -0.1f);
 
-                races += (i != 0 ? "," : "") + "'" + civilizedPop.Race + "'";
+                races += (i != 0 ? "," : "") + "'" + civilizedPop.Race.NamePlural + "'";
                 popCounts += (i != 0 ? "," : "") + civilizedPop.Count;
                 backgroundColors += (i != 0 ? "," : "") + "'" + ColorTranslator.ToHtml(darkenedPopColor) + "'";
             }
@@ -492,7 +508,7 @@ namespace LegendsViewer.Controls.HTML
             var startYear = world.Eras.Min(e => e.StartYear);
             var endYear = world.Eras.Max(e => e.EndYear);
 
-            for (int currentYear = startYear; currentYear < endYear; currentYear++)
+            for (int currentYear = startYear; currentYear <= endYear; currentYear++)
             {
                 chartLabels.Add(currentYear.ToString());
                 var eventsOfCurrentYear = groupedEvents.FirstOrDefault(group => group.Key == currentYear);
