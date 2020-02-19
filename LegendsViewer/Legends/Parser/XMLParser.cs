@@ -114,6 +114,8 @@ namespace LegendsViewer.Legends.Parser
                     return Section.CreatureRaw;
                 case "identities":
                     return Section.Identities;
+                case "rivers":
+                    return Section.Rivers;
                 case "name":
                 case "altname":
                 case "xml":
@@ -305,6 +307,9 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case Section.Identities:
                     World.Identities.Add(new Identity(properties, World));
+                    break;
+                case Section.Rivers:
+                    World.Rivers.Add(new River(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("Unknown XML Section: " + section);

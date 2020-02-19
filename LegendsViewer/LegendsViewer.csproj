@@ -107,6 +107,7 @@
     <Compile Include="Controls\HTML\MountainPeakPrinter.cs" />
     <Compile Include="Controls\HTML\RaidPrinter.cs" />
     <Compile Include="Controls\HTML\ReadMeControl.cs" />
+    <Compile Include="Controls\HTML\RiverPrinter.cs" />
     <Compile Include="Controls\HTML\StructurePrinter.cs" />
     <Compile Include="Controls\HTML\Utilities\BrowserUtil.cs" />
     <Compile Include="Controls\HTML\Utilities\HTMLStyleUtil.cs" />
@@ -498,6 +499,7 @@
     <Compile Include="Legends\RelationshipProfileHF.cs" />
     <Compile Include="Legends\Reputation.cs" />
     <Compile Include="Legends\Schedule.cs" />
+    <Compile Include="Legends\WorldObjects\River.cs" />
     <Compile Include="Legends\WorldObjects\Site.cs" />
     <Compile Include="Legends\SiteLink.cs" />
     <Compile Include="Legends\Skill.cs" />

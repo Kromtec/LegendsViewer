@@ -184,6 +184,9 @@ namespace LegendsViewer.Legends.WorldObjects
                             case "militaryunit":
                                 Type = EntityType.MilitaryUnit;
                                 break;
+                            case "merchantcompany":
+                                Type = EntityType.MerchantCompany;
+                                break;
                             default:
                                 Type = EntityType.Unknown;
                                 property.Known = false;
@@ -412,6 +415,9 @@ namespace LegendsViewer.Legends.WorldObjects
                         break;
                     case EntityType.Guild:
                         title += "Guild";
+                        break;
+                    case EntityType.MerchantCompany:
+                        title += "Merchant company";
                         break;
                     default:
                         title += "Group";

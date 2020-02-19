@@ -263,7 +263,7 @@ namespace LegendsViewer.Controls.Map
 
                 if (OptionObject is Entity entity)
                 {
-                    Text = entity.Name + " (" + entity.Race + ")";
+                    Text = entity.Name + " (" + entity.Race.NamePlural + ")";
                 }
 
                 if (OptionObject is List<Battle> battles)
@@ -336,7 +336,14 @@ namespace LegendsViewer.Controls.Map
                         details.Add("Populations: ");
                         foreach (Population population in site.Populations)
                         {
-                            details.Add("     " + population.Count + " " + population.Race);
+                            if (population.Count == 1)
+                            {
+                                details.Add("     " + population.Count + " " + population.Race.NameSingular);
+                            }
+                            else
+                            {
+                                details.Add("     " + population.Count + " " + population.Race.NamePlural);
+                            }
                         }
                     }
                     SubMenu = new MapMenu(Parent.Map);

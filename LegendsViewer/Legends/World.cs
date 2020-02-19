@@ -29,6 +29,7 @@ namespace LegendsViewer.Legends
         public readonly List<MountainPeak> MountainPeaks = new List<MountainPeak>();
         public readonly List<CreatureInfo> CreatureInfos = new List<CreatureInfo>();
         public readonly List<Identity> Identities = new List<Identity>();
+        public readonly List<River> Rivers = new List<River>();
         public readonly List<Site> Sites = new List<Site>();
         public readonly List<HistoricalFigure> HistoricalFigures = new List<HistoricalFigure>();
         public readonly List<Entity> Entities = new List<Entity>();

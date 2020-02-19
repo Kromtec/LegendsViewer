@@ -16,20 +16,19 @@ namespace LegendsViewer.Controls.Tabs
     {
         private LandmassesList _landmassSearch;
         private MountainPeaksList _mountainPeaksSearch;
+        private RiverList _riverSearch;
         private RegionsList _regionSearch;
         private UndergroundRegionsList _uRegionSearch;
 
         public GeographyTab()
         {
             InitializeComponent();
-
         }
-
 
         internal override void InitializeTab()
         {
-            EventTabs = new[] { tpRegionEvents, tpURegionEvents, tpLandmassEvents, tpMountainPeakEvents };
-            EventTabTypes = new[] { typeof(Region), typeof(UndergroundRegion), typeof(Landmass), typeof(MountainPeak) };
+            EventTabs = new[] { tpRegionEvents, tpURegionEvents, tpLandmassEvents, tpMountainPeakEvents, tpRiverEvents };
+            EventTabTypes = new[] { typeof(Region), typeof(UndergroundRegion), typeof(Landmass), typeof(MountainPeak), typeof(River) };
 
             listRegionSearch.AllColumns.Add(new OLVColumn
             {
@@ -52,6 +51,8 @@ namespace LegendsViewer.Controls.Tabs
             listLandmassesSearch.ShowGroups = false;
 
             listMountainPeakSearch.ShowGroups = false;
+
+            listRiverSearch.ShowGroups = false;
         }
 
         internal override void AfterLoad(World world)
@@ -61,6 +62,7 @@ namespace LegendsViewer.Controls.Tabs
             _uRegionSearch = new UndergroundRegionsList(World);
             _landmassSearch = new LandmassesList(World);
             _mountainPeaksSearch = new MountainPeaksList(World);
+            _riverSearch = new RiverList(World);
 
             var regions = from region in World.Regions
                           orderby region.Type
@@ -94,20 +96,26 @@ namespace LegendsViewer.Controls.Tabs
                                  select type.Key;
 
             var mountainPeakEvents = from eventType in World.MountainPeaks.SelectMany(element => element.Events)
-                                     group eventType by eventType.Type into type
-                                     select type.Key;
+                group eventType by eventType.Type into type
+                select type.Key;
+
+            var riverEvents = from eventType in World.Rivers.SelectMany(element => element.Events)
+                group eventType by eventType.Type into type
+                select type.Key;
 
             TabEvents.Clear();
             TabEvents.Add(regionEvents.ToList());
             TabEvents.Add(undergroundRegionEvents.ToList());
             TabEvents.Add(landmassEvents.ToList());
             TabEvents.Add(mountainPeakEvents.ToList());
+            TabEvents.Add(riverEvents.ToList());
         }
 
         internal override void DoSearch()
         {
             SearchLandmassList(null, null);
             SearchMountainPeakList(null, null);
+            SearchRiverList(null, null);
             SearchRegionList(null, null);
             SearchURegionList(null, null);
             base.DoSearch();
@@ -139,7 +147,6 @@ namespace LegendsViewer.Controls.Tabs
                 IEnumerable<WorldRegion> list = _regionSearch.GetList();
                 var results = list.ToArray();
                 listRegionSearch.SetObjects(results);
-                //listRegionSearch.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 UpdateCounts(lblShownResults, results.Length, _regionSearch.BaseList.Count);
             }
         }
@@ -192,6 +199,20 @@ namespace LegendsViewer.Controls.Tabs
             }
         }
 
+        private void SearchRiverList(object sender, EventArgs e)
+        {
+            if (!FileLoader.Working && World != null)
+            {
+                _riverSearch.Name = txtRiverSearch.Text;
+                _riverSearch.SortEvents = radRiverEvents.Checked;
+                _riverSearch.SortFiltered = radRiverFiltered.Checked;
+                IEnumerable<River> list = _riverSearch.GetList();
+                var results = list.ToArray();
+                listRiverSearch.SetObjects(results);
+                UpdateCounts(lblRiverResults, results.Length, _riverSearch.BaseList.Count);
+            }
+        }
+
         private void listRegionSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListSearch_SelectedIndexChanged(sender, e);
@@ -208,6 +229,11 @@ namespace LegendsViewer.Controls.Tabs
         }
 
         private void listMountainPeakSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListSearch_SelectedIndexChanged(sender, e);
+        }
+
+        private void listRiverSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListSearch_SelectedIndexChanged(sender, e);
         }

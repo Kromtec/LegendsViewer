@@ -173,8 +173,8 @@ namespace LegendsViewer.Controls.Map
             else if (FocusObject.GetType() == typeof(Entity) || FocusObject.GetType() == typeof(War)
                      || FocusObject.GetType() == typeof(Battle) || FocusObject.GetType() == typeof(SiteConquered)
                      || FocusObject.GetType() == typeof(WorldRegion) || FocusObject.GetType() == typeof(UndergroundRegion)
-                     || FocusObject.GetType() == typeof(WorldConstruction) || FocusObject.GetType() == typeof(Landmass) ||
-                     FocusObject.GetType() == typeof(MountainPeak))
+                     || FocusObject.GetType() == typeof(WorldConstruction) || FocusObject.GetType() == typeof(Landmass)
+                     || FocusObject.GetType() == typeof(MountainPeak) || FocusObject.GetType() == typeof(River))
             {
                 List<Entity> entities = new List<Entity>();
                 if (FocusObject.GetType() == typeof(Entity))

@@ -347,6 +347,36 @@ namespace LegendsViewer.Controls
         }
     }
 
+    public class RiverList : WorldObjectList
+    {
+        public string Name;
+        public readonly List<River> BaseList;
+        public RiverList(World setWorld) : base(setWorld)
+        {
+            BaseList = World.Rivers;
+        }
+        public IEnumerable<River> GetList()
+        {
+            IEnumerable<River> filtered = BaseList;
+            if (Name != "")
+            {
+                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+            }
+
+            if (SortEvents)
+            {
+                filtered = filtered.OrderByDescending(element => element.Events.Count);
+            }
+
+            if (SortFiltered)
+            {
+                filtered = filtered.OrderByDescending(element => element.Events.Count(ev => !River.Filters.Contains(ev.Type)));
+            }
+
+            return MaxResults > 0 ? filtered.Take(MaxResults) : filtered;
+        }
+    }
+
     public class EntitiesList : WorldObjectList
     {
         public string Type;

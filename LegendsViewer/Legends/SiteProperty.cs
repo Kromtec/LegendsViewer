@@ -20,6 +20,7 @@ namespace LegendsViewer.Legends
         public SiteProperty(List<Property> properties, World world, Site site)
         {
             Id = -1;
+            OwnerId = -1;
             foreach (Property property in properties)
             {
                 switch (property.Name)

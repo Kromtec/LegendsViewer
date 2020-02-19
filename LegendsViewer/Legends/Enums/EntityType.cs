@@ -22,6 +22,8 @@ namespace LegendsViewer.Legends.Enums
         MercenaryCompany,
         Guild,
         [Description("Military Unit")]
-        MilitaryUnit
+        MilitaryUnit,
+        [Description("Merchant Company")]
+        MerchantCompany,
     }
 }
