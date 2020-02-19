@@ -28,6 +28,7 @@ namespace LegendsViewer.Controls.HTML
             PrintTitle();
             PrintMiscInfo();
             PrintRelatedArtifacts();
+            PrintIdentities();
             PrintBreedInfo();
             PrintSiteProperties();
             PrintFamilyGraph();
@@ -151,7 +152,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<ul>");
                 Html.AppendLine("<li>");
                 Html.AppendLine(_historicalFigure.EntityPopulation.Entity.ToLink());
-                Html.AppendLine(" (" + Formatting.MakePopulationPlural(Formatting.InitCaps(_historicalFigure.EntityPopulation.Race.Replace("_", " "))) + ")");
+                Html.AppendLine(" (" + _historicalFigure.EntityPopulation.Race.NamePlural + ")");
                 Html.AppendLine("</li>");
                 Html.AppendLine("</ul>");
             }
@@ -200,7 +201,7 @@ namespace LegendsViewer.Controls.HTML
                 title += "\\n--------------------\\n";
                 classes += " leader";
             }
-            title += hf.Race != _historicalFigure.Race ? hf.Race + " " : "";
+            title += hf.Race != _historicalFigure.Race ? hf.Race.NameSingular + " " : "";
 
             string description = "";
             if (hf.ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
@@ -357,6 +358,21 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ol>");
             }
         }
+
+        private void PrintIdentities()
+        {
+            if (_historicalFigure.Identities.Any())
+            {
+                Html.AppendLine(Bold("Secret Identities") + LineBreak);
+                Html.AppendLine("<ul>");
+                foreach (Identity identity in _historicalFigure.Identities)
+                {
+                    Html.AppendLine("<li>" + identity.Print() + "</li>");
+                }
+                Html.AppendLine("</ul>");
+            }
+        }
+
         private void PrintSiteProperties()
         {
             if (_historicalFigure.SiteProperties.Any())

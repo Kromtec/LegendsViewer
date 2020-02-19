@@ -141,6 +141,7 @@ namespace LegendsViewer.Legends.Events
                 case HistoricalFigureLinkType.Lover:
                     eventString += " became romantically involved with ";
                     break;
+                case HistoricalFigureLinkType.FormerSpouse:
                 case HistoricalFigureLinkType.Spouse:
                     eventString += " married ";
                     break;

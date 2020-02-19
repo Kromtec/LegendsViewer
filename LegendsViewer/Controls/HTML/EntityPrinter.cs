@@ -141,6 +141,11 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine(ListItem + childLink.Target.ToLink(true, _entity) + " (" + childLink.Target.Type.GetDescription() + ")");
                 PrintChildEntites(childLink.Target);
             }
+            foreach (EntityEntityLink religiousLink in _entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Religious)))
+            {
+                Html.AppendLine(ListItem + religiousLink.Target.ToLink(true, _entity) + " (" + religiousLink.Target.Type.GetDescription() + ")");
+                PrintChildEntites(religiousLink.Target);
+            }
             EndList(ListType.Unordered);
         }
 
@@ -171,9 +176,9 @@ namespace LegendsViewer.Controls.HTML
                 .Select(x => x.Attacker)
                 .Concat(allBattles.Where(x => x.Defender != null).Select(x => x.Defender))
                 .Distinct()
-                .OrderBy(entity => entity.Race)
+                .OrderBy(entity => entity.Race.NamePlural)
                 .ToList();
-            var entityLabels = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"'{x.Name} - {x.Race}'"));
+            var entityLabels = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"'{x.Name} - {x.Race.NamePlural}'"));
             var battleVictorData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor == _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
             var battleLoserData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor != _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
 
@@ -332,9 +337,9 @@ namespace LegendsViewer.Controls.HTML
             string classes = entity.Equals(_entity) ? " current" : "";
             string faveColor = GetHtmlColorByEntity(entity);
             string title = "";
-            if (!string.IsNullOrEmpty(entity.Race))
+            if (entity.Race != null && entity.Race != CreatureInfo.Unknown)
             {
-                title += entity.Race;
+                title += entity.Race.NamePlural;
                 title += "\\n--------------------\\n";
             }
             title += entity.Name;
@@ -364,46 +369,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<div class=\"row\">");
             Html.AppendLine("<div class=\"col-md-12\">");
             string title = _entity.GetIcon() + " " + _entity.ToLink(false);
-            if (_entity.IsCiv)
-            {
-                title += " is a civilization";
-            }
-            else
-            {
-                title += " is a ";
-                switch (_entity.Type)
-                {
-                    case EntityType.Civilization:
-                        title += "civilization";
-                        break;
-                    case EntityType.NomadicGroup:
-                        title += "nomadic group";
-                        break;
-                    case EntityType.MigratingGroup:
-                        title += "migrating group";
-                        break;
-                    case EntityType.Outcast:
-                        title += "collection of outcasts";
-                        break;
-                    case EntityType.Religion:
-                        title += "religious group";
-                        break;
-                    case EntityType.SiteGovernment:
-                        title += "site government";
-                        break;
-                    case EntityType.PerformanceTroupe:
-                        title += "performance troupe";
-                        break;
-                    default:
-                        title += "group";
-                        break;
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(_entity.Race) && _entity.Race != "Unknown")
-            {
-                title += " of ";
-                title += _entity.Race.ToLower();
-            }
+            title += " is a " + _entity.GetTitle().ToLower();
             if (_entity.Parent != null)
             {
                 title += " of " + _entity.Parent.ToLink(true, _entity);

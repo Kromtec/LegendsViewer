@@ -17,6 +17,13 @@ namespace LegendsViewer.Legends.Enums
         [Description("Government")]
         SiteGovernment,
         [Description("Performers")]
-        PerformanceTroupe
+        PerformanceTroupe,
+        [Description("Mercenary Company")]
+        MercenaryCompany,
+        Guild,
+        [Description("Military Unit")]
+        MilitaryUnit,
+        [Description("Merchant Company")]
+        MerchantCompany,
     }
 }

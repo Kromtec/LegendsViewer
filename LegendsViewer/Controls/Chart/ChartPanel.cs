@@ -186,10 +186,10 @@ namespace LegendsViewer.Controls.Chart
                     series.Add(new Series("Sites"));
                     series.First().Color = Color.FromArgb(145, 70, 170); break;
                 case ChartOption.TimelineActiveSitesByRace:
-                    List<string> races = _world.Entities.Where(entity => entity.IsCiv).GroupBy(entity => entity.Race).Select(entity => entity.Key).ToList();
-                    foreach (string race in races)
+                    List<CreatureInfo> races = _world.Entities.Where(entity => entity.IsCiv).GroupBy(entity => entity.Race).Select(entity => entity.Key).ToList();
+                    foreach (CreatureInfo race in races)
                     {
-                        Series raceSeries = new Series(race)
+                        Series raceSeries = new Series(race.NamePlural)
                         {
                             Color = _world.Entities.First(entity => entity.IsCiv && entity.Race == race).LineColor,
                             BorderWidth = 3,
@@ -432,7 +432,7 @@ namespace LegendsViewer.Controls.Chart
                         //aliveHFs = World.HistoricalFigures.Where(hf => hf.BirthYear <= startYear).ToList();
                         else
                         {
-                            hfs = _world.HistoricalFigures.Where(hf => hf.Race == _aliveHfRace).OrderBy(hf => hf.BirthYear).ToList(); //====================================================
+                            hfs = _world.HistoricalFigures.Where(hf => hf.Race.NameSingular == _aliveHfRace).OrderBy(hf => hf.BirthYear).ToList(); //====================================================
                         }
 
                         aliveHFs = hfs.Where(hf => hf.BirthYear <= startYear).ToList();
@@ -528,7 +528,7 @@ namespace LegendsViewer.Controls.Chart
                             case ChartOption.TimelineActiveSitesByRace:
                                 foreach (Series race in series)
                                 {
-                                    count = _world.Entities.Where(entity => entity.IsCiv && entity.Race == race.Name).Sum(entity => entity.SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1)));
+                                    count = _world.Entities.Where(entity => entity.IsCiv && entity.Race.NamePlural == race.Name).Sum(entity => entity.SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1)));
                                     race.Points.AddXY(year, count);
                                 }
                                 break;
@@ -615,7 +615,7 @@ namespace LegendsViewer.Controls.Chart
                         .ForEach(hf =>
                         {
                             series.First().Points.AddY(hf.Count);
-                            series.First().Points.Last().LegendText = hf.Race;
+                            series.First().Points.Last().LegendText = hf.Race.NamePlural;
                         });
                     break;
                 case ChartOption.WorldHfRemaining:
@@ -643,7 +643,7 @@ namespace LegendsViewer.Controls.Chart
                         {
                             series.Last().Points.AddXY(i, hfTotals[i].Count);
                         }
-                        series.Last().Points.Last().AxisLabel = Formatting.MakePopulationPlural(hfTotals[i].Race);
+                        series.Last().Points.Last().AxisLabel = hfTotals[i].Race.NamePlural;
                     }
                     series.First().Points.AddXY(hfTotals.Count(hf => hf.Count >= otherLimit), otherTotal);
                     series.Last().Points.AddXY(hfTotals.Count(hf => hf.Count >= otherLimit), otherTotal - otherKilled);
@@ -652,11 +652,11 @@ namespace LegendsViewer.Controls.Chart
                 //case ChartOption.WorldHFDead:
                 //    World.HistoricalFigures.Where(hf => hf.DeathYear > 0).GroupBy(hf => hf.Race).Select(hf => new { Race = hf.Key, Count = hf.Count() }).OrderByDescending(hf => hf.Count).ToList().ForEach(hf => { series.First().Points.AddY(hf.Count); series.First().Points.Last().LegendText = hf.Race; }); break;
                 case ChartOption.WorldHfRaces:
-                    _world.HistoricalFigures.GroupBy(hf => hf.Race).Select(hf => new { Race = hf.Key, Count = hf.Count() }).OrderByDescending(hf => hf.Count).ToList().ForEach(hf => { series.First().Points.AddY(hf.Count); series.First().Points.Last().LegendText = hf.Race; }); break;
+                    _world.HistoricalFigures.GroupBy(hf => hf.Race).Select(hf => new { Race = hf.Key, Count = hf.Count() }).OrderByDescending(hf => hf.Count).ToList().ForEach(hf => { series.First().Points.AddY(hf.Count); series.First().Points.Last().LegendText = hf.Race.NamePlural; }); break;
                 case ChartOption.WorldRegionTypes:
                     _world.Regions.GroupBy(region => region.Type).Select(region => new { Type = region.Key, Count = region.Count() }).OrderByDescending(region => region.Count).ToList().ForEach(region => { series.First().Points.AddY(region.Count); series.First().Points.Last().LegendText = region.Type; }); break;
                 case ChartOption.WorldSitePopulations:
-                    _world.SitePopulations.GroupBy(pop => pop.Race).Select(pop => new { Type = pop.Key, Count = pop.Sum(population => population.Count) }).OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Type; }); break;
+                    _world.SitePopulations.GroupBy(pop => pop.Race).Select(pop => new { Type = pop.Key, Count = pop.Sum(population => population.Count) }).OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Type.NamePlural; }); break;
                 case ChartOption.WorldDeaths:
                 case ChartOption.OtherDeaths:
                     List<HfDied> hfDeaths = new List<HfDied>();
@@ -687,13 +687,12 @@ namespace LegendsViewer.Controls.Chart
                     }
 
 
-                    hfDeaths.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRaces.Add(Formatting.MakePopulationPlural(death)));
+                    hfDeaths.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRaces.Add(death.NamePlural));
                     foreach (Battle.Squad squad in squads)
                     {
-                        string plural = Formatting.MakePopulationPlural(squad.Race);
                         for (int i = 0; i < squad.Deaths; i++)
                         {
-                            deathRaces.Add(plural);
+                            deathRaces.Add(squad.Race.NamePlural);
                         }
                     }
                     deathRaces.GroupBy(race => race).Select(race => new { Type = race.Key, Count = race.Count() }).OrderByDescending(race => race.Count).ToList().ForEach(race => { series.First().Points.AddY(race.Count); series.First().Points.Last().LegendText = race.Type; });
@@ -701,9 +700,9 @@ namespace LegendsViewer.Controls.Chart
                 case ChartOption.WorldSiteTypes:
                     _world.Sites.GroupBy(region => region.Type).Select(site => new { Type = site.Key, Count = site.Count() }).OrderByDescending(site => site.Count).ToList().ForEach(site => { series.First().Points.AddY(site.Count); series.First().Points.Last().LegendText = site.Type; }); break;
                 case ChartOption.WorldOutdoorPopulations:
-                    _world.OutdoorPopulations.Where(pop => pop.Count != int.MaxValue).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race; }); break;
+                    _world.OutdoorPopulations.Where(pop => pop.Count != int.MaxValue).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race.NamePlural; }); break;
                 case ChartOption.WorldUndergroundPopulations:
-                    _world.UndergroundPopulations.Where(pop => pop.Count != int.MaxValue).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race; }); break;
+                    _world.UndergroundPopulations.Where(pop => pop.Count != int.MaxValue).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race.NamePlural; }); break;
                 case ChartOption.OtherEventTypes:
                     if (_focusObject is EventCollection)
                     {
@@ -716,15 +715,15 @@ namespace LegendsViewer.Controls.Chart
 
                     break;
                 case ChartOption.OtherKillsByRace:
-                    (_focusObject as HistoricalFigure).NotableKills.GroupBy(death => death.HistoricalFigure.Race).Select(death => new { Race = death.Key, Count = death.Count() }).OrderByDescending(death => death.Count).ToList().ForEach(death => { series.First().Points.AddY(death.Count); series.First().Points.Last().LegendText = death.Race; }); break;
+                    (_focusObject as HistoricalFigure).NotableKills.GroupBy(death => death.HistoricalFigure.Race).Select(death => new { Race = death.Key, Count = death.Count() }).OrderByDescending(death => death.Count).ToList().ForEach(death => { series.First().Points.AddY(death.Count); series.First().Points.Last().LegendText = death.Race.NamePlural; }); break;
                 case ChartOption.OtherEntityPopulations:
-                    (_focusObject as Entity).Populations.OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race; }); break;
+                    (_focusObject as Entity).Populations.OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race.NamePlural; }); break;
                 //case ChartOption.OtherDeaths:
                 //    (FocusObject as WorldRegion).Events.OfType<HFDied>().GroupBy(death => death.HistoricalFigure.Race).Select(death => new { Race = death.Key, Count = death.Count() }).OrderByDescending(death => death.Count).ToList().ForEach(death => { series.First().Points.AddY(death.Count); series.First().Points.Last().LegendText = death.Race; }); break;
                 //case ChartOption.OtherSiteDeaths:
                 //    (FocusObject as Site).Events.OfType<HFDied>().GroupBy(death => death.HistoricalFigure.Race).Select(death => new { Race = death.Key, Count = death.Count() }).OrderByDescending(death => death.Count).ToList().ForEach(death => { series.First().Points.AddY(death.Count); series.First().Points.Last().LegendText = death.Race; }); break;
                 case ChartOption.OtherSitePopulations:
-                    (_focusObject as Site).Populations.OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race; }); break;
+                    (_focusObject as Site).Populations.OrderByDescending(pop => pop.Count).ToList().ForEach(pop => { series.First().Points.AddY(pop.Count); series.First().Points.Last().LegendText = pop.Race.NamePlural; }); break;
                 case ChartOption.OtherWarLosses:
                     List<War> warsList = new List<War>();
                     if (_focusObject.GetType() == typeof(War))
@@ -752,12 +751,12 @@ namespace LegendsViewer.Controls.Chart
                         hfDeathsList = hfDeathsList.Concat(battles1.Where(battle => battle.Defender == entity || battle.Defender.Parent == entity).SelectMany(battle => battle.GetSubEvents().OfType<HfDied>().Where(death => battle.NotableDefenders.Contains(death.HistoricalFigure))).ToList()).ToList();
                         squadsList = battles1.Where(battle => battle.Attacker == entity || battle.Attacker.Parent == entity).SelectMany(battle => battle.AttackerSquads).ToList();
                         squadsList = squadsList.Concat(battles1.Where(battle => battle.Defender == entity || battle.Defender.Parent == entity).SelectMany(battle => battle.DefenderSquads).ToList()).ToList();
-                        hfDeathsList.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRacesList.Add(Formatting.MakePopulationPlural(death)));
+                        hfDeathsList.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRacesList.Add(death.NamePlural));
 
                         //squadsList.GroupBy(squad => squad.Race).Select(squad => new { Race = squad.Key, Count = squad.Sum(race => race.Deaths) });
                         foreach (Battle.Squad squad in squadsList)
                         {
-                            string plural = Formatting.MakePopulationPlural(squad.Race);
+                            string plural = squad.Race.NamePlural;
                             for (int i = 0; i < squad.Deaths; i++)
                             {
                                 deathRacesList.Add(plural);
@@ -780,11 +779,11 @@ namespace LegendsViewer.Controls.Chart
                     break;
                 case ChartOption.OtherBattleRemaining:
                     Battle battle1 = _focusObject as Battle;
-                    List<string> attackers = battle1.NotableAttackers.Select(hf => Formatting.MakePopulationPlural(hf.Race)).ToList();
-                    List<string> attackersKilled = battle1.NotableAttackers.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => Formatting.MakePopulationPlural(hf.Race)).ToList();
+                    List<string> attackers = battle1.NotableAttackers.Select(hf => hf.Race.NamePlural).ToList();
+                    List<string> attackersKilled = battle1.NotableAttackers.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => hf.Race.NamePlural).ToList();
                     foreach (Battle.Squad squad in battle1.AttackerSquads)
                     {
-                        string plural = Formatting.MakePopulationPlural(squad.Race);
+                        string plural = squad.Race.NamePlural;
                         for (int i = 0; i < squad.Numbers; i++)
                         {
                             attackers.Add(plural);
@@ -824,11 +823,11 @@ namespace LegendsViewer.Controls.Chart
                     series.Last().Points.Last().Label = "";
                     series.Last().Points.Last().AxisLabel = "VS.";
 
-                    List<string> defenders = battle1.NotableDefenders.Select(hf => Formatting.MakePopulationPlural(hf.Race)).ToList();
-                    List<string> defendersKilled = battle1.NotableDefenders.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => Formatting.MakePopulationPlural(hf.Race)).ToList();
+                    List<string> defenders = battle1.NotableDefenders.Select(hf => hf.Race.NamePlural).ToList();
+                    List<string> defendersKilled = battle1.NotableDefenders.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => hf.Race.NamePlural).ToList();
                     foreach (Battle.Squad squad in battle1.DefenderSquads)
                     {
-                        string plural = Formatting.MakePopulationPlural(squad.Race);
+                        string plural = squad.Race.NamePlural;
                         for (int i = 0; i < squad.Numbers; i++)
                         {
                             defenders.Add(plural);

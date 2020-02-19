@@ -20,13 +20,16 @@ namespace LegendsViewer.Legends
     public class World : IDisposable
     {
         private readonly BackgroundWorker _worker;
-        public static readonly Dictionary<string, Color> MainRaces = new Dictionary<string, Color>();
+        public static readonly Dictionary<CreatureInfo, Color> MainRaces = new Dictionary<CreatureInfo, Color>();
 
         public string Name;
         public readonly List<WorldRegion> Regions = new List<WorldRegion>();
         public readonly List<UndergroundRegion> UndergroundRegions = new List<UndergroundRegion>();
         public readonly List<Landmass> Landmasses = new List<Landmass>();
         public readonly List<MountainPeak> MountainPeaks = new List<MountainPeak>();
+        public readonly List<CreatureInfo> CreatureInfos = new List<CreatureInfo>();
+        public readonly List<Identity> Identities = new List<Identity>();
+        public readonly List<River> Rivers = new List<River>();
         public readonly List<Site> Sites = new List<Site>();
         public readonly List<HistoricalFigure> HistoricalFigures = new List<HistoricalFigure>();
         public readonly List<Entity> Entities = new List<Entity>();
@@ -152,7 +155,7 @@ namespace LegendsViewer.Legends
         {
             _worker.ReportProgress(0, "... Civilization Identicons");
             List<Entity> civs = Entities.Where(entity => entity.IsCiv).ToList();
-            List<string> races = Entities.Where(entity => entity.IsCiv).GroupBy(entity => entity.Race).Select(entity => entity.Key).OrderBy(entity => entity).ToList();
+            List<CreatureInfo> races = Entities.Where(entity => entity.IsCiv).GroupBy(entity => entity.Race).Select(entity => entity.Key).OrderBy(creatureInfo => creatureInfo.NamePlural).ToList();
 
             //Calculates color
             //Creates a variety of colors
@@ -293,6 +296,7 @@ namespace LegendsViewer.Legends
         private void CreateUnknowns()
         {
             HistoricalFigure.Unknown = new HistoricalFigure();
+            CreatureInfo.Unknown = new CreatureInfo("UNKNOWN");
         }
 
         #region GetWorldItemsFunctions
@@ -560,6 +564,26 @@ namespace LegendsViewer.Legends
         {
             return Eras.Find(era => era.Id == id);
         }
+
+        public CreatureInfo GetCreatureInfo(string identifier)
+        {
+            if (string.IsNullOrWhiteSpace(identifier))
+            {
+                return CreatureInfo.Unknown;
+            }
+            CreatureInfo creatureInfo = CreatureInfos.FirstOrDefault(ci =>
+                ci.Id.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
+                ci.NameSingular.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
+                ci.NamePlural.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
+            if (creatureInfo != null)
+            {
+                return creatureInfo;
+            }
+            creatureInfo = new CreatureInfo(identifier);
+            CreatureInfos.Add(creatureInfo);
+            return creatureInfo;
+        }
+
         #endregion
 
         #region AfterXMLSectionProcessing

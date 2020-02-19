@@ -173,8 +173,8 @@ namespace LegendsViewer.Controls.Map
             else if (FocusObject.GetType() == typeof(Entity) || FocusObject.GetType() == typeof(War)
                      || FocusObject.GetType() == typeof(Battle) || FocusObject.GetType() == typeof(SiteConquered)
                      || FocusObject.GetType() == typeof(WorldRegion) || FocusObject.GetType() == typeof(UndergroundRegion)
-                     || FocusObject.GetType() == typeof(WorldConstruction) || FocusObject.GetType() == typeof(Landmass) ||
-                     FocusObject.GetType() == typeof(MountainPeak))
+                     || FocusObject.GetType() == typeof(WorldConstruction) || FocusObject.GetType() == typeof(Landmass)
+                     || FocusObject.GetType() == typeof(MountainPeak) || FocusObject.GetType() == typeof(River))
             {
                 List<Entity> entities = new List<Entity>();
                 if (FocusObject.GetType() == typeof(Entity))
@@ -1002,7 +1002,7 @@ namespace LegendsViewer.Controls.Map
                     foreach (Location coordinates in _world.Sites.GroupBy(site => site.Coordinates).Select(site => site.Key).ToList())
                     {
                         coordinatesList.Add(coordinates);
-                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Populations.Where(population => selectPopulations.SelectedPopulations.Contains(population.Race)).Sum(population => population.Count)));
+                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Populations.Where(population => selectPopulations.SelectedPopulations.Contains(population.Race.NamePlural)).Sum(population => population.Count)));
                     }
                     break;
                 case "Site Events":

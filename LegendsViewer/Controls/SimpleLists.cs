@@ -40,7 +40,7 @@ namespace LegendsViewer.Controls
 
             if (Race != "All")
             {
-                filtered = filtered.Where(hf => hf.Race == Race);
+                filtered = filtered.Where(hf => hf.Race.NameSingular == Race);
             }
 
             if (Caste != "All")
@@ -173,7 +173,7 @@ namespace LegendsViewer.Controls
             {
                 if (PopulationType != "All")
                 {
-                    filtered = filtered.Where(site => site.Populations.Count(population => population.Race == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race == PopulationType).Sum(population => population.Count));
+                    filtered = filtered.Where(site => site.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
                 }
                 else
                 {
@@ -347,6 +347,36 @@ namespace LegendsViewer.Controls
         }
     }
 
+    public class RiverList : WorldObjectList
+    {
+        public string Name;
+        public readonly List<River> BaseList;
+        public RiverList(World setWorld) : base(setWorld)
+        {
+            BaseList = World.Rivers;
+        }
+        public IEnumerable<River> GetList()
+        {
+            IEnumerable<River> filtered = BaseList;
+            if (Name != "")
+            {
+                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+            }
+
+            if (SortEvents)
+            {
+                filtered = filtered.OrderByDescending(element => element.Events.Count);
+            }
+
+            if (SortFiltered)
+            {
+                filtered = filtered.OrderByDescending(element => element.Events.Count(ev => !River.Filters.Contains(ev.Type)));
+            }
+
+            return MaxResults > 0 ? filtered.Take(MaxResults) : filtered;
+        }
+    }
+
     public class EntitiesList : WorldObjectList
     {
         public string Type;
@@ -372,7 +402,7 @@ namespace LegendsViewer.Controls
 
             if (Race != "All")
             {
-                filtered = filtered.Where(e => e.Race == Race);
+                filtered = filtered.Where(e => e.Race.NamePlural == Race);
             }
 
             if (Civs)
@@ -404,7 +434,7 @@ namespace LegendsViewer.Controls
             {
                 if (PopulationType != "All")
                 {
-                    filtered = filtered.Where(entity => entity.Populations.Count(population => population.Race == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race == PopulationType).Sum(population => population.Count));
+                    filtered = filtered.Where(entity => entity.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
                 }
                 else
                 {

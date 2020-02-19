@@ -120,16 +120,10 @@ namespace LegendsViewer.Legends.EventCollections
             }
 
             Defender.Wars.Add(this);
-            if (Defender.Parent != null)
-            {
-                Defender.Parent.Wars.Add(this);
-            }
+            Defender.Parent?.Wars.Add(this);
 
             Attacker.Wars.Add(this);
-            if (Attacker.Parent != null)
-            {
-                Attacker.Parent.Wars.Add(this);
-            }
+            Attacker.Parent?.Wars.Add(this);
 
             if (EndYear >= 0)
             {
@@ -140,7 +134,10 @@ namespace LegendsViewer.Legends.EventCollections
                 Length = world.Events.Last().Year - StartYear;
             }
             Attacker.AddEventCollection(this);
-            Defender.AddEventCollection(this);
+            if (Defender != Attacker)
+            {
+                Defender.AddEventCollection(this);
+            }
         }
 
         private void Initialize()

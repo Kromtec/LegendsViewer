@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>book.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net40-client\CommonMark.dll</HintPath>
@@ -104,6 +107,7 @@
     <Compile Include="Controls\HTML\MountainPeakPrinter.cs" />
     <Compile Include="Controls\HTML\RaidPrinter.cs" />
     <Compile Include="Controls\HTML\ReadMeControl.cs" />
+    <Compile Include="Controls\HTML\RiverPrinter.cs" />
     <Compile Include="Controls\HTML\StructurePrinter.cs" />
     <Compile Include="Controls\HTML\Utilities\BrowserUtil.cs" />
     <Compile Include="Controls\HTML\Utilities\HTMLStyleUtil.cs" />
@@ -242,7 +246,10 @@
       <DependentUpon>LegendsViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Legends\ArtForm.cs" />
+    <Compile Include="Legends\CreatureInfo.cs" />
     <Compile Include="Legends\Enums\PreachTopic.cs" />
+    <Compile Include="Legends\Identity.cs" />
+    <Compile Include="Legends\IncidentalEvents\BattleFought.cs" />
     <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
     <Compile Include="Legends\Enums\AgreementReason.cs" />
     <Compile Include="Legends\Enums\DissolveReason.cs" />
@@ -277,6 +284,7 @@
     <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
     <Compile Include="Legends\Events\ModifiedBuilding.cs" />
     <Compile Include="Legends\Events\RemoveHfHfLink.cs" />
+    <Compile Include="Legends\Events\Sabotage.cs" />
     <Compile Include="Legends\Events\Trade.cs" />
     <Compile Include="Legends\Honor.cs" />
     <Compile Include="Legends\HonorEntity.cs" />
@@ -491,6 +499,7 @@
     <Compile Include="Legends\RelationshipProfileHF.cs" />
     <Compile Include="Legends\Reputation.cs" />
     <Compile Include="Legends\Schedule.cs" />
+    <Compile Include="Legends\WorldObjects\River.cs" />
     <Compile Include="Legends\WorldObjects\Site.cs" />
     <Compile Include="Legends\SiteLink.cs" />
     <Compile Include="Legends\Skill.cs" />
@@ -558,6 +567,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="book.ico" />
     <Content Include="WebContent\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

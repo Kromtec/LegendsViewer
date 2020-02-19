@@ -13,12 +13,15 @@ namespace LegendsViewer.Legends.Parser
         Regions,
         [Description("Underground Regions")]
         UndergroundRegions,
+        Rivers,
+        CreatureRaw,
         Sites,
         [Description("World Constructions")]
         WorldConstructions,
         Artifacts,
         [Description("Historical Figures")]
         HistoricalFigures,
+        Identities,
         [Description("Entity Populations")]
         EntityPopulations,
         Entities,

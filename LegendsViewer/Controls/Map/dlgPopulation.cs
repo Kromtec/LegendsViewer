@@ -17,10 +17,10 @@ namespace LegendsViewer.Controls.Map
             var populationGrouped = from population in world.SitePopulations
                                     group population by population.Race into popType
                                     select new { Type = popType.Key, Count = popType.Sum(population => population.Count) };
-            populationGrouped = populationGrouped.OrderBy(population => population.Type);
+            populationGrouped = populationGrouped.OrderBy(population => population.Type.NamePlural);
             foreach (var population in populationGrouped)
             {
-                listPopulations.Items.Add(population.Type + ": " + population.Count);
+                listPopulations.Items.Add(population.Type.NamePlural + ": " + population.Count);
                 _populations.Add(new Population(population.Type, population.Count));
             }
         }
@@ -46,21 +46,21 @@ namespace LegendsViewer.Controls.Map
         {
             listPopulations.Items.Clear();
             _populations = _populations.OrderBy(population => population.Race).ToList();
-            _populations.ForEach(population => listPopulations.Items.Add(population.Race + ": " + population.Count));
+            _populations.ForEach(population => listPopulations.Items.Add(population.Race.NamePlural + ": " + population.Count));
         }
 
         private void btnNumber_Click(object sender, EventArgs e)
         {
             listPopulations.Items.Clear();
             _populations = _populations.OrderByDescending(population => population.Count).ToList();
-            _populations.ForEach(population => listPopulations.Items.Add(population.Race + ": " + population.Count));
+            _populations.ForEach(population => listPopulations.Items.Add(population.Race.NamePlural + ": " + population.Count));
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < listPopulations.SelectedIndices.Count; i++)
             {
-                SelectedPopulations.Add(_populations[listPopulations.SelectedIndices[i]].Race);
+                SelectedPopulations.Add(_populations[listPopulations.SelectedIndices[i]].Race.NamePlural);
             }
 
             Close();

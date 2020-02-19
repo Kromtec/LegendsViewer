@@ -39,7 +39,10 @@ namespace LegendsViewer.Legends.Events
             }
 
             Attacker.AddEvent(this);
-            Defender.AddEvent(this);
+            if (Defender != Attacker)
+            {
+                Defender.AddEvent(this);
+            }
             if (SiteEntity != Defender)
             {
                 SiteEntity.AddEvent(this);

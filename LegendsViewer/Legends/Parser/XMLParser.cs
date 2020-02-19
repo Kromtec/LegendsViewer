@@ -110,6 +110,12 @@ namespace LegendsViewer.Legends.Parser
                     return Section.Landmasses;
                 case "mountain_peaks":
                     return Section.MountainPeaks;
+                case "creature_raw":
+                    return Section.CreatureRaw;
+                case "identities":
+                    return Section.Identities;
+                case "rivers":
+                    return Section.Rivers;
                 case "name":
                 case "altname":
                 case "xml":
@@ -295,6 +301,15 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case Section.MountainPeaks:
                     World.MountainPeaks.Add(new MountainPeak(properties, World));
+                    break;
+                case Section.CreatureRaw:
+                    World.CreatureInfos.Add(new CreatureInfo(properties, World));
+                    break;
+                case Section.Identities:
+                    World.Identities.Add(new Identity(properties, World));
+                    break;
+                case Section.Rivers:
+                    World.Rivers.Add(new River(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("Unknown XML Section: " + section);
@@ -710,6 +725,9 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case "hf carouse":
                     World.Events.Add(new HfCarouse(properties, World));
+                    break;
+                case "sabotage":
+                    World.Events.Add(new Sabotage(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("\nUnknown Event: " + type);

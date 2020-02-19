@@ -55,8 +55,8 @@ namespace LegendsViewer.Controls.Tabs
             _hfSearch = new HistoricalFigureList(World);
 
             var races = from hf in World.HistoricalFigures
-                        orderby hf.Race
-                        group hf by hf.Race into race
+                        orderby hf.Race.NameSingular
+                        group hf by hf.Race.NameSingular into race
                         select race;
             var castes = from hf in World.HistoricalFigures
                          orderby hf.Caste

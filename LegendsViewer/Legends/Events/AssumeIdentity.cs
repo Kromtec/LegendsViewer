@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
 
@@ -8,7 +9,7 @@ namespace LegendsViewer.Legends.Events
     public class AssumeIdentity : WorldEvent
     {
         public HistoricalFigure Trickster { get; set; }
-        public HistoricalFigure Identity { get; set; }
+        public int IdentityId { get; set; }
         public Entity Target { get; set; }
 
         public AssumeIdentity(List<Property> properties, World world)
@@ -19,7 +20,7 @@ namespace LegendsViewer.Legends.Events
                 switch (property.Name)
                 {
                     case "trickster_hfid": Trickster = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
-                    case "identity_id": property.Known = true; Identity = HistoricalFigure.Unknown; break; // TODO Bad ID, so unknown for now.
+                    case "identity_id": IdentityId = Convert.ToInt32(property.Value); break;
                     case "target_enid": Target = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "trickster": if (Trickster == null) { Trickster = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "target": if (Target == null) { Target = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
@@ -27,7 +28,6 @@ namespace LegendsViewer.Legends.Events
             }
 
             Trickster.AddEvent(this);
-            Identity.AddEvent(this);
             Target.AddEvent(this);
         }
 
@@ -40,7 +40,15 @@ namespace LegendsViewer.Legends.Events
             eventString += " into believing ";
             eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
             eventString += " was ";
-            eventString += Identity.ToLink(link, pov, this);
+            Identity identity = Trickster?.Identities.FirstOrDefault(i => i.Id == IdentityId);
+            if (identity != null)
+            {
+                eventString += identity.Print(link, pov, this);
+            }
+            else
+            {
+                eventString += "someone else";
+            }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

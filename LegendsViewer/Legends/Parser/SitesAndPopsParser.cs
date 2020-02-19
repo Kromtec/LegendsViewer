@@ -81,7 +81,7 @@ namespace LegendsViewer.Legends.Parser
                         _currentLine = _sitesAndPops.ReadLine();
                         continue;
                     }
-                    string population = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
+                    CreatureInfo population = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
                     string countString = _currentLine.Substring(1, _currentLine.IndexOf(" ", StringComparison.Ordinal) - 1);
                     var count = countString == "Unnumbered" ? int.MaxValue : Convert.ToInt32(countString);
 
@@ -155,12 +155,9 @@ namespace LegendsViewer.Legends.Parser
                 }
                 if (_owner != null)
                 {
-                    _owner.Race = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
-                        _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2));
-                    if (string.IsNullOrWhiteSpace(_owner.Race))
-                    {
-                        _owner.Race = "Unknown";
-                    }
+                    var raceIdentifier = _currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
+                        _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2);
+                    _owner.Race = _world.GetCreatureInfo(raceIdentifier);
                     if (!_owner.Sites.Contains(_site))
                     {
                         _owner.Sites.Add(_site);
@@ -181,7 +178,7 @@ namespace LegendsViewer.Legends.Parser
                 Entity parent = null;
                 string civName = _currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                     _currentLine.IndexOf(",", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2);
-                string civRace = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
+                CreatureInfo civRace = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
                     _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2));
                 var entities = _world.Entities
                     .Where(entity => string.Compare(entity.Name, civName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
@@ -195,21 +192,18 @@ namespace LegendsViewer.Legends.Parser
                 }
                 else
                 {
-                    var possibleEntities = entities.Where(entity =>
-                        string.Compare(entity.Race, civRace, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                    var possibleEntities = entities.Where(entity => entity.Race == civRace).ToList();
                     if (possibleEntities.Count == 1)
                     {
                         parent = possibleEntities.First();
                     }
                     else if (!possibleEntities.Any())
                     {
-                        _world.ParsingErrors.Report(
-                            $"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner.Name}");
+                        _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner.Name}");
                     }
                     else
                     {
-                        var possibleCivilizations = possibleEntities
-                            .Where(entity => entity.Type == EntityType.Civilization).ToList();
+                        var possibleCivilizations = possibleEntities.Where(entity => entity.Type == EntityType.Civilization).ToList();
                         if (possibleCivilizations.Count == 1)
                         {
                             parent = possibleEntities.First();
@@ -227,10 +221,6 @@ namespace LegendsViewer.Legends.Parser
                 if (parent != null)
                 {
                     parent.Race = civRace;
-                    if (string.IsNullOrWhiteSpace(parent.Race))
-                    {
-                        parent.Race = "Unknown";
-                    }
                     if (_owner != null)
                     {
                         var current = _owner;
@@ -289,8 +279,7 @@ namespace LegendsViewer.Legends.Parser
             List<Population> populations = new List<Population>();
             while (!SiteStart() && _currentLine != "")
             {
-                string race = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(' ') + 1));
-                race = Formatting.MakePopulationPlural(race);
+                CreatureInfo race = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(' ') + 1));
                 int count = Convert.ToInt32(_currentLine.Substring(1, _currentLine.IndexOf(' ') - 1));
                 populations.Add(new Population(race, count));
                 ReadLine();
@@ -372,7 +361,7 @@ namespace LegendsViewer.Legends.Parser
                     continue;
                 }
 
-                var population = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
+                CreatureInfo population = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
                 var countString = _currentLine.Substring(1, _currentLine.IndexOf(" ", StringComparison.Ordinal) - 1);
                 var count = countString == "Unnumbered" ? Int32.MaxValue : Convert.ToInt32(countString);
 
@@ -394,7 +383,7 @@ namespace LegendsViewer.Legends.Parser
                     _currentLine = _sitesAndPops.ReadLine(); continue;
                 }
 
-                var population = Formatting.InitCaps(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
+                CreatureInfo population = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
                 var countString = _currentLine.Substring(1, _currentLine.IndexOf(" ", StringComparison.Ordinal) - 1);
                 var count = countString == "Unnumbered" ? Int32.MaxValue : Convert.ToInt32(countString);
 
