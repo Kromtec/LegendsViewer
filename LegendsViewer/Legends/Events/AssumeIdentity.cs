@@ -35,15 +35,22 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
-            eventString += " fooled ";
-            eventString += Target?.ToLink(link, pov, this) ?? "an unknown civilization";
-            eventString += " into believing ";
-            eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
-            eventString += " was ";
+            if (Target != null)
+            {
+                eventString += " fooled ";
+                eventString += Target?.ToLink(link, pov, this) ?? "an unknown civilization";
+                eventString += " into believing ";
+                eventString += Trickster?.ToLink(link, pov, this) ?? "an unknown creature";
+                eventString += " was ";
+            }
+            else
+            {
+                eventString += " assumed the identity of ";
+            }
             Identity identity = Trickster?.Identities.FirstOrDefault(i => i.Id == IdentityId);
             if (identity != null)
             {
-                eventString += identity.Print(link, pov, this);
+                eventString += "'" + identity.Print(link, pov, this) + "'";
             }
             else
             {

@@ -473,10 +473,10 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("</ul>");
             Html.AppendLine("</br>");
 
-            Dictionary<string, int> deaths = new Dictionary<string, int>();
+            Dictionary<CreatureInfo, int> deaths = new Dictionary<CreatureInfo, int>();
             foreach (Battle battle in _world.Battles)
             {
-                foreach (KeyValuePair<string, int> deathByRace in battle.Deaths)
+                foreach (KeyValuePair<CreatureInfo, int> deathByRace in battle.Deaths)
                 {
                     if (deaths.ContainsKey(deathByRace.Key))
                     {
@@ -493,7 +493,7 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<ol>");
             foreach (var raceDeath in deaths)
             {
-                Html.AppendLine("<li>" + raceDeath.Key + ": " + raceDeath.Value + "</li>");
+                Html.AppendLine("<li>" + raceDeath.Key.NamePlural + ": " + raceDeath.Value + "</li>");
             }
 
             Html.AppendLine("</ol>");

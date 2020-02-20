@@ -92,7 +92,10 @@ namespace LegendsViewer.Legends.Events
                     break;
             }
             Artifact.AddEvent(this);
-            HistoricalFigure.AddEvent(this);
+            if (HistoricalFigure != HistoricalFigure.Unknown)
+            {
+                HistoricalFigure.AddEvent(this);
+            }
             Site.AddEvent(this);
         }
 

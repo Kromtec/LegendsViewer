@@ -16,8 +16,8 @@ namespace LegendsViewer.Legends.EventCollections
         public string Name { get; set; }
         public int Length { get; set; }
         public int DeathCount { get; set; }
-        private readonly Dictionary<string, int> _deaths = new Dictionary<string, int>();
-        public Dictionary<string, int> Deaths
+        private readonly Dictionary<CreatureInfo, int> _deaths = new Dictionary<CreatureInfo, int>();
+        public Dictionary<CreatureInfo, int> Deaths
         {
             get
             {
@@ -27,7 +27,7 @@ namespace LegendsViewer.Legends.EventCollections
                 }
                 foreach (Battle battle in Battles)
                 {
-                    foreach (KeyValuePair<string, int> deathByRace in battle.Deaths)
+                    foreach (KeyValuePair<CreatureInfo, int> deathByRace in battle.Deaths)
                     {
                         if (_deaths.ContainsKey(deathByRace.Key))
                         {
