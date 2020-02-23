@@ -232,8 +232,6 @@ namespace LegendsViewer.Controls.Query
                     new SearchProperty(nameof(Battle.StartYear), "Year", typeof(int)),
                     new SearchProperty(nameof(Battle.Attacker), typeof(Entity)),
                     new SearchProperty(nameof(Battle.Defender), typeof(Entity)),
-                    new SearchProperty(nameof(Battle.AttackersAsList), "Attackers", typeof(List<string>)),
-                    new SearchProperty(nameof(Battle.DefendersAsList), "Defenders", typeof(List<string>)),
                     new SearchProperty(nameof(Battle.NotableAttackers), "Notable Attackers", typeof(List<HistoricalFigure>), true),
                     new SearchProperty(nameof(Battle.NotableDefenders), "Notable Defenders", typeof(List<HistoricalFigure>), true),
                     new SearchProperty(nameof(Battle.AttackersToDefenders), "Attackers : Defenders", typeof(double)),

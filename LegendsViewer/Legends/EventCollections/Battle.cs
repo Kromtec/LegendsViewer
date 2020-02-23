@@ -69,10 +69,6 @@ namespace LegendsViewer.Legends.EventCollections
             set { }
         }
 
-        public List<string> AttackersAsList { get; set; }
-
-        public List<string> DefendersAsList { get; set; }
-
         public bool IndividualMercenaries { get; set; }
         public bool CompanyMercenaries { get; set; }
         public Entity AttackingMercenaryEntity { get; set; }
@@ -199,14 +195,14 @@ namespace LegendsViewer.Legends.EventCollections
                 Defender = Collection.OfType<FieldBattle>().First().Defender;
             }
 
-            foreach (HistoricalFigure involvedHf in NotableAttackers.Union(NotableDefenders))
+            foreach (HistoricalFigure involvedHf in NotableAttackers.Union(NotableDefenders).Where(hf => hf != HistoricalFigure.Unknown))
             {
                 involvedHf.Battles.Add(this);
                 involvedHf.AddEventCollection(this);
                 involvedHf.AddEvent(new BattleFought(involvedHf, this, World));
             }
 
-            foreach (HistoricalFigure involvedSupportMercenaries in AttackerSupportMercenaryHfs.Union(DefenderSupportMercenaryHfs))
+            foreach (HistoricalFigure involvedSupportMercenaries in AttackerSupportMercenaryHfs.Union(DefenderSupportMercenaryHfs).Where(hf => hf != HistoricalFigure.Unknown))
             {
                 involvedSupportMercenaries.Battles.Add(this);
                 involvedSupportMercenaries.AddEventCollection(this);
@@ -239,14 +235,6 @@ namespace LegendsViewer.Legends.EventCollections
                 var attackerDeath = Collection.OfType<HfDied>().Count(death => NotableAttackers.Contains(death.HistoricalFigure) && death.HistoricalFigure?.Race == attacker.Race);
                 Attackers.Add(new Squad(attacker.Race, attacker.Count, attackerDeath, -1, -1));
             }
-            AttackersAsList = new List<string>();
-            foreach (Squad squad in Attackers.Where(a => a.Race != null))
-            {
-                for (int i = 0; i < squad.Numbers; i++)
-                {
-                    AttackersAsList.Add(squad.Race.Id);
-                }
-            }
 
             var groupedDefenderSquads = from squad in DefenderSquads
                                         group squad by squad.Race into squadRace
@@ -263,17 +251,9 @@ namespace LegendsViewer.Legends.EventCollections
                 int defenderDeath = Collection.OfType<HfDied>().Count(death => NotableDefenders.Contains(death.HistoricalFigure) && death.HistoricalFigure.Race == defender.Race);
                 Defenders.Add(new Squad(defender.Race, defender.Count, defenderDeath, -1, -1));
             }
-            DefendersAsList = new List<string>();
-            foreach (Squad squad in Defenders.Where(a => a.Race != null))
-            {
-                for (int i = 0; i < squad.Numbers; i++)
-                {
-                    DefendersAsList.Add(squad.Race.Id);
-                }
-            }
 
             Deaths = new Dictionary<CreatureInfo, int>();
-            foreach (Squad squad in Attackers.Concat(Defenders).Where(a => a.Race != null))
+            foreach (Squad squad in Attackers.Concat(Defenders).Where(a => a.Race != null && a.Race != CreatureInfo.Unknown))
             {
                 if (Deaths.ContainsKey(squad.Race))
                 {

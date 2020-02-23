@@ -650,10 +650,6 @@ else
                 {
                     e.Value = battle.DeathCount;
                 }
-                else if (column == "Combatants")
-                {
-                    e.Value = battle.AttackersAsList.Count + " / " + battle.DefendersAsList.Count;
-                }
                 else if (column == "Remaining")
                 {
                     e.Value = battle.AttackersRemainingCount + " / " + battle.DefendersRemainingCount;

@@ -650,6 +650,10 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public string GetRaceString()
         {
+            if (Race == null)
+            {
+                Race = CreatureInfo.Unknown;
+            }
             if (Deity)
             {
                 return Race.NameSingular.ToLower() + " deity";
