@@ -69,8 +69,8 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += Artifact.ToLink(link, pov, this);
-            if (Claim == Claim.Symbol ||
-                Claim == Claim.Heirloom && HistoricalFigure != null)
+            if ((Claim == Claim.Symbol ||
+                Claim == Claim.Heirloom && HistoricalFigure != null) && Circumstance != "from afar")
             {
                 eventString += " was made a ";
                 eventString += Claim.GetDescription();
