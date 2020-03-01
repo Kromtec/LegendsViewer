@@ -100,7 +100,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         HolderId = Convert.ToInt32(property.Value);
                         break;
                     case "structure_local_id":
-                        Structure = Site.Structures.FirstOrDefault(structure => structure.Id == Convert.ToInt32(property.Value));
+                        Structure = Site?.Structures.FirstOrDefault(structure => structure.Id == Convert.ToInt32(property.Value));
                         break;
                 }
             }

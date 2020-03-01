@@ -48,8 +48,14 @@ namespace LegendsViewer.Legends.Events
                 SiteEntity.AddEvent(this);
             }
             Site.AddEvent(this);
-            AttackerGeneral.AddEvent(this);
-            DefenderGeneral.AddEvent(this);
+            if (AttackerGeneral != HistoricalFigure.Unknown)
+            {
+                AttackerGeneral.AddEvent(this);
+            }
+            if (DefenderGeneral != HistoricalFigure.Unknown)
+            {
+                DefenderGeneral.AddEvent(this);
+            }
             if (AttackerMercenaries != Defender && AttackerMercenaries != Attacker)
             {
                 AttackerMercenaries.AddEvent(this);

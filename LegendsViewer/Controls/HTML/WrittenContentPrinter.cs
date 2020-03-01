@@ -36,7 +36,11 @@ namespace LegendsViewer.Controls.HTML
                     Html.AppendLine("<b>A ");
                 }
                 Html.AppendLine(string.Join(", ", _writtenContent.Styles));
-                Html.AppendLine(type.ToLower() + " written by " + _writtenContent.Author.ToLink() + ".</b>");
+                Html.AppendLine(type.ToLower());
+                if (_writtenContent.Author != null)
+                {
+                    Html.AppendLine(" written by " + _writtenContent.Author.ToLink() + ".</b>");
+                }
                 Html.AppendLine("<br/>");
             }
             Html.AppendLine("<br/>");

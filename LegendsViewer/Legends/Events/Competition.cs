@@ -32,7 +32,7 @@ namespace LegendsViewer.Legends.Events
             Winner.AddEvent(this);
             Competitors.ForEach(competitor =>
             {
-                if (competitor != Winner)
+                if (competitor != Winner && competitor != HistoricalFigure.Unknown)
                 {
                     competitor.AddEvent(this);
                 }

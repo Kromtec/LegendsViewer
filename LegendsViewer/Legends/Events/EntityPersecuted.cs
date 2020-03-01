@@ -55,7 +55,7 @@ namespace LegendsViewer.Legends.Events
             PersecutorEntity.AddEvent(this);
             TargetEntity.AddEvent(this);
             Site.AddEvent(this);
-            foreach (HistoricalFigure expelledHf in ExpelledHfs)
+            foreach (HistoricalFigure expelledHf in ExpelledHfs.Where(eHf => eHf != HistoricalFigure.Unknown))
             {
                 expelledHf.AddEvent(this);
             }

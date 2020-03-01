@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -79,15 +80,17 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += HistoricalFigure1.ToLink(link, pov, this);
-            if (IdentityId1 > 0)
+            Identity identity1 = HistoricalFigure1?.Identities.FirstOrDefault(i => i.Id == IdentityId1);
+            if (identity1 != null)
             {
-                eventString += " as '" + IdentityId1 + "'";
+                eventString += " as '" + identity1.Print(link, pov, this) + "'";
             }
             eventString += ", formed a false friendship with ";
             eventString += HistoricalFigure2.ToLink(link, pov, this);
-            if (IdentityId2 > 0)
+            Identity identity2 = HistoricalFigure2?.Identities.FirstOrDefault(i => i.Id == IdentityId2);
+            if (identity2 != null)
             {
-                eventString += " as '" + IdentityId2 + "'";
+                eventString += " as '" + identity2.Print(link, pov, this) + "'";
             }
             if (HfRep2Of1 == ReputationType.Buddy || HfRep2Of1 == ReputationType.Friendly)
             {

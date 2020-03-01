@@ -46,7 +46,7 @@ namespace LegendsViewer.Controls
             new[] {"artifact destroyed",           "Artifact Destroyed",     ""},
             new[] {"diplomat lost",                "DF Mode - Diplomat Lost",                  ""},
             new[] {"entity created",               "Entity Created",                           ""},
-            new[] {"hf revived",                   "DF Mode - Historical Figure Became Ghost", ""},
+            new[] {"hf revived",                   "Historical Figure Became Ghost",           ""},
             new[] {"masterpiece arch design",      "DF Mode - Masterpiece Arch. Designed",     ""},
             new[] {"masterpiece arch constructed", "DF Mode - Masterpiece Arch. Constructed",  ""},
             new[] {"masterpiece engraving",        "DF Mode - Masterpiece Engraving",          ""},

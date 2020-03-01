@@ -79,11 +79,17 @@ namespace LegendsViewer.Legends.Events
             Site.AddEvent(this);
             Region.AddEvent(this);
             UndergroundRegion.AddEvent(this);
-            Bodies.ForEach(body => body.AddEvent(this));
-            if (AbuseType == AbuseType.Animated)
+            Bodies.ForEach(body =>
             {
-                Bodies.ForEach(body => body.CreatureTypes.Add(new HistoricalFigure.CreatureType("animated corpse", this)));
-            }
+                if (body != HistoricalFigure.Unknown)
+                {
+                    body.AddEvent(this);
+                    if (AbuseType == AbuseType.Animated)
+                    {
+                        body.CreatureTypes.Add(new HistoricalFigure.CreatureType("animated corpse", this));
+                    }
+                }
+            });
             HistoricalFigure.AddEvent(this);
             Abuser.AddEvent(this);
         }
