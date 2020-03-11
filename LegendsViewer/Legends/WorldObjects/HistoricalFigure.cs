@@ -532,9 +532,9 @@ namespace LegendsViewer.Legends.WorldObjects
             string dead = DeathYear != -1 ? "<br/>" + HtmlStyleUtil.SymbolDead : "";
             if (pov == null || pov != this)
             {
-                return "<a " + (Deity ? "class=\"hf_deity\"" : "") + " href=\"hf#" + Id + "\" title=\"" + Title + "\">" + Race + (Deity ? " Deity" : "") + "<br/>" + Name + dead + "</a>";
+                return "<a " + (Deity ? "class=\"hf_deity\"" : "") + " href=\"hf#" + Id + "\" title=\"" + Title + "\">" + GetRaceString() + "<br/>" + Name + dead + "</a>";
             }
-            return "<a " + (Deity ? "class=\"hf_deity\"" : "") + " title=\"" + Title + "\">" + Race + (Deity ? " Deity" : "") + "<br/>" + HtmlStyleUtil.CurrentDwarfObject(Name) + dead + "</a>";
+            return "<a " + (Deity ? "class=\"hf_deity\"" : "") + " title=\"" + Title + "\">" + GetRaceString() + "<br/>" + HtmlStyleUtil.CurrentDwarfObject(Name) + dead + "</a>";
         }
 
         public class Position
