@@ -70,12 +70,12 @@ namespace LegendsViewer.Controls
 
             if (Necromancer)
             {
-                filtered = filtered.Where(hf => hf.ActiveInteractions.Any(x => x.Contains("SECRET") && !x.Contains("ANIMATE")));
+                filtered = filtered.Where(hf => hf.ActiveInteractions.Any(x => x.Contains("SECRET") && !x.Contains("ANIMATE") && !x.Contains("UNDEAD_RES")));
             }
 
             if (Animated)
             {
-                filtered = filtered.Where(hf => hf.Animated || hf.ActiveInteractions.Any(x => x.Contains("ANIMATE")));
+                filtered = filtered.Where(hf => hf.Animated || hf.ActiveInteractions.Any(x => x.Contains("ANIMATE") || x.Contains("UNDEAD_RES")));
             }
 
             if (Force)

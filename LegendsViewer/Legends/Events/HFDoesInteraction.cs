@@ -67,6 +67,10 @@ namespace LegendsViewer.Legends.Events
                     {
                         creatureType = "animated corpse";
                     }
+                    if (Interaction.Contains("UNDEAD_RES"))
+                    {
+                        creatureType = "resurrected undead";
+                    }
                 }
                 if (!string.IsNullOrWhiteSpace(InteractionAction) && InteractionAction.Contains(", passing on the "))
                 {
