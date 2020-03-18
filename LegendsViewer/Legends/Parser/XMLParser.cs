@@ -303,7 +303,7 @@ namespace LegendsViewer.Legends.Parser
                     World.MountainPeaks.Add(new MountainPeak(properties, World));
                     break;
                 case Section.CreatureRaw:
-                    World.CreatureInfos.Add(new CreatureInfo(properties, World));
+                    World.AddCreatureInfo(new CreatureInfo(properties, World));
                     break;
                 case Section.Identities:
                     World.Identities.Add(new Identity(properties, World));
