@@ -201,7 +201,7 @@ namespace LegendsViewer.Controls.HTML
                 title += "\\n--------------------\\n";
                 classes += " leader";
             }
-            title += hf.Race != _historicalFigure.Race ? hf.Race.NameSingular + " " : "";
+            title += hf.Race != null && hf.Race != _historicalFigure.Race ? hf.Race.NameSingular + " " : "";
 
             string description = "";
             if (hf.ActiveInteractions.Any(it => it.Contains("VAMPIRE")))
@@ -214,7 +214,7 @@ namespace LegendsViewer.Controls.HTML
                 description += "Werebeast ";
                 classes += " werebeast";
             }
-            if (hf.ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE")))
+            if (hf.ActiveInteractions.Any(it => it.Contains("SECRET") && !it.Contains("ANIMATE") && !it.Contains("UNDEAD_RES")))
             {
                 description += "Necromancer ";
                 classes += " necromancer";

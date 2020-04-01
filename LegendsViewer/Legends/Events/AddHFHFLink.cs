@@ -157,7 +157,14 @@ namespace LegendsViewer.Legends.Events
 
                     break;
                 case HistoricalFigureLinkType.PetOwner:
-                    eventString += " became the owner of ";
+                    if (pov == HistoricalFigureTarget)
+                    {
+                        eventString += " became the owner of ";
+                    }
+                    else
+                    {
+                        eventString += " became the pet of ";
+                    }
                     break;
                 default:
                     eventString += " linked ("+ LinkType + ") to ";

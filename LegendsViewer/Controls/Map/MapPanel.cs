@@ -268,45 +268,51 @@ namespace LegendsViewer.Controls.Map
                     _zoomBounds.Y = _zoomBounds.Height = battle.Coordinates.Y;
                     _zoomBounds.X = _zoomBounds.Width = battle.Coordinates.X;
                     Site attackerSite = GetClosestSite(battle.Attacker, battle.Coordinates);
-                    if (attackerSite.Coordinates.Y < _zoomBounds.Y)
+                    if (attackerSite != null)
                     {
-                        _zoomBounds.Y = attackerSite.Coordinates.Y;
-                    }
+                        if (attackerSite.Coordinates.Y < _zoomBounds.Y)
+                        {
+                            _zoomBounds.Y = attackerSite.Coordinates.Y;
+                        }
 
-                    if (attackerSite.Coordinates.X < _zoomBounds.X)
-                    {
-                        _zoomBounds.X = attackerSite.Coordinates.X;
-                    }
+                        if (attackerSite.Coordinates.X < _zoomBounds.X)
+                        {
+                            _zoomBounds.X = attackerSite.Coordinates.X;
+                        }
 
-                    if (attackerSite.Coordinates.Y > _zoomBounds.Height)
-                    {
-                        _zoomBounds.Height = attackerSite.Coordinates.Y;
-                    }
+                        if (attackerSite.Coordinates.Y > _zoomBounds.Height)
+                        {
+                            _zoomBounds.Height = attackerSite.Coordinates.Y;
+                        }
 
-                    if (attackerSite.Coordinates.X > _zoomBounds.Width)
-                    {
-                        _zoomBounds.Width = attackerSite.Coordinates.X;
+                        if (attackerSite.Coordinates.X > _zoomBounds.Width)
+                        {
+                            _zoomBounds.Width = attackerSite.Coordinates.X;
+                        }
                     }
 
                     Site defenderSite = GetClosestSite(battle.Defender, battle.Coordinates);
-                    if (defenderSite.Coordinates.Y < _zoomBounds.Y)
+                    if (defenderSite != null)
                     {
-                        _zoomBounds.Y = defenderSite.Coordinates.Y;
-                    }
+                        if (defenderSite.Coordinates.Y < _zoomBounds.Y)
+                        {
+                            _zoomBounds.Y = defenderSite.Coordinates.Y;
+                        }
 
-                    if (defenderSite.Coordinates.X < _zoomBounds.X)
-                    {
-                        _zoomBounds.X = defenderSite.Coordinates.X;
-                    }
+                        if (defenderSite.Coordinates.X < _zoomBounds.X)
+                        {
+                            _zoomBounds.X = defenderSite.Coordinates.X;
+                        }
 
-                    if (defenderSite.Coordinates.Y > _zoomBounds.Height)
-                    {
-                        _zoomBounds.Height = defenderSite.Coordinates.Y;
-                    }
+                        if (defenderSite.Coordinates.Y > _zoomBounds.Height)
+                        {
+                            _zoomBounds.Height = defenderSite.Coordinates.Y;
+                        }
 
-                    if (defenderSite.Coordinates.X > _zoomBounds.Width)
-                    {
-                        _zoomBounds.Width = defenderSite.Coordinates.X;
+                        if (defenderSite.Coordinates.X > _zoomBounds.Width)
+                        {
+                            _zoomBounds.Width = defenderSite.Coordinates.X;
+                        }
                     }
                 }
 

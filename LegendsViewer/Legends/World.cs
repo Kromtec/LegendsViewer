@@ -27,7 +27,6 @@ namespace LegendsViewer.Legends
         public readonly List<UndergroundRegion> UndergroundRegions = new List<UndergroundRegion>();
         public readonly List<Landmass> Landmasses = new List<Landmass>();
         public readonly List<MountainPeak> MountainPeaks = new List<MountainPeak>();
-        public readonly List<CreatureInfo> CreatureInfos = new List<CreatureInfo>();
         public readonly List<Identity> Identities = new List<Identity>();
         public readonly List<River> Rivers = new List<River>();
         public readonly List<Site> Sites = new List<Site>();
@@ -52,6 +51,9 @@ namespace LegendsViewer.Legends
         public List<Population> CivilizedPopulations = new List<Population>();
         public List<Population> OutdoorPopulations = new List<Population>();
         public List<Population> UndergroundPopulations = new List<Population>();
+
+        private readonly List<CreatureInfo> _creatureInfos = new List<CreatureInfo>();
+        private readonly Dictionary<string, CreatureInfo> _creatureInfosById = new Dictionary<string, CreatureInfo>();
 
         public readonly Dictionary<string, List<HistoricalFigure>> Breeds = new Dictionary<string, List<HistoricalFigure>>();
 
@@ -571,7 +573,12 @@ namespace LegendsViewer.Legends
             {
                 return CreatureInfo.Unknown;
             }
-            CreatureInfo creatureInfo = CreatureInfos.FirstOrDefault(ci =>
+
+            if (_creatureInfosById.ContainsKey(identifier.ToLower()))
+            {
+                return _creatureInfosById[identifier.ToLower()];
+            }
+            var creatureInfo = _creatureInfos.FirstOrDefault(ci =>
                 ci.Id.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
                 ci.NameSingular.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
                 ci.NamePlural.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
@@ -579,9 +586,25 @@ namespace LegendsViewer.Legends
             {
                 return creatureInfo;
             }
-            creatureInfo = new CreatureInfo(identifier);
-            CreatureInfos.Add(creatureInfo);
+            return AddCreatureInfo(identifier);
+        }
+
+        private CreatureInfo AddCreatureInfo(string identifier)
+        {
+            if (string.IsNullOrWhiteSpace(identifier))
+            {
+                return CreatureInfo.Unknown;
+            }
+            CreatureInfo creatureInfo = new CreatureInfo(identifier);
+            _creatureInfos.Add(creatureInfo);
+            _creatureInfosById[identifier.ToLower()] = creatureInfo;
             return creatureInfo;
+        }
+
+        public void AddCreatureInfo(CreatureInfo creatureInfo)
+        {
+            _creatureInfos.Add(creatureInfo);
+            _creatureInfosById[creatureInfo.Id.ToLower()] = creatureInfo;
         }
 
         #endregion

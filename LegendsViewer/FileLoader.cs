@@ -303,7 +303,7 @@ namespace LegendsViewer
             {
                 region = fileInfo.Name.Replace(FileIdentifierLegendsXml, "");
             }
-            else if(fileInfo.Name.Contains(FileIdentifierLegendsPlusXml))
+            else if (fileInfo.Name.Contains(FileIdentifierLegendsPlusXml))
             {
                 region = fileInfo.Name.Replace(FileIdentifierLegendsPlusXml, "");
             }
@@ -356,11 +356,11 @@ namespace LegendsViewer
             else
             {
                 string imageFile = Directory.GetFiles(directory)
-                    .FirstOrDefault(file => 
-                        file.Contains(region) && 
-                        (file.EndsWith(".bmp") || 
-                         file.EndsWith(".png") || 
-                         file.EndsWith(".jpg") || 
+                    .FirstOrDefault(file =>
+                        file.Contains(region) &&
+                        (file.EndsWith(".bmp") ||
+                         file.EndsWith(".png") ||
+                         file.EndsWith(".jpg") ||
                          file.EndsWith(".jpeg")));
                 if (!string.IsNullOrEmpty(imageFile))
                 {
@@ -436,9 +436,9 @@ namespace LegendsViewer
             {
                 e.Result = new World(worker, files[0], files[1], files[2], files[3], files[4]);
             }
-            catch (XmlException)
+            catch (XmlException ex)
             {
-                string repairedXmlFile = RepairXmlFile(files[0]);
+                string repairedXmlFile = RepairXmlFile(files[0], ex);
                 if (repairedXmlFile != null)
                 {
                     if (repairedXmlFile != files[0])
@@ -454,11 +454,14 @@ namespace LegendsViewer
             }
         }
 
-        private static string RepairXmlFile(string xmlFile)
+        private static string RepairXmlFile(string xmlFile, XmlException xmlException)
         {
+            var message = "There was an error loading this XML file! Do you wish to attempt a repair?";
+#if DEBUG
+            message += xmlException.ToString();
+#endif
             DialogResult response =
-                MessageBox.Show("There was an error loading this XML file! Do you wish to attempt a repair?",
-                    "Error loading XML", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            MessageBox.Show(message, "Error loading XML", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (response == DialogResult.Yes)
             {
                 string safeFile = Path.GetTempFileName();
