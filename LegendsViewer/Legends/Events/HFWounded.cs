@@ -13,7 +13,7 @@ namespace LegendsViewer.Legends.Events
         // TODO
         public int BodyPart { get; set; } // legends_plus.xml
         public int InjuryType { get; set; } // legends_plus.xml
-        public int PartLost { get; set; } // legends_plus.xml
+        public bool PartLost { get; set; } // legends_plus.xml
 
         public HistoricalFigure Woundee { get; set; }
         public HistoricalFigure Wounder { get; set; }
@@ -42,7 +42,20 @@ namespace LegendsViewer.Legends.Events
                     case "woundee_caste": WoundeeCaste = Convert.ToInt32(property.Value); break;
                     case "body_part": BodyPart = Convert.ToInt32(property.Value); break;
                     case "injury_type": InjuryType = Convert.ToInt32(property.Value); break;
-                    case "part_lost": PartLost = Convert.ToInt32(property.Value); break;
+                    case "part_lost":
+                        if (int.TryParse(property.Value, out int partLost))
+                        {
+                            PartLost = partLost != 0;
+                        }
+                        else if(bool.TryParse(property.Value, out bool partLostBool))
+                        {
+                            PartLost = partLostBool;
+                        }
+                        else
+                        {
+                            property.Known = false;
+                        }
+                        break;
                     case "was_torture":
                         property.Known = true; 
                         WasTorture = true; 
