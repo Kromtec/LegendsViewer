@@ -18,7 +18,6 @@ namespace LegendsViewer.Controls.Tabs
             InitializeComponent();
         }
 
-
         internal override void InitializeTab()
         {
             EventTabs = new[] { tpHFEvents };
@@ -27,7 +26,7 @@ namespace LegendsViewer.Controls.Tabs
             MaxResultsLabels.Add(lnkMaxResults);
             listHFSearch.ShowGroups = false;
 
-            listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "Race", IsVisible = false, Text = "Race", TextAlign = HorizontalAlignment.Left });
+            listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "TitleRaceString", IsVisible = false, Text = "Race", TextAlign = HorizontalAlignment.Left });
             listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "Caste", IsVisible = false, Text = "Caste", TextAlign = HorizontalAlignment.Left });
             listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "PreviousRace", IsVisible = false, Text = "Previous Race", TextAlign = HorizontalAlignment.Left });
             listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "Alive", IsVisible = false, Text = "Alive", TextAlign = HorizontalAlignment.Center, CheckBoxes = true });
@@ -39,12 +38,16 @@ namespace LegendsViewer.Controls.Tabs
             listHFSearch.AllColumns.Add(new OLVColumn { AspectName = "Adventurer", IsVisible = false, Text = "Adventurer", TextAlign = HorizontalAlignment.Center, CheckBoxes = true });
             listHFSearch.AllColumns.Add(new OLVColumn
             {
-                Text = "Kills", TextAlign = HorizontalAlignment.Right, IsVisible = false,
+                Text = "Kills",
+                TextAlign = HorizontalAlignment.Right,
+                IsVisible = false,
                 AspectGetter = rowObject => ((HistoricalFigure)rowObject).NotableKills.Count
             });
             listHFSearch.AllColumns.Add(new OLVColumn
             {
-                Text = "Events", TextAlign = HorizontalAlignment.Right, IsVisible = false,
+                Text = "Events",
+                TextAlign = HorizontalAlignment.Right,
+                IsVisible = false,
                 AspectGetter = rowObject => ((HistoricalFigure)rowObject).Events.Count
             });
         }
