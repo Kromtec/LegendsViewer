@@ -24,6 +24,7 @@ namespace LegendsViewer.Legends.Events
         public Site ReturnSite { get; set; }
         public Circumstance Circumstance { get; set; }
         public int CircumstanceId { get; set; }
+        public string TheftMethod { get; set; }
 
         public ItemStolen(List<Property> properties, World world)
             : base(properties, world)
@@ -43,7 +44,15 @@ namespace LegendsViewer.Legends.Events
                     case "mat": Material = property.Value; break;
                     case "mattype": MaterialType = Convert.ToInt32(property.Value); break;
                     case "matindex": MaterialIndex = Convert.ToInt32(property.Value); break;
-                    case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
+                    case "stash_site":
+                        ReturnSite = world.GetSite(Convert.ToInt32(property.Value));
+                        break;
+                    case "site":
+                        if (Site == null)
+                        {
+                            Site = world.GetSite(Convert.ToInt32(property.Value));
+                        }
+                        break;
                     case "structure": StructureId = Convert.ToInt32(property.Value); break;
                     case "circumstance":
                         switch (property.Value)
@@ -83,6 +92,12 @@ namespace LegendsViewer.Legends.Events
                             property.Known = false;
                         }
                         break;
+                    case "theft_method":
+                        if (property.Value != "theft")
+                        {
+                            TheftMethod = property.Value;
+                        }
+                        break;
                 }
             }
             if (Site != null)
@@ -94,6 +109,7 @@ namespace LegendsViewer.Legends.Events
             Entity.AddEvent(this);
             Structure.AddEvent(this);
             Artifact.AddEvent(this);
+            ReturnSite.AddEvent(this);
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
@@ -118,7 +134,16 @@ namespace LegendsViewer.Legends.Events
                     eventString += ItemType;
                 }
             }
-            eventString += " was stolen ";
+            eventString += " was ";
+            if (!string.IsNullOrWhiteSpace(TheftMethod))
+            {
+                eventString += TheftMethod;
+            }
+            else
+            {
+                eventString += "stolen";
+            }
+            eventString += " ";
             if (Structure != null)
             {
                 eventString += "from ";

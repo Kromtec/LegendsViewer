@@ -21,12 +21,16 @@ namespace LegendsViewer.Legends.Events
                 switch (property.Name)
                 {
                     case "artifact_id": Artifact = world.GetArtifact(Convert.ToInt32(property.Value)); break;
-                    case "hist_figure_id": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
+                    case "hist_figure_id":
+                    case "creator_hfid": 
+                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); 
+                        break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "name_only": ReceivedName = true; property.Known = true; break;
                     case "hfid": if (HistoricalFigure == null) { HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "unit_id":
+                    case "creator_unit_id":
                         if (property.Value != "-1")
                         {
                             property.Known = true;

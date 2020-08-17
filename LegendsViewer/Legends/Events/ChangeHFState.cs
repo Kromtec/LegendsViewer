@@ -114,7 +114,7 @@ namespace LegendsViewer.Legends.Events
                                 Reason = ChangeHfStateReason.ExiledAfterConviction;
                                 break;
                             default:
-                                if (property.Value != "-1")
+                                if (property.Value != "-1" && property.Value != "none")
                                 {
                                     property.Known = false;
                                 }
