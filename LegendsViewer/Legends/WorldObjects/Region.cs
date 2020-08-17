@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Interfaces;
@@ -46,6 +47,9 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public List<Site> Sites { get; set; } // legends_plus.xml
         public List<MountainPeak> MountainPeaks { get; set; } // legends_plus.xml
+        public Evilness Evilness { get; set; } // legends_plus.xml
+        public int ForceId { get; set; } // legends_plus.xml
+        public HistoricalFigure Force { get; set; } // legends_plus.xml
 
         public static List<string> Filters;
         public override List<WorldEvent> FilteredEvents
@@ -58,6 +62,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             Name = "UNKNOWN REGION";
             Type = "INVALID";
+            ForceId = -1;
             Battles = new List<Battle>();
             Coordinates = new List<Location>();
             Sites = new List<Site>();
@@ -78,6 +83,26 @@ namespace LegendsViewer.Legends.WorldObjects
                             int y = Convert.ToInt32(xYCoordinates[1]);
                             Coordinates.Add(new Location(x, y));
                         }
+                        break;
+                    case "evilness":
+                        switch (property.Value)
+                        {
+                            case "good":
+                                Evilness = Evilness.Good;
+                                break;
+                            case "neutral":
+                                Evilness = Evilness.Neutral;
+                                break;
+                            case "evil":
+                                Evilness = Evilness.Evil;
+                                break;
+                            default:
+                                property.Known = false;
+                                break;
+                        }
+                        break;
+                    case "force_id":
+                        ForceId = Convert.ToInt32(property.Value);
                         break;
                 }
             }
@@ -103,6 +128,19 @@ namespace LegendsViewer.Legends.WorldObjects
         public override string GetIcon()
         {
             return Icon;
+        }
+
+
+        public void Resolve(World world)
+        {
+            if (ForceId != -1)
+            {
+                Force = world.GetHistoricalFigure(ForceId);
+                if (Force != null && !Force.RelatedRegions.Contains(this))
+                {
+                    Force.RelatedRegions.Add(this);
+                }
+            }
         }
     }
 }

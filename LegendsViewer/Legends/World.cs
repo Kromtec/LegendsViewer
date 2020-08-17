@@ -107,6 +107,7 @@ namespace LegendsViewer.Legends
             ResolveHonorEntities();
             ResolveMountainPeakToRegionLinks();
             ResolveSiteToRegionLinks();
+            ResolveRegionProperties();
             ResolveArtifactProperties();
             ResolveArtformEventsProperties();
 
@@ -771,6 +772,18 @@ namespace LegendsViewer.Legends
             foreach (var artifact in Artifacts)
             {
                 artifact.Resolve(this);
+            }
+        }
+
+        private void ResolveRegionProperties()
+        {
+            if (Regions.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Regions and Forces");
+            }
+            foreach (var region in Regions)
+            {
+                region.Resolve(this);
             }
         }
 

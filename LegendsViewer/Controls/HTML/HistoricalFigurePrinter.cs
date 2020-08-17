@@ -42,6 +42,7 @@ namespace LegendsViewer.Controls.HTML
             PrintRelatedEntities();
             PrintReputations();
             PrintRelatedSites();
+            PrintRelatedRegions();
             PrintDedicatedStructures();
             PrintSkills();
             PrintBattles();
@@ -49,6 +50,21 @@ namespace LegendsViewer.Controls.HTML
             PrintBeastAttacks();
             PrintEventLog(_world, _historicalFigure.Events, HistoricalFigure.Filters, _historicalFigure);
             return Html.ToString();
+        }
+
+        private void PrintRelatedRegions()
+        {
+            if (_historicalFigure.RelatedRegions.Count == 0)
+            {
+                return;
+            }
+            Html.AppendLine(Bold("Related Regions") + LineBreak);
+            StartList(ListType.Unordered);
+            foreach (var region in _historicalFigure.RelatedRegions)
+            {
+                Html.AppendLine(ListItem + region.ToLink(true, _historicalFigure));
+            }
+            EndList(ListType.Unordered);
         }
 
         private void PrintRelatedArtifacts()

@@ -102,6 +102,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<EntityReputation> Reputations { get; set; }
         public List<RelationshipProfileHf> RelationshipProfiles { get; set; }
         public List<SiteLink> RelatedSites { get; set; }
+        public List<WorldRegion> RelatedRegions { get; set; }
         public List<Skill> Skills { get; set; }
         public List<VagueRelationship> VagueRelationships { get; set; }
         public List<Structure> DedicatedStructures { get; set; }
@@ -446,6 +447,7 @@ namespace LegendsViewer.Legends.WorldObjects
             Reputations = new List<EntityReputation>();
             RelationshipProfiles = new List<RelationshipProfileHf>();
             RelatedSites = new List<SiteLink>();
+            RelatedRegions = new List<WorldRegion>();
             Skills = new List<Skill>();
             AnimatedType = "";
             Goal = "";
