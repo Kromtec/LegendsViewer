@@ -15,6 +15,9 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Location> Coordinates { get; set; } // legends_plus.xml
         public int Height { get; set; } // legends_plus.xml
         public string HeightMeter { get { return Height * 3+" m"; } set { } } // legends_plus.xml
+        public bool IsVolcano { get; set; }
+
+        public string TypeAsString => IsVolcano ? "Volcano" : "Mountain";
 
         public string Icon = "<i class=\"fa fa-fw fa-wifi fa-flip-vertical\"></i>";
 
@@ -34,7 +37,9 @@ namespace LegendsViewer.Legends.WorldObjects
             {
                 switch (property.Name)
                 {
-                    case "name": Name = Formatting.InitCaps(property.Value); break;
+                    case "name": 
+                        Name = Formatting.InitCaps(property.Value); 
+                        break;
                     case "coords":
                         string[] coordinateStrings = property.Value.Split(new[] { '|' },
                             StringSplitOptions.RemoveEmptyEntries);
@@ -46,7 +51,13 @@ namespace LegendsViewer.Legends.WorldObjects
                             Coordinates.Add(new Location(x, y));
                         }
                         break;
-                    case "height": Height = Convert.ToInt32(property.Value); break;
+                    case "height": 
+                        Height = Convert.ToInt32(property.Value); 
+                        break;
+                    case "is_volcano": 
+                        IsVolcano = true;
+                        property.Known = true;
+                        break;
                 }
             }
         }
@@ -61,7 +72,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 if (pov != this)
                 {
                     string title = "";
-                    title += "MountainPeak";
+                    title += IsVolcano ? "Volcano" : "Mountain Peak";
                     title += "&#13";
                     title += "Events: " + Events.Count;
 

@@ -28,7 +28,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _mountainPeak.GetIcon() + " " + _mountainPeak.Name + ", Mountain Peak</h1><br />");
+            Html.AppendLine("<h1>" + _mountainPeak.GetIcon() + " " + _mountainPeak.Name + ", " + _mountainPeak.TypeAsString + "</h1><br />");
 
             if (_mountainPeak.Coordinates.Any())
             {

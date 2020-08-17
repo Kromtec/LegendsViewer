@@ -92,6 +92,7 @@ namespace LegendsViewer.Controls.Tabs
             this.lblMountainPeakResults = new System.Windows.Forms.Label();
             this.listMountainPeakSearch = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.btnMountainPeakSearch = new System.Windows.Forms.Button();
             this.groupBox29 = new System.Windows.Forms.GroupBox();
@@ -875,6 +876,7 @@ namespace LegendsViewer.Controls.Tabs
             // listMountainPeakSearch
             // 
             this.listMountainPeakSearch.AllColumns.Add(this.olvColumn6);
+            this.listMountainPeakSearch.AllColumns.Add(this.olvColumn9);
             this.listMountainPeakSearch.AllColumns.Add(this.olvColumn7);
             this.listMountainPeakSearch.AlternateRowBackColor = System.Drawing.SystemColors.InactiveBorder;
             this.listMountainPeakSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -883,6 +885,7 @@ namespace LegendsViewer.Controls.Tabs
             this.listMountainPeakSearch.CellEditUseWholeCell = false;
             this.listMountainPeakSearch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn6,
+            this.olvColumn9,
             this.olvColumn7});
             this.listMountainPeakSearch.Cursor = System.Windows.Forms.Cursors.Default;
             this.listMountainPeakSearch.FullRowSelect = true;
@@ -912,7 +915,13 @@ namespace LegendsViewer.Controls.Tabs
             this.olvColumn6.MinimumWidth = 50;
             this.olvColumn6.Text = "Name";
             this.olvColumn6.UseInitialLetterForGroup = true;
-            this.olvColumn6.Width = 145;
+            this.olvColumn6.Width = 120;
+            // 
+            // olvColumn9
+            // 
+            this.olvColumn9.AspectName = "TypeAsString";
+            this.olvColumn9.Text = "Type";
+            this.olvColumn9.Width = 65;
             // 
             // olvColumn7
             // 
@@ -920,7 +929,7 @@ namespace LegendsViewer.Controls.Tabs
             this.olvColumn7.IsEditable = false;
             this.olvColumn7.Text = "Height";
             this.olvColumn7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.olvColumn7.Width = 75;
+            this.olvColumn7.Width = 55;
             // 
             // btnMountainPeakSearch
             // 
@@ -1332,5 +1341,6 @@ namespace LegendsViewer.Controls.Tabs
         private RadioButton radRiverEvents;
         private TextBox txtRiverSearch;
         private TabPage tpRiverEvents;
+        private OLVColumn olvColumn9;
     }
 }
