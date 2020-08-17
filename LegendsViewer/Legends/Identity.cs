@@ -16,6 +16,7 @@ namespace LegendsViewer.Legends
         public Entity Entity { get; set; }
         public CreatureInfo Race { get; set; }
         public string Caste { get; set; }
+        public string Profession { get; set; }
 
 
         public Identity(List<Property> properties, World world)
@@ -26,17 +27,22 @@ namespace LegendsViewer.Legends
                 {
                     case "id": Id = Convert.ToInt32(property.Value); break;
                     case "name": Name = Formatting.InitCaps(property.Value.Replace("'", "`")); break;
-                    case "histfig_id": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
+                    case "nemesis_id":
+                    case "histfig_id": 
+                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); 
+                        break;
                     case "birth_year": BirthYear = Convert.ToInt32(property.Value); break;
                     case "birth_second": BirthSeconds72 = Convert.ToInt32(property.Value); break;
                     case "entity_id": Entity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "race": Race = world.GetCreatureInfo(property.Value); break;
                     case "caste": Caste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
+                    case "profession": Profession = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
                 }
             }
 
             HistoricalFigure?.Identities.Add(this);
         }
+
         public string Print(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             var identityString = "the ";
@@ -47,6 +53,11 @@ namespace LegendsViewer.Legends
             else
             {
                 identityString += HistoricalFigure.GetRaceString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(Profession))
+            {
+                identityString += " " + Profession.ToLower();
             }
             var icon = !string.IsNullOrWhiteSpace(Caste) ? GetIcon() : HistoricalFigure.GetIcon();
             if (!string.IsNullOrWhiteSpace(icon))
@@ -78,6 +89,5 @@ namespace LegendsViewer.Legends
             }
             return "";
         }
-
     }
 }
