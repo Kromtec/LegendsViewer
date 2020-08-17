@@ -250,6 +250,7 @@
     <Compile Include="Legends\Enums\ActionsForEntities.cs" />
     <Compile Include="Legends\Enums\ActionsForHistoricalFigures.cs" />
     <Compile Include="Legends\Enums\Evilness.cs" />
+    <Compile Include="Legends\Enums\PileType.cs" />
     <Compile Include="Legends\Enums\PreachTopic.cs" />
     <Compile Include="Legends\Enums\ReasonForCreatingEntity.cs" />
     <Compile Include="Legends\Identity.cs" />

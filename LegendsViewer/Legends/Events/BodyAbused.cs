@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -14,21 +15,26 @@ namespace LegendsViewer.Legends.Events
         public string ItemSubType { get; set; } // legends_plus.xml
         public string Material { get; set; } // legends_plus.xml
         public int PileTypeId { get; set; } // legends_plus.xml
+        public PileType PileType { get; set; } // legends_plus.xml
         public int MaterialTypeId { get; set; } // legends_plus.xml
         public int MaterialIndex { get; set; } // legends_plus.xml
 
         public AbuseType AbuseType { get; set; } // legends_plus.xml
         public Entity Abuser { get; set; } // legends_plus.xml
+        public Entity Victim { get; set; } // legends_plus.xml
         public List<HistoricalFigure> Bodies { get; set; } // legends_plus.xml
         public HistoricalFigure HistoricalFigure { get; set; } // legends_plus.xml
         public Site Site { get; set; }
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
         public Location Coordinates { get; set; }
+        public Structure Structure { get; set; }
+
         public BodyAbused(List<Property> properties, World world)
             : base(properties, world)
         {
             Bodies = new List<HistoricalFigure>();
+            int structureId = -1;
             foreach (Property property in properties)
             {
                 switch (property.Name)
@@ -39,31 +45,64 @@ namespace LegendsViewer.Legends.Events
                     case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "civ": Abuser = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "victim_entity": Victim = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "bodies": Bodies.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "histfig": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
-                    case "props_item_type": ItemType = property.Value; break;
-                    case "props_item_subtype": ItemSubType = property.Value; break;
-                    case "props_item_mat": Material = property.Value; break;
+                    case "props_item_type":
+                    case "item_type":
+                        ItemType = property.Value; 
+                        break;
+                    case "props_item_subtype":
+                    case "item_subtype":
+                        ItemSubType = property.Value; 
+                        break;
+                    case "props_item_mat":
+                    case "item_mat":
+                        Material = property.Value; 
+                        break;
                     case "abuse_type":
                         switch (property.Value)
                         {
                             case "0":
+                            case "impaled":
                                 AbuseType = AbuseType.Impaled;
                                 break;
                             case "1":
+                            case "piled":
                                 AbuseType = AbuseType.Piled;
                                 break;
                             case "2":
+                            case "flayed":
                                 AbuseType = AbuseType.Flayed;
                                 break;
                             case "3":
+                            case "hung":
                                 AbuseType = AbuseType.Hung;
                                 break;
                             case "4":
+                            case "mutilated":
                                 AbuseType = AbuseType.Mutilated;
                                 break;
                             case "5":
+                            case "animated":
                                 AbuseType = AbuseType.Animated;
+                                break;
+                            default:
+                                property.Known = false;
+                                break;
+                        }
+                        break;
+                    case "pile_type":
+                        switch (property.Value)
+                        {
+                            case "gruesomesculpture":
+                                PileType = PileType.GruesomeSculpture;
+                                break;
+                            case "grislymound":
+                                PileType = PileType.GrislyMound;
+                                break;
+                            case "grotesquepillar":
+                                PileType = PileType.GrotesquePillar;
                                 break;
                             default:
                                 property.Known = false;
@@ -73,6 +112,15 @@ namespace LegendsViewer.Legends.Events
                     case "props_pile_type": PileTypeId = Convert.ToInt32(property.Value); break;
                     case "props_item_mat_type": MaterialTypeId = Convert.ToInt32(property.Value); break;
                     case "props_item_mat_index": MaterialIndex = Convert.ToInt32(property.Value); break;
+                    case "tree":
+                        property.Known = true; // TODO no idea what this is
+                        break;
+                    case "structure":
+                        structureId = Convert.ToInt32(property.Value);
+                        break;
+                    case "interaction":
+                        property.Known = true; // TODO no idea what this is
+                        break;
                 }
             }
 
@@ -92,6 +140,12 @@ namespace LegendsViewer.Legends.Events
             });
             HistoricalFigure.AddEvent(this);
             Abuser.AddEvent(this);
+            Victim.AddEvent(this);
+            if (structureId != -1 && Site != null)
+            {
+                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == structureId);
+                Structure.AddEvent(this);
+            }
         }
         public override string Print(bool link = true, DwarfObject pov = null)
         {
@@ -137,7 +191,7 @@ namespace LegendsViewer.Legends.Events
                     }
                     break;
                 case AbuseType.Piled:
-                    eventString += "added to a grisly mound";
+                    eventString += "added to a " + PileType.GetDescription();
                     break;
                 case AbuseType.Flayed:
                     eventString += "flayed";
@@ -168,6 +222,11 @@ namespace LegendsViewer.Legends.Events
             if (Abuser != null)
             {
                 eventString += Abuser.ToLink(link, pov, this);
+            }
+            if (Structure != null)
+            {
+                eventString += " in ";
+                eventString += Structure.ToLink(link, pov, this);
             }
             if (Site != null)
             {
