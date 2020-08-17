@@ -126,7 +126,10 @@ namespace LegendsViewer.Legends.Parser
                         {
                             var deity = deities.First();
                             deity.WorshippedBy = _currentCiv;
-                            _currentCiv.Worshipped.Add(deity);
+                            if (!_currentCiv.Worshipped.Contains(deity))
+                            {
+                                _currentCiv.Worshipped.Add(deity);
+                            }
                         }
                         else if (deities.Count == 0)
                         {

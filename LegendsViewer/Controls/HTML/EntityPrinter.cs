@@ -51,7 +51,10 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("</div>");
 
-
+            Html.AppendLine("<div class=\"row\">");
+            Html.AppendLine("<div class=\"col-md-12 col-sm-12\">");
+            Html.AppendLine(_entity.GetSummary(true, _entity) + "</br></br>");
+            Html.AppendLine("</div>");
             Html.AppendLine("<div class=\"row\">");
 
             PrintPopulations(_entity.Populations);
