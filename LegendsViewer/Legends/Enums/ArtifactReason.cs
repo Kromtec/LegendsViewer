@@ -1,6 +1,6 @@
 ﻿namespace LegendsViewer.Legends.Enums
 {
-    public enum Reason
+    public enum ArtifactReason
     {
         Unknown,
         ArtifactIsHeirloomOfFamilyHfid,

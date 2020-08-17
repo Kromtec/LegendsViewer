@@ -11,8 +11,8 @@ namespace LegendsViewer.Legends.Events
         public int WoundeeCaste { get; set; }
 
         // TODO
-        public int BodyPart { get; set; } // legends_plus.xml
-        public int InjuryType { get; set; } // legends_plus.xml
+        public int BodyPart { get; set; } // TODO legends_plus.xml
+        public string InjuryType { get; set; } // TODO legends_plus.xml
         public bool PartLost { get; set; } // legends_plus.xml
 
         public HistoricalFigure Woundee { get; set; }
@@ -41,7 +41,7 @@ namespace LegendsViewer.Legends.Events
                     case "woundee_race": WoundeeRace = Convert.ToInt32(property.Value); break;
                     case "woundee_caste": WoundeeCaste = Convert.ToInt32(property.Value); break;
                     case "body_part": BodyPart = Convert.ToInt32(property.Value); break;
-                    case "injury_type": InjuryType = Convert.ToInt32(property.Value); break;
+                    case "injury_type": InjuryType = property.Value; break;
                     case "part_lost":
                         if (int.TryParse(property.Value, out int partLost))
                         {

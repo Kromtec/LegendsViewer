@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
 
@@ -8,7 +9,7 @@ namespace LegendsViewer.Legends.Events
 {
     public class HfProfanedStructure : WorldEvent
     {
-        public int Action { get; set; } // legends_plus.xml
+        public ActionsForHistoricalFigures Action { get; set; } // legends_plus.xml
         public HistoricalFigure HistoricalFigure { get; set; }
         public Site Site { get; set; }
         public int StructureId { get; set; }
@@ -27,7 +28,17 @@ namespace LegendsViewer.Legends.Events
                     case "structure": StructureId = Convert.ToInt32(property.Value); break;
                     case "histfig": if (HistoricalFigure == null) { HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "action": Action = Convert.ToInt32(property.Value); break;
+                    case "action":
+                        switch (property.Value)
+                        {
+                            case "profane":
+                                Action = ActionsForHistoricalFigures.Profane;
+                                break;
+                            default:
+                                property.Known = false;
+                                break;
+                        }
+                        break;
                 }
             }
             if (Site != null)

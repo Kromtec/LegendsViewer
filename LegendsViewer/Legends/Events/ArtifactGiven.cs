@@ -13,7 +13,7 @@ namespace LegendsViewer.Legends.Events
         public HistoricalFigure HistoricalFigureReceiver { get; set; }
         public Entity EntityGiver { get; set; }
         public Entity EntityReceiver { get; set; }
-        public Reason Reason { get; set; }
+        public ArtifactReason ArtifactReason { get; set; }
 
         // http://www.bay12games.com/dwarves/mantisbt/view.php?id=11350
         // 0011350: "artifact given" event sometimes has the same <giver_hist_figure_id> and <receiver_hist_figure_id>
@@ -33,10 +33,10 @@ namespace LegendsViewer.Legends.Events
                         switch (property.Value)
                         {
                             case "cement bonds of friendship":
-                                Reason = Reason.CementBondsOfFriendship;
+                                ArtifactReason = ArtifactReason.CementBondsOfFriendship;
                                 break;
                             case "part of trade negotiation":
-                                Reason = Reason.PartOfTradeNegotiation;
+                                ArtifactReason = ArtifactReason.PartOfTradeNegotiation;
                                 break;
                             default:
                                 property.Known = false;
@@ -87,14 +87,14 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += EntityGiver.ToLink(link, pov, this);
             }
-            if (Reason != Reason.Unknown)
+            if (ArtifactReason != ArtifactReason.Unknown)
             {
-                switch (Reason)
+                switch (ArtifactReason)
                 {
-                    case Reason.CementBondsOfFriendship:
+                    case ArtifactReason.CementBondsOfFriendship:
                         eventString += " in order to cement the bonds of friendship";
                         break;
-                    case Reason.PartOfTradeNegotiation:
+                    case ArtifactReason.PartOfTradeNegotiation:
                         eventString += " as part of a trade negotiation";
                         break;
                 }
