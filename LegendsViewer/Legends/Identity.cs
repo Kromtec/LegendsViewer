@@ -43,6 +43,13 @@ namespace LegendsViewer.Legends
             HistoricalFigure?.Identities.Add(this);
         }
 
+        public Identity(string name, CreatureInfo race, string caste)
+        {
+            Name = name;
+            Race = race;
+            Caste = caste;
+        }
+
         public string Print(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             var identityString = "the ";
