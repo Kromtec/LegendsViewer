@@ -6,6 +6,7 @@
         ArtifactIsHeirloomOfFamilyHfid,
         ArtifactIsSymbolOfEntityPosition,
         CementBondsOfFriendship,
-        PartOfTradeNegotiation
+        PartOfTradeNegotiation,
+        SanctifyHistoricalFigure
     }
 }

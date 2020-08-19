@@ -253,6 +253,7 @@
     <Compile Include="Legends\Enums\PileType.cs" />
     <Compile Include="Legends\Enums\PreachTopic.cs" />
     <Compile Include="Legends\Enums\ReasonForCreatingEntity.cs" />
+    <Compile Include="Legends\Events\PlusEvents\HistoricalEventRelationShip.cs" />
     <Compile Include="Legends\Identity.cs" />
     <Compile Include="Legends\IncidentalEvents\BattleFought.cs" />
     <Compile Include="Legends\Events\AddHfEntityHonor.cs" />

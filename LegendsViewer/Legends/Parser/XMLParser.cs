@@ -9,6 +9,7 @@ using LegendsViewer.Controls;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
+using LegendsViewer.Legends.Events.PlusEvents;
 using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.Parser
@@ -116,6 +117,8 @@ namespace LegendsViewer.Legends.Parser
                     return Section.Identities;
                 case "rivers":
                     return Section.Rivers;
+                case "historical_event_relationships":
+                    return Section.HistoricalEventRelationships;
                 case "name":
                 case "altname":
                 case "xml":
@@ -310,6 +313,9 @@ namespace LegendsViewer.Legends.Parser
                     break;
                 case Section.Rivers:
                     World.Rivers.Add(new River(properties, World));
+                    break;
+                case Section.HistoricalEventRelationships:
+                    World.Events.Add(new HistoricalEventRelationShip(properties, World));
                     break;
                 default:
                     World.ParsingErrors.Report("Unknown XML Section: " + section);

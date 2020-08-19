@@ -28,6 +28,8 @@ namespace LegendsViewer.Legends.Parser
         Events,
         [Description("Event Collections")]
         EventCollections,
+        [Description("Historical Event Relationships")]
+        HistoricalEventRelationships,
         Eras,
         [Description("Written Content")]
         WrittenContent,
@@ -36,7 +38,7 @@ namespace LegendsViewer.Legends.Parser
         [Description("Musical Forms")]
         MusicalForms,
         [Description("Dance Forms")]
-        DanceForms
+        DanceForms,
     }
     // !!! In order as they appear in the XML. !!!
 }
