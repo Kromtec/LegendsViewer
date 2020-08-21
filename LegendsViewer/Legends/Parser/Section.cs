@@ -30,6 +30,7 @@ namespace LegendsViewer.Legends.Parser
         EventCollections,
         [Description("Historical Event Relationships")]
         HistoricalEventRelationships,
+        HistoricalEventRelationshipSupplement,
         Eras,
         [Description("Written Content")]
         WrittenContent,

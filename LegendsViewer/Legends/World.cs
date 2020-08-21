@@ -44,6 +44,7 @@ namespace LegendsViewer.Legends
         public readonly List<WrittenContent> WrittenContents = new List<WrittenContent>();
         public readonly List<Structure> Structures = new List<Structure>();
         public readonly List<WorldEvent> Events = new List<WorldEvent>();
+        public readonly Dictionary<int, WorldEvent> SpecialEventsById = new Dictionary<int, WorldEvent>();
         public readonly List<EventCollection> EventCollections = new List<EventCollection>();
         public readonly List<DwarfObject> PlayerRelatedObjects = new List<DwarfObject>();
         public readonly List<EntityPopulation> EntityPopulations = new List<EntityPopulation>();

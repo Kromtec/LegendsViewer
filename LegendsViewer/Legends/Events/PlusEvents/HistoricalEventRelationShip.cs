@@ -9,6 +9,10 @@ namespace LegendsViewer.Legends.Events.PlusEvents
 {
     public class HistoricalEventRelationShip : WorldEvent
     {
+        private int _occasionType; // TODO unknown field
+        private Site _site;
+        private int _unk1; // TODO unknown field
+
         public HistoricalFigure SourceHf { get; set; }
         public HistoricalFigure TargetHf { get; set; }
         public VagueRelationshipType RelationshipType { get; set; }
@@ -43,6 +47,45 @@ namespace LegendsViewer.Legends.Events.PlusEvents
             TargetHf.AddEvent(this);
         }
 
+        public static void ResolveSupplements(List<Property> properties, World world)
+        {
+            HistoricalEventRelationShip historicalEventRelationShip = null;
+            int occasionType = -1;
+            Site site = null;
+            int unk1 = -1;
+            foreach (Property property in properties)
+            {
+                switch (property.Name)
+                {
+                    case "event":
+                        int id = Convert.ToInt32(property.Value);
+                        if (world.SpecialEventsById.ContainsKey(id))
+                        {
+                            historicalEventRelationShip = world.SpecialEventsById[id] as HistoricalEventRelationShip;
+                        }
+                        break;
+                    case "occasion_type":
+                        occasionType = Convert.ToInt32(property.Value);
+                        break;
+                    case "site":
+                        site = world.GetSite(Convert.ToInt32(property.Value));
+                        break;
+                    case "unk_1":
+                        unk1 = Convert.ToInt32(property.Value);
+                        break;
+                }
+            }
+
+            historicalEventRelationShip?.AddSupplements(occasionType, site, unk1);
+        }
+
+        private void AddSupplements(int occasionType, Site site, int unk1)
+        {
+            _unk1 = unk1;
+            _site = site;
+            _occasionType = occasionType;
+        }
+
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
@@ -73,6 +116,12 @@ namespace LegendsViewer.Legends.Events.PlusEvents
                     eventString += " became ";
                     eventString += RelationshipType.GetDescription().ToLower() + "s";
                     break;
+            }
+
+            if (_site != null)
+            {
+                eventString += " in ";
+                eventString += _site.ToLink(link, pov, this);
             }
             eventString += ".";
             return eventString;
