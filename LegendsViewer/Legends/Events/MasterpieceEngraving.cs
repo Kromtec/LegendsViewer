@@ -7,12 +7,13 @@ namespace LegendsViewer.Legends.Events
 {
     public class MasterpieceEngraving : WorldEvent
     {
-        private int SkillAtTime { get; set; }
+        private int SkillAtTime { get; set; } // TODO not used in Legends Mode
+        private string SkillRating { get; set; } // TODO not used in Legends Mode
         public HistoricalFigure Maker { get; set; }
         public Entity MakerEntity { get; set; }
         public Site Site { get; set; }
-        public int ArtId { get; set; }
-        public int ArtSubId { get; set; }
+        public int ArtId { get; set; } // TODO not used in Legends Mode
+        public int ArtSubId { get; set; } // TODO not used in Legends Mode
 
         public MasterpieceEngraving(List<Property> properties, World world)
             : base(properties, world)
@@ -28,7 +29,9 @@ namespace LegendsViewer.Legends.Events
                     case "maker": if (Maker == null) { Maker = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "maker_entity": if (MakerEntity == null) { MakerEntity = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "skill_rating": SkillAtTime = Convert.ToInt32(property.Value); break;
+                    case "skill_rating":
+                        SkillRating = property.Value; 
+                        break;
                     case "art_id": ArtId = Convert.ToInt32(property.Value); break;
                     case "art_subid": ArtSubId = Convert.ToInt32(property.Value); break;
                 }

@@ -101,6 +101,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<EntityLink> RelatedEntities { get; set; }
         public List<EntityReputation> Reputations { get; set; }
         public List<RelationshipProfileHf> RelationshipProfiles { get; set; }
+        public Dictionary<int, RelationshipProfileHf> RelationshipProfilesOfIdentities { get; set; } // TODO not used in Legends Mode
         public List<SiteLink> RelatedSites { get; set; }
         public List<WorldRegion> RelatedRegions { get; set; }
         public List<Skill> Skills { get; set; }
@@ -288,6 +289,14 @@ namespace LegendsViewer.Legends.WorldObjects
                             RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Unknown));
                         }
                         break;
+                    case "relationship_profile_hf_identity":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            var relationshipProfileHfIdentity = new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Identity);
+                            RelationshipProfilesOfIdentities.Add(relationshipProfileHfIdentity.Id, relationshipProfileHfIdentity);
+                        }
+                        break;
 
                     case "relationship_profile_hf_visual":
                         property.Known = true;
@@ -446,6 +455,7 @@ namespace LegendsViewer.Legends.WorldObjects
             RelatedEntities = new List<EntityLink>();
             Reputations = new List<EntityReputation>();
             RelationshipProfiles = new List<RelationshipProfileHf>();
+            RelationshipProfilesOfIdentities = new Dictionary<int, RelationshipProfileHf>();
             RelatedSites = new List<SiteLink>();
             RelatedRegions = new List<WorldRegion>();
             Skills = new List<Skill>();

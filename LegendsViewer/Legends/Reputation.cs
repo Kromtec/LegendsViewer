@@ -30,11 +30,15 @@ namespace LegendsViewer.Legends
         };
         public ReputationType Type { get; set; }
         public int Strength { get; set; }
+        public int IdentityId { get; set; }
 
         public Reputation(Property property)
         {
             switch (property.Name)
             {
+                case "id": 
+                    IdentityId = Convert.ToInt32(property.Value);
+                    break;
                 case "rep_friendly": Type = ReputationType.Friendly; Strength = Convert.ToInt32(property.Value); break;
                 case "rep_buddy": Type = ReputationType.Buddy; Strength = Convert.ToInt32(property.Value); break;
                 case "rep_grudge": Type = ReputationType.Grudge; Strength = Convert.ToInt32(property.Value); break;
@@ -51,6 +55,11 @@ namespace LegendsViewer.Legends
                 case "trust": Type = ReputationType.Trust; Strength = Convert.ToInt32(property.Value); break;
                 case "loyalty": Type = ReputationType.Loyalty; Strength = Convert.ToInt32(property.Value); break;
                 case "fear": Type = ReputationType.Fear; Strength = Convert.ToInt32(property.Value); break;
+                case "rep_comrade": Type = ReputationType.Comrade; Strength = Convert.ToInt32(property.Value); break;
+                case "rep_murderer": Type = ReputationType.Murderer; Strength = Convert.ToInt32(property.Value); break;
+                case "rep_violent": Type = ReputationType.Violent; Strength = Convert.ToInt32(property.Value); break;
+                case "rep_killer": Type = ReputationType.Killer; Strength = Convert.ToInt32(property.Value); break;
+                case "rep_flatterer": Type = ReputationType.Flatterer; Strength = Convert.ToInt32(property.Value); break;
             }
         }
 

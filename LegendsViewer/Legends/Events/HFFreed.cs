@@ -8,6 +8,7 @@ namespace LegendsViewer.Legends.Events
     public class HfFreed : WorldEvent
     {
         public List<HistoricalFigure> RescuedHistoricalFigures { get; set; }
+        public HistoricalFigure FreeingHf { get; set; }
         public Entity FreeingCiv { get; set; }
         public Entity SiteCiv { get; set; }
         public Entity HoldingCiv { get; set; }
@@ -22,6 +23,7 @@ namespace LegendsViewer.Legends.Events
                 switch (property.Name)
                 {
                     case "freeing_civ_id": FreeingCiv = world.GetEntity(Convert.ToInt32(property.Value)); break;
+                    case "freeing_hfid": FreeingHf = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "rescued_hfid": RescuedHistoricalFigures.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "site_civ_id": SiteCiv = world.GetEntity(Convert.ToInt32(property.Value)); break;
@@ -33,6 +35,7 @@ namespace LegendsViewer.Legends.Events
                 rescuedHistoricalFigure.AddEvent(this);
             }
             FreeingCiv.AddEvent(this);
+            FreeingHf.AddEvent(this);
             Site.AddEvent(this);
             SiteCiv.AddEvent(this);
             HoldingCiv.AddEvent(this);
@@ -41,8 +44,15 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime();
-            eventString += "the forces of ";
-            eventString += FreeingCiv?.ToLink(link, pov, this) ?? "an unknown civilization";
+            if (FreeingHf != null)
+            {
+                eventString += FreeingHf?.ToLink(link, pov, this) ?? "an unknown creature";
+            }
+            else
+            {
+                eventString += "the forces of ";
+                eventString += FreeingCiv?.ToLink(link, pov, this) ?? "an unknown civilization";
+            }
             eventString += " freed ";
             for (int i = 0; i < RescuedHistoricalFigures.Count; i++)
             {

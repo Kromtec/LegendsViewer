@@ -8,7 +8,7 @@ namespace LegendsViewer.Legends.Events
 {
     public class HfDisturbedStructure : WorldEvent
     {
-        public int Action { get; set; } // legends_plus.xml
+        public string Action { get; set; } // legends_plus.xml TODO not used in Legends Mode
         public HistoricalFigure HistoricalFigure { get; set; }
         public Site Site { get; set; }
         public int StructureId { get; set; }
@@ -27,7 +27,9 @@ namespace LegendsViewer.Legends.Events
                     case "structure": StructureId = Convert.ToInt32(property.Value); break;
                     case "histfig": if (HistoricalFigure == null) { HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "action": Action = Convert.ToInt32(property.Value); break;
+                    case "action": 
+                        Action = property.Value; 
+                        break;
                 }
             }
             if (Site != null)
