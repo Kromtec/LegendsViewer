@@ -37,6 +37,10 @@ namespace LegendsViewer.Legends.Enums
         Respect,
         Trust,
         Loyalty,
-        Fear
+        Fear,
+        Comrade,
+        Murderer,
+        Violent,
+        Flatterer
     }
 }

@@ -160,6 +160,10 @@ namespace LegendsViewer.Controls
             // incidental events from event collections
             new[] { "battle fought",                      "Historical Figure Fought In Battle", ""},
 
+            // xml plus only events
+            new[] { "historical event relationship",      "Historical Event Relationships", ""},
+
+
             new[] { "INVALID",                            "INVALID EVENT",                            ""}
         };
 

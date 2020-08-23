@@ -4,6 +4,7 @@
     {
         Unknown,
         Visual,
-        Historical
+        Historical,
+        Identity
     }
 }

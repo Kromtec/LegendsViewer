@@ -8,9 +8,13 @@ namespace LegendsViewer.Legends.Events
 {
     public class NewSiteLeader : WorldEvent
     {
-        public Entity Attacker, Defender, SiteEntity, NewSiteEntity;
-        public Site Site;
-        public HistoricalFigure NewLeader;
+        public Entity Attacker { get; set; }
+        public Entity Defender { get; set; }
+        public Entity SiteEntity { get; set; }
+        public Entity NewSiteEntity { get; set; }
+        public Site Site { get; set; }
+        public HistoricalFigure NewLeader { get; set; }
+
         public NewSiteLeader(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -27,24 +31,30 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            if (Site.OwnerHistory.Count == 0)
+            if (Site != null)
             {
-                if (SiteEntity != null && SiteEntity != Defender)
+                if (Site.OwnerHistory.Count == 0)
                 {
-                    SiteEntity.Parent = Defender;
-                    Site.OwnerHistory.Add(new OwnerPeriod(Site, SiteEntity, -1, "founded"));
+                    if (SiteEntity != null && SiteEntity != Defender)
+                    {
+                        SiteEntity.Parent = Defender;
+                        Site.OwnerHistory.Add(new OwnerPeriod(Site, SiteEntity, -1, "founded"));
+                    }
+                    else
+                    {
+                        Site.OwnerHistory.Add(new OwnerPeriod(Site, Defender, -1, "founded"));
+                    }
                 }
-                else
+
+                Site.OwnerHistory.Last().EndCause = "taken over";
+                Site.OwnerHistory.Last().EndYear = Year;
+                Site.OwnerHistory.Last().Ender = Attacker;
+                if (NewSiteEntity != null)
                 {
-                    Site.OwnerHistory.Add(new OwnerPeriod(Site, Defender, -1, "founded"));
+                    NewSiteEntity.Parent = Attacker;
+                    Site.OwnerHistory.Add(new OwnerPeriod(Site, NewSiteEntity, Year, "took over"));
                 }
             }
-
-            Site.OwnerHistory.Last().EndCause = "taken over";
-            Site.OwnerHistory.Last().EndYear = Year;
-            Site.OwnerHistory.Last().Ender = Attacker;
-            NewSiteEntity.Parent = Attacker;
-            Site.OwnerHistory.Add(new OwnerPeriod(Site, NewSiteEntity, Year, "took over"));
 
             Attacker.AddEvent(this);
             Defender.AddEvent(this);
@@ -57,15 +67,29 @@ namespace LegendsViewer.Legends.Events
             NewSiteEntity.AddEvent(this);
             NewLeader.AddEvent(this);
         }
+
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " defeated ";
+            string eventString = GetYearTime();
+            eventString += Attacker?.ToLink(link, pov, this) ?? "an unknown entity";
+            eventString += " defeated ";
             if (SiteEntity != null && SiteEntity != Defender)
             {
-                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this);
+                eventString += " of ";
             }
 
-            eventString += Defender.ToLink(link, pov, this) + " and placed " + NewLeader.ToLink(link, pov, this) + " in charge of " + Site.ToLink(link, pov, this) + ". The new government was called " + NewSiteEntity.ToLink(link, pov, this);
+            eventString += Defender?.ToLink(link, pov, this) ?? "an unknown entity";
+            eventString += " and placed ";
+            eventString += NewLeader?.ToLink(link, pov, this) ?? "an unknown creature";
+            eventString += " in charge of ";
+            eventString += Site?.ToLink(link, pov, this) ?? "an unknown site";
+            if (NewSiteEntity != null)
+            {
+                eventString += ".";
+                eventString += " The new government was called ";
+                eventString += NewSiteEntity.ToLink(link, pov, this);
+            }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
             return eventString;

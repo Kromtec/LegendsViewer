@@ -12,6 +12,12 @@ namespace LegendsViewer.Legends.Events
         public int IdentityId { get; set; }
         public Entity Target { get; set; }
 
+        public Identity Identity { get; set; }
+
+        public string IdentityName { get; set; }
+        public CreatureInfo IdentityRace { get; set; }
+        public string IdentityCaste { get; set; }
+
         public AssumeIdentity(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -19,16 +25,53 @@ namespace LegendsViewer.Legends.Events
             {
                 switch (property.Name)
                 {
-                    case "trickster_hfid": Trickster = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
-                    case "identity_id": IdentityId = Convert.ToInt32(property.Value); break;
-                    case "target_enid": Target = world.GetEntity(Convert.ToInt32(property.Value)); break;
-                    case "trickster": if (Trickster == null) { Trickster = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "target": if (Target == null) { Target = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
+                    case "identity_id": 
+                        IdentityId = Convert.ToInt32(property.Value); 
+                        break;
+                    case "target_enid": 
+                        Target = world.GetEntity(Convert.ToInt32(property.Value)); 
+                        break;
+                    case "identity_histfig_id":
+                    case "identity_nemesis_id":
+                    case "trickster_hfid": 
+                    case "trickster":
+                        if (Trickster == null)
+                        {
+                            Trickster = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
+                        }
+                        else
+                        {
+                            property.Known = true;
+                        } 
+                        break;
+                    case "target":
+                        if (Target == null)
+                        {
+                            Target = world.GetEntity(Convert.ToInt32(property.Value));
+                        }
+                        else
+                        {
+                            property.Known = true;
+                        } 
+                        break;
+                    case "identity_name":
+                        IdentityName = property.Value;
+                        break;
+                    case "identity_race":
+                        IdentityRace = world.GetCreatureInfo(property.Value);
+                        break;
+                    case "identity_caste":
+                        IdentityCaste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' ')));
+                        break;
                 }
             }
 
             Trickster.AddEvent(this);
             Target.AddEvent(this);
+            if (!string.IsNullOrEmpty(IdentityName))
+            {
+                Identity = new Identity(IdentityName, IdentityRace, IdentityCaste);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)
@@ -47,10 +90,10 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " assumed the identity of ";
             }
-            Identity identity = Trickster?.Identities.FirstOrDefault(i => i.Id == IdentityId);
+            Identity identity = Trickster?.Identities.FirstOrDefault(i => i.Id == IdentityId) ?? Identity;
             if (identity != null)
             {
-                eventString += "'" + identity.Print(link, pov, this) + "'";
+                eventString += identity.Print(link, pov, this);
             }
             else
             {

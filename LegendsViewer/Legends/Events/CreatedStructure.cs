@@ -32,7 +32,8 @@ namespace LegendsViewer.Legends.Events
                     case "civ": if (Civ == null) { Civ = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "site_civ": if (SiteEntity == null) { SiteEntity = world.GetEntity(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "builder_hf": if (Builder == null) { Builder = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
-                    case "rebuilt": 
+                    case "rebuild":
+                    case "rebuilt":
                         property.Known = true;
                         Rebuilt = true;
                         break;

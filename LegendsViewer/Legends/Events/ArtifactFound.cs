@@ -10,7 +10,7 @@ namespace LegendsViewer.Legends.Events
     {
         public Artifact Artifact { get; set; }
         public HistoricalFigure HistoricalFigure { get; set; }
-        public int UnitId { get; set; }
+        public int UnitId { get; set; } // TODO not used in Legends Mode
         public Site Site { get; set; }
         public int StructureId { get; set; }
         public Structure Structure { get; set; }
@@ -43,10 +43,6 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "unit_id":
                         UnitId = Convert.ToInt32(property.Value);
-                        if (UnitId != -1)
-                        {
-                            property.Known = false;
-                        }
                         break;
                     case "subregion_id": Region = world.GetRegion(Convert.ToInt32(property.Value)); break;
                     case "feature_layer_id": UndergroundRegion = world.GetUndergroundRegion(Convert.ToInt32(property.Value)); break;

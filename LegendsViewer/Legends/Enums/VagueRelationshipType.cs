@@ -30,5 +30,9 @@ namespace LegendsViewer.Legends.Enums
         BusinessRival,
         [Description("Athletic Rival")]
         AthleticRival,
+        Lover,
+        [Description("Former Lover")]
+        FormerLover,
+        Lieutenant
     }
 }

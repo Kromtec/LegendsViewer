@@ -44,6 +44,7 @@ namespace LegendsViewer.Legends
         public readonly List<WrittenContent> WrittenContents = new List<WrittenContent>();
         public readonly List<Structure> Structures = new List<Structure>();
         public readonly List<WorldEvent> Events = new List<WorldEvent>();
+        public readonly Dictionary<int, WorldEvent> SpecialEventsById = new Dictionary<int, WorldEvent>();
         public readonly List<EventCollection> EventCollections = new List<EventCollection>();
         public readonly List<DwarfObject> PlayerRelatedObjects = new List<DwarfObject>();
         public readonly List<EntityPopulation> EntityPopulations = new List<EntityPopulation>();
@@ -107,6 +108,7 @@ namespace LegendsViewer.Legends
             ResolveHonorEntities();
             ResolveMountainPeakToRegionLinks();
             ResolveSiteToRegionLinks();
+            ResolveRegionProperties();
             ResolveArtifactProperties();
             ResolveArtformEventsProperties();
 
@@ -771,6 +773,18 @@ namespace LegendsViewer.Legends
             foreach (var artifact in Artifacts)
             {
                 artifact.Resolve(this);
+            }
+        }
+
+        private void ResolveRegionProperties()
+        {
+            if (Regions.Count > 0)
+            {
+                _worker.ReportProgress(0, "... Regions and Forces");
+            }
+            foreach (var region in Regions)
+            {
+                region.Resolve(this);
             }
         }
 

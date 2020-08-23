@@ -38,6 +38,8 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<EntityPositionAssignment> EntityPositionAssignments { get; set; } // legends_plus.xml
         public List<Location> Claims { get; set; } // legends_plus.xml
         public List<EntityOccasion> Occassions { get; set; } // legends_plus.xml
+        public List<string> Weapons { get; set; }
+        public string Profession { get; set; }
 
         public List<War> Wars { get; set; }
         public List<War> WarsAttacking { get { return Wars.Where(war => war.Attacker == this).ToList(); } set { } }
@@ -145,6 +147,7 @@ namespace LegendsViewer.Legends.WorldObjects
             Claims = new List<Location>();
             Occassions = new List<EntityOccasion>();
             Honors = new List<Honor>();
+            Weapons = new List<string>();
 
             foreach (Property property in properties)
             {
@@ -194,7 +197,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
                         break;
                     case "child":
-                        property.Known = true;
+                        property.Known = true; // TODO child entities
                         break;
                     case "site_link":
                         property.Known = true;
@@ -217,7 +220,11 @@ namespace LegendsViewer.Legends.WorldObjects
                         world.AddEntityEntityLink(this, property);
                         break;
                     case "worship_id":
-                        property.Known = true;
+                        var worshippedDeity = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
+                        if (worshippedDeity != null)
+                        {
+                            Worshipped.Add(worshippedDeity);
+                        }
                         break;
                     case "claims":
                         string[] coordinateStrings = property.Value.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -247,7 +254,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
                         break;
                     case "histfig_id":
-                        property.Known = true; // historical figure == last known entitymember?
+                        property.Known = true; // TODO historical figure == living members?
                         break;
                     case "occasion":
                         property.Known = true;
@@ -255,7 +262,6 @@ namespace LegendsViewer.Legends.WorldObjects
                         {
                             Occassions.Add(new EntityOccasion(property.SubProperties, world, this));
                         }
-
                         break;
                     case "honor":
                         property.Known = true;
@@ -263,7 +269,12 @@ namespace LegendsViewer.Legends.WorldObjects
                         {
                             Honors.Add(new Honor(property.SubProperties, world, this));
                         }
-
+                        break;
+                    case "weapon":
+                        Weapons.Add(property.Value);
+                        break;
+                    case "profession":
+                        Profession = property.Value.Replace("_", " ");
                         break;
                 }
             }
@@ -377,59 +388,106 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public string GetTitle()
         {
-            string title = "";
-            if (IsCiv)
-            {
-                title += "Civilization";
-            }
-            else
-            {
-                switch (Type)
-                {
-                    case EntityType.Civilization:
-                        title += "Civilization";
-                        break;
-                    case EntityType.NomadicGroup:
-                        title += "Nomadic group";
-                        break;
-                    case EntityType.MigratingGroup:
-                        title += "Migrating group";
-                        break;
-                    case EntityType.Outcast:
-                        title += "Collection of outcasts";
-                        break;
-                    case EntityType.Religion:
-                        title += "Religious group";
-                        break;
-                    case EntityType.SiteGovernment:
-                        title += "Site government";
-                        break;
-                    case EntityType.PerformanceTroupe:
-                        title += "Performance troupe";
-                        break;
-                    case EntityType.MercenaryCompany:
-                        title += "Mercenary company";
-                        break;
-                    case EntityType.MilitaryUnit:
-                        title += "Mercenary order";
-                        break;
-                    case EntityType.Guild:
-                        title += "Guild";
-                        break;
-                    case EntityType.MerchantCompany:
-                        title += "Merchant company";
-                        break;
-                    default:
-                        title += "Group";
-                        break;
-                }
-            }
+            var title = IsCiv ? "Civilization" : GetTypeAsString();
             if (Race != null && Race != CreatureInfo.Unknown)
             {
                 title += " of ";
                 title += Race.NamePlural;
             }
             return title;
+        }
+
+        private string GetTypeAsString()
+        {
+            string title;
+            switch (Type)
+            {
+                case EntityType.Civilization:
+                    title = "Civilization";
+                    break;
+                case EntityType.NomadicGroup:
+                    title = "Nomadic group";
+                    break;
+                case EntityType.MigratingGroup:
+                    title = "Migrating group";
+                    break;
+                case EntityType.Outcast:
+                    title = "Collection of outcasts";
+                    break;
+                case EntityType.Religion:
+                    title = "Religious group";
+                    break;
+                case EntityType.SiteGovernment:
+                    title = "Site government";
+                    break;
+                case EntityType.PerformanceTroupe:
+                    title = "Performance troupe";
+                    break;
+                case EntityType.MercenaryCompany:
+                    title = "Mercenary company";
+                    break;
+                case EntityType.MilitaryUnit:
+                    title = "Mercenary order";
+                    break;
+                case EntityType.Guild:
+                    title = "Guild";
+                    break;
+                case EntityType.MerchantCompany:
+                    title = "Merchant company";
+                    break;
+                default:
+                    title = "Group";
+                    break;
+            }
+
+            return title;
+        }
+
+        public string GetSummary(bool link = true, DwarfObject pov = null)
+        {
+            string summary = string.Empty;
+            summary += ToLink(link, pov);
+            summary += " was a ";
+            summary += GetTypeAsString().ToLower();
+            if (Race != CreatureInfo.Unknown)
+            {
+                summary += " of " + Race.NamePlural.ToLower();
+            }
+            if (Parent != null)
+            {
+                summary += " of " + Parent.ToLink(link, pov);
+            }
+
+            switch (Type)
+            {
+                case EntityType.Religion:
+                    if (Worshipped.Count > 0)
+                    {
+                        summary += " centered around the worship of " + Worshipped.First().ToLink(link, pov);
+                    }
+                    break;
+                case EntityType.MilitaryUnit:
+                    bool isWorshipping = false;
+                    if (Worshipped.Count > 0)
+                    {
+                        summary += " devoted to the worship of " + Worshipped.First().ToLink(link, pov);
+                        isWorshipping = true;
+                    }
+                    if (Weapons.Count > 0)
+                    {
+                        if (isWorshipping)
+                        {
+                            summary += " and";
+                        }
+                        summary += " dedicated to the mastery of the " + string.Join(", the ", Weapons);
+                    }
+                    break;
+                case EntityType.Guild:
+                    summary += " of " + Profession + "s";
+                    break;
+            }
+            summary += ".";
+            return summary;
         }
 
         public override string GetIcon()

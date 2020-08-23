@@ -48,6 +48,19 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</ul>");
             }
 
+            if (_region.Force != null)
+            {
+                Html.AppendLine("<b>Local Force</b> " + LineBreak);
+                Html.AppendLine("<ul>");
+                Html.AppendLine("<li>" + _region.Force.ToLink() + "</li>");
+                Html.AppendLine("</ul>");
+            }
+
+            Html.AppendLine("<b>Evilness</b> " + LineBreak);
+            Html.AppendLine("<ul>");
+            Html.AppendLine("<li>" + _region.Evilness.GetDescription() + "</li>");
+            Html.AppendLine("</ul>");
+            
             if (_region.Battles.Count(battle => !_world.FilterBattles || battle.Notable) > 0)
             {
                 int battleCount = 1;

@@ -21,6 +21,8 @@ namespace LegendsViewer.Legends.WorldObjects
         public int ReligionId { get; set; } // legends_plus.xml
         public Entity Religion { get; set; } // legends_plus.xml
         public StructureSubType StructureSubType { get; set; } // legends_plus.xml
+        public int DeityType { get; set; } // TODO legends_plus.xml
+
         public HistoricalFigure Owner { get; set; } // resolved from site properties
 
         public string TypeAsString
@@ -59,6 +61,7 @@ namespace LegendsViewer.Legends.WorldObjects
             DeityId = -1;
             ReligionId = -1;
             EntityId = -1;
+            DeityType = -1;
 
             foreach (Property property in properties)
             {
@@ -73,6 +76,9 @@ namespace LegendsViewer.Legends.WorldObjects
                     case "deity":
                     case "worship_hfid":
                         DeityId = Convert.ToInt32(property.Value);
+                        break;
+                    case "deity_type":
+                        DeityType = Convert.ToInt32(property.Value);
                         break;
                     case "entity_id": EntityId = Convert.ToInt32(property.Value); break;
                     case "religion": ReligionId = Convert.ToInt32(property.Value); break;

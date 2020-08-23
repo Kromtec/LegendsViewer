@@ -247,7 +247,13 @@
     </Compile>
     <Compile Include="Legends\ArtForm.cs" />
     <Compile Include="Legends\CreatureInfo.cs" />
+    <Compile Include="Legends\Enums\ActionsForEntities.cs" />
+    <Compile Include="Legends\Enums\ActionsForHistoricalFigures.cs" />
+    <Compile Include="Legends\Enums\Evilness.cs" />
+    <Compile Include="Legends\Enums\PileType.cs" />
     <Compile Include="Legends\Enums\PreachTopic.cs" />
+    <Compile Include="Legends\Enums\ReasonForCreatingEntity.cs" />
+    <Compile Include="Legends\Events\PlusEvents\HistoricalEventRelationShip.cs" />
     <Compile Include="Legends\Identity.cs" />
     <Compile Include="Legends\IncidentalEvents\BattleFought.cs" />
     <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
@@ -330,7 +336,7 @@
     <Compile Include="Legends\Enums\InsurrectionOutcome.cs" />
     <Compile Include="Legends\Enums\Mood.cs" />
     <Compile Include="Legends\Enums\OccasionType.cs" />
-    <Compile Include="Legends\Enums\Reason.cs" />
+    <Compile Include="Legends\Enums\ArtifactReason.cs" />
     <Compile Include="Legends\Enums\ReferenceType.cs" />
     <Compile Include="Legends\Enums\ReputationType.cs" />
     <Compile Include="Legends\Enums\ScheduleType.cs" />

@@ -14,7 +14,7 @@ namespace LegendsViewer.Legends.Events
         public Site Site { get; set; }
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
-        public Reason Reason { get; set; }
+        public ArtifactReason ArtifactReason { get; set; }
         public int ReasonId { get; set; }
         public Circumstance Circumstance { get; set; }
         public int CircumstanceId { get; set; }
@@ -40,10 +40,10 @@ namespace LegendsViewer.Legends.Events
                         switch (property.Value)
                         {
                             case "artifact is heirloom of family hfid":
-                                Reason = Reason.ArtifactIsHeirloomOfFamilyHfid;
+                                ArtifactReason = ArtifactReason.ArtifactIsHeirloomOfFamilyHfid;
                                 break;
                             case "artifact is symbol of entity position":
-                                Reason = Reason.ArtifactIsSymbolOfEntityPosition;
+                                ArtifactReason = ArtifactReason.ArtifactIsSymbolOfEntityPosition;
                                 break;
                             default:
                                 property.Known = false;
@@ -70,13 +70,13 @@ namespace LegendsViewer.Legends.Events
                         break;
                 }
             }
-            switch (Reason)
+            switch (ArtifactReason)
             {
-                case Reason.ArtifactIsHeirloomOfFamilyHfid:
+                case ArtifactReason.ArtifactIsHeirloomOfFamilyHfid:
                     FamilyFigure = world.GetHistoricalFigure(ReasonId);
                     FamilyFigure.AddEvent(this);
                     break;
-                case Reason.ArtifactIsSymbolOfEntityPosition:
+                case ArtifactReason.ArtifactIsSymbolOfEntityPosition:
                     SymbolEntity = world.GetEntity(ReasonId);
                     SymbolEntity.AddEvent(this);
                     break;
@@ -102,12 +102,12 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = GetYearTime() + Artifact.ToLink(link, pov, this);
-            switch (Reason)
+            switch (ArtifactReason)
             {
-                case Reason.ArtifactIsHeirloomOfFamilyHfid:
+                case ArtifactReason.ArtifactIsHeirloomOfFamilyHfid:
                     eventString += " was acquired";
                     break;
-                case Reason.ArtifactIsSymbolOfEntityPosition:
+                case ArtifactReason.ArtifactIsSymbolOfEntityPosition:
                     eventString += " was acquired";
                     break;
                 default:
@@ -131,14 +131,14 @@ namespace LegendsViewer.Legends.Events
             }
 
             eventString += " by " + HistoricalFigure.ToLink(link, pov, this);
-            switch (Reason)
+            switch (ArtifactReason)
             {
-                case Reason.ArtifactIsHeirloomOfFamilyHfid:
+                case ArtifactReason.ArtifactIsHeirloomOfFamilyHfid:
                     eventString += " as an heirloom of the ";
                     eventString += FamilyFigure?.ToLink(link, pov, this);
                     eventString += " family";
                     break;
-                case Reason.ArtifactIsSymbolOfEntityPosition:
+                case ArtifactReason.ArtifactIsSymbolOfEntityPosition:
                     eventString += " as a symbol of authority within ";
                     eventString += SymbolEntity?.ToLink(link, pov, this);
                     break;

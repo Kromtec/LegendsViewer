@@ -132,7 +132,7 @@ namespace LegendsViewer.Legends.Parser
                             if (CurrentSection == Section.Entities &&
                                 (property.Name == "entity_link" || property.Name == "child" ||
                                  property.Name == "entity_position" || property.Name == "entity_position_assignment" ||
-                                 property.Name == "occasion"))
+                                 property.Name == "occasion" || property.Name == "weapon" || property.Name == "histfig_id"))
                             {
                                 existingProperties.Add(property);
                                 continue;

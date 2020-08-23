@@ -42,7 +42,10 @@ namespace LegendsViewer.Legends.Events
 
             Site.AddEvent(this);
             Source.AddEvent(this);
-            Destination.AddEvent(this);
+            if (Source != Destination)
+            {
+                Destination.AddEvent(this);
+            }
         }
 
         public override string Print(bool link = true, DwarfObject pov = null)

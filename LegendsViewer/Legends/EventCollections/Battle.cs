@@ -149,17 +149,17 @@ namespace LegendsViewer.Legends.EventCollections
                     case "company_merc": property.Known = true; CompanyMercenaries = true; break;
                     case "attacking_merc_enid": 
                         AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
-                        if (AttackingMercenaryEntity != null)
-                        {
-                            AttackingMercenaryEntity.Type = EntityType.MercenaryCompany;
-                        }
+                        //if (AttackingMercenaryEntity != null)
+                        //{
+                        //    AttackingMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        //}
                         break;
                     case "defending_merc_enid": 
                         DefendingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
-                        if (DefendingMercenaryEntity != null)
-                        {
-                            DefendingMercenaryEntity.Type = EntityType.MercenaryCompany;
-                        }
+                        //if (DefendingMercenaryEntity != null)
+                        //{
+                        //    DefendingMercenaryEntity.Type = EntityType.MercenaryCompany;
+                        //}
                         break;
                     case "attacking_squad_animated": property.Known = true; AttackingSquadAnimated = true; break;
                     case "defending_squad_animated": property.Known = true; DefendingSquadAnimated = true; break;
@@ -168,7 +168,7 @@ namespace LegendsViewer.Legends.EventCollections
                         if (attackerSupportMercenaryEntity != null)
                         {
                             AttackerSupportMercenaryEntities.Add(attackerSupportMercenaryEntity);
-                            attackerSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
+                            //attackerSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
                         }
                         break;
                     case "d_support_merc_enid": 
@@ -176,7 +176,7 @@ namespace LegendsViewer.Legends.EventCollections
                         if (defenderSupportMercenaryEntity != null)
                         {
                             DefenderSupportMercenaryEntities.Add(defenderSupportMercenaryEntity);
-                            defenderSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
+                            //defenderSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
                         }
                         break;
                     case "a_support_merc_hfid": AttackerSupportMercenaryHfs.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;

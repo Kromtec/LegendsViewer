@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
@@ -55,6 +57,21 @@ namespace LegendsViewer.Legends.WorldObjects
             }
         }
 
+        public string TitleRaceString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_TitleRaceString))
+                {
+                    _TitleRaceString = GetRaceString();
+                    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+                    TextInfo textInfo = cultureInfo.TextInfo;
+                    _TitleRaceString = textInfo.ToTitleCase(_TitleRaceString);
+                }
+                return _TitleRaceString;
+            }
+        }
+
         private string Title
         {
             get
@@ -84,7 +101,9 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<EntityLink> RelatedEntities { get; set; }
         public List<EntityReputation> Reputations { get; set; }
         public List<RelationshipProfileHf> RelationshipProfiles { get; set; }
+        public Dictionary<int, RelationshipProfileHf> RelationshipProfilesOfIdentities { get; set; } // TODO not used in Legends Mode
         public List<SiteLink> RelatedSites { get; set; }
+        public List<WorldRegion> RelatedRegions { get; set; }
         public List<Skill> Skills { get; set; }
         public List<VagueRelationship> VagueRelationships { get; set; }
         public List<Structure> DedicatedStructures { get; set; }
@@ -120,6 +139,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<IntrigueActor> IntrigueActors { get; set; }
         public List<IntriguePlot> IntriguePlots { get; set; }
         public readonly List<Identity> Identities = new List<Identity>();
+
         public bool Alive
         {
             get
@@ -133,6 +153,7 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             set { }
         }
+
         public bool Deity { get; set; }
         public bool Skeleton { get; set; }
         public bool Force { get; set; }
@@ -146,12 +167,14 @@ namespace LegendsViewer.Legends.WorldObjects
         public static List<string> Filters;
         private string _shortName;
         private string _raceString;
+        private string _TitleRaceString;
         private string _title;
 
         public override List<WorldEvent> FilteredEvents
         {
             get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
         }
+
         public HistoricalFigure()
         {
             Initialize();
@@ -160,7 +183,12 @@ namespace LegendsViewer.Legends.WorldObjects
             Caste = "UNKNOWN";
             AssociatedType = "UNKNOWN";
         }
-        public override string ToString() { return Name; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
         public HistoricalFigure(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -200,6 +228,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
 
                         break;
+
                     case "entity_link":
                     case "entity_former_position_link":
                     case "entity_position_link":
@@ -218,6 +247,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
 
                         break;
+
                     case "entity_reputation":
                         world.AddReputation(this, property);
                         property.Known = true;
@@ -234,6 +264,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
 
                         break;
+
                     case "entity_squad_link":
                     case "entity_former_squad_link":
                         property.Known = true;
@@ -250,6 +281,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
 
                         break;
+
                     case "relationship_profile_hf":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -257,6 +289,15 @@ namespace LegendsViewer.Legends.WorldObjects
                             RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Unknown));
                         }
                         break;
+                    case "relationship_profile_hf_identity":
+                        property.Known = true;
+                        if (property.SubProperties != null)
+                        {
+                            var relationshipProfileHfIdentity = new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Identity);
+                            RelationshipProfilesOfIdentities.Add(relationshipProfileHfIdentity.Id, relationshipProfileHfIdentity);
+                        }
+                        break;
+
                     case "relationship_profile_hf_visual":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -264,6 +305,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Visual));
                         }
                         break;
+
                     case "relationship_profile_hf_historical":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -271,6 +313,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             RelationshipProfiles.Add(new RelationshipProfileHf(property.SubProperties, RelationShipProfileType.Historical));
                         }
                         break;
+
                     case "site_link":
                         world.AddHFtoSiteLink(this, property);
                         property.Known = true;
@@ -287,6 +330,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         }
 
                         break;
+
                     case "hf_skill":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -295,6 +339,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             Skills.Add(skill);
                         }
                         break;
+
                     case "active_interaction": ActiveInteractions.Add(string.Intern(property.Value)); break;
                     case "interaction_knowledge": InteractionKnowledge.Add(string.Intern(property.Value)); break;
                     case "animated": Animated = true; property.Known = true; break;
@@ -310,10 +355,12 @@ namespace LegendsViewer.Legends.WorldObjects
                         HoldingArtifacts.Add(artifact);
                         artifact.Holder = this;
                         break;
+
                     case "adventurer":
                         Adventurer = true;
                         property.Known = true;
                         break;
+
                     case "breed_id":
                         BreedId = property.Value;
                         if (!string.IsNullOrWhiteSpace(BreedId))
@@ -328,8 +375,9 @@ namespace LegendsViewer.Legends.WorldObjects
                             }
                         }
                         break;
+
                     case "sex": property.Known = true; break;
-                    case "site_property": 
+                    case "site_property":
                         // is resolved in SiteProperty.Resolve()
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -344,6 +392,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             }
                         }
                         break;
+
                     case "vague_relationship":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -351,6 +400,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             VagueRelationships.Add(new VagueRelationship(property.SubProperties));
                         }
                         break;
+
                     case "honor_entity":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -358,6 +408,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             HonorEntity = new HonorEntity(property.SubProperties, world);
                         }
                         break;
+
                     case "intrigue_actor":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -365,6 +416,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             IntrigueActors.Add(new IntrigueActor(property.SubProperties));
                         }
                         break;
+
                     case "intrigue_plot":
                         property.Known = true;
                         if (property.SubProperties != null)
@@ -403,7 +455,9 @@ namespace LegendsViewer.Legends.WorldObjects
             RelatedEntities = new List<EntityLink>();
             Reputations = new List<EntityReputation>();
             RelationshipProfiles = new List<RelationshipProfileHf>();
+            RelationshipProfilesOfIdentities = new Dictionary<int, RelationshipProfileHf>();
             RelatedSites = new List<SiteLink>();
+            RelatedRegions = new List<WorldRegion>();
             Skills = new List<Skill>();
             AnimatedType = "";
             Goal = "";
@@ -544,7 +598,11 @@ namespace LegendsViewer.Legends.WorldObjects
             public int Ended { get; set; }
             public string Title { get; set; }
             public int Length { get; set; }
-            public Position(Entity civ, int began, int ended, string title) { Entity = civ; Began = began; Ended = ended; Title = title; }
+
+            public Position(Entity civ, int began, int ended, string title)
+            {
+                Entity = civ; Began = began; Ended = ended; Title = title;
+            }
         }
 
         public class State
