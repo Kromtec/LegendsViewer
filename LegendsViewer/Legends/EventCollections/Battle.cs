@@ -25,9 +25,22 @@ namespace LegendsViewer.Legends.EventCollections
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
         public Site Site { get; set; }
+
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
-        public WorldRegion Region { get; set; }
+        public WorldRegion Region
+        {
+            get
+            {
+                if (_region == null && Site?.Region != null)
+                {
+                    _region = Site.Region;
+                }
+                return _region;
+            }
+            set => _region = value;
+        }
+
         public UndergroundRegion UndergroundRegion { get; set; }
         [AllowAdvancedSearch]
         public SiteConquered Conquering { get; set; }
@@ -102,6 +115,8 @@ namespace LegendsViewer.Legends.EventCollections
         public List<HistoricalFigure> DefenderSupportMercenaryHfs { get; set; }
 
         public static List<string> Filters;
+        private WorldRegion _region;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }

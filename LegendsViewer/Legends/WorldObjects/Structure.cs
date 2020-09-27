@@ -18,8 +18,6 @@ namespace LegendsViewer.Legends.WorldObjects
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
         public string AltName { get; set; } // legends_plus.xml
-        [AllowAdvancedSearch]
-        [ShowInAdvancedSearchResults]
         public StructureType Type { get; set; } // legends_plus.xml
         public List<int> InhabitantIDs { get; set; } // legends_plus.xml
         [AllowAdvancedSearch(true)]
@@ -30,8 +28,6 @@ namespace LegendsViewer.Legends.WorldObjects
         public int ReligionId { get; set; } // legends_plus.xml
         [AllowAdvancedSearch]
         public Entity Religion { get; set; } // legends_plus.xml
-        [AllowAdvancedSearch("Sub Type")]
-        [ShowInAdvancedSearchResults("Sub Type")]
         public StructureSubType StructureSubType { get; set; } // legends_plus.xml
         public int DeityType { get; set; } // TODO legends_plus.xml
 
@@ -39,6 +35,8 @@ namespace LegendsViewer.Legends.WorldObjects
         [ShowInAdvancedSearchResults]
         public HistoricalFigure Owner { get; set; } // resolved from site properties
 
+        [AllowAdvancedSearch("Type")]
+        [ShowInAdvancedSearchResults("Type")]
         public string TypeAsString
         {
             get

@@ -21,11 +21,22 @@ namespace LegendsViewer.Legends.EventCollections
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
         public Site Site { get; set; }
+
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
-        public WorldRegion Region { get; set; }
-        [AllowAdvancedSearch]
-        [ShowInAdvancedSearchResults]
+        public WorldRegion Region
+        {
+            get
+            {
+                if (_region == null && Site?.Region != null)
+                {
+                    _region = Site.Region;
+                }
+                return _region;
+            }
+            set => _region = value;
+        }
+
         public UndergroundRegion UndergroundRegion { get; set; }
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
@@ -39,6 +50,8 @@ namespace LegendsViewer.Legends.EventCollections
         public EventCollection ParentEventCol { get; set; }
 
         public static List<string> Filters;
+        private WorldRegion _region;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }

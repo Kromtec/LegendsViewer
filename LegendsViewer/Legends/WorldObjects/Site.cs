@@ -30,11 +30,15 @@ namespace LegendsViewer.Legends.WorldObjects
         public string UntranslatedName { get; set; }
         public Location Coordinates { get; set; }
         public Rectangle Rectangle { get; set; }
-        [ShowInAdvancedSearchResults]
+        [AllowAdvancedSearch("Has Structures")]
+        [ShowInAdvancedSearchResults("Has Structures")]
         public bool HasStructures { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public List<Structure> Structures { get; set; }
         public List<EventCollection> Warfare { get; set; }
         [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public List<Battle> Battles { get { return Warfare.OfType<Battle>().ToList(); } set { } }
         [AllowAdvancedSearch(true)]
         public List<SiteConquered> Conquerings { get { return Warfare.OfType<SiteConquered>().ToList(); } set { } }
