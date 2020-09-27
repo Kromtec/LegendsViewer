@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 
@@ -11,16 +12,29 @@ namespace LegendsViewer.Legends.WorldObjects
     {
         public static string Icon = "<i class=\"fa fa-fw fa-diamond\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Item { get; set; }
+        [AllowAdvancedSearch]
         public HistoricalFigure Creator { get; set; }
+        [AllowAdvancedSearch]
         public HistoricalFigure Holder { get; set; }
         public Structure Structure { get; set; }
         public int HolderId { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Type { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults("Sub Type")]
         public string SubType { get; set; } // legends_plus.xml
         public string Description { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Material { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch("Page Count")]
         public int PageCount { get; set; } // legends_plus.xml
 
         public List<int> WrittenContentIds { get; set; }
@@ -31,7 +45,9 @@ namespace LegendsViewer.Legends.WorldObjects
         public int AbsTileZ { get; set; }
         public Location Coordinates { get; set; }
 
+        [AllowAdvancedSearch]
         public Site Site { get; set; }
+        [AllowAdvancedSearch]
         public WorldRegion Region { get; set; }
 
         public static List<string> Filters;
@@ -45,6 +61,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             Name = "Untitled";
             Type = "Unknown";
+            SubType = "";
             WrittenContentIds = new List<int>();
 
             foreach (Property property in properties)

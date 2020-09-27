@@ -148,6 +148,8 @@
     <Compile Include="Controls\Map\MapUtil.cs" />
     <Compile Include="Controls\Map\PathMaker.cs" />
     <Compile Include="Controls\PageControl.cs" />
+    <Compile Include="Controls\Query\Attributes\AllowAdvancedSearchAttribute.cs" />
+    <Compile Include="Controls\Query\Attributes\ShowInAdvancedSearchResultsAttribute.cs" />
     <Compile Include="Controls\Query\CriteriaLine.cs">
       <SubType>Component</SubType>
     </Compile>

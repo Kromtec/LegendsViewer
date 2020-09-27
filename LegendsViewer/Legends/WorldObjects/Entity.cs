@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
@@ -13,24 +14,42 @@ namespace LegendsViewer.Legends.WorldObjects
 {
     public class Entity : WorldObject
     {
+        [AllowAdvancedSearch]
         public string Name { get; set; }
+        [ShowInAdvancedSearchResults("Name")]
+        public string NameForAdvancedSearch => string.IsNullOrWhiteSpace(Name) ? $"[{Race}]" : Name;
+
+        [AllowAdvancedSearch]
         public Entity Parent { get; set; }
-        public bool IsCiv { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public CreatureInfo Race { get; set; }
-        public List<HistoricalFigure> Worshipped { get; set; }
+        [AllowAdvancedSearch("Worshiped Deities", true)]
+        public List<HistoricalFigure> Worshiped { get; set; }
         public List<string> LeaderTypes { get; set; }
         public List<List<HistoricalFigure>> Leaders { get; set; }
 
+        [AllowAdvancedSearch(true)]
         public List<Population> Populations { get; set; }
+        [AllowAdvancedSearch("Origin Structure")]
         public Structure OriginStructure { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<Entity> Groups { get; set; }
         public List<OwnerPeriod> SiteHistory { get; set; }
+        [AllowAdvancedSearch("Current Sites", true)]
         public List<Site> CurrentSites { get { return SiteHistory.Where(site => site.EndYear == -1).Select(site => site.Site).ToList(); } set { } }
+        [AllowAdvancedSearch("Lost Sites", true)]
         public List<Site> LostSites { get { return SiteHistory.Where(site => site.EndYear >= 0).Select(site => site.Site).ToList(); } set { } }
+        [AllowAdvancedSearch("Related Sites", true)]
         public List<Site> Sites { get { return SiteHistory.Select(site => site.Site).ToList(); } set { } }
         public List<Honor> Honors { get; set; }
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public EntityType Type { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch("Is Civilization")]
+        [ShowInAdvancedSearchResults("Is Civilization")]
+        public bool IsCiv { get; set; }
         public string TypeAsString { get { return Type.GetDescription(); } set { } }
         public List<EntitySiteLink> SiteLinks { get; set; } // legends_plus.xml
         public List<EntityEntityLink> EntityLinks { get; set; } // legends_plus.xml
@@ -41,13 +60,17 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<string> Weapons { get; set; }
         public string Profession { get; set; }
 
+        [AllowAdvancedSearch("Wars (All)", true)]
         public List<War> Wars { get; set; }
+        [AllowAdvancedSearch("Wars (Attacking)", true)]
         public List<War> WarsAttacking { get { return Wars.Where(war => war.Attacker == this).ToList(); } set { } }
+        [AllowAdvancedSearch("Wars (Defending)", true)]
         public List<War> WarsDefending { get { return Wars.Where(war => war.Defender == this).ToList(); } set { } }
         public int WarVictories { get { return WarsAttacking.Sum(war => war.AttackerBattleVictories.Count) + WarsDefending.Sum(war => war.DefenderBattleVictories.Count); } set { } }
         public int WarLosses { get { return WarsAttacking.Sum(war => war.DefenderBattleVictories.Count) + WarsDefending.Sum(war => war.AttackerBattleVictories.Count); } set { } }
         public int WarKills { get { return WarsAttacking.Sum(war => war.DefenderDeathCount) + WarsDefending.Sum(war => war.AttackerDeathCount); } set { } }
         public int WarDeaths { get { return WarsAttacking.Sum(war => war.AttackerDeathCount) + WarsDefending.Sum(war => war.DefenderDeathCount); } set { } }
+        [AllowAdvancedSearch("Leaders", true)]
         public List<HistoricalFigure> AllLeaders => Leaders.SelectMany(l => l).ToList();
         public List<string> PopulationsAsList
         {
@@ -133,7 +156,7 @@ namespace LegendsViewer.Legends.WorldObjects
             Race = CreatureInfo.Unknown;
             Type = EntityType.Unknown;
             Parent = null;
-            Worshipped = new List<HistoricalFigure>();
+            Worshiped = new List<HistoricalFigure>();
             LeaderTypes = new List<string>();
             Leaders = new List<List<HistoricalFigure>>();
             Groups = new List<Entity>();
@@ -223,7 +246,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         var worshippedDeity = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
                         if (worshippedDeity != null)
                         {
-                            Worshipped.Add(worshippedDeity);
+                            Worshiped.Add(worshippedDeity);
                         }
                         break;
                     case "claims":
@@ -461,16 +484,16 @@ namespace LegendsViewer.Legends.WorldObjects
             switch (Type)
             {
                 case EntityType.Religion:
-                    if (Worshipped.Count > 0)
+                    if (Worshiped.Count > 0)
                     {
-                        summary += " centered around the worship of " + Worshipped.First().ToLink(link, pov);
+                        summary += " centered around the worship of " + Worshiped.First().ToLink(link, pov);
                     }
                     break;
                 case EntityType.MilitaryUnit:
                     bool isWorshipping = false;
-                    if (Worshipped.Count > 0)
+                    if (Worshiped.Count > 0)
                     {
-                        summary += " devoted to the worship of " + Worshipped.First().ToLink(link, pov);
+                        summary += " devoted to the worship of " + Worshiped.First().ToLink(link, pov);
                         isWorshipping = true;
                     }
                     if (Weapons.Count > 0)

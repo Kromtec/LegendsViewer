@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace LegendsViewer.Controls.Query
         PropertyBox _selectProperties;
         public DwarfTabControl Browser;
         public World World;
-        List<Object> _results;
+        List<object> _results;
         public QueryControl(World world, DwarfTabControl browser)
         {
             World = world;
@@ -42,10 +43,7 @@ namespace LegendsViewer.Controls.Query
 
         private void SelectList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_selectProperties != null)
-            {
-                _selectProperties.Remove();
-            }
+            _selectProperties?.Remove();
 
             _selectProperties = new PropertyBox
             {
@@ -77,6 +75,10 @@ namespace LegendsViewer.Controls.Query
                     _searchList = new SearchList<UndergroundRegion>(World.UndergroundRegions);
                     _selectProperties.ParentType = typeof(UndergroundRegion);
                     break;
+                case "Structures":
+                    _searchList = new SearchList<Structure>(World.Structures);
+                    _selectProperties.ParentType = typeof(Structure);
+                    break;
                 case "Wars":
                     _searchList = new SearchList<War>(World.Wars);
                     _selectProperties.ParentType = typeof(War);
@@ -89,13 +91,21 @@ namespace LegendsViewer.Controls.Query
                     _searchList = new SearchList<SiteConquered>(World.EventCollections.OfType<SiteConquered>().ToList());
                     _selectProperties.ParentType = typeof(SiteConquered);
                     break;
-                case "Beast Attacks":
+                case "Rampages":
                     _searchList = new SearchList<BeastAttack>(World.BeastAttacks);
                     _selectProperties.ParentType = typeof(BeastAttack);
+                    break;
+                case "Raids":
+                    _searchList = new SearchList<Raid>(World.EventCollections.OfType<Raid>().ToList());
+                    _selectProperties.ParentType = typeof(Raid);
                     break;
                 case "Artifacts":
                     _searchList = new SearchList<Artifact>(World.Artifacts);
                     _selectProperties.ParentType = typeof(Artifact);
+                    break;
+                case "Written Content":
+                    _searchList = new SearchList<WrittenContent>(World.WrittenContents);
+                    _selectProperties.ParentType = typeof(WrittenContent);
                     break;
             }
 
@@ -111,21 +121,6 @@ namespace LegendsViewer.Controls.Query
             OrderByPanel.CriteriaType = _selectProperties.GetLowestPropertyType();
 
             SelectSubListChanged(this, null);
-
-
-            //lblSelectCriteria.Text = "Select " + SelectList.Text + " Where:";
-            //lblSearchCriteria.Text = "Search " + SelectList.Text + " Where:";
-            //lblOrderCriteria.Text = "Order " + SelectList.Text + " By:";
-        }
-
-        private void UpdateCriteriaLabels()
-        {
-           /* if (SelectProperties.Text != "")
-            {
-                lblSelectCriteria.Text = "Select " + SelectList.Text + "' " + SelectProperties.Text + " Where " + S;
-                lblSearchCriteria.Text = "Search " + SelectList.Text + "' " + SelectProperties.Text + " Where:";
-                lblOrderCriteria.Text = "Order " + SelectList.Text + "' " + SelectProperties.Text + " By:";
-            }*/
         }
 
         private void SelectSubListChanged(object sender, EventArgs e)
@@ -173,11 +168,6 @@ namespace LegendsViewer.Controls.Query
             {
                 btnMapResults.Visible = false;
             }
-
-            //if (SelectProperties.SelectedIndex != 0)
-            //    lblSearchCriteria.Text = "Search " + SelectProperties.Text + " Where:";
-            //else
-            //    lblSearchCriteria.Text = "Search " + SelectList.Text + " Where:";
         }
 
         void PanelResized(object sender, EventArgs e)
@@ -215,15 +205,9 @@ namespace LegendsViewer.Controls.Query
 
             dgResults.Columns.Clear();
 
-            List<DataGridViewColumn> columns = new List<DataGridViewColumn>();
-            if (_selectProperties.SelectedProperty == null)
-            {
-                columns = AppHelpers.GetColumns(_selectProperties.ParentType);
-            }
-            else
-            {
-                columns = AppHelpers.GetColumns(_selectProperties.SelectedProperty.Type);
-            }
+            var columns = AppHelpers.GetColumns(_selectProperties.SelectedProperty == null 
+                ? _selectProperties.ParentType 
+                : _selectProperties.SelectedProperty.Type);
 
             if (columns.Count > 0)
             {
@@ -244,16 +228,7 @@ namespace LegendsViewer.Controls.Query
             {
                 dgResults.DataSource = _results;
             }
-            /*if (results.Count > 0 && results.First().GetType() == typeof(HistoricalFigure))
-{
-   DataGridViewTextBoxColumn killCount = new DataGridViewTextBoxColumn();
-   killCount.DataPropertyName = "NotableKills";
-   killCount.HeaderText = "NotableKills";
-   dgResults.Columns.Insert(killCount);
-   dgResults.Columns.AddRange(
-}*/
         }
-
 
         public List<object> Search(CriteriaLine criteria = null)
         {
@@ -261,10 +236,6 @@ namespace LegendsViewer.Controls.Query
             {
                 _searchList.Select(_selectProperties.GetSelectedProperties());
             }
-            /*if (SelectProperties.SelectedProperty.IsList)
-   SearchList.Select(SelectProperties.SelectedProperty.Name, SelectProperties.SelectedProperty.Type.GetGenericArguments()[0]);
-else
-   SearchList.Select(SelectProperties.SelectedProperty.Name, SelectProperties.SelectedProperty.Type);*/
             else
             {
                 _searchList.ResetSelect();
@@ -286,7 +257,6 @@ else
             {
                 _searchList.Select(_selectProperties.GetSelectedProperties());
             }
-            //SearchList.Select(SelectProperties.SelectedProperty.Name, SelectProperties.SelectedProperty.Type.GetGenericArguments()[0]);
             else
             {
                 _searchList.ResetSelect();
@@ -295,7 +265,6 @@ else
             _searchList.Search(SelectionPanel.BuildQuery(criteria));
             return _searchList.GetSelection();
         }
-
 
         private List<SearchInfo> BuildQuery(List<CriteriaLine> inputCriteria)
         {
@@ -405,11 +374,6 @@ else
             return criteria;
         }
 
-        private void listResults_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (listResults.SelectedItem is DwarfObject) Browser.LoadPageControl(listResults.SelectedItem);
-        }
-
         private void dgResults_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             //Browser.LoadPageControl(dgResults.SelectedRows[0].DataBoundItem);
@@ -435,286 +399,23 @@ else
 
         private void dgResults_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            Type objectType = dgResults.Rows[e.RowIndex].DataBoundItem.GetType();
-            string column = dgResults.Columns[e.ColumnIndex].HeaderText;
-
-            if (e.Value != null && e.Value.GetType().IsEnum)
+            Type objectType = dgResults.Rows[e.RowIndex].DataBoundItem?.GetType();
+            if (objectType == null)
             {
-                e.Value = e.Value.GetDescription();
+                return;
             }
 
-            if (objectType == typeof(HistoricalFigure))
+            if (e.Value != null)
             {
-                HistoricalFigure hf = dgResults.Rows[e.RowIndex].DataBoundItem as HistoricalFigure;
-                if (column == "Kills")
+                if (e.Value.GetType().IsEnum)
                 {
-                    e.Value = hf.NotableKills.Count;
+                    e.Value = e.Value.GetDescription();
                 }
-                else if (column == "Abductions")
+                else if(e.Value is IList list)
                 {
-                    e.Value = hf.Abductions.Count;
-                }
-                else if (column == "Battles")
-                {
-                    e.Value = hf.Battles.Count;
-                }
-                else if (column == "Beast Attacks")
-                {
-                    e.Value = hf.BeastAttacks.Count;
-                }
-                else if (column == "Age")
-                {
-                    int age;
-                    string deathYear;
-                    if (hf.DeathYear == -1)
-                    {
-                        age = World.Events.Last().Year - hf.BirthYear;
-                        deathYear = "Present";
-                    }
-                    else
-                    {
-                        age = hf.DeathYear - hf.BirthYear;
-                        deathYear = hf.DeathYear.ToString();
-                    }
-
-                    e.Value = age + " (" + hf.BirthYear + " - " + deathYear + ")";
-                }
-                else if (column == "Events")
-                {
-                    e.Value = hf.FilteredEvents.Count + " / " + hf.Events.Count;
+                    e.Value = list.Count;
                 }
             }
-            else if (objectType == typeof(Entity))
-            {
-                Entity entity = dgResults.Rows[e.RowIndex].DataBoundItem as Entity;
-                if (column == "Name")
-                {
-                    e.Value = entity.ToString();
-                    if (entity.IsCiv)
-                    {
-                        e.Value += " <Civ>";
-                    }
-
-                    e.Value += " (" + entity.Race + ")";
-                }
-                else if (column == "Sites")
-                {
-                    e.Value = entity.CurrentSites.Count;
-                }
-                else if (column == "Lost Sites")
-                {
-                    e.Value = entity.LostSites.Count;
-                }
-                else if (column == "Population")
-                {
-                    e.Value = entity.Populations.Sum(population => population.Count);
-                }
-                else if (column == "Wars")
-                {
-                    e.Value = entity.Wars.Count;
-                }
-                else if (column == "Wins : Losses")
-                {
-                    e.Value = entity.WarVictories + " / " + entity.WarLosses;
-                }
-                else if (column == "Kills : Deaths")
-                {
-                    e.Value = entity.WarKills + " / " + entity.WarDeaths;
-                }
-                else if (column == "Events")
-                {
-                    e.Value = entity.FilteredEvents.Count + " / " + entity.Events.Count;
-                }
-            }
-            else if (objectType == typeof(Site))
-            {
-                Site site = dgResults.Rows[e.RowIndex].DataBoundItem as Site;
-                if (column == "Owner") {
-                    if (e.Value == null)
-                    {
-                        e.Value = "";
-                    }
-                    else
-                    {
-                        e.Value = site.CurrentOwner;
-                        if (site.CurrentOwner is Entity)
-                        {
-                            e.Value += " (" + ((Entity)site.CurrentOwner).Race + ")";
-                        }
-                    }
-                }
-                else if (column == "Previous Owners")
-                {
-                    e.Value = site.PreviousOwners.Count;
-                }
-                else if (column == "Deaths")
-                {
-                    e.Value = site.Deaths.Count;
-                }
-                else if (column == "Warfare")
-                {
-                    e.Value = site.Warfare.Count;
-                }
-                else if (column == "Population")
-                {
-                    e.Value = site.Populations.Sum(population => population.Count);
-                }
-                else if (column == "Beast Attacks")
-                {
-                    e.Value = site.BeastAttacks.Count;
-                }
-                else if (column == "Events")
-                {
-                    e.Value = site.FilteredEvents.Count + " / " + site.Events.Count;
-                }
-            }
-            else if (objectType == typeof(WorldRegion))
-            {
-                WorldRegion region = dgResults.Rows[e.RowIndex].DataBoundItem as WorldRegion;
-                if (column == "Battles")
-                {
-                    e.Value = region.Battles.Count;
-                }
-                else if (column == "Deaths")
-                {
-                    e.Value = region.Deaths.Count;
-                }
-                else if (column == "Events")
-                {
-                    e.Value = region.FilteredEvents.Count + " / " + region.Events.Count;
-                }
-            }
-            else if (objectType == typeof(UndergroundRegion))
-            {
-                UndergroundRegion uregion = dgResults.Rows[e.RowIndex].DataBoundItem as UndergroundRegion;
-                if (column == "Events")
-                {
-                    e.Value = uregion.FilteredEvents.Count + " / " + uregion.Events.Count;
-                }
-            }
-            else if (objectType == typeof(War))
-            {
-                War war = dgResults.Rows[e.RowIndex].DataBoundItem as War;
-                //if (column == "Battles") e.Value = war.Battles;
-                if (column == "Length")
-                {
-                    e.Value = war.StartYear + " - ";
-                    if (war.EndYear == -1)
-                    {
-                        e.Value += "Present";
-                    }
-                    else
-                    {
-                        e.Value += war.EndYear.ToString();
-                    }
-
-                    e.Value += " (" + war.Length + ")";
-                }
-                else if (column == "Attacker")
-                {
-                    e.Value = war.Attacker + " (" + war.Attacker.Race + ")";
-                }
-                else if (column == "Defender")
-                {
-                    e.Value = war.Defender + " (" + war.Defender.Race + ")";
-                }
-                else if (column == "Kills")
-                {
-                    e.Value = war.DefenderDeathCount + " / " + war.AttackerDeathCount;
-                }
-                else if (column == "Victories")
-                {
-                    e.Value = war.AttackerBattleVictories.Count + " / " + war.DefenderBattleVictories.Count;
-                }
-                else if (column == "Sites Lost")
-                {
-                    e.Value = war.DefenderConquerings.Count(conquering => conquering.Notable) + " / " + war.AttackerConquerings.Count(conquering => conquering.Notable);
-                }
-                else if (column == "Events")
-                {
-                    e.Value = war.FilteredEvents.Count + " / " + war.AllEvents.Count;
-                }
-            }
-            else if (objectType == typeof(Battle))
-            {
-                Battle battle = dgResults.Rows[e.RowIndex].DataBoundItem as Battle;
-                if (column == "Attacker")
-                {
-                    e.Value = battle.Attacker + " (" + battle.Attacker.Race + ")";
-                }
-                else if (column == "Defender")
-                {
-                    e.Value = battle.Defender + " (" + battle.Defender.Race + ")";
-                }
-                else if (column == "Deaths")
-                {
-                    e.Value = battle.DeathCount;
-                }
-                else if (column == "Remaining")
-                {
-                    e.Value = battle.AttackersRemainingCount + " / " + battle.DefendersRemainingCount;
-                }
-                else if (column == "Conquering")
-                {
-                    if (battle.Conquering == null)
-                    {
-                        e.Value = "";
-                    }
-                    else
-                    {
-                        e.Value = battle.Conquering.ToString();
-                    }
-                }
-                else if (column == "Events")
-                {
-                    e.Value = battle.FilteredEvents.Count + " / " + battle.AllEvents.Count;
-                }
-            }
-            else if (objectType == typeof(SiteConquered))
-            {
-                SiteConquered conquering = dgResults.Rows[e.RowIndex].DataBoundItem as SiteConquered;
-                if (column == "Name")
-                {
-                    e.Value = conquering.ToString();
-                }
-                else if (column == "Deaths")
-                {
-                    e.Value = conquering.Deaths.Count;
-                }
-                else if (column == "Events")
-                {
-                    e.Value = conquering.FilteredEvents.Count + " / " + conquering.AllEvents.Count;
-                }
-            }
-            else if (objectType == typeof(BeastAttack))
-            {
-                BeastAttack attack = dgResults.Rows[e.RowIndex].DataBoundItem as BeastAttack;
-                if (column == "Name")
-                {
-                    e.Value = attack.ToString();
-                }
-                else if (column == "Deaths")
-                {
-                    e.Value = attack.Deaths.Count;
-                }
-                else if (column == "Events")
-                {
-                    e.Value = attack.FilteredEvents.Count + " / " + attack.AllEvents.Count;
-                }
-            }
-            else if (objectType == typeof(Artifact))
-            {
-                Artifact artifact = dgResults.Rows[e.RowIndex].DataBoundItem as Artifact;
-                if (column == "Events")
-                {
-                    e.Value = artifact.Events.Count;
-                }
-            }
-
-            //if (objectType.BaseType == typeof(WorldObject) && column == "Events")
-            //    e.Value = (dgResults.Rows[e.RowIndex].DataBoundItem as WorldObject).Events.Count;
-            //if (objectType.BaseType == typeof(EventCollection) && column == "Events")
-            //    e.Value = (dgResults.Rows[e.RowIndex].DataBoundItem as EventCollection).AllEvents.Count;
 
             dgResults.Rows[e.RowIndex].HeaderCell.Value = (e.RowIndex + 1).ToString();
         }
@@ -766,6 +467,5 @@ else
         {
 
         }
-
     }
 }

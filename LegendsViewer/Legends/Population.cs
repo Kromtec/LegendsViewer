@@ -1,4 +1,6 @@
-﻿namespace LegendsViewer.Legends
+﻿using LegendsViewer.Controls.Query.Attributes;
+
+namespace LegendsViewer.Legends
 {
     public class Population
     {
@@ -50,7 +52,9 @@
             }
         }
 
+        [AllowAdvancedSearch]
         public CreatureInfo Race { get; set; }
+        [AllowAdvancedSearch]
         public int Count { get; set; }
 
         public Population(CreatureInfo type, int count)

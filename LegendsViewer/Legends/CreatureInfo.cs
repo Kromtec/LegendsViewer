@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Parser;
 
 namespace LegendsViewer.Legends
@@ -7,7 +8,11 @@ namespace LegendsViewer.Legends
     {
         public static CreatureInfo Unknown { get; set; }
         public string Id { get; set; }
+
+        [AllowAdvancedSearch("Name Singular")]
+        [ShowInAdvancedSearchResults("Name Singular")]
         public string NameSingular { get; set; }
+        [AllowAdvancedSearch("Name Plural")]
         public string NamePlural { get; set; }
 
         public CreatureInfo(List<Property> properties, World world)
@@ -32,6 +37,11 @@ namespace LegendsViewer.Legends
             Id = identifier;
             NameSingular = string.Intern(Formatting.FormatRace(identifier));
             NamePlural = string.Intern(Formatting.MakePopulationPlural(NameSingular));
+        }
+
+        public override string ToString()
+        {
+            return NameSingular ?? NamePlural ?? string.Empty;
         }
     }
 }

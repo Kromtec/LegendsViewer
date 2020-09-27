@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -12,17 +13,27 @@ namespace LegendsViewer.Legends.EventCollections
     {
         private static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
 
+        [ShowInAdvancedSearchResults]
         public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
+        [ShowInAdvancedSearchResults("Deaths")]
         public int DeathCount { get { return Deaths.Count; } set { } }
 
+        [AllowAdvancedSearch]
         public int Ordinal { get; set; }
         public Location Coordinates { get; set; }
+        [AllowAdvancedSearch]
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public Site Site { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
 
         private HistoricalFigure _beast;
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public HistoricalFigure Beast
         {
             get => _beast;
@@ -33,6 +44,7 @@ namespace LegendsViewer.Legends.EventCollections
             }
         }
 
+        [AllowAdvancedSearch(true)]
         public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
 
         // BUG in XML? 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.IncidentalEvents;
@@ -14,20 +15,38 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-bishop\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public BattleOutcome Outcome { get; set; }
         public Location Coordinates { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
+        public Site Site { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
-        public Site Site { get; set; }
+        [AllowAdvancedSearch]
         public SiteConquered Conquering { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Attacker { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Victor { get; set; }
         public List<Squad> Attackers { get; set; }
         public List<Squad> Defenders { get; set; }
+        [AllowAdvancedSearch("Notable Attackers", true)]
         public List<HistoricalFigure> NotableAttackers { get; set; }
+        [AllowAdvancedSearch("Notable Defenders", true)]
         public List<HistoricalFigure> NotableDefenders { get; set; }
+        [AllowAdvancedSearch("Non Combatants", true)]
         public List<HistoricalFigure> NonCombatants { get; set; }
         public List<Squad> AttackerSquads { get; set; }
         public List<Squad> DefenderSquads { get; set; }
@@ -35,6 +54,8 @@ namespace LegendsViewer.Legends.EventCollections
         public int DefenderCount { get { return NotableDefenders.Count + DefenderSquads.Sum(squad => squad.Numbers); } set { } }
         public int AttackersRemainingCount { get { return Attackers.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
         public int DefendersRemainingCount { get { return Defenders.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
+        [AllowAdvancedSearch("Death Count")]
+        [ShowInAdvancedSearchResults("Deaths")]
         public int DeathCount { get { return AttackerDeathCount + DefenderDeathCount; } set { } }
         public Dictionary<CreatureInfo, int> Deaths { get; set; }
         public List<HistoricalFigure> NotableDeaths {
@@ -350,8 +371,11 @@ namespace LegendsViewer.Legends.EventCollections
         public class Squad
         {
             public const int MAX_SIZE = 100;
+            [AllowAdvancedSearch]
             public CreatureInfo Race { get; set; }
+            [AllowAdvancedSearch]
             public int Numbers { get; set; }
+            [AllowAdvancedSearch]
             public int Deaths { get; set; }
             public int Site { get; set; }
             public int Population { get; set; }

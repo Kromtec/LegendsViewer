@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -8,11 +9,16 @@ namespace LegendsViewer.Legends
 {
     public class EntityLink
     {
-        public EntityLinkType Type { get; set; }
+        [AllowAdvancedSearch]
         public Entity Entity { get; set; }
+        [AllowAdvancedSearch]
+        public EntityLinkType Type { get; set; }
+        [AllowAdvancedSearch]
         public int Strength { get; set; }
         public int PositionId { get; set; }
+        [AllowAdvancedSearch("Start Year")]
         public int StartYear { get; set; }
+        [AllowAdvancedSearch("End Year")]
         public int EndYear { get; set; }
 
         public EntityLink(List<Property> properties, World world)

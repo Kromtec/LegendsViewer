@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
@@ -12,6 +13,8 @@ namespace LegendsViewer.Legends.WorldObjects
     public class WrittenContent : WorldObject
     {
         private string _name;
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name
         {
             get
@@ -30,11 +33,17 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public int PageStart { get; set; } // legends_plus.xml
         public int PageEnd { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public WrittenContentType Type { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public HistoricalFigure Author { get; set; } // legends_plus.xml
         public List<string> Styles { get; set; } // legends_plus.xml
         public List<Reference> References { get; set; } // legends_plus.xml
         public string TypeAsString { get { return Type.GetDescription(); } set { } }
+        [AllowAdvancedSearch("Pages")]
+        [ShowInAdvancedSearchResults("Pages")]
         public int PageCount { get { return PageEnd - PageStart + 1; } set { } }
         public int AuthorRoll { get; set; }
         public int FormId { get; set; }

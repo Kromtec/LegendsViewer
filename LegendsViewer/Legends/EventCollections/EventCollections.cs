@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -10,8 +11,10 @@ namespace LegendsViewer.Legends.EventCollections
     public abstract class EventCollection : DwarfObject
     {
         public int Id { get; set; }
+        [ShowInAdvancedSearchResults("Start Year")]
         public int StartYear { get; set; }
         public int StartSeconds72 { get; set; }
+        [ShowInAdvancedSearchResults("End Year")]
         public int EndYear { get; set; }
         public int EndSeconds72 { get; set; }
         public string Type { get; set; }
