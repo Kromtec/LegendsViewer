@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Parser;
 
 namespace LegendsViewer.Legends
@@ -14,9 +15,12 @@ namespace LegendsViewer.Legends
                     "Grand Master", "High Master", "Master", "Great", "Accomplished", "Professional",
                     "Expert", "Adept", "Talented", "Proficient", "Skilled", "Competent", "Adequate", "Novice", "Dabbling" };
 
+        [AllowAdvancedSearch]
         public string Name { get; set; }
+        [AllowAdvancedSearch]
         public int Points { get; set; }
 
+        [AllowAdvancedSearch]
         public string Rank
         {
             get

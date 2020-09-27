@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
@@ -13,8 +14,14 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-queen\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public int Length { get; set; }
+        [AllowAdvancedSearch("Death Count (All)")]
+        [ShowInAdvancedSearchResults("Deaths (All)")]
         public int DeathCount { get; set; }
         private readonly Dictionary<CreatureInfo, int> _deaths = new Dictionary<CreatureInfo, int>();
         public Dictionary<CreatureInfo, int> Deaths
@@ -42,12 +49,23 @@ namespace LegendsViewer.Legends.EventCollections
                 return _deaths;
             }
         }
+        [AllowAdvancedSearch("Death Count (Attacker)")]
+        [ShowInAdvancedSearchResults("Deaths (Attacker)")]
         public int AttackerDeathCount { get; set; }
+        [AllowAdvancedSearch("Death Count (Defender)")]
+        [ShowInAdvancedSearchResults("Deaths (Defender)")]
         public int DefenderDeathCount { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Attacker { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<Battle> Battles { get { return Collections.OfType<Battle>().ToList(); } set { } }
+        [AllowAdvancedSearch(true)]
         public List<SiteConquered> Conquerings { get { return Collections.OfType<SiteConquered>().ToList(); } set { } }
+        [AllowAdvancedSearch("Lost Sites", true)]
         public List<Site> SitesLost { get { return Conquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }
         public List<Site> AttackerSitesLost { get { return DefenderConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }
         public List<Site> DefenderSitesLost { get { return AttackerConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }

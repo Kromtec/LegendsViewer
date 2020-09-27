@@ -78,11 +78,14 @@ namespace LegendsViewer.Controls.Query
             "Sites",
             "Regions",
             "Underground Regions",
+            "Structures",
+            "Artifacts",
+            "Written Content",
             "Wars",
             "Battles",
             "Conquerings",
-            "Beast Attacks",
-            "Artifacts"});
+            "Rampages",
+            "Raids"});
             this.SelectList.Location = new System.Drawing.Point(3, 18);
             this.SelectList.Name = "SelectList";
             this.SelectList.Size = new System.Drawing.Size(134, 21);

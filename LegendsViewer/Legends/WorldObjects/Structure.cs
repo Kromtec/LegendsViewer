@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
@@ -11,20 +12,31 @@ namespace LegendsViewer.Legends.WorldObjects
 {
     public class Structure : WorldObject
     {
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string AltName { get; set; } // legends_plus.xml
         public StructureType Type { get; set; } // legends_plus.xml
         public List<int> InhabitantIDs { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch(true)]
         public List<HistoricalFigure> Inhabitants { get; set; } // legends_plus.xml
         public int DeityId { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
         public HistoricalFigure Deity { get; set; } // legends_plus.xml
         public int ReligionId { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
         public Entity Religion { get; set; } // legends_plus.xml
         public StructureSubType StructureSubType { get; set; } // legends_plus.xml
         public int DeityType { get; set; } // TODO legends_plus.xml
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public HistoricalFigure Owner { get; set; } // resolved from site properties
 
+        [AllowAdvancedSearch("Type")]
+        [ShowInAdvancedSearchResults("Type")]
         public string TypeAsString
         {
             get
@@ -39,8 +51,10 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public string Icon { get; set; }
         public int EntityId { get; set; }
+        [AllowAdvancedSearch]
         public Entity Entity { get; set; }
 
+        [AllowAdvancedSearch]
         public Site Site { get; set; }
 
         public int GlobalId { get; set; }
@@ -209,9 +223,9 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             if (Deity != null && Religion != null)
             {
-                if (!Religion.Worshipped.Contains(Deity))
+                if (!Religion.Worshiped.Contains(Deity))
                 {
-                    Religion.Worshipped.Add(Deity);
+                    Religion.Worshiped.Add(Deity);
                     Deity.DedicatedStructures.Add(this);
                 }
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -8,11 +9,15 @@ namespace LegendsViewer.Legends
 {
     public class SiteLink
     {
-        public SiteLinkType Type { get; set; }
+        [AllowAdvancedSearch]
         public Site Site { get; set; }
+        [AllowAdvancedSearch]
+        public SiteLinkType Type { get; set; }
         public int SubId { get; set; }
         public int OccupationId { get; set; }
+        [AllowAdvancedSearch]
         public Entity Entity { get; set; }
+
         public SiteLink(List<Property> properties, World world)
         {
             foreach (Property property in properties)

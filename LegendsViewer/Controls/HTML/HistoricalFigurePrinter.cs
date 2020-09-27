@@ -451,7 +451,7 @@ namespace LegendsViewer.Controls.HTML
                 title = "Is a force said to permeate nature. ";
                 if (_historicalFigure.WorshippedBy != null)
                 {
-                    title += "Worshipped by " + _historicalFigure.WorshippedBy.ToLink();
+                    title += "Worshiped by " + _historicalFigure.WorshippedBy.ToLink();
                 }
             }
             else
@@ -624,7 +624,7 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintRelatedHistoricalFigures()
         {
-            PrintRelatedHFs("Worshipped Deities", _historicalFigure.RelatedHistoricalFigures.Where(hf => hf.Type == HistoricalFigureLinkType.Deity).OrderByDescending(hfl => hfl.Strength).ToList());
+            PrintRelatedHFs("Worshiped Deities", _historicalFigure.RelatedHistoricalFigures.Where(hf => hf.Type == HistoricalFigureLinkType.Deity).OrderByDescending(hfl => hfl.Strength).ToList());
             PrintRelatedHFs("Related Historical Figures", _historicalFigure.RelatedHistoricalFigures.Where(hf => hf.Type != HistoricalFigureLinkType.Deity).ToList());
         }
 

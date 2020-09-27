@@ -225,5 +225,13 @@ namespace LegendsViewer
         {
             (sender as TabControl)?.SelectedTab?.Controls.OfType<BaseSearchTab>().FirstOrDefault()?.DoSearch();
         }
+
+        private void btnAdvancedSearchClick(object sender, EventArgs e)
+        {
+            if (!FileLoader.Working && World != null)
+            {
+                Browser.Navigate(ControlOption.Search);
+            }
+        }
     }
 }

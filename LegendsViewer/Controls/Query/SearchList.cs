@@ -28,14 +28,14 @@ namespace LegendsViewer.Controls.Query
         public List<T> BaseList;
         public List<PropertyInfo> SubListProperties { get; set; }
 
-        public SearchList(List<T> list)
+        public SearchList()
         {
-            BaseList = list;
             List = new List<T>();
         }
 
-        public SearchList()
+        public SearchList(List<T> list) : this()
         {
+            BaseList = list;
         }
 
         public override Type GetListType()
@@ -130,30 +130,34 @@ namespace LegendsViewer.Controls.Query
 
         public override void Search(List<SearchInfo> searchCriteria)
         {
-            Expression<Func<T, bool>> predicate;
-            if (searchCriteria.Count > 0)
+            try
             {
-                predicate = t => false;
-            }
-            else
-            {
-                predicate = t => true;
-            }
+                Expression<Func<T, bool>> predicate;
+                if (searchCriteria.Count > 0)
+                {
+                    predicate = t => false;
+                }
+                else
+                {
+                    predicate = t => true;
+                }
 
-            foreach (SearchInfo criteria in searchCriteria)
-            {
-                var where = criteria.GetPredicateExpression() as Expression<Func<T, bool>>;
-                predicate = criteria.Operator == QueryOperator.And
-                            ? predicate.And(where)
-                            : predicate.Or(where);
+                foreach (SearchInfo criteria in searchCriteria)
+                {
+                    var where = criteria.GetPredicateExpression() as Expression<Func<T, bool>>;
+                    predicate = criteria.Operator == QueryOperator.And
+                        ? predicate.And(where)
+                        : predicate.Or(where);
+                }
+                var compiled = predicate.Compile();
+                var search = BaseList.Where(compiled);
+                List = search.ToList();
             }
-            var compiled = predicate.Compile();
-            var search = BaseList.Where(compiled);
-            List = search.ToList();
-            if (SubList != null)
+            catch (Exception)
             {
-                SubList.SetupList(List, SubListProperties);
+                List = new List<T>();
             }
+            SubList?.SetupList(List, SubListProperties);
         }
 
         public override void OrderBy(List<SearchInfo> orderCriteria)

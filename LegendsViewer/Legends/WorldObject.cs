@@ -10,9 +10,16 @@ namespace LegendsViewer.Legends
     public abstract class WorldObject : DwarfObject
     {
         public List<WorldEvent> Events { get; set; }
+        public abstract List<WorldEvent> FilteredEvents { get; }
         public List<EventCollection> EventCollectons { get; set; }
         public int EventCount { get { return Events.Count; } set { } }
         public int Id { get; set; }
+
+        protected WorldObject() { 
+            Id = -1; 
+            Events = new List<WorldEvent>();
+            EventCollectons = new List<EventCollection>();
+        }
 
         protected WorldObject(List<Property> properties, World world) : this()
         {
@@ -24,19 +31,11 @@ namespace LegendsViewer.Legends
                 }
             }
         }
-
-        public WorldObject() { 
-            Id = -1; 
-            Events = new List<WorldEvent>();
-            EventCollectons = new List<EventCollection>();
-        }
         
 
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             return "";
         }
-
-        public abstract List<WorldEvent> FilteredEvents { get; }
     }
 }

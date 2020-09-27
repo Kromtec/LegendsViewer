@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Interfaces;
@@ -13,10 +14,17 @@ namespace LegendsViewer.Legends.WorldObjects
     {
         public string Icon = "<i class=\"fa fa-fw fa-map\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public int Depth { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Type { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<Battle> Battles { get; set; }
         public List<Location> Coordinates { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch("Square Tiles")]
+        [ShowInAdvancedSearchResults("Square Tiles")]
         public int SquareTiles
         {
             get

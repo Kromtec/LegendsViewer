@@ -34,9 +34,6 @@ namespace LegendsViewer.Controls.Tabs
             this.btnXMLPlus = new System.Windows.Forms.Button();
             this.txtXMLPlus = new System.Windows.Forms.TextBox();
             this.btnAdvancedSearch = new System.Windows.Forms.Button();
-            this.btnChart = new System.Windows.Forms.Button();
-            this.btnStats = new System.Windows.Forms.Button();
-            this.btnShowMap = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.txtMap = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -47,6 +44,9 @@ namespace LegendsViewer.Controls.Tabs
             this.btnXML = new System.Windows.Forms.Button();
             this.txtXML = new System.Windows.Forms.TextBox();
             this.txtLog = new System.Windows.Forms.RichTextBox();
+            this.btnChart = new System.Windows.Forms.Button();
+            this.btnStats = new System.Windows.Forms.Button();
+            this.btnShowMap = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnXMLPlus
@@ -75,6 +75,8 @@ namespace LegendsViewer.Controls.Tabs
             // 
             this.btnAdvancedSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdvancedSearch.Image = global::LegendsViewer.Properties.Resources.search16x16;
+            this.btnAdvancedSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAdvancedSearch.Location = new System.Drawing.Point(10, 488);
             this.btnAdvancedSearch.Name = "btnAdvancedSearch";
             this.btnAdvancedSearch.Size = new System.Drawing.Size(250, 23);
@@ -82,48 +84,6 @@ namespace LegendsViewer.Controls.Tabs
             this.btnAdvancedSearch.Text = "Advanced Search";
             this.btnAdvancedSearch.UseVisualStyleBackColor = true;
             this.btnAdvancedSearch.Click += new System.EventHandler(this.btnAdvancedSearch_Click);
-            // 
-            // btnChart
-            // 
-            this.btnChart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnChart.AutoSize = true;
-            this.btnChart.Image = global::LegendsViewer.Properties.Resources.chart16x16;
-            this.btnChart.Location = new System.Drawing.Point(182, 457);
-            this.btnChart.Name = "btnChart";
-            this.btnChart.Size = new System.Drawing.Size(78, 25);
-            this.btnChart.TabIndex = 34;
-            this.btnChart.Text = "Charts";
-            this.btnChart.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnChart.UseVisualStyleBackColor = true;
-            this.btnChart.Click += new System.EventHandler(this.btnChart_Click);
-            // 
-            // btnStats
-            // 
-            this.btnStats.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStats.AutoSize = true;
-            this.btnStats.Image = global::LegendsViewer.Properties.Resources.globe16x16;
-            this.btnStats.Location = new System.Drawing.Point(10, 457);
-            this.btnStats.Name = "btnStats";
-            this.btnStats.Size = new System.Drawing.Size(76, 25);
-            this.btnStats.TabIndex = 33;
-            this.btnStats.Text = "Summary";
-            this.btnStats.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnStats.UseVisualStyleBackColor = true;
-            this.btnStats.Click += new System.EventHandler(this.btnStats_Click);
-            // 
-            // btnShowMap
-            // 
-            this.btnShowMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnShowMap.AutoSize = true;
-            this.btnShowMap.Image = global::LegendsViewer.Properties.Resources.map16x16;
-            this.btnShowMap.Location = new System.Drawing.Point(91, 457);
-            this.btnShowMap.Name = "btnShowMap";
-            this.btnShowMap.Size = new System.Drawing.Size(85, 25);
-            this.btnShowMap.TabIndex = 32;
-            this.btnShowMap.Text = "World Map";
-            this.btnShowMap.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnShowMap.UseVisualStyleBackColor = true;
-            this.btnShowMap.Click += new System.EventHandler(this.btnShowMap_Click);
             // 
             // btnMap
             // 
@@ -239,6 +199,48 @@ namespace LegendsViewer.Controls.Tabs
             this.txtLog.TabIndex = 22;
             this.txtLog.Text = "";
             this.txtLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLog_KeyDown);
+            // 
+            // btnChart
+            // 
+            this.btnChart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChart.AutoSize = true;
+            this.btnChart.Image = global::LegendsViewer.Properties.Resources.chart16x16;
+            this.btnChart.Location = new System.Drawing.Point(182, 457);
+            this.btnChart.Name = "btnChart";
+            this.btnChart.Size = new System.Drawing.Size(78, 25);
+            this.btnChart.TabIndex = 34;
+            this.btnChart.Text = "Charts";
+            this.btnChart.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnChart.UseVisualStyleBackColor = true;
+            this.btnChart.Click += new System.EventHandler(this.btnChart_Click);
+            // 
+            // btnStats
+            // 
+            this.btnStats.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnStats.AutoSize = true;
+            this.btnStats.Image = global::LegendsViewer.Properties.Resources.globe16x16;
+            this.btnStats.Location = new System.Drawing.Point(10, 457);
+            this.btnStats.Name = "btnStats";
+            this.btnStats.Size = new System.Drawing.Size(76, 25);
+            this.btnStats.TabIndex = 33;
+            this.btnStats.Text = "Summary";
+            this.btnStats.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnStats.UseVisualStyleBackColor = true;
+            this.btnStats.Click += new System.EventHandler(this.btnStats_Click);
+            // 
+            // btnShowMap
+            // 
+            this.btnShowMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnShowMap.AutoSize = true;
+            this.btnShowMap.Image = global::LegendsViewer.Properties.Resources.map16x16;
+            this.btnShowMap.Location = new System.Drawing.Point(91, 457);
+            this.btnShowMap.Name = "btnShowMap";
+            this.btnShowMap.Size = new System.Drawing.Size(85, 25);
+            this.btnShowMap.TabIndex = 32;
+            this.btnShowMap.Text = "World Map";
+            this.btnShowMap.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnShowMap.UseVisualStyleBackColor = true;
+            this.btnShowMap.Click += new System.EventHandler(this.btnShowMap_Click);
             // 
             // SummaryTab
             // 

@@ -60,6 +60,7 @@ namespace LegendsViewer
             this.btnStats = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnForward = new System.Windows.Forms.Button();
+            this.btnAdvancedSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.scWorld)).BeginInit();
             this.scWorld.Panel1.SuspendLayout();
             this.scWorld.Panel2.SuspendLayout();
@@ -106,6 +107,7 @@ namespace LegendsViewer
             // 
             // scWorld.Panel2
             // 
+            this.scWorld.Panel2.Controls.Add(this.btnAdvancedSearch);
             this.scWorld.Panel2.Controls.Add(this.btnChart);
             this.scWorld.Panel2.Controls.Add(this.btnMap);
             this.scWorld.Panel2.Controls.Add(this.btnStats);
@@ -338,6 +340,18 @@ namespace LegendsViewer
             this.btnForward.UseVisualStyleBackColor = true;
             this.btnForward.Click += new System.EventHandler(this.BtnForward_Click);
             // 
+            // btnAdvancedSearch
+            // 
+            this.btnAdvancedSearch.Image = global::LegendsViewer.Properties.Resources.search16x16;
+            this.btnAdvancedSearch.Location = new System.Drawing.Point(361, 3);
+            this.btnAdvancedSearch.Name = "btnAdvancedSearch";
+            this.btnAdvancedSearch.Size = new System.Drawing.Size(120, 24);
+            this.btnAdvancedSearch.TabIndex = 38;
+            this.btnAdvancedSearch.Text = "Advanced Search";
+            this.btnAdvancedSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAdvancedSearch.UseVisualStyleBackColor = true;
+            this.btnAdvancedSearch.Click += new System.EventHandler(this.btnAdvancedSearchClick);
+            // 
             // FrmLegendsViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,6 +413,7 @@ namespace LegendsViewer
         private WarfareTab warfareTab1;
         private CollectionsTab collectionsTab1;
         private InfrastructureTab infrastructureTab1;
+        private Button btnAdvancedSearch;
     }
 }
 

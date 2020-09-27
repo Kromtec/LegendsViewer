@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
@@ -14,19 +15,35 @@ namespace LegendsViewer.Legends.WorldObjects
     {
         public string Icon = "<i class=\"fa fa-fw fa-home\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
+        public string Name { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Type { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public WorldRegion Region { get; set; }
         public SiteType SiteType { get; set; }
-        public string Name { get; set; }
+        [AllowAdvancedSearch("Untranslated Name")]
+        [ShowInAdvancedSearchResults("Untranslated Name")]
         public string UntranslatedName { get; set; }
         public Location Coordinates { get; set; }
         public Rectangle Rectangle { get; set; }
+        [AllowAdvancedSearch("Has Structures")]
+        [ShowInAdvancedSearchResults("Has Structures")]
         public bool HasStructures { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public List<Structure> Structures { get; set; }
         public List<EventCollection> Warfare { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public List<Battle> Battles { get { return Warfare.OfType<Battle>().ToList(); } set { } }
+        [AllowAdvancedSearch(true)]
         public List<SiteConquered> Conquerings { get { return Warfare.OfType<SiteConquered>().ToList(); } set { } }
         public List<OwnerPeriod> OwnerHistory { get; set; }
+        [AllowAdvancedSearch("Related Historical Figures", true)]
         public List<HistoricalFigure> RelatedHistoricalFigures { get; set; }
         public List<SiteProperty> SiteProperties { get; set; }
 
@@ -45,7 +62,9 @@ namespace LegendsViewer.Legends.WorldObjects
             set { }
         }
         public List<DwarfObject> PreviousOwners { get { return OwnerHistory.Where(site => site.EndYear >= 0).Select(site => site.Owner).ToList(); } set { } }
+        [AllowAdvancedSearch(true)]
         public List<Site> Connections { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<Population> Populations { get; set; }
         public List<string> PopulationsAsList
         {
@@ -84,7 +103,9 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             set { }
         }
+        [AllowAdvancedSearch("Notable Deaths", true)]
         public List<HistoricalFigure> NotableDeaths { get { return Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        [AllowAdvancedSearch("Rampages", true)]
         public List<BeastAttack> BeastAttacks { get; set; }
         public override List<WorldEvent> FilteredEvents
         {

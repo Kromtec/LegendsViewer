@@ -470,11 +470,11 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintWorships()
         {
-            if (_entity.Worshipped != null && _entity.Worshipped.Count > 0)
+            if (_entity.Worshiped != null && _entity.Worshiped.Count > 0)
             {
                 Html.AppendLine(Bold("Worships") + LineBreak);
                 StartList(ListType.Unordered);
-                foreach (HistoricalFigure worship in _entity.Worshipped)
+                foreach (HistoricalFigure worship in _entity.Worshiped)
                 {
                     string associations = "";
                     foreach (string association in worship.Spheres)

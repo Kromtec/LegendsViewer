@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
@@ -24,6 +25,8 @@ namespace LegendsViewer.Legends.WorldObjects
         public static readonly string MaleIcon = "<i class=\"fa fa-fw fa-mars\"></i>";
 
         public static HistoricalFigure Unknown;
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; }
 
         private string ShortName
@@ -84,18 +87,29 @@ namespace LegendsViewer.Legends.WorldObjects
             }
         }
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public CreatureInfo Race { get; set; }
-        public string PreviousRace { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Caste { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string AssociatedType { get; set; }
+        [AllowAdvancedSearch]
+        public string PreviousRace { get; set; }
         public int EntityPopulationId { get; set; }
         public EntityPopulation EntityPopulation { get; set; }
+        [AllowAdvancedSearch("Current State")]
+        [ShowInAdvancedSearchResults]
         public HfState CurrentState { get; set; }
         public List<int> UsedIdentityIds { get; set; }
         public int CurrentIdentityId { get; set; }
+        [AllowAdvancedSearch("Holding Artefacts", true)]
         public List<Artifact> HoldingArtifacts { get; set; }
         public List<State> States { get; set; }
         public List<CreatureType> CreatureTypes { get; set; }
+        [AllowAdvancedSearch("Related Historical Figures", true)]
         public List<HistoricalFigureLink> RelatedHistoricalFigures { get; set; }
         public List<SiteProperty> SiteProperties { get; set; }
         public List<EntityLink> RelatedEntities { get; set; }
@@ -107,16 +121,23 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Skill> Skills { get; set; }
         public List<VagueRelationship> VagueRelationships { get; set; }
         public List<Structure> DedicatedStructures { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public int Age { get; set; }
         public int Appeared { get; set; }
+        [AllowAdvancedSearch("Birth Year")]
         public int BirthYear { get; set; }
         public int BirthSeconds72 { get; set; }
+        [AllowAdvancedSearch("Death Year")]
         public int DeathYear { get; set; }
         public int DeathSeconds72 { get; set; }
+        [AllowAdvancedSearch("Death Cause")]
         public DeathCause DeathCause { get; set; }
         public List<string> ActiveInteractions { get; set; }
         public List<string> InteractionKnowledge { get; set; }
+        [AllowAdvancedSearch]
         public string Goal { get; set; }
+        [AllowAdvancedSearch]
         public string Interaction { get; set; }
 
         public HistoricalFigure LineageCurseParent { get; set; }
@@ -128,18 +149,22 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<HistoricalFigure> Abductions { get { return Events.OfType<HfAbducted>().Where(abduction => abduction.Snatcher == this).Select(abduction => abduction.Target).ToList(); } set { } }
         public int Abducted => Events.OfType<HfAbducted>().Count(abduction => abduction.Target == this);
         public List<string> Spheres { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<Battle> Battles { get; set; }
         public List<Battle> BattlesAttacking => Battles.Where(battle => battle.NotableAttackers.Contains(this)).ToList();
         public List<Battle> BattlesDefending => Battles.Where(battle => battle.NotableDefenders.Contains(this)).ToList();
         public List<Battle> BattlesNonCombatant => Battles.Where(battle => battle.NonCombatants.Contains(this)).ToList();
         public List<Position> Positions { get; set; }
         public Entity WorshippedBy { get; set; }
+        [AllowAdvancedSearch("Beast Attacks", true)]
         public List<BeastAttack> BeastAttacks { get; set; }
         public HonorEntity HonorEntity { get; set; }
         public List<IntrigueActor> IntrigueActors { get; set; }
         public List<IntriguePlot> IntriguePlots { get; set; }
         public readonly List<Identity> Identities = new List<Identity>();
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Alive
         {
             get
@@ -154,13 +179,26 @@ namespace LegendsViewer.Legends.WorldObjects
             set { }
         }
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Deity { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Skeleton { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Force { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Zombie { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Ghost { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public bool Animated { get; set; }
         public string AnimatedType { get; set; }
+        [AllowAdvancedSearch]
         public bool Adventurer { get; set; }
         public string BreedId { get; set; }
 
@@ -593,10 +631,15 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public class Position
         {
+            [AllowAdvancedSearch]
             public Entity Entity { get; set; }
-            public int Began { get; set; }
-            public int Ended { get; set; }
+            [AllowAdvancedSearch]
             public string Title { get; set; }
+            [AllowAdvancedSearch]
+            public int Began { get; set; }
+            [AllowAdvancedSearch]
+            public int Ended { get; set; }
+            [AllowAdvancedSearch]
             public int Length { get; set; }
 
             public Position(Entity civ, int began, int ended, string title)
@@ -607,8 +650,11 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public class State
         {
+            [AllowAdvancedSearch("State")]
             public HfState HfState { get; set; }
+            [AllowAdvancedSearch("Start year")]
             public int StartYear { get; set; }
+            [AllowAdvancedSearch("End Year")]
             public int EndYear { get; set; }
 
             public State(HfState state, int start)

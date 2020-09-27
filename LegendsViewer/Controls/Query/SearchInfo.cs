@@ -9,9 +9,41 @@ namespace LegendsViewer.Controls.Query
 {
     public static class ExpressionExtensions
     {
-        public static Expression AddNullCheck(this Expression property, Expression comparer)
+        public static Expression AddNullCheck(this Expression expression)
         {
-            return Expression.AndAlso(Expression.NotEqual(property, Expression.Constant(null, property.Type)), comparer);
+            if (expression is BinaryExpression binaryExpression && binaryExpression.Left is BinaryExpression leftExpression &&
+                leftExpression.Left is MemberExpression binaryMemberExpression)
+            {
+                return CombineNullCheckWithCurrentExpression(expression, binaryMemberExpression);
+            }
+
+            if (expression is MethodCallExpression methodCallExpressionCurrent && methodCallExpressionCurrent.Object != null)
+            {
+                if (methodCallExpressionCurrent.Object is MethodCallExpression methodCallExpression && methodCallExpression.Object != null &&
+                    methodCallExpression.Object is MemberExpression memberExpressionParent && memberExpressionParent.Expression != null)
+                {
+                    return CombineNullCheckWithCurrentExpression(expression, memberExpressionParent);
+                }
+                if (methodCallExpressionCurrent.Object is MemberExpression memberExpression && memberExpression.Expression != null)
+                {
+                    return CombineNullCheckWithCurrentExpression(expression, memberExpression);
+                }
+            }
+
+            if (expression is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression && unaryMemberExpression.Expression != null)
+            {
+                return CombineNullCheckWithCurrentExpression(expression, unaryMemberExpression);
+            }
+            return expression;
+        }
+
+        private static Expression CombineNullCheckWithCurrentExpression(Expression expression, MemberExpression memberExpression)
+        {
+            var parentExpression = memberExpression.Expression;
+            var parentExpressionNullCheck =
+                Expression.NotEqual(parentExpression, Expression.Constant(null, parentExpression.Type));
+            var addedParentNullCheck = Expression.AndAlso(parentExpressionNullCheck, expression);
+            return addedParentNullCheck.AddNullCheck();
         }
     }
 
@@ -216,17 +248,18 @@ namespace LegendsViewer.Controls.Query
 
         public bool ContainsListPropertyLast()
         {
-            if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType && Next != null && Next.Comparer == QueryComparer.All)
+            var propertyInfo = GetSearchType().GetProperty(PropertyName);
+            if (propertyInfo.PropertyType.IsGenericType && Next != null && Next.Comparer == QueryComparer.All)
             {
                 return true;
             }
 
-            if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType && Next != null)
+            if (propertyInfo.PropertyType.IsGenericType && Next != null)
             {
                 return false;
             }
 
-            if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType && Next == null)
+            if (propertyInfo.PropertyType.IsGenericType && Next == null)
             {
                 return true;
             }
@@ -340,8 +373,6 @@ namespace LegendsViewer.Controls.Query
                     {
                         comparer = Expression.Not(comparer);
                     }
-                    //comparer = comparer.AddNullCheck(property);
-
                     break;
                 case QueryComparer.StringNotEqual:
                     methodInfo = GetMethodInfo();
@@ -392,6 +423,7 @@ namespace LegendsViewer.Controls.Query
                 default:
                     throw new ArgumentException("No comparison supported for " + Comparer);
             }
+            comparer = comparer.AddNullCheck();
             return comparer;
         }
 
@@ -424,8 +456,6 @@ namespace LegendsViewer.Controls.Query
                     methodInfo = typeof(string).GetMethod("StartsWith", types.ToArray()); break;
                 case QueryComparer.Equals:
                 case QueryComparer.NotEqual:
-                    //types.Insert(typeof(T));
-                    //methodInfo = typeof(T).GetMethod("Equals", types.ToArray()); break;
                     if (PropertyName == null || PropertyName == "Value")
                     {
                         types.Add(typeof(T));
@@ -457,7 +487,6 @@ namespace LegendsViewer.Controls.Query
 
                     break;
                 case QueryComparer.Min:
-                    //methodInfo = typeof(Enumerable).GetMethods().Single(method => method.Name == "Min" && method.GetGenericArguments().Count() == 2);
                     methodInfo = typeof(Enumerable).GetMethods().Single(method => method.Name == "Min" && method.IsStatic && method.GetParameters().Length == 2 && method.GetGenericArguments().Length == 2);
                     break;
             }
@@ -511,7 +540,7 @@ namespace LegendsViewer.Controls.Query
                 List<T> baseList;
                 if (baseObject.GetType().GetGenericArguments()[0] == typeof(object))
                 {
-                    baseList = (baseObject as List<object>).Cast<T>().ToList();
+                    baseList = (baseObject as List<object>).OfType<T>().ToList();
                 }
                 else
                 {
@@ -531,10 +560,8 @@ namespace LegendsViewer.Controls.Query
                     {
                         return baseList.AsQueryable().Select(PropertyName + ".Count").Cast<object>().ToList();
                     }
-                    else
-                    {
-                        return Next.Select(baseList.AsQueryable().SelectMany(PropertyName).Cast<object>().ToList());
-                    }
+
+                    return Next.Select(baseList.AsQueryable().SelectMany(PropertyName).Cast<object>().ToList());
                 }
 
                 if (Next == null)
@@ -547,14 +574,7 @@ namespace LegendsViewer.Controls.Query
             PropertyInfo property = baseObject.GetType().GetProperty(PropertyName);
             if (property.PropertyType.IsGenericType)
             {
-                if (Next == null)
-                {
-                    return null;//new List<object>() { (property.GetValue(baseObject, null) as List<object>).Count };
-                }
-                else
-                {
-                    return Next.Select(property.GetValue(baseObject, null));
-                }
+                return Next?.Select(property.GetValue(baseObject, null));
             }
 
             return new List<object> { property.GetValue(baseObject, null) };

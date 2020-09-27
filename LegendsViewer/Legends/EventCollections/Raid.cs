@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -12,18 +13,45 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public static readonly string Icon = "<i class=\"fa fa-fw fa-bolt\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get { return "The " + GetOrdinal(Ordinal) + "Raid of " + Site.Name; } set { } }
         public int Ordinal { get; set; }
         public Location Coordinates { get; set; }
-        public WorldRegion Region { get; set; }
-        public UndergroundRegion UndergroundRegion { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Site Site { get; set; }
+
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
+        public WorldRegion Region
+        {
+            get
+            {
+                if (_region == null && Site?.Region != null)
+                {
+                    _region = Site.Region;
+                }
+                return _region;
+            }
+            set => _region = value;
+        }
+
+        public UndergroundRegion UndergroundRegion { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Attacker { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
+        [AllowAdvancedSearch("Items Stolen")]
+        [ShowInAdvancedSearchResults("Items Stolen")]
         public int ItemsStolenCount { get { return GetSubEvents().OfType<ItemStolen>().Count(); } set { } }
         public EventCollection ParentEventCol { get; set; }
 
         public static List<string> Filters;
+        private WorldRegion _region;
+
         public override List<WorldEvent> FilteredEvents
         {
             get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -8,9 +9,12 @@ namespace LegendsViewer.Legends
 {
     public class HistoricalFigureLink
     {
+        [AllowAdvancedSearch("Historical Figure")]
         public HistoricalFigure HistoricalFigure { get; set; }
-        public int Strength { get; set; }
+        [AllowAdvancedSearch]
         public HistoricalFigureLinkType Type { get; set; }
+        [AllowAdvancedSearch]
+        public int Strength { get; set; }
 
         public HistoricalFigureLink(List<Property> properties, World world)
         {

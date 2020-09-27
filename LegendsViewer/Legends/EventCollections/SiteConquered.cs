@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Parser;
@@ -14,15 +15,29 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public string Icon = "<i class=\"glyphicon fa-fw glyphicon-pawn\"></i>";
 
+        [ShowInAdvancedSearchResults]
         public string Name { get { return GetOrdinal(Ordinal) + ConquerType.GetDescription() + " of " + Site.Name; } set { } }
+        [ShowInAdvancedSearchResults("Deaths")]
         public int DeathCount { get { return Deaths.Count; } set { } }
 
+        [AllowAdvancedSearch]
         public int Ordinal { get; set; }
+        [AllowAdvancedSearch("Conquered by")]
+        [ShowInAdvancedSearchResults("Conquered By")]
         public SiteConqueredType ConquerType { get; set; }
+        [AllowAdvancedSearch(true)]
+        [ShowInAdvancedSearchResults]
         public Site Site { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Attacker { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Battle Battle { get; set; }
+        [AllowAdvancedSearch(true)]
         public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
         public static List<string> Filters;
         public override List<WorldEvent> FilteredEvents

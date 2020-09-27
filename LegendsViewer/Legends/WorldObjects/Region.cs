@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls.HTML.Utilities;
+using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.EventCollections;
 using LegendsViewer.Legends.Events;
@@ -14,7 +15,11 @@ namespace LegendsViewer.Legends.WorldObjects
     {
         public string Icon = "<i class=\"fa fa-fw fa-map-o\"></i>";
 
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Name { get; set; }
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public string Type { get; set; }
         public List<string> Deaths
         {
@@ -34,9 +39,13 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             set { }
         }
+        [AllowAdvancedSearch("Notable Deaths", true)]
         public List<HistoricalFigure> NotableDeaths { get { return Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        [AllowAdvancedSearch(true)]
         public List<Battle> Battles { get; set; }
         public List<Location> Coordinates { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch("Square Tiles")]
+        [ShowInAdvancedSearchResults("Square Tiles")]
         public int SquareTiles
         {
             get
@@ -45,10 +54,15 @@ namespace LegendsViewer.Legends.WorldObjects
             }
         }
 
+        [AllowAdvancedSearch(true)]
         public List<Site> Sites { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch("Mountain Peaks", true)]
         public List<MountainPeak> MountainPeaks { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
+        [ShowInAdvancedSearchResults]
         public Evilness Evilness { get; set; } // legends_plus.xml
         public int ForceId { get; set; } // legends_plus.xml
+        [AllowAdvancedSearch]
         public HistoricalFigure Force { get; set; } // legends_plus.xml
 
         public static List<string> Filters;
