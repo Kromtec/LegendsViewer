@@ -19,6 +19,8 @@ namespace LegendsViewer.Legends.Enums
         [Description("Home - Site Realization Building")]
         HomeSiteRealizationBuilding,
         [Description("Home - Site Abstract Building")]
-        HomeSiteAbstractBuilding
+        HomeSiteAbstractBuilding,
+        [Description("Prison - Site Building")]
+        PrisonSiteBuildingProfile
     }
 }
