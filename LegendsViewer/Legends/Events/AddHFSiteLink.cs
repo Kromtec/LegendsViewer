@@ -40,6 +40,7 @@ namespace LegendsViewer.Legends.Events
                             case "occupation": LinkType = SiteLinkType.Occupation; break;
                             case "home site realization building": LinkType = SiteLinkType.HomeSiteRealizationBuilding; break;
                             case "home site abstract building": LinkType = SiteLinkType.HomeSiteAbstractBuilding; break;
+                            case "prison site building profile": LinkType = SiteLinkType.PrisonSiteBuildingProfile; break;
                             default:
                                 property.Known = false;
                                 break;
