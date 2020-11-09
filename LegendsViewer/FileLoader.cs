@@ -296,59 +296,32 @@ namespace LegendsViewer
 
         private void LocateOtherFiles(string xmlFile)
         {
-            FileInfo fileInfo = new FileInfo(xmlFile);
-            string directory = fileInfo.DirectoryName;
+            string directory = new FileInfo(xmlFile).DirectoryName;
 
-            XmlState = FileState.NotReady;
-            HistoryState = FileState.NotReady;
-            SitesState = FileState.NotReady;
-            MapState = FileState.NotReady;
-            XmlPlusState = FileState.NotReady;
+            _xmlText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierLegendsXml).FirstOrDefault();
+            _historyText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldHistoryTxt).FirstOrDefault();
+            _sitesText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldSitesAndPops).FirstOrDefault();
+            _mapText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldMapBmp).FirstOrDefault();
+            _xmlPlusText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierLegendsPlusXml).FirstOrDefault();
 
-            foreach (var file in Directory.EnumerateFiles(directory))
+            XmlState = String.IsNullOrEmpty(_xmlText.Text) ? FileState.NotReady : FileState.Ready;
+            HistoryState = String.IsNullOrEmpty(_historyText.Text) ? FileState.NotReady : FileState.Ready;
+            SitesState = String.IsNullOrEmpty(_sitesText.Text) ? FileState.NotReady : FileState.Ready;
+            MapState = String.IsNullOrEmpty(_mapText.Text) ? FileState.NotReady : FileState.Ready;
+            XmlPlusState = String.IsNullOrEmpty(_xmlPlusText.Text) ? FileState.NotReady : FileState.Ready;
+
+            if (String.IsNullOrEmpty(_mapText.Text))
             {
-                if (file.EndsWith(FileIdentifierLegendsXml))
+                string imageFile = Directory.GetFiles(directory)
+                    .FirstOrDefault(f =>
+                        (f.EndsWith(".bmp") ||
+                         f.EndsWith(".png") ||
+                         f.EndsWith(".jpg") ||
+                         f.EndsWith(".jpeg")));
+                if (!string.IsNullOrEmpty(imageFile))
                 {
-                    _xmlText.Text = file;
-                    XmlState = FileState.Ready;
-                }
-
-                if (file.EndsWith(FileIdentifierWorldHistoryTxt))
-                {
-                    _historyText.Text = file;
-                    HistoryState = FileState.Ready;
-                }
-
-                if (file.EndsWith(FileIdentifierWorldSitesAndPops))
-                {
-                    _sitesText.Text = file;
-                    SitesState = FileState.Ready;
-                }
-
-                if (file.EndsWith(FileIdentifierWorldMapBmp))
-                {
-                    _mapText.Text = file;
+                    _mapText.Text = imageFile;
                     MapState = FileState.Ready;
-                }
-                else if (String.IsNullOrEmpty(_mapText.Text))
-                {
-                    string imageFile = Directory.GetFiles(directory)
-                        .FirstOrDefault(f =>
-                            (f.EndsWith(".bmp") ||
-                             f.EndsWith(".png") ||
-                             f.EndsWith(".jpg") ||
-                             f.EndsWith(".jpeg")));
-                    if (!string.IsNullOrEmpty(imageFile))
-                    {
-                        _mapText.Text = imageFile;
-                        MapState = FileState.Ready;
-                    }
-                }
-
-                if (file.EndsWith(FileIdentifierLegendsPlusXml))
-                {
-                    _xmlPlusText.Text = file;
-                    XmlPlusState = FileState.Ready;
                 }
             }
         }
