@@ -286,7 +286,7 @@ namespace LegendsViewer
         private void XmlPlusClick(object sender, EventArgs e)
         {
             string xmlFile = GetFile("Legends XML Plus|*legends_plus.xml;|Legends XML Plus|*.xml;|All Files|*.*");
-            if (string.IsNullOrEmpty(xmlFile))
+            if (!string.IsNullOrEmpty(xmlFile))
             {
                 _xmlPlusText.Text = xmlFile;
                 XmlPlusState = FileState.Ready;
