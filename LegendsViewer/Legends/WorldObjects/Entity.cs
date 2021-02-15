@@ -335,7 +335,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
             if (ownerPeriod.Owner != this)
             {
-                Groups.Add((Entity)ownerPeriod.Owner);
+                Groups.Add(ownerPeriod.Owner);
             }
 
             if (!IsCiv && Parent != null)
