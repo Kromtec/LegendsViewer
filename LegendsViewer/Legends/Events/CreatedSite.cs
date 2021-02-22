@@ -34,7 +34,7 @@ namespace LegendsViewer.Legends.Events
             }
             else if (SiteEntity != null)
             {
-                SiteEntity.Parent = Civ;
+                SiteEntity.SetParent(Civ);
                 Site.OwnerHistory.Add(new OwnerPeriod(Site, SiteEntity, Year, "founded", Builder));
             }
             else if (Civ != null)

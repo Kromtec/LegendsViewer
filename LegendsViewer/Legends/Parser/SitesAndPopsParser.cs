@@ -228,9 +228,9 @@ namespace LegendsViewer.Legends.Parser
                         {
                             current = current.Parent;
                         }
-                        if (!current.IsCiv && current.Parent == null && current != parent)
+                        if (!current.IsCiv && current.Parent == null)
                         {
-                            current.Parent = parent;
+                            current.SetParent(parent);
                         }
                         if (!parent.Groups.Contains(_owner))
                         {
