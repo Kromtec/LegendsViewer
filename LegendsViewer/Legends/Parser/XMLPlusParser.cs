@@ -98,9 +98,10 @@ namespace LegendsViewer.Legends.Parser
 
             if (xmlParserSection > CurrentSection)
             {
-                while (xmlParserSection > CurrentSection)
+                while (xmlParserSection > CurrentSection && (null != _currentItem && Xml.ReadState != ReadState.Closed))
                 {
-                    AddItemToWorld(_currentItem);
+                    if(null != _currentItem)
+                      AddItemToWorld(_currentItem);
                     _currentItem = null;
                     Parse();
                 }
