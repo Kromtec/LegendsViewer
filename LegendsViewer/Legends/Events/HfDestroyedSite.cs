@@ -44,21 +44,21 @@ namespace LegendsViewer.Legends.Events
             {
                 lastSiteOwnerPeriod.EndYear = Year;
                 lastSiteOwnerPeriod.EndCause = "destroyed";
-                lastSiteOwnerPeriod.Ender = Attacker;
+                lastSiteOwnerPeriod.Destroyer = Attacker;
             }
             OwnerPeriod lastDefenderCivOwnerPeriod = DefenderCiv?.SiteHistory.LastOrDefault(s => s.Site == Site);
             if (lastDefenderCivOwnerPeriod != null)
             {
                 lastDefenderCivOwnerPeriod.EndYear = Year;
                 lastDefenderCivOwnerPeriod.EndCause = "destroyed";
-                lastDefenderCivOwnerPeriod.Ender = Attacker;
+                lastDefenderCivOwnerPeriod.Destroyer = Attacker;
             }
-            OwnerPeriod lastSiteCiveOwnerPeriod = SiteCiv.SiteHistory.LastOrDefault(s => s.Site == Site);
-            if (lastSiteCiveOwnerPeriod != null)
+            OwnerPeriod lastSiteCivOwnerPeriod = SiteCiv.SiteHistory.LastOrDefault(s => s.Site == Site);
+            if (lastSiteCivOwnerPeriod != null)
             {
-                lastSiteCiveOwnerPeriod.EndYear = Year;
-                lastSiteCiveOwnerPeriod.EndCause = "destroyed";
-                lastSiteCiveOwnerPeriod.Ender = Attacker;
+                lastSiteCivOwnerPeriod.EndYear = Year;
+                lastSiteCivOwnerPeriod.EndCause = "destroyed";
+                lastSiteCivOwnerPeriod.Destroyer = Attacker;
             }
         }
 

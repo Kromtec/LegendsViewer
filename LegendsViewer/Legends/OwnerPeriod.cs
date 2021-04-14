@@ -1,19 +1,20 @@
-﻿using System;
-using LegendsViewer.Legends.WorldObjects;
+﻿using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends
 {
     public class OwnerPeriod
     {
         public readonly Site Site;
-        public DwarfObject Owner;
-        public DwarfObject Ender;
+        public HistoricalFigure Founder;
+        public Entity Owner;
+        public Entity Ender;
+        public HistoricalFigure Destroyer;
         public readonly int StartYear;
         public int EndYear;
         public string StartCause;
         public string EndCause;
 
-        public OwnerPeriod(Site site, DwarfObject owner, int startYear, string startCause)
+        public OwnerPeriod(Site site, Entity owner, int startYear, string startCause, HistoricalFigure founder = null)
         {
             Site = site;
             Owner = owner;
@@ -21,14 +22,9 @@ namespace LegendsViewer.Legends
             StartCause = startCause;
             EndYear = -1;
 
-            if (Owner is Entity entity)
-            {
-                entity.AddOwnedSite(this);
-            }
-            else
-            {
-                Console.WriteLine();
-            }
+            Founder = founder;
+
+            Owner?.AddOwnedSite(this);
         }
     }
 }

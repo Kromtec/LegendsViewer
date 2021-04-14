@@ -26,10 +26,7 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            if (SiteEntity != null && SiteEntity != Civ)
-            {
-                SiteEntity.Parent = Civ;
-            }
+            SiteEntity?.SetParent(Civ);
 
             //Make sure period was lost by an event, otherwise unknown loss
             if (Site.OwnerHistory.Count == 0)

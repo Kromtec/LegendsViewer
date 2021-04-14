@@ -188,7 +188,7 @@ namespace LegendsViewer.Legends.Parser
                 }
                 else if (entities.Count == 0)
                 {
-                    _world.ParsingErrors.Report($"Couldn\'t Find Entity:\n{civName}, Parent Civ of {_owner.Name}");
+                    _world.ParsingErrors.Report($"Couldn\'t Find Entity:\n{civName}, Parent Civ of {_owner?.Name ?? "UNKNOWN"}");
                 }
                 else
                 {
@@ -199,7 +199,7 @@ namespace LegendsViewer.Legends.Parser
                     }
                     else if (!possibleEntities.Any())
                     {
-                        _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner.Name}");
+                        _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner?.Name ?? "UNKNOWN"}");
                     }
                     else
                     {
@@ -212,7 +212,7 @@ namespace LegendsViewer.Legends.Parser
                         {
 #if DEBUG
                             _world.ParsingErrors.Report(
-                                $"Ambiguous Parent Entity Name:\n{civName}, Parent Civ of {_owner.Name}");
+                                $"Ambiguous Parent Entity Name:\n{civName}, Parent Civ of {_owner?.Name ?? "UNKNOWN"}");
 #endif
                         }
                     }
@@ -228,9 +228,9 @@ namespace LegendsViewer.Legends.Parser
                         {
                             current = current.Parent;
                         }
-                        if (!current.IsCiv && current.Parent == null && current != parent)
+                        if (!current.IsCiv && current.Parent == null)
                         {
-                            current.Parent = parent;
+                            current.SetParent(parent);
                         }
                         if (!parent.Groups.Contains(_owner))
                         {
@@ -302,11 +302,12 @@ namespace LegendsViewer.Legends.Parser
                 else if (_site.OwnerHistory.Last().Owner != _owner)
                 {
                     bool found = false;
-                    if (_site.OwnerHistory.Last().Owner is HistoricalFigure lastKnownOwner)
+                    var founder = _site.OwnerHistory.Last().Founder;
+                    if (founder != null)
                     {
-                        if (lastKnownOwner.DeathYear != -1)
+                        if (founder.DeathYear != -1)
                         {
-                            _site.OwnerHistory.Add(new OwnerPeriod(_site, _owner, lastKnownOwner.DeathYear, "after death of last owner (" + lastKnownOwner.DeathCause + ") took over"));
+                            _site.OwnerHistory.Add(new OwnerPeriod(_site, _owner, founder.DeathYear, "after death of its founder (" + founder.DeathCause + ") took over"));
                             found = true;
                         }
                         else

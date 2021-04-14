@@ -61,7 +61,7 @@ namespace LegendsViewer.Legends.WorldObjects
             }
             set { }
         }
-        public List<DwarfObject> PreviousOwners { get { return OwnerHistory.Where(site => site.EndYear >= 0).Select(site => site.Owner).ToList(); } set { } }
+
         [AllowAdvancedSearch(true)]
         public List<Site> Connections { get; set; }
         [AllowAdvancedSearch(true)]

@@ -20,7 +20,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public string NameForAdvancedSearch => string.IsNullOrWhiteSpace(Name) ? $"[{Race}]" : Name;
 
         [AllowAdvancedSearch]
-        public Entity Parent { get; set; }
+        public Entity Parent { get; private set; }
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
         public CreatureInfo Race { get; set; }
@@ -335,7 +335,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
             if (ownerPeriod.Owner != this)
             {
-                Groups.Add((Entity)ownerPeriod.Owner);
+                Groups.Add(ownerPeriod.Owner);
             }
 
             if (!IsCiv && Parent != null)
@@ -516,6 +516,21 @@ namespace LegendsViewer.Legends.WorldObjects
         public override string GetIcon()
         {
             return Icon;
+        }
+
+        public void SetParent(Entity parent)
+        {
+            if (parent == this)
+            {
+                return;
+            }
+
+            if (parent.Name == Name)
+            {
+                return;
+            }
+
+            Parent = parent;
         }
     }
 }

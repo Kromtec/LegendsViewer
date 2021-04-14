@@ -28,19 +28,20 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            if (SiteEntity != null)
+            if (ResidentCiv != null)
             {
-                SiteEntity.Parent = Civ;
-                Site.OwnerHistory.Add(new OwnerPeriod(Site, SiteEntity, Year, "founded"));
+                Site.OwnerHistory.Add(new OwnerPeriod(Site, ResidentCiv, Year, "constructed", Builder));
+            }
+            else if (SiteEntity != null)
+            {
+                SiteEntity.SetParent(Civ);
+                Site.OwnerHistory.Add(new OwnerPeriod(Site, SiteEntity, Year, "founded", Builder));
             }
             else if (Civ != null)
             {
-                Site.OwnerHistory.Add(new OwnerPeriod(Site, Civ, Year, "founded"));
+                Site.OwnerHistory.Add(new OwnerPeriod(Site, Civ, Year, "founded", Builder));
             }
-            else if (Builder != null)
-            {
-                Site.OwnerHistory.Add(new OwnerPeriod(Site, Builder, Year, "constructed"));
-            }
+            ResidentCiv.AddEvent(this);
             Site.AddEvent(this);
             SiteEntity.AddEvent(this);
             Civ.AddEvent(this);

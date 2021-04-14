@@ -243,34 +243,45 @@ namespace LegendsViewer.Controls.HTML
                 foreach (OwnerPeriod ownerPeriod in _site.OwnerHistory)
                 {
                     string ownerString = "An unknown civilization";
-                    if (ownerPeriod.Owner != null)
+                    if (ownerPeriod.Founder != null)
                     {
-                        if (ownerPeriod.Owner is Entity entity)
-                        {
-                            ownerString = entity.PrintEntity();
-                        }
-                        else
-                        {
-                            ownerString = ownerPeriod.Owner.ToLink(true, _site);
-                        }
+                        ownerString = ownerPeriod.Founder.ToLink(true, _site);
                     }
-                    string startyear = ownerPeriod.StartYear == -1 ? "a time before time" : ownerPeriod.StartYear.ToString();
-                    Html.Append("<li>" + ownerString + ", " + ownerPeriod.StartCause + " " + _site.ToLink(true, _site) + " in " + startyear);
+                    else if (ownerPeriod.Owner != null)
+                    {
+                        ownerString = ownerPeriod.Owner.PrintEntity();
+                    }
+                    string startYear;
+                    if (ownerPeriod.StartYear == -1)
+                    {
+                        startYear = "a time before time";
+                    }
+                    else
+                    {
+                        startYear = ownerPeriod.StartYear.ToString();
+                    }
+
+                    Html.Append("<li>" + ownerString + ", " + ownerPeriod.StartCause + " " + _site.ToLink(true, _site));
+
+                    if (ownerPeriod.Founder != null && ownerPeriod.Owner != null)
+                    {
+                        Html.Append(" for " + ownerPeriod.Owner.PrintEntity());
+                    }
+
+                    Html.Append(" in " + startYear);
+
                     if (ownerPeriod.EndYear >= 0)
                     {
                         Html.Append(" and it was " + ownerPeriod.EndCause + " in " + ownerPeriod.EndYear);
                     }
 
-                    if (ownerPeriod.Ender != null)
+                    if (ownerPeriod.Destroyer != null)
                     {
-                        if (ownerPeriod.Ender is Entity entity)
-                        {
-                            Html.Append(" by " + entity.PrintEntity());
-                        }
-                        else
-                        {
-                            Html.Append(" by " + ownerPeriod.Ender.ToLink(true, _site));
-                        }
+                        Html.Append(" by " + ownerPeriod.Destroyer.ToLink(true, _site));
+                    }
+                    else if (ownerPeriod.Ender != null)
+                    {
+                        Html.Append(" by " + ownerPeriod.Ender.PrintEntity());
                     }
                     Html.AppendLine(".");
                 }
