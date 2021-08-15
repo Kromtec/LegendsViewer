@@ -34,7 +34,7 @@ namespace LegendsViewer.Legends
 
         public CreatureInfo(string identifier)
         {
-            Id = identifier;
+            Id = identifier.ToLower();
             NameSingular = string.Intern(Formatting.FormatRace(identifier));
             NamePlural = string.Intern(Formatting.MakePopulationPlural(NameSingular));
         }

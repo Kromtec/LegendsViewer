@@ -1,16 +1,33 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Text;
 
 namespace LegendsViewer.Legends
 {
     public static class Formatting
     {
-        public static string InitCaps(string name)
+        public static string InitCaps(string text)
         {
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name).Replace(" The", " the").Replace(" Of", " of");
+            char[] newText = new char[text.Length];
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (i == 0 || newText[i - 1] == ' ' &&
+                    !(text[i] == 't' && i + 2 < text.Length && (text[i + 1] == 'h' || text[i + 1] == 'H') && (text[i + 2] == 'e' || text[i + 2] == 'E')) &&
+                    !(text[i] == 'o' && i + 1 < text.Length && (text[i + 1] == 'f' || text[i + 1] == 'f')))
+                {
+                    newText[i] = char.ToUpper(text[i]);
+                }
+                else if (text[i] == '_')
+                {
+                    newText[i] = ' ';
+                }
+                else
+                {
+                    newText[i] = char.ToLower(text[i]);
+                }
+            }
+            return string.Intern(new string(newText));
         }
 
         public static string ToUpperFirstLetter(this string source)
@@ -92,28 +109,12 @@ namespace LegendsViewer.Legends
 
         public static string FormatRace(string race)
         {
-            if (race.Contains("DEMON"))
-            {
-                return "Demon";
-            }
-
             if (race.Contains("FORGOTTEN"))
             {
                 return "Forgotten Beast";
             }
 
-            if (race.Contains("NIGHT_CREATURE"))
-            {
-                return "Night Creature";
-            }
-
-            if (race.Contains("TITAN"))
-            {
-                return "Titan";
-            }
-
-            return InitCaps(race.Replace('_', ' ').ToLower());
-
+            return InitCaps(race);
         }
 
         public static string RemoveSpecialCharacters(string str)
@@ -132,20 +133,19 @@ namespace LegendsViewer.Legends
 
         public static string AddArticle(string text)
         {
-            if (text.ToLower().StartsWith("a") || 
-                text.ToLower().StartsWith("e") || 
-                text.ToLower().StartsWith("i") || 
-                text.ToLower().StartsWith("o") || 
-                text.ToLower().StartsWith("u"))
+            if (string.IsNullOrWhiteSpace(text))
             {
-                text = "an " + text;
+                return "";
             }
-            else
+            if (text[0] == 'a' || text[0] == 'A' ||
+                text[0] == 'e' || text[0] == 'E' ||
+                text[0] == 'i' || text[0] == 'I' ||
+                text[0] == 'o' || text[0] == 'O' ||
+                text[0] == 'u' || text[0] == 'U')
             {
-                text = "a " + text;
+                return $"an {text}";
             }
-
-            return text;
+            return $"a {text}";
         }
 
         public static string ReplaceNonAscii(string name)
@@ -184,8 +184,10 @@ namespace LegendsViewer.Legends
 
         public static Location ConvertToLocation(string coordinates)
         {
-            int[] coords = Array.ConvertAll(coordinates.Split(','), int.Parse); // 0.520
-            return new Location(coords[0], coords[1]); 
+            var indexOfComma = coordinates.IndexOf(',');
+            int x = int.Parse(coordinates.Substring(0, indexOfComma));
+            int y = int.Parse(coordinates.Substring(indexOfComma + 1, coordinates.Length - indexOfComma - 1));
+            return new Location(x, y);
         }
 
         public static void ResizeImage(Bitmap source, ref Bitmap dest, int height, int width, bool keepRatio, bool smooth = true)
@@ -390,9 +392,10 @@ namespace LegendsViewer.Legends
 
         public static string AddOrdinal(int num)
         {
+            var numString = num.ToString();
             if (num <= 0)
             {
-                return num.ToString();
+                return numString;
             }
 
             switch (num % 100)
@@ -400,19 +403,19 @@ namespace LegendsViewer.Legends
                 case 11:
                 case 12:
                 case 13:
-                    return num + "th";
+                    return $"{numString}th";
             }
 
             switch (num % 10)
             {
                 case 1:
-                    return num + "st";
+                    return $"{numString}st";
                 case 2:
-                    return num + "nd";
+                    return $"{numString}nd";
                 case 3:
-                    return num + "rd";
+                    return $"{numString}rd";
                 default:
-                    return num + "th";
+                    return $"{numString}th";
             }
         }
 
@@ -492,7 +495,7 @@ namespace LegendsViewer.Legends
                 // append a "thousand" where appropriate
                 if (level > 0 && dig1 + dig2 + dig3 > 0)
                 {
-                    retval = thou[level] + " " + retval;
+                    retval = $"{thou[level]} {retval}";
                     retval = retval.Trim();
                 }
 
@@ -500,9 +503,9 @@ namespace LegendsViewer.Legends
                 if (lasttwo > 0)
                 {
                     if (lasttwo < 20) // if less than 20, use "ones" only
-                        retval = ones[lasttwo] + " " + retval;
+                        retval = $"{ones[lasttwo]} {retval}";
                     else // otherwise, use both "tens" and "ones" array
-                        retval = tens[dig2] + " " + ones[dig3] + " " + retval;
+                        retval = $"{tens[dig2]} {ones[dig3]} {retval}";
                 }
 
                 // if a hundreds part is there, translate it

@@ -234,6 +234,7 @@ namespace LegendsViewer.Legends.Parser
                 AddEvent(eventType, properties);
             }
 
+#if DEBUG
             string path = CurrentSection.ToString();
             if (CurrentSection == Section.Events || CurrentSection == Section.EventCollections)
             {
@@ -241,8 +242,10 @@ namespace LegendsViewer.Legends.Parser
             }
 
             CheckKnownStateOfProperties(path, properties);
+#endif
         }
 
+#if DEBUG
         public void CheckKnownStateOfProperties(string path, List<Property> properties)
         {
             foreach (Property property in properties)
@@ -257,6 +260,7 @@ namespace LegendsViewer.Legends.Parser
                 }
             }
         }
+#endif
 
         public void AddFromXmlSection(Section section, List<Property> properties)
         {
@@ -325,7 +329,7 @@ namespace LegendsViewer.Legends.Parser
                     HistoricalEventRelationShip.ResolveSupplements(properties, World);
                     break;
                 default:
-                    World.ParsingErrors.Report("Unknown XML Section: " + section);
+                    World.ParsingErrors.Report($"Unknown XML Section: {section}");
                     break;
             }
         }
@@ -861,12 +865,10 @@ namespace LegendsViewer.Legends.Parser
 
                 foreach (Era era in World.Eras)
                 {
-                    era.Events =
-                        World.Events.Where(events => events.Year >= era.StartYear && events.Year <= era.EndYear)
-                            .OrderBy(events => events.Year)
-                            .ToList();
-                    era.Wars =
-                        World.EventCollections.OfType<War>()
+                    era.Events.AddRange(World.Events
+                            .Where(events => events.Year >= era.StartYear && events.Year <= era.EndYear)
+                            .OrderBy(events => events.Year));
+                    era.Wars.AddRange(World.EventCollections.OfType<War>()
                             .Where(
                                 war =>
                                     war.StartYear >= era.StartYear && war.EndYear <= era.EndYear && war.EndYear != -1
@@ -877,7 +879,7 @@ namespace LegendsViewer.Legends.Parser
                                     //war started during
                                     || war.StartYear <= era.StartYear && war.EndYear >= era.EndYear
                                     //war started before & ended after
-                                    || war.StartYear <= era.StartYear && war.EndYear == -1).ToList();
+                                    || war.StartYear <= era.StartYear && war.EndYear == -1));
                 }
 
             }
@@ -885,9 +887,9 @@ namespace LegendsViewer.Legends.Parser
 
         private void ProcessCollections()
         {
-            World.Wars = World.EventCollections.OfType<War>().ToList();
-            World.Battles = World.EventCollections.OfType<Battle>().ToList();
-            World.BeastAttacks = World.EventCollections.OfType<BeastAttack>().ToList();
+            World.Wars.AddRange(World.EventCollections.OfType<War>());
+            World.Battles.AddRange(World.EventCollections.OfType<Battle>());
+            World.BeastAttacks.AddRange(World.EventCollections.OfType<BeastAttack>());
 
             foreach (EventCollection eventCollection in World.EventCollections)
             {

@@ -15,7 +15,7 @@ namespace LegendsViewer.Legends.EventCollections
 
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
-        public string Name { get { return "The " + GetOrdinal(Ordinal) + "Raid of " + Site.Name; } set { } }
+        public string Name { get { return "The " + Formatting.AddOrdinal(Ordinal) + " Raid of " + Site.Name; } set { } }
         public int Ordinal { get; set; }
         public Location Coordinates { get; set; }
         [AllowAdvancedSearch]

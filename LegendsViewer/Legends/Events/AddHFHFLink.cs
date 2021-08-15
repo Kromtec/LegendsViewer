@@ -25,7 +25,7 @@ namespace LegendsViewer.Legends.Events
                     case "hfid_target": HistoricalFigureTarget = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "link_type":
                         HistoricalFigureLinkType linkType;
-                        if (Enum.TryParse(Formatting.InitCaps(property.Value.Replace("_", " ")).Replace(" ", ""), out linkType))
+                        if (Enum.TryParse(Formatting.InitCaps(property.Value).Replace(" ", ""), out linkType))
                         {
                             LinkType = linkType;
                         }

@@ -90,6 +90,10 @@ namespace LegendsViewer.Legends
             ParsingErrors = new ParsingErrors();
             Log = new StringBuilder();
 
+            Wars = new List<War>();
+            Battles = new List<Battle>();
+            BeastAttacks = new List<BeastAttack>();
+
             CreateUnknowns();
 
             XmlParser xml = new XmlParser(worker, this, xmlFile, xmlPlusFile);
@@ -139,7 +143,9 @@ namespace LegendsViewer.Legends
             Log.AppendLine(ParsingErrors.Print());
 
             sw.Stop();
-            Log.AppendLine($"Duration: {sw.Elapsed.Seconds + sw.Elapsed.Minutes * 60} secs, {sw.Elapsed.Milliseconds:D3} ms ");
+            var seconds = sw.Elapsed.Seconds + sw.Elapsed.Minutes * 60;
+            var milliSeconds = sw.Elapsed.Milliseconds;
+            Log.AppendLine($"Duration: {seconds} secs, {milliSeconds:D3} ms ");
         }
 
         public void AddPlayerRelatedDwarfObjects(DwarfObject dwarfObject)
@@ -569,37 +575,37 @@ namespace LegendsViewer.Legends
             return Eras.Find(era => era.Id == id);
         }
 
-        public CreatureInfo GetCreatureInfo(string identifier)
+        public CreatureInfo GetCreatureInfo(string id)
         {
-            if (string.IsNullOrWhiteSpace(identifier))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return CreatureInfo.Unknown;
             }
 
-            if (_creatureInfosById.ContainsKey(identifier.ToLower()))
+            if (_creatureInfosById.ContainsKey(id.ToLower()))
             {
-                return _creatureInfosById[identifier.ToLower()];
+                return _creatureInfosById[id.ToLower()];
             }
             var creatureInfo = _creatureInfos.FirstOrDefault(ci =>
-                ci.Id.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
-                ci.NameSingular.Equals(identifier, StringComparison.InvariantCultureIgnoreCase) ||
-                ci.NamePlural.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
+                ci.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase) ||
+                ci.NameSingular.Equals(id, StringComparison.InvariantCultureIgnoreCase) ||
+                ci.NamePlural.Equals(id, StringComparison.InvariantCultureIgnoreCase));
             if (creatureInfo != null)
             {
                 return creatureInfo;
             }
-            return AddCreatureInfo(identifier);
+            return AddCreatureInfo(id);
         }
 
-        private CreatureInfo AddCreatureInfo(string identifier)
+        private CreatureInfo AddCreatureInfo(string id)
         {
-            if (string.IsNullOrWhiteSpace(identifier))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return CreatureInfo.Unknown;
             }
-            CreatureInfo creatureInfo = new CreatureInfo(identifier);
+            CreatureInfo creatureInfo = new CreatureInfo(id);
             _creatureInfos.Add(creatureInfo);
-            _creatureInfosById[identifier.ToLower()] = creatureInfo;
+            _creatureInfosById[id.ToLower()] = creatureInfo;
             return creatureInfo;
         }
 

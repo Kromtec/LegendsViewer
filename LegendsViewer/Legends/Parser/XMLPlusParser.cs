@@ -115,14 +115,14 @@ namespace LegendsViewer.Legends.Parser
 
             if (_currentItem != null)
             {
-                Property id = existingProperties.Find(property => property.Name == "id");
-                Property currentId = _currentItem.Find(property => property.Name == "id");
+                Property id = GetPropertyByName(existingProperties, "id");
+                Property currentId = GetPropertyByName(_currentItem, "id");
                 while (currentId != null && currentId.ValueAsInt() < 0)
                 {
                     _currentItem = ParseItem();
                     if (_currentItem != null)
                     {
-                        currentId = _currentItem.Find(property => property.Name == "id");
+                        currentId = GetPropertyByName(_currentItem, "id");
                     }
                 }
                 if (id != null && currentId != null && id.ValueAsInt().Equals(currentId.ValueAsInt()))
@@ -154,10 +154,10 @@ namespace LegendsViewer.Legends.Parser
                                 existingProperties.Add(property);
                                 continue;
                             }
-                            Property matchingProperty = existingProperties.Find(p => p.Name == property.Name);
+                            Property matchingProperty = GetPropertyByName(existingProperties, property.Name);
                             if (CurrentSection == Section.Events && matchingProperty != null &&
                                 (matchingProperty.Name == "type" || matchingProperty.Name == "state" ||
-                                 matchingProperty.Name == "slayer_race" || matchingProperty.Name == "circumstance" || 
+                                 matchingProperty.Name == "slayer_race" || matchingProperty.Name == "circumstance" ||
                                  matchingProperty.Name == "reason"))
                             {
                                 continue;
@@ -192,6 +192,18 @@ namespace LegendsViewer.Legends.Parser
                     Parse();
                 }
             }
+        }
+
+        private static Property GetPropertyByName(List<Property> existingProperties, string name)
+        {
+            for (int i = 0; i < existingProperties.Count; i++)
+            {
+                if (existingProperties[i].Name == name)
+                {
+                    return existingProperties[i];
+                }
+            }
+            return null;
         }
     }
 }

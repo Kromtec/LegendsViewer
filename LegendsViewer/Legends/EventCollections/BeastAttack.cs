@@ -14,7 +14,7 @@ namespace LegendsViewer.Legends.EventCollections
         private static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
 
         [ShowInAdvancedSearchResults]
-        public string Name { get { return GetOrdinal(Ordinal) + "Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
+        public string Name { get { return Formatting.AddOrdinal(Ordinal) + " Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
         [ShowInAdvancedSearchResults("Deaths")]
         public int DeathCount { get { return Deaths.Count; } set { } }
 
@@ -101,7 +101,7 @@ namespace LegendsViewer.Legends.EventCollections
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             string name = "";
-            name = "The " + GetOrdinal(Ordinal) + "rampage of ";
+            name = "The " + Formatting.AddOrdinal(Ordinal) + " rampage of ";
             if (Beast != null && pov == Beast)
             {
                 name += Beast.ToLink(false, Beast);

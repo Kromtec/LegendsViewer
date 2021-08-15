@@ -16,7 +16,7 @@ namespace LegendsViewer.Legends.EventCollections
         public string Icon = "<i class=\"glyphicon fa-fw glyphicon-pawn\"></i>";
 
         [ShowInAdvancedSearchResults]
-        public string Name { get { return GetOrdinal(Ordinal) + ConquerType.GetDescription() + " of " + Site.Name; } set { } }
+        public string Name { get { return Formatting.AddOrdinal(Ordinal) + " " + ConquerType.GetDescription() + " of " + Site.Name; } set { } }
         [ShowInAdvancedSearchResults("Deaths")]
         public int DeathCount { get { return Deaths.Count; } set { } }
 
@@ -121,7 +121,7 @@ namespace LegendsViewer.Legends.EventCollections
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
             string name = "The ";
-            name += GetOrdinal(Ordinal);
+            name += Formatting.AddOrdinal(Ordinal) + " ";
             name += ConquerType.GetDescription() + " of " + Site.ToLink(false);
             if (link)
             {

@@ -47,7 +47,7 @@ namespace LegendsViewer.Controls.HTML
                 beastName = _attack.Beast.ToLink();
             }
 
-            Html.AppendLine("The " + _attack.GetOrdinal(_attack.Ordinal) + " Rampage of " + beastName + " in " + _attack.Site.ToLink() + ".</br></br>");
+            Html.AppendLine("The " + Formatting.AddOrdinal(_attack.Ordinal) + " Rampage of " + beastName + " in " + _attack.Site.ToLink() + ".</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _attack.Site);
             Html.AppendLine("<table>");
