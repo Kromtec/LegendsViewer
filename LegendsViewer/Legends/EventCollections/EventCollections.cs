@@ -27,9 +27,18 @@ namespace LegendsViewer.Legends.EventCollections
         public abstract List<WorldEvent> FilteredEvents { get; }
         public World World { get; }
 
-        protected EventCollection(List<Property> properties, World world)
+        public EventCollection()
         {
-            Initialize();
+            Id = StartYear = StartSeconds72 = EndYear = EndSeconds72 = -1;
+            Type = "INVALID";
+            Collection = new List<WorldEvent>();
+            Collections = new List<EventCollection>();
+            CollectionIDs = new List<int>();
+            Notable = true;
+        }
+
+        protected EventCollection(List<Property> properties, World world) : this()
+        {
             World = world;
             foreach(Property property in properties)
             {
@@ -40,7 +49,7 @@ namespace LegendsViewer.Legends.EventCollections
                     case "start_seconds72": StartSeconds72 = Convert.ToInt32(property.Value); property.Known = true; break;
                     case "end_year": EndYear = Convert.ToInt32(property.Value); property.Known = true; break;
                     case "end_seconds72": EndSeconds72 = Convert.ToInt32(property.Value); property.Known = true; break;
-                    case "type": Type = Formatting.InitCaps(String.Intern(property.Value)); property.Known = true; break;
+                    case "type": Type = Formatting.InitCaps(property.Value); property.Known = true; break;
                     case "event":
                         WorldEvent collectionEvent = world.GetEvent(Convert.ToInt32(property.Value));
                         //Some Events don't exist in the XML now with 34.01? 
@@ -56,102 +65,67 @@ namespace LegendsViewer.Legends.EventCollections
                 }
             }
         }
-        public EventCollection()
-        {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            Id = StartYear = StartSeconds72 = EndYear = EndSeconds72 = -1; 
-            Type = "INVALID";
-            Collection = new List<WorldEvent>();
-            Collections = new List<EventCollection>();
-            CollectionIDs = new List<int>();
-            Notable = true;
-        }
 
         public string GetYearTime(bool start = true)
         {
-            int year, seconds72;
-            if (start) { year = StartYear; seconds72 = StartSeconds72; }
-            else { year = EndYear; seconds72 = EndSeconds72; }
+            int year;
+            int seconds72;
+            if (start) 
+            { 
+                year = StartYear; 
+                seconds72 = StartSeconds72; 
+            }
+            else 
+            { 
+                year = EndYear; 
+                seconds72 = EndSeconds72; 
+            }
             if (year == -1)
             {
                 return "In a time before time, ";
             }
 
-            string yearTime = "In " + year + ", ";
+            string yearTime = $"In {year}, ";
             if (seconds72 == -1)
             {
                 return yearTime;
             }
 
-            int month = seconds72 % 100800;
-            if (month <= 33600)
+            int partOfMonth = seconds72 % 100800;
+            string partOfMonthString = "";
+            if (partOfMonth <= 33600)
             {
-                yearTime += "early ";
+                partOfMonthString = "early ";
             }
-            else if (month <= 67200)
+            else if (partOfMonth <= 67200)
             {
-                yearTime += "mid";
+                partOfMonthString = "mid";
             }
-            else if (month <= 100800)
+            else if (partOfMonth <= 100800)
             {
-                yearTime += "late ";
+                partOfMonthString = "late ";
             }
 
             int season = seconds72 % 403200;
+            string seasonString = "";
             if (season < 100800)
             {
-                yearTime += "spring, ";
+                seasonString = "spring";
             }
             else if (season < 201600)
             {
-                yearTime += "summer, ";
+                seasonString = "summer";
             }
             else if (season < 302400)
             {
-                yearTime += "autumn, ";
+                seasonString = "autumn";
             }
             else if (season < 403200)
             {
-                yearTime += "winter, ";
+                seasonString = "winter";
             }
 
-            return yearTime;
-        }
-        public string GetOrdinal(int ordinal)
-        {
-            if (ordinal <= 1)
-            {
-                return "";
-            }
-
-            string suffix = "";
-            string numeral = ordinal.ToString();
-            if (numeral.EndsWith("11") || numeral.EndsWith("12") || numeral.EndsWith("13"))
-            {
-                suffix = "th";
-            }
-            else if (numeral.EndsWith("1"))
-            {
-                suffix = "st";
-            }
-            else if (numeral.EndsWith("2"))
-            {
-                suffix = "nd";
-            }
-            else if (numeral.EndsWith("3"))
-            {
-                suffix = "rd";
-            }
-            else
-            {
-                suffix = "th";
-            }
-
-            return numeral + suffix + " ";
+            return $"{yearTime}{partOfMonthString}{seasonString}";
         }
 
         public List<WorldEvent> GetSubEvents()

@@ -61,7 +61,7 @@ namespace LegendsViewer.Legends.Events
                         IdentityRace = world.GetCreatureInfo(property.Value);
                         break;
                     case "identity_caste":
-                        IdentityCaste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' ')));
+                        IdentityCaste = Formatting.InitCaps(property.Value);
                         break;
                 }
             }

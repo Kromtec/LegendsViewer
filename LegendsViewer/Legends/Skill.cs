@@ -42,7 +42,7 @@ namespace LegendsViewer.Legends
                 switch (property.Name)
                 {
                     case "skill":
-                        Name = string.Intern(Formatting.InitCaps(property.Value.Replace('_', ' ').ToLower()));
+                        Name = Formatting.InitCaps(property.Value);
                         if (!SkillDictionary.IsKnownSkill(this))
                         {
                             property.Known = false;
@@ -57,7 +57,7 @@ namespace LegendsViewer.Legends
 
         public Skill(string skillName, int totalIp)
         {
-            Name = string.Intern(Formatting.InitCaps(skillName.Replace('_', ' ').ToLower()));
+            Name = Formatting.InitCaps(skillName);
             Points = totalIp;
         }
     }

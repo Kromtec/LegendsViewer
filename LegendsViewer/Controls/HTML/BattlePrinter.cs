@@ -32,7 +32,7 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("<h1>" + _battle.GetIcon() + " " + GetTitle() + "</h1></br>");
 
-            string battleDescription = _battle.GetYearTime() + _battle.ToLink(false);
+            string battleDescription = _battle.GetYearTime() + ", " + _battle.ToLink(false);
             if (_battle.ParentCollection != null)
             {
                 battleDescription += " occured as part of " + _battle.ParentCollection.ToLink();

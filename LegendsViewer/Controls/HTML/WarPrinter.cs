@@ -30,18 +30,18 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _war.GetIcon() + " " + GetTitle() + "</h1></br>");
-            Html.AppendLine("Started " + _war.GetYearTime().ToLower() + "and ");
+            Html.AppendLine($"<h1>{_war.GetIcon()} {GetTitle()}</h1></br>");
+            Html.AppendLine("Started " + _war.GetYearTime().ToLower() + " and ");
             if (_war.EndYear == -1)
             {
                 Html.AppendLine("is still ongoing.");
             }
             else
             {
-                Html.AppendLine("ended " + _war.GetYearTime(false).ToLower().Substring(0, _war.GetYearTime(false).Length - 1) + ". ");
+                Html.AppendLine("ended " + _war.GetYearTime(false) + ". ");
             }
 
-            Html.AppendLine(_war.Name + " was waged by " + _war.Attacker.PrintEntity() + " on " + _war.Defender.PrintEntity() + ".<br/>");
+            Html.AppendLine($"{_war.Name} was waged by {_war.Attacker.PrintEntity()} on {_war.Defender.PrintEntity()}.<br/>");
             Html.AppendLine("</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _war);

@@ -35,8 +35,8 @@ namespace LegendsViewer.Legends
                     case "birth_second": BirthSeconds72 = Convert.ToInt32(property.Value); break;
                     case "entity_id": Entity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "race": Race = world.GetCreatureInfo(property.Value); break;
-                    case "caste": Caste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
-                    case "profession": Profession = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
+                    case "caste": Caste = Formatting.InitCaps(property.Value); break;
+                    case "profession": Profession = Formatting.InitCaps(property.Value); break;
                 }
             }
 

@@ -39,7 +39,7 @@ namespace LegendsViewer.Legends.EventCollections
                 }
             }
 
-            Name = "The " + GetOrdinal(Ordinal) + " Insurrection in " + Site;
+            Name = "The " + Formatting.AddOrdinal(Ordinal) + " Insurrection in " + Site;
             InsurrectionStarted insurrectionStart = Collection.OfType<InsurrectionStarted>().FirstOrDefault();
             if (insurrectionStart != null)
             {

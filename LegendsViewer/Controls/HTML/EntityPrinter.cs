@@ -108,20 +108,20 @@ namespace LegendsViewer.Controls.HTML
             }
             Html.AppendLine(Bold("Originated in") + LineBreak);
             StartList(ListType.Unordered);
-            Html.AppendLine(ListItem + _entity.OriginStructure.ToLink(true, _entity) + " (" + _entity.OriginStructure.Site.ToLink(true, _entity) + ")");
+            Html.Append(ListItem).Append(_entity.OriginStructure.ToLink(true, _entity)).Append(" (").Append(_entity.OriginStructure.Site.ToLink(true, _entity)).AppendLine(")");
             EndList(ListType.Unordered);
         }
 
         private void PrintChildEntites(Entity entity)
         {
-            if (entity.EntityLinks.Count(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Child)) == 0)
+            if (entity.EntityLinks.Count(entityLink => entityLink.Type == EntityEntityLinkType.Child) == 0)
             {
                 return;
             }
             StartList(ListType.Unordered);
-            foreach (EntityEntityLink childLink in entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Child)))
+            foreach (EntityEntityLink childLink in entity.EntityLinks.Where(entityLink => entityLink.Type == EntityEntityLinkType.Child))
             {
-                Html.AppendLine(ListItem + childLink.Target.ToLink(true, entity) + " (" + childLink.Target.Type.GetDescription() + ")");
+                Html.Append(ListItem).Append(childLink.Target.ToLink(true, entity)).Append(" (").Append(childLink.Target.Type.GetDescription()).AppendLine(")");
                 PrintChildEntites(childLink.Target);
             }
             EndList(ListType.Unordered);
@@ -135,18 +135,18 @@ namespace LegendsViewer.Controls.HTML
             }
             Html.AppendLine(Bold("Related Entities") + LineBreak);
             StartList(ListType.Unordered);
-            foreach (EntityEntityLink parentLink in _entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Parent)))
+            foreach (EntityEntityLink parentLink in _entity.EntityLinks.Where(entityLink => entityLink.Type == EntityEntityLinkType.Parent))
             {
-                Html.AppendLine(ListItem + parentLink.Target.ToLink(true, _entity) + " (" + parentLink.Target.Type.GetDescription() + ")");
+                Html.Append(ListItem).Append(parentLink.Target.ToLink(true, _entity)).Append(" (").Append(parentLink.Target.Type.GetDescription()).AppendLine(")");
             }
-            foreach (EntityEntityLink childLink in _entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Child)))
+            foreach (EntityEntityLink childLink in _entity.EntityLinks.Where(entityLink => entityLink.Type == EntityEntityLinkType.Child))
             {
-                Html.AppendLine(ListItem + childLink.Target.ToLink(true, _entity) + " (" + childLink.Target.Type.GetDescription() + ")");
+                Html.Append(ListItem).Append(childLink.Target.ToLink(true, _entity)).Append(" (").Append(childLink.Target.Type.GetDescription()).AppendLine(")");
                 PrintChildEntites(childLink.Target);
             }
-            foreach (EntityEntityLink religiousLink in _entity.EntityLinks.Where(entityLink => entityLink.Type.Equals(EntityEntityLinkType.Religious)))
+            foreach (EntityEntityLink religiousLink in _entity.EntityLinks.Where(entityLink => entityLink.Type == EntityEntityLinkType.Religious))
             {
-                Html.AppendLine(ListItem + religiousLink.Target.ToLink(true, _entity) + " (" + religiousLink.Target.Type.GetDescription() + ")");
+                Html.Append(ListItem).Append(religiousLink.Target.ToLink(true, _entity)).Append(" (").Append(religiousLink.Target.Type.GetDescription()).AppendLine(")");
                 PrintChildEntites(religiousLink.Target);
             }
             EndList(ListType.Unordered);
@@ -447,7 +447,7 @@ namespace LegendsViewer.Controls.HTML
                     {
                         string positionName = position.GetTitleByCaste(assignment.HistoricalFigure.Caste);
 
-                        Html.AppendLine("<li>" + assignment.HistoricalFigure.ToLink() + ", " + positionName + "</li>");
+                        Html.Append("<li>").Append(assignment.HistoricalFigure.ToLink()).Append(", ").Append(positionName).AppendLine("</li>");
 
                         if (!string.IsNullOrEmpty(position.Spouse))
                         {
@@ -458,7 +458,7 @@ namespace LegendsViewer.Controls.HTML
                                 if (spouse != null)
                                 {
                                     string spousePositionName = position.GetTitleByCaste(spouse.Caste, true);
-                                    Html.AppendLine("<li>" + spouse.ToLink() + ", " + spousePositionName + "</li>");
+                                    Html.Append("<li>").Append(spouse.ToLink()).Append(", ").Append(spousePositionName).AppendLine("</li>");
                                 }
                             }
                         }

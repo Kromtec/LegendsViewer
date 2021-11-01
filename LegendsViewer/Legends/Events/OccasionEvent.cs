@@ -117,7 +117,7 @@ namespace LegendsViewer.Legends.Events
                     eventString += " ";
                 }
             }
-            eventString += Schedule?.Type.GetDescription().ToLower() ?? OccasionType.ToString().ToLower();
+            eventString += Schedule?.Type.GetDescription().ToLowerInvariant() ?? OccasionType.GetDescription().ToLowerInvariant();
             if (ReferencedArtForm != null)
             {
                 eventString += " of ";

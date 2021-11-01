@@ -242,8 +242,8 @@ namespace LegendsViewer.Legends.WorldObjects
                     case "death_seconds72": DeathSeconds72 = Convert.ToInt32(property.Value); break;
                     case "name": Name = Formatting.InitCaps(property.Value.Replace("'", "`")); break;
                     case "race": Race = world.GetCreatureInfo(property.Value); break;
-                    case "caste": Caste = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
-                    case "associated_type": AssociatedType = string.Intern(Formatting.InitCaps(property.Value.ToLower().Replace('_', ' '))); break;
+                    case "caste": Caste = Formatting.InitCaps(property.Value); break;
+                    case "associated_type": AssociatedType = Formatting.InitCaps(property.Value); break;
                     case "deity": Deity = true; property.Known = true; break;
                     case "skeleton": Skeleton = true; property.Known = true; break;
                     case "force": Force = true; property.Known = true; Race = world.GetCreatureInfo("Force"); break;

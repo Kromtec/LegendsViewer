@@ -212,7 +212,7 @@ namespace LegendsViewer.Legends.Events
                         break;
                 }
             }
-            else 
+            else
             {
                 eventString += " changed state in ";
             }

@@ -20,7 +20,7 @@ namespace LegendsViewer.Controls.HTML
 
         public override string GetTitle()
         {
-            return "The " + _conquering.GetOrdinal(_conquering.Ordinal) + _conquering.ConquerType + " of " + _conquering.Site.ToLink(false);
+            return "The " + Formatting.AddOrdinal(_conquering.Ordinal) + " " + _conquering.ConquerType + " of " + _conquering.Site.ToLink(false);
         }
 
         public override string Print()
@@ -29,9 +29,7 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("<h1>" + _conquering.GetIcon() + " " + GetTitle() + "</h1></br>");
 
-            Html.AppendLine(_conquering.GetYearTime() + "The " + _conquering.GetOrdinal(_conquering.Ordinal) + _conquering.ConquerType + " of " + _conquering.Site.ToLink() + " occurred as a result of " + _conquering.Battle.ToLink() 
-                + (_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity() )
-                + ".</br></br>");
+            Html.AppendLine($"{_conquering.GetYearTime()}, the {Formatting.AddOrdinal(_conquering.Ordinal)} {_conquering.ConquerType} of {_conquering.Site.ToLink()} occurred as a result of {_conquering.Battle.ToLink()}{(_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity() )}.</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _conquering);
 

@@ -75,50 +75,86 @@ namespace LegendsViewer.Legends.Events
 
         public virtual string GetYearTime()
         {
-            if (Year == -1)
+            var year = Year;
+            int seconds72 = Seconds72;
+            if (year == -1)
             {
                 return "In a time before time, ";
             }
 
-            string yearTime = "In " + Year + ", ";
-            if (Seconds72 == -1)
+            string yearTime = $"In {year}, ";
+            if (seconds72 == -1)
             {
                 return yearTime;
             }
 
-            int month = Seconds72 % 100800;
-            if (month <= 33600)
+            int partOfMonth = seconds72 % 100800;
+            string partOfMonthString = "";
+            if (partOfMonth <= 33600)
             {
-                yearTime += "early ";
+                partOfMonthString = "early ";
             }
-            else if (month <= 67200)
+            else if (partOfMonth <= 67200)
             {
-                yearTime += "mid";
+                partOfMonthString = "mid";
             }
-            else if (month <= 100800)
+            else if (partOfMonth <= 100800)
             {
-                yearTime += "late ";
+                partOfMonthString = "late ";
             }
 
-            int season = Seconds72 % 403200;
+            int season = seconds72 % 403200;
+            string seasonString = "";
             if (season < 100800)
             {
-                yearTime += "spring, ";
+                seasonString = "spring, ";
             }
             else if (season < 201600)
             {
-                yearTime += "summer, ";
+                seasonString = "summer, ";
             }
             else if (season < 302400)
             {
-                yearTime += "autumn, ";
+                seasonString = "autumn, ";
             }
             else if (season < 403200)
             {
-                yearTime += "winter, ";
+                seasonString = "winter, ";
             }
 
-            return yearTime + " (" + Formatting.AddOrdinal(Day) + " of " + MonthName + ") ";
+            string ordinal = "";
+            int num = Day;
+            if (num > 0)
+            {
+                switch (num % 100)
+                {
+                    case 11:
+                    case 12:
+                    case 13:
+                        ordinal = "th";
+                        break;
+                }
+                if (ordinal == "")
+                {
+                    switch (num % 10)
+                    {
+                        case 1:
+                            ordinal = "st";
+                            break;
+                        case 2:
+                            ordinal = "nd";
+                            break;
+                        case 3:
+                            ordinal = "rd";
+                            break;
+                        default:
+                            ordinal = "th";
+                            break;
+                    }
+                }
+            }
+
+            return $"{yearTime}{partOfMonthString}{seasonString} ({Day}{ordinal} of {MonthName}) ";
         }
 
         public string PrintParentCollection(bool link = true, DwarfObject pov = null)

@@ -520,7 +520,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public void SetParent(Entity parent)
         {
-            if (parent == this)
+            if (parent == null || parent == this)
             {
                 return;
             }

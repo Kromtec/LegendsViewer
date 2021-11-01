@@ -22,6 +22,7 @@ namespace LegendsViewer.Legends
         public Era(List<Property> properties, World world)
             : base(properties, world)
         {
+            Wars = new List<War>();
             Id = world.Eras.Count;
             foreach(Property property in properties)
             {
@@ -35,15 +36,17 @@ namespace LegendsViewer.Legends
 
         public Era(int startYear, int endYear, World world)
         {
+            Events = new List<WorldEvent>();
+            Wars = new List<War>();
             world.TempEras.Add(this);
             Id = world.Eras.Count - 1 + world.TempEras.Count;
             StartYear = startYear; EndYear = endYear; Name = "";
-            Events = world.Events.Where(ev => ev.Year >= StartYear && ev.Year <= EndYear).OrderBy(events => events.Year).ToList();
-            Wars = world.EventCollections.OfType<War>().Where(war => war.StartYear >= StartYear && war.EndYear <= EndYear && war.EndYear != -1 //entire war between
+            Events.AddRange(world.Events.Where(ev => ev.Year >= StartYear && ev.Year <= EndYear).OrderBy(events => events.Year));
+            Wars.AddRange(world.EventCollections.OfType<War>().Where(war => war.StartYear >= StartYear && war.EndYear <= EndYear && war.EndYear != -1 //entire war between
                                                                                                     || war.StartYear >= StartYear && war.StartYear <= EndYear //war started before & ended
                                                                                                     || war.EndYear >= StartYear && war.EndYear <= EndYear && war.EndYear != -1 //war started during
                                                                                                     || war.StartYear <= StartYear && war.EndYear >= EndYear //war started before & ended after
-                                                                                                    || war.StartYear <= StartYear && war.EndYear == -1).ToList();
+                                                                                                    || war.StartYear <= StartYear && war.EndYear == -1));
         }
         
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
@@ -53,7 +56,7 @@ namespace LegendsViewer.Legends
                 return Name;
             }
 
-            return "(" + StartYear + " - " + EndYear + ")";
+            return $"({StartYear} - {EndYear})";
         }
         public override string ToString() { return Name; }
     }

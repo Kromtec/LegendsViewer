@@ -78,7 +78,7 @@ namespace LegendsViewer.Legends.WorldObjects
                                 switch (subProperty.Name)
                                 {
                                     case "name_string":
-                                        Item = string.Intern(Formatting.InitCaps(subProperty.Value));
+                                        Item = Formatting.InitCaps(subProperty.Value);
                                         break;
                                     case "page_number":
                                         PageCount = Convert.ToInt32(subProperty.Value);
@@ -98,7 +98,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             Item = Formatting.InitCaps(property.Value);
                         }
                         break;
-                    case "item_type": Type = string.Intern(Formatting.InitCaps(property.Value)); break;
+                    case "item_type": Type = Formatting.InitCaps(property.Value); break;
                     case "item_subtype": SubType = string.Intern(property.Value); break;
                     case "item_description": Description = Formatting.InitCaps(property.Value); break;
                     case "mat": Material = string.Intern(property.Value); break;

@@ -1003,7 +1003,7 @@ namespace LegendsViewer.Controls.HTML
                 StartList(ListType.Ordered);
                 foreach (BeastAttack attack in _historicalFigure.BeastAttacks)
                 {
-                    Html.AppendLine(ListItem + attack.StartYear + ", " + MakeLink(attack.GetOrdinal(attack.Ordinal) + "rampage in ", attack) + attack.Site.ToLink());
+                    Html.AppendLine(ListItem + attack.StartYear + ", " + MakeLink(Formatting.AddOrdinal(attack.Ordinal) + " rampage in ", attack) + attack.Site.ToLink());
                     if (attack.GetSubEvents().OfType<HfDied>().Any())
                     {
                         Html.Append(" (Kills: " + attack.GetSubEvents().OfType<HfDied>().Count() + ")");

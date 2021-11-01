@@ -8,7 +8,10 @@ namespace LegendsViewer.Legends.Events
 {
     public class SiteTakenOver : WorldEvent
     {
-        public Entity Attacker, Defender, NewSiteEntity, SiteEntity;
+        public Entity Attacker;
+        public Entity Defender;
+        public Entity NewSiteEntity;
+        public Entity SiteEntity;
         public Site Site;
 
         public SiteTakenOver(List<Property> properties, World world) : base(properties, world)
@@ -69,14 +72,14 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " defeated ";
             if (SiteEntity != null && SiteEntity != Defender)
             {
-                eventString += SiteEntity.ToLink(link, pov, this) + " of ";
+                eventString += SiteEntity.ToLink(link, pov, this);
+                if (Defender != null)
+                {
+                    eventString += " of ";
+                }
             }
 
-            if (Defender == null)
-            {
-                eventString += "UNKNOWN";
-            }
-            else
+            if (Defender != null)
             {
                 eventString += Defender.ToLink(link, pov, this);
             }
