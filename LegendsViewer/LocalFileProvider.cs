@@ -60,14 +60,13 @@ namespace LegendsViewer
                                     {
                                         context.Response.ContentLength64 = fs.Length;
                                         context.Response.ContentType = mime;
-                                        if (!mime.ToLower().Contains("png"))
+                                        if (!(mime.IndexOf("png", StringComparison.OrdinalIgnoreCase) >= 0))
                                         {
                                             context.Response.AddHeader("Access-Control-Allow-Origin", "*");
                                         }
                                         byte[] buffer = new byte[fs.Length];
                                         fs.Read(buffer, 0, buffer.Length);
                                         context.Response.OutputStream.Write(buffer,0,buffer.Length);
-                                        fs.Close();
                                     }
                                 }
                             }

@@ -143,9 +143,17 @@ namespace LegendsViewer.Legends
             Log.AppendLine(ParsingErrors.Print());
 
             sw.Stop();
-            var seconds = sw.Elapsed.Seconds + sw.Elapsed.Minutes * 60;
+            var minutes = sw.Elapsed.Minutes;
+            var seconds = sw.Elapsed.Seconds;
             var milliSeconds = sw.Elapsed.Milliseconds;
-            Log.AppendLine($"Duration: {seconds} secs, {milliSeconds:D3} ms ");
+            Log.Append("Duration:");
+            if (minutes > 0)
+            {
+                Log.Append(' ').Append(minutes).Append(" mins,");
+            }
+            Log.Append(' ').Append(seconds).Append(" secs,");
+            Log.Append(' ').AppendFormat("{0:D3}", milliSeconds).Append(" ms");
+            Log.AppendLine();
         }
 
         public void AddPlayerRelatedDwarfObjects(DwarfObject dwarfObject)
