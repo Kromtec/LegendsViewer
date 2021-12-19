@@ -57,7 +57,7 @@ namespace LegendsViewer.Legends.Parser
         private bool ReadCiv()
         {
             string civName = _currentLine.Substring(0, _currentLine.IndexOf(",", StringComparison.Ordinal));
-            CreatureInfo civRace = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2, 
+            CreatureInfo civRace = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
                 _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2).ToLower());
             var entities = _world.Entities
                 .Where(entity => string.Compare(entity.Name, civName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
@@ -65,7 +65,7 @@ namespace LegendsViewer.Legends.Parser
             {
                 _currentCiv = entities.First();
             }
-            else if (!entities.Any())
+            else if (entities.Count == 0)
             {
                 _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name:\n{civName}");
             }
@@ -76,7 +76,7 @@ namespace LegendsViewer.Legends.Parser
                 {
                     _currentCiv = possibleEntities.First();
                 }
-                else if (!possibleEntities.Any())
+                else if (possibleEntities.Count == 0)
                 {
                     _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}");
                 }
@@ -115,11 +115,11 @@ namespace LegendsViewer.Legends.Parser
             if (_currentLine.Contains("Worship List"))
             {
                 ReadLine();
-                while (_currentLine != null && _currentLine.StartsWith("  "))
+                while (_currentLine?.StartsWith("  ") == true)
                 {
                     if (_currentCiv != null)
                     {
-                        string deityName = Formatting.InitCaps(Formatting.ReplaceNonAscii(_currentLine.Substring(2, 
+                        string deityName = Formatting.InitCaps(Formatting.ReplaceNonAscii(_currentLine.Substring(2,
                             _currentLine.IndexOf(",", StringComparison.Ordinal) - 2)));
                         var deities = _world.HistoricalFigures.Where(h => h.Name.Equals(deityName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase) && (h.Deity || h.Force)).ToList();
                         if (deities.Count == 1)
@@ -160,18 +160,18 @@ namespace LegendsViewer.Legends.Parser
                 _currentCiv?.LeaderTypes.Add(leaderType);
                 _currentCiv?.Leaders.Add(new List<HistoricalFigure>());
                 ReadLine();
-                while (_currentLine != null && _currentLine.StartsWith("  "))
+                while (_currentLine?.StartsWith("  ") == true)
                 {
                     if (_currentCiv != null && _currentLine.Contains("[*]"))
                     {
-                        string leaderName = Formatting.ReplaceNonAscii(_currentLine.Substring(_currentLine.IndexOf("[*]", StringComparison.Ordinal) + 4, 
+                        string leaderName = Formatting.ReplaceNonAscii(_currentLine.Substring(_currentLine.IndexOf("[*]", StringComparison.Ordinal) + 4,
                             _currentLine.IndexOf("(b", StringComparison.Ordinal) - _currentLine.IndexOf("[*]", StringComparison.Ordinal) - 5));
                         var leaders = _world.HistoricalFigures.Where(hf =>
                                 string.Compare(hf.Name, leaderName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase) == 0).ToList();
                         if (leaders.Count == 1)
                         {
                             var leader = leaders.First();
-                            int reignBegan = Convert.ToInt32(_currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2, 
+                            int reignBegan = Convert.ToInt32(_currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                                 _currentLine.IndexOf("), ", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2));
                             if (_currentCiv.Leaders[_currentCiv.LeaderTypes.Count - 1].Count > 0) //End of previous leader's reign
                             {
@@ -240,7 +240,6 @@ namespace LegendsViewer.Legends.Parser
             }
 
             _history.Close();
-
 
             return _log.ToString();
         }

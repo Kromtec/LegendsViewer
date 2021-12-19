@@ -15,7 +15,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public WorldRegion Region { get; set; }
         public List<Location> Coordinates { get; set; } // legends_plus.xml
         public int Height { get; set; } // legends_plus.xml
-        public string HeightMeter { get { return Height * 3+" m"; } set { } } // legends_plus.xml
+        public string HeightMeter { get => Height * 3 + " m"; set { } } // legends_plus.xml
         public bool IsVolcano { get; set; }
 
         public string TypeAsString => IsVolcano ? "Volcano" : "Mountain";
@@ -23,10 +23,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public string Icon = "<i class=\"fa fa-fw fa-wifi fa-flip-vertical\"></i>";
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public MountainPeak(List<Property> properties, World world)
             : base(properties, world)
@@ -38,8 +35,8 @@ namespace LegendsViewer.Legends.WorldObjects
             {
                 switch (property.Name)
                 {
-                    case "name": 
-                        Name = Formatting.InitCaps(property.Value); 
+                    case "name":
+                        Name = Formatting.InitCaps(property.Value);
                         break;
                     case "coords":
                         string[] coordinateStrings = property.Value.Split(new[] { '|' },
@@ -52,10 +49,10 @@ namespace LegendsViewer.Legends.WorldObjects
                             Coordinates.Add(new Location(x, y));
                         }
                         break;
-                    case "height": 
-                        Height = Convert.ToInt32(property.Value); 
+                    case "height":
+                        Height = Convert.ToInt32(property.Value);
                         break;
-                    case "is_volcano": 
+                    case "is_volcano":
                         IsVolcano = true;
                         property.Known = true;
                         break;

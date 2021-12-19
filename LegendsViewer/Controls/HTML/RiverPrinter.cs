@@ -10,8 +10,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class RiverPrinter : HtmlPrinter
     {
-        River _river;
-        World _world;
+        private readonly River _river;
+        private readonly World _world;
 
         public RiverPrinter(River river, World world)
         {
@@ -28,17 +28,17 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _river.GetIcon() + " " + _river.Name + ", River</h1><br />");
+            Html.Append("<h1>").Append(_river.GetIcon()).Append(' ').Append(_river.Name).AppendLine(", River</h1><br />");
 
-            if (_river.Coordinates.Any())
+            if (_river.Coordinates.Count > 0)
             {
                 List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _river);
 
-                Html.AppendLine("<table>");
-                Html.AppendLine("<tr>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("</tr></table></br>");
+                Html.AppendLine("<table>")
+                    .AppendLine("<tr>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .AppendLine("</tr></table></br>");
             }
 
             PrintEventLog(_world, _river.Events, River.Filters, _river);

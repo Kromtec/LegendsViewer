@@ -80,14 +80,14 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += HistoricalFigure1.ToLink(link, pov, this);
-            Identity identity1 = HistoricalFigure1?.Identities.FirstOrDefault(i => i.Id == IdentityId1);
+            Identity identity1 = HistoricalFigure1?.Identities.Find(i => i.Id == IdentityId1);
             if (identity1 != null)
             {
                 eventString += " as '" + identity1.Print(link, pov, this) + "'";
             }
             eventString += ", formed a false friendship with ";
             eventString += HistoricalFigure2.ToLink(link, pov, this);
-            Identity identity2 = HistoricalFigure2?.Identities.FirstOrDefault(i => i.Id == IdentityId2);
+            Identity identity2 = HistoricalFigure2?.Identities.Find(i => i.Id == IdentityId2);
             if (identity2 != null)
             {
                 eventString += " as '" + identity2.Print(link, pov, this) + "'";

@@ -3,14 +3,14 @@ using LegendsViewer.Legends;
 
 namespace LegendsViewer.Controls.HTML
 {
-    class StringPrinter : HtmlPrinter
+    internal class StringPrinter : HtmlPrinter
     {
-        string _title;
+        private readonly string _title;
         public StringPrinter(string htmlString)
         {
             Html = new StringBuilder();
             _title = htmlString.Substring(0, htmlString.IndexOf("\n"));
-            Html.AppendLine(htmlString.Substring(htmlString.IndexOf("\n") + 1));
+            Html.Append(htmlString, htmlString.IndexOf("\n") + 1, htmlString.Length - htmlString.IndexOf("\n") + 1).AppendLine();
         }
 
         public override string Print()

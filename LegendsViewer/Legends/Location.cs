@@ -10,7 +10,7 @@ namespace LegendsViewer.Legends
         //     myself I usually think of the 48x48 tile chunks as "embark tiles" due to their use on the embark screen/fort dimensions, 
         //     and the 16x16 embark tile chunks as "world tiles" accordingly. Do you have a more official--if you will--terminology that you use, 
         //     and are there different scales you use/think of the game world in terms of besides those?
-           
+
         // Travel mode moves you basically on the embark tile scale and using dfhack in or near a site it's easy to see that altering 
         //     the coordinates of your traveling army by x+1 moves you over 1 "site travel" step, but it takes an x/y change of 3 or more 
         // to move your spot on the wilderness travel map, so you could call 1 embark tile 3 travel tiles or 16 dwarf scale tiles I guess?
@@ -27,7 +27,7 @@ namespace LegendsViewer.Legends
         //     [r272]x[r272] in region tiles --wilderness travel scale
         //     [e816]x[e816] in embark tiles --near-site travel export
         //     [t39168]x[t39168] in local tiles --on foot scale
-           
+
         //     Ha ha, I'm not sure official names are useful -- they are often the worst names since the purpose of the structures has changed over the years, etc.  
         //     In any case, we have the 16x16 world tiles, which are called "feature shells", since we used them first to handle groups of map features for save/load.  
         //     The 16x16 maps of a single world tile are called "midmaps", but there are 17x17 maps of sites at the same scale called "site realizations", and 
@@ -38,13 +38,13 @@ namespace LegendsViewer.Legends
         // (mmx,mmy) for the midmap, 
         // (smmx,smmy) for the three-times-closer army scale, and 
         //     (x,y,z) or (lx,ly,ly) for the local in-play tiles.  
-	       
+
         //     Aside from the 
         // "mm" for midmap and the 
         // "l" for local, the reasons are lost to time...  
         // "s" might be for site, and 
         // "a" might be for area.  
-	       
+
         //     A single midmap tile is the 48x48 play tile unit (doesn't have another name aside from "midmap tile"), and 
         //     it is made up of a 3x3 of 16x16x1 play tiles, and each of those 16x16x1s is a "block" (so a midmap tile is 3x3 blocks).  
         // The 16x16 is also sometimes taken with all Z levels as a "block column" (which handles cave-ins and some other data).  
@@ -69,12 +69,7 @@ namespace LegendsViewer.Legends
             {
                 return true;
             }
-            if ((object)a == null || (object)b == null)
-            {
-                return false;
-            }
-
-            return a.X == b.X && a.Y == b.Y;
+            return (object)a != null && (object)b != null && a.X == b.X && a.Y == b.Y;
         }
 
         public static bool operator !=(Location a, Location b)
@@ -89,16 +84,10 @@ namespace LegendsViewer.Legends
                 return false;
             }
 
-            Location b = obj as Location;
-            if ((object)b == null)
-            {
-                return false;
-            }
-
-            return X == b.X && Y == b.Y;
+            return obj is Location b && X == b.X && Y == b.Y;
         }
 
-        public override int  GetHashCode()
+        public override int GetHashCode()
         {
             return X ^ Y;
         }

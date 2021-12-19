@@ -151,7 +151,7 @@ namespace LegendsViewer.Legends.Events
             eventString += ".";
             return eventString;
         }
-        
+
         public string PrintFeature(bool link = true, DwarfObject pov = null)
         {
             string eventString = "";
@@ -169,16 +169,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Slayer != null || SlayerRace != "UNKNOWN" && SlayerRace != "-1")
             {
-                string slayerString;
-                if (Slayer == null)
-                {
-                    slayerString = " a " + SlayerRace.ToLower();
-                }
-                else
-                {
-                    slayerString = Slayer.ToLink(link, pov, this);
-                }
-
+                string slayerString = Slayer == null ? " a " + SlayerRace.ToLower() : Slayer.ToLink(link, pov, this);
                 switch (Cause)
                 {
                     case DeathCause.DragonsFire:

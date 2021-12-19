@@ -25,7 +25,6 @@ namespace LegendsViewer.Legends
                     case "squad_id": SquadId = Convert.ToInt32(property.Value); break;
                 }
             }
-
         }
     }
 }

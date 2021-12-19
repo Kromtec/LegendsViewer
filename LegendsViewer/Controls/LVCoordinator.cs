@@ -84,7 +84,6 @@ namespace LegendsViewer.Controls
 
         public void HandleSelectionChanged(ObjectListView listView)
         {
-
         }
     }
 }

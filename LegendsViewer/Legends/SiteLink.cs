@@ -25,7 +25,7 @@ namespace LegendsViewer.Legends
                 switch (property.Name)
                 {
                     case "link_type":
-                        switch(property.Value)
+                        switch (property.Value)
                         {
                             case "lair": Type = SiteLinkType.Lair; break;
                             case "hangout": Type = SiteLinkType.Hangout; break;
@@ -40,7 +40,7 @@ namespace LegendsViewer.Legends
                         }
                         break;
                     case "site_id":
-                        Site = world.GetSite(Convert.ToInt32(property.Value)); 
+                        Site = world.GetSite(Convert.ToInt32(property.Value));
                         break;
                     case "sub_id":
                         SubId = Convert.ToInt32(property.Value);

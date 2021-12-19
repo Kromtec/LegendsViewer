@@ -15,10 +15,7 @@ namespace LegendsViewer.Legends.EventCollections
         public EntityOccasion EntityOccasion { get; set; }
 
         public List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Occasion(List<Property> properties, World world)
             : base(properties, world)
@@ -32,7 +29,7 @@ namespace LegendsViewer.Legends.EventCollections
                     case "occasion_id": OccasionId = Convert.ToInt32(property.Value); break;
                 }
             }
-            if (Civ != null && Civ.Occassions.Any())
+            if (Civ?.Occassions.Count > 0 == true)
             {
                 EntityOccasion = Civ.Occassions.ElementAt(OccasionId);
             }

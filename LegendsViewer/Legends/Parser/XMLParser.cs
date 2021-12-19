@@ -19,7 +19,7 @@ namespace LegendsViewer.Legends.Parser
         protected readonly XmlTextReader Xml;
         private readonly BackgroundWorker _worker;
         protected World World;
-        protected Section CurrentSection = Section.Unknown;
+        protected Section CurrentSection;
 
         private string _currentItemName = "";
         private readonly XmlPlusParser _xmlPlusParser;
@@ -824,14 +824,9 @@ namespace LegendsViewer.Legends.Parser
                 int lastYear = World.Events.Last().Year;
                 foreach (HistoricalFigure hf in World.HistoricalFigures)
                 {
-                    if (hf.DeathYear > 0)
-                    {
-                        hf.Age = hf.DeathYear - hf.BirthYear;
-                    }
-                    else
-                    {
-                        hf.Age = lastYear - hf.BirthYear;
-                    }
+                    hf.Age = hf.DeathYear > 0
+                        ? hf.DeathYear - hf.BirthYear
+                        : lastYear - hf.BirthYear;
                 }
             }
 
@@ -881,7 +876,6 @@ namespace LegendsViewer.Legends.Parser
                                     //war started before & ended after
                                     || war.StartYear <= era.StartYear && war.EndYear == -1));
                 }
-
             }
         }
 
@@ -947,12 +941,10 @@ namespace LegendsViewer.Legends.Parser
                                 .Select(hf => new { HF = hf.Key, Count = hf.Count() });
                         if (slayers.Count(slayer => slayer.Count > 1) == 1)
                         {
-                            HistoricalFigure beast = slayers.Single(slayer => slayer.Count > 1).HF;
-                            beastAttack.Beast = beast;
+                            beastAttack.Beast = slayers.Single(slayer => slayer.Count > 1).HF;
                         }
                     }
                 }
-
 
                 //Fill in some various event info from collections.
 

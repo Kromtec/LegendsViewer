@@ -45,16 +45,9 @@ namespace LegendsViewer.Controls.Query
 
         public static List<SearchProperty> GetProperties(Type searchType, bool noSubProperties = false)
         {
-            Type nonGenericSearchType;
-            if (searchType.IsGenericType && searchType != typeof(List<int>) && searchType != typeof(List<string>))
-            {
-                nonGenericSearchType = searchType.GetGenericArguments()[0];
-            }
-            else
-            {
-                nonGenericSearchType = searchType;
-            }
-
+            Type nonGenericSearchType = searchType.IsGenericType && searchType != typeof(List<int>) && searchType != typeof(List<string>)
+                ? searchType.GetGenericArguments()[0]
+                : searchType;
             List<SearchProperty> searchProperties = getSearchPropertiesByType(nonGenericSearchType);
 
             if (searchType == typeof(List<int>))
@@ -97,7 +90,7 @@ namespace LegendsViewer.Controls.Query
         {
             return type
                 .GetProperties()
-                .Where(pi => pi.GetCustomAttributes( typeof(AllowAdvancedSearchAttribute), false).FirstOrDefault() != null)
+                .Where(pi => pi.GetCustomAttributes(typeof(AllowAdvancedSearchAttribute), false).FirstOrDefault() != null)
                 .Select(getSearchPropertyByPropertyInfo)
                 .ToList();
         }

@@ -78,7 +78,7 @@ namespace LegendsViewer.Legends
                     html += "Gives Precedence: " + GivesPrecedence;
                     html += "</li>";
                 }
-                if (RequiredBattles > 0 )
+                if (RequiredBattles > 0)
                 {
                     html += "<li>";
                     html += "Required Battles: " + RequiredBattles;
@@ -114,7 +114,7 @@ namespace LegendsViewer.Legends
 
             if (withHonoredHfs)
             {
-                if (HonoredHfs.Any())
+                if (HonoredHfs.Count > 0)
                 {
                     html += "<ul>";
                     html += "<li><b>Honored Historical Figures:</b></li>";

@@ -49,7 +49,7 @@ namespace LegendsViewer.Legends.Events
                 }
             }
 
-            if (Civ != null && Civ.Occassions.Any())
+            if (Civ?.Occassions.Count > 0 == true)
             {
                 EntityOccasion = Civ.Occassions.ElementAt(OccasionId);
                 if (EntityOccasion != null)
@@ -123,7 +123,7 @@ namespace LegendsViewer.Legends.Events
                 eventString += " of ";
                 eventString += ReferencedArtForm.ToLink(link, pov, this);
             }
-            else if (Schedule != null && Schedule.Type == ScheduleType.Storytelling && Schedule.Reference != -1)
+            else if (Schedule?.Type == ScheduleType.Storytelling && Schedule.Reference != -1)
             {
                 WorldEvent worldEvent = World.GetEvent(Schedule.Reference);
                 if (worldEvent is IFeatured featured)
@@ -142,8 +142,8 @@ namespace LegendsViewer.Legends.Events
                 switch (Schedule.Type)
                 {
                     case ScheduleType.Procession:
-                        Structure startStructure = Site.Structures.FirstOrDefault(s => s.Id == Schedule.Reference);
-                        Structure endStructure = Site.Structures.FirstOrDefault(s => s.Id == Schedule.Reference2);
+                        Structure startStructure = Site.Structures.Find(s => s.Id == Schedule.Reference);
+                        Structure endStructure = Site.Structures.Find(s => s.Id == Schedule.Reference2);
                         if (startStructure != null || endStructure != null)
                         {
                             eventString += " It started at ";

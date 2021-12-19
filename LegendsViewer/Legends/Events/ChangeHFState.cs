@@ -147,7 +147,7 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " visited ";
             }
-            else if(State == HfState.Settled)
+            else if (State == HfState.Settled)
             {
                 switch (SubState)
                 {

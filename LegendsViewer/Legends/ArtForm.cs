@@ -15,10 +15,7 @@ namespace LegendsViewer.Legends
         public string Description { get; set; }
         public FormType FormType { get; set; }
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public ArtForm(List<Property> properties, World world)
             : base(properties, world)

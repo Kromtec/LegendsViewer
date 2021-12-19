@@ -21,14 +21,11 @@ namespace LegendsViewer.Controls
 
         private Point _dragStartPosition = Point.Empty;
 
-        private int CloseButtonHeight
-        {
-            get { return FontHeight; }
-        }
+        private int CloseButtonHeight => FontHeight;
 
         private int HotTabIndex
         {
-            get { return _hotTabIndex; }
+            get => _hotTabIndex;
             set
             {
                 if (_hotTabIndex != value)
@@ -97,25 +94,22 @@ namespace LegendsViewer.Controls
             {
                 e.Effect = DragDropEffects.None;
             }
-            else
+            else if (e.Data.GetDataPresent(typeof(DwarfTabPage)))
             {
-                if (e.Data.GetDataPresent(typeof(DwarfTabPage)))
+                e.Effect = DragDropEffects.Move;
+                TabPage dragTab = (TabPage)e.Data.GetData(typeof(DwarfTabPage));
+
+                if (hoverTab == dragTab)
                 {
-                    e.Effect = DragDropEffects.Move;
-                    TabPage dragTab = (TabPage) e.Data.GetData(typeof(DwarfTabPage));
+                    return;
+                }
 
-                    if (hoverTab == dragTab)
-                    {
-                        return;
-                    }
-
-                    Rectangle tabRect = GetTabRect(TabPages.IndexOf(hoverTab));
-                    tabRect.Inflate(-3, -3);
-                    if (tabRect.Contains(PointToClient(new Point(e.X, e.Y))))
-                    {
-                        SwapTabPages(dragTab, hoverTab);
-                        SelectedTab = dragTab;
-                    }
+                Rectangle tabRect = GetTabRect(TabPages.IndexOf(hoverTab));
+                tabRect.Inflate(-3, -3);
+                if (tabRect.Contains(PointToClient(new Point(e.X, e.Y))))
+                {
+                    SwapTabPages(dragTab, hoverTab);
+                    SelectedTab = dragTab;
                 }
             }
         }
@@ -131,7 +125,6 @@ namespace LegendsViewer.Controls
             }
             return null;
         }
-
 
         private void SwapTabPages(TabPage tp1, TabPage tp2)
         {

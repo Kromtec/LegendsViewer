@@ -18,13 +18,9 @@ namespace LegendsViewer.Legends
                 {
                     newText[i] = char.ToUpper(text[i]);
                 }
-                else if (text[i] == '_')
-                {
-                    newText[i] = ' ';
-                }
                 else
                 {
-                    newText[i] = char.ToLower(text[i]);
+                    newText[i] = text[i] == '_' ? ' ' : char.ToLower(text[i]);
                 }
             }
             return string.Intern(new string(newText));
@@ -109,12 +105,7 @@ namespace LegendsViewer.Legends
 
         public static string FormatRace(string race)
         {
-            if (race.Contains("FORGOTTEN"))
-            {
-                return "Forgotten Beast";
-            }
-
-            return InitCaps(race);
+            return race.Contains("FORGOTTEN") ? "Forgotten Beast" : InitCaps(race);
         }
 
         public static string RemoveSpecialCharacters(string str)
@@ -137,48 +128,46 @@ namespace LegendsViewer.Legends
             {
                 return "";
             }
-            if (text[0] == 'a' || text[0] == 'A' ||
+            return text[0] == 'a' || text[0] == 'A' ||
                 text[0] == 'e' || text[0] == 'E' ||
                 text[0] == 'i' || text[0] == 'I' ||
                 text[0] == 'o' || text[0] == 'O' ||
-                text[0] == 'u' || text[0] == 'U')
-            {
-                return $"an {text}";
-            }
-            return $"a {text}";
+                text[0] == 'u' || text[0] == 'U'
+                ? $"an {text}"
+                : $"a {text}";
         }
 
         public static string ReplaceNonAscii(string name)
         {
-            name = name.Replace("\u017D", "a");
-            name = name.Replace("\u017E", "a");
-            name = name.Replace("\u201E", "a");
-            name = name.Replace("\u0192", "a");
-            name = name.Replace("\u008F", "a");
-            name = name.Replace("\u2020", "a");
-            name = name.Replace("\u00A0", "a");
-            name = name.Replace("\u2026", "a");
-            name = name.Replace("\u02C6", "e");
-            name = name.Replace("\u2030", "e");
-            name = name.Replace("\u201A", "e");
-            name = name.Replace("\u0220", "e");
-            name = name.Replace("\u0160", "e");
-            name = name.Replace("\u0090", "e");
-            name = name.Replace("\u2039", "i");
-            name = name.Replace("\u00A1", "i");
-            name = name.Replace("\u008D", "i");
-            name = name.Replace("\u0152", "i");
-            name = name.Replace("\u00A4", "n");
-            name = name.Replace("\u00A5", "n");
-            name = name.Replace("\u201D", "o");
-            name = name.Replace("\u00A2", "o");
-            name = name.Replace("\u2022", "o");
-            name = name.Replace("\u201C", "o");
-            name = name.Replace("\u2122", "o");
-            name = name.Replace("\u2014", "u");
-            name = name.Replace("\u2013", "u");
-            name = name.Replace("\u00A3", "u");
-            name = name.Replace("\u02DC", "y");
+            name = name.Replace("\u017D", "a")
+                .Replace("\u017E", "a")
+                .Replace("\u201E", "a")
+                .Replace("\u0192", "a")
+                .Replace("\u008F", "a")
+                .Replace("\u2020", "a")
+                .Replace("\u00A0", "a")
+                .Replace("\u2026", "a")
+                .Replace("\u02C6", "e")
+                .Replace("\u2030", "e")
+                .Replace("\u201A", "e")
+                .Replace("\u0220", "e")
+                .Replace("\u0160", "e")
+                .Replace("\u0090", "e")
+                .Replace("\u2039", "i")
+                .Replace("\u00A1", "i")
+                .Replace("\u008D", "i")
+                .Replace("\u0152", "i")
+                .Replace("\u00A4", "n")
+                .Replace("\u00A5", "n")
+                .Replace("\u201D", "o")
+                .Replace("\u00A2", "o")
+                .Replace("\u2022", "o")
+                .Replace("\u201C", "o")
+                .Replace("\u2122", "o")
+                .Replace("\u2014", "u")
+                .Replace("\u2013", "u")
+                .Replace("\u00A3", "u")
+                .Replace("\u02DC", "y");
             return name;
         }
 
@@ -210,7 +199,6 @@ namespace LegendsViewer.Legends
             dest = new Bitmap(imageSize.Width, imageSize.Height);
             using (Graphics g = Graphics.FromImage(dest))
             {
-
                 if (smooth)
                 {
                     g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -264,7 +252,6 @@ namespace LegendsViewer.Legends
                 double tv = v * (1 - s * (1 - f));
                 switch (i)
                 {
-
                     // Red is the dominant color
 
                     case 0:
@@ -344,12 +331,7 @@ namespace LegendsViewer.Legends
                 return 0;
             }
 
-            if (i > 255)
-            {
-                return 255;
-            }
-
-            return i;
+            return i > 255 ? 255 : i;
         }
 
         public static string TimeCountToSeason(int count)
@@ -502,10 +484,7 @@ namespace LegendsViewer.Legends
                 // check that the last two digits is not a zero
                 if (lasttwo > 0)
                 {
-                    if (lasttwo < 20) // if less than 20, use "ones" only
-                        retval = $"{ones[lasttwo]} {retval}";
-                    else // otherwise, use both "tens" and "ones" array
-                        retval = $"{tens[dig2]} {ones[dig3]} {retval}";
+                    retval = lasttwo < 20 ? $"{ones[lasttwo]} {retval}" : $"{tens[dig2]} {ones[dig3]} {retval}";
                 }
 
                 // if a hundreds part is there, translate it

@@ -10,8 +10,10 @@ namespace LegendsViewer.Controls.Map
 {
     public class HeatMapMaker : IDisposable
     {
-        Bitmap _heatMap, _heatGradient, _occurence;
-        int _occurenceIntensity = 25, _occurenceDiameter = 75, _maxOccurencesToDraw = 50;
+        private readonly Bitmap _heatMap;
+        private Bitmap _heatGradient;
+        private Bitmap _occurence;
+        private readonly int _occurenceIntensity = 25, _occurenceDiameter = 75, _maxOccurencesToDraw = 50;
         private bool _disposed;
 
         public static Bitmap Create(int width, int height, List<Location> occurences, List<int> occurencesCount = null)
@@ -22,7 +24,6 @@ namespace LegendsViewer.Controls.Map
 
         private HeatMapMaker(int width, int height, List<Location> occurences, List<int> occurencesCount = null)
         {
-
             MakeHeatGradient();
             MakeOccurence();
             Bitmap alphaMap = new Bitmap(width, height);
@@ -38,16 +39,7 @@ namespace LegendsViewer.Controls.Map
                 occurencesCount = groupedOccurences.ToList();
             }
             occurences = occurences.GroupBy(occurence => occurence).Select(occurence => occurence.Key).ToList();
-            int maxOccurences;
-            if (occurencesCount.Count > 0)
-            {
-                maxOccurences = occurencesCount.Max();
-            }
-            else
-            {
-                maxOccurences = 0;
-            }
-
+            int maxOccurences = occurencesCount.Count > 0 ? occurencesCount.Max() : 0;
             double drawNumRatio = Convert.ToDouble(_maxOccurencesToDraw) / maxOccurences;
             for (int i = 0; i < occurences.Count; i++)
             {
@@ -67,7 +59,6 @@ namespace LegendsViewer.Controls.Map
             _heatMap = new Bitmap(width, height);
             ConvertAlphaMapToHeatMap(alphaMap);
             alphaMap.Dispose();
-
         }
 
         private void MakeHeatGradient()
@@ -114,9 +105,7 @@ namespace LegendsViewer.Controls.Map
                     drawMap.Dispose();
                 }
             }
-
         }
-
 
         private void DrawOccurence(Location occurence, Graphics g)
         {
@@ -140,9 +129,9 @@ namespace LegendsViewer.Controls.Map
                     };
                 }
 
-                Graphics remap = Graphics.FromImage(_heatMap);
+                _ = Graphics.FromImage(_heatMap);
                 attributes.SetRemapTable(newColorMap);
-                remap = Graphics.FromImage(_heatMap);
+                Graphics remap = Graphics.FromImage(_heatMap);
                 remap.DrawImage(alphaMap, new Rectangle(0, 0, _heatMap.Width, _heatMap.Height), 0, 0, _heatMap.Width, _heatMap.Height, GraphicsUnit.Pixel, attributes);
                 remap.Dispose();
             }
@@ -196,14 +185,7 @@ namespace LegendsViewer.Controls.Map
                         }
 
                         rowSet = (byte*)blurredStart + yOffset;
-                        if (total == 0)
-                        {
-                            rowSet[xOffset] = 0;
-                        }
-                        else
-                        {
-                            rowSet[xOffset] = (byte)(total / (radius * 2 + 1));
-                        }
+                        rowSet[xOffset] = total == 0 ? (byte)0 : (byte)(total / (radius * 2 + 1));
 
                         xOffset += pixelSize;
                         xOffsetRemove += pixelSize;

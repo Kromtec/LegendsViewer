@@ -39,7 +39,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                SiteProperty = Site.SiteProperties.FirstOrDefault(siteProperty => siteProperty.Id == BuildingProfileId);
+                SiteProperty = Site.SiteProperties.Find(siteProperty => siteProperty.Id == BuildingProfileId);
                 SiteProperty?.Structure?.AddEvent(this);
             }
 

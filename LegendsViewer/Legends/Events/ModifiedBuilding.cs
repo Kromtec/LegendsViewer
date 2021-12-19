@@ -29,7 +29,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             ModifierHf.AddEvent(this);
             Site.AddEvent(this);

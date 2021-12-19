@@ -100,7 +100,7 @@ namespace LegendsViewer.Legends.Events
                     break;
                 case HfEntityLinkType.Squad:
                 case HfEntityLinkType.Position:
-                    EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower() || pos.Id == PositionId);
+                    EntityPosition position = Entity.EntityPositions.Find(pos => string.Equals(pos.Name, Position, StringComparison.OrdinalIgnoreCase) || pos.Id == PositionId);
                     if (position != null)
                     {
                         string positionName = position.GetTitleByCaste(HistoricalFigure?.Caste);

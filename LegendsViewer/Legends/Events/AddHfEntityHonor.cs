@@ -28,7 +28,7 @@ namespace LegendsViewer.Legends.Events
 
             if (HonorId >= 0)
             {
-                Honor = Entity.Honors.FirstOrDefault(h => h.Id == HonorId);
+                Honor = Entity.Honors.Find(h => h.Id == HonorId);
             }
             Entity.AddEvent(this);
             HistoricalFigure.AddEvent(this);

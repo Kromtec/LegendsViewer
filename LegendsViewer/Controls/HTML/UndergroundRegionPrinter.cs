@@ -11,8 +11,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class UndergroundRegionPrinter : HtmlPrinter
     {
-        UndergroundRegion _region;
-        World _world;
+        private readonly UndergroundRegion _region;
+        private readonly World _world;
 
         public UndergroundRegionPrinter(UndergroundRegion region, World world)
         {
@@ -29,22 +29,21 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _region.GetIcon() + " " + "Depth: " + _region.Depth + "</h1></br></br>");
+            Html.Append("<h1>").Append(_region.GetIcon()).Append(' ').Append("Depth: ").Append(_region.Depth).AppendLine("</h1></br></br>");
 
-            if (_region.Coordinates.Any())
+            if (_region.Coordinates.Count > 0)
             {
                 List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _region);
 
-                Html.AppendLine("<table>");
-                Html.AppendLine("<tr>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("</tr></table></br>");
-
-                Html.AppendLine("<b>Geography</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>Area: " + _region.SquareTiles + " region tiles²</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<table>")
+                    .AppendLine("<tr>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .AppendLine("</tr></table></br>")
+                    .AppendLine("<b>Geography</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>Area: ").Append(_region.SquareTiles).AppendLine(" region tiles²</li>")
+                    .AppendLine("</ul>");
             }
 
             int deathCount = _region.Events.OfType<HfDied>().Count();
@@ -59,11 +58,11 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<b>Deaths</b> " + LineBreak);
                 if (deathCount > 100)
                 {
-                    Html.AppendLine("<ul>");
-                    Html.AppendLine("<li>Historical figures died in this Region: " + deathCount);
+                    Html.AppendLine("<ul>")
+                        .Append("<li>Historical figures died in this Region: ").Append(deathCount).AppendLine();
                     if (popInBattle > 0)
                     {
-                        Html.AppendLine("<li>Population died in Battle: " + popInBattle);
+                        Html.Append("<li>Population died in Battle: ").Append(popInBattle).AppendLine();
                     }
                     Html.AppendLine("</ul>");
                 }
@@ -72,11 +71,11 @@ namespace LegendsViewer.Controls.HTML
                     Html.AppendLine("<ol>");
                     foreach (HfDied death in _region.Events.OfType<HfDied>())
                     {
-                        Html.AppendLine("<li>" + death.HistoricalFigure.ToLink() + ", in " + death.Year + " (" + death.Cause.GetDescription() + ")");
+                        Html.Append("<li>").Append(death.HistoricalFigure.ToLink()).Append(", in ").Append(death.Year).Append(" (").Append(death.Cause.GetDescription()).AppendLine(")");
                     }
                     if (popInBattle > 0)
                     {
-                        Html.AppendLine("<li>Population died in Battle: " + popInBattle);
+                        Html.Append("<li>Population died in Battle: ").Append(popInBattle).AppendLine();
                     }
                     Html.AppendLine("</ol>");
                 }

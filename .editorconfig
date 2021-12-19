@@ -1,0 +1,19 @@
+﻿[*.cs]
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = suggestion
+
+# RCS1181: Convert comment to documentation comment.
+dotnet_diagnostic.RCS1181.severity = silent
+
+# IDE0010: Add missing cases
+dotnet_diagnostic.IDE0010.severity = silent
+
+# IDE0048: Add parentheses for clarity
+dotnet_diagnostic.IDE0048.severity = silent
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = silent
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent

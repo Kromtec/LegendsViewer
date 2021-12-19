@@ -19,24 +19,24 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _artifact.GetIcon() + " " + _artifact.Name);
+            Html.Append("<h1>").Append(_artifact.GetIcon()).Append(' ').AppendLine(_artifact.Name);
             if (!string.IsNullOrWhiteSpace(_artifact.Item) && _artifact.Name != _artifact.Item)
             {
-                Html.AppendLine(" \"" + _artifact.Item + "\"");
+                Html.Append(" \"").Append(_artifact.Item).AppendLine("\"");
             }
             Html.AppendLine("</h1>");
             if (!string.IsNullOrWhiteSpace(_artifact.Type) && _artifact.Type != "Unknown")
             {
-                Html.AppendLine("<b>" + _artifact.Name + " was a legendary " + _artifact.Material + " ");
-                Html.AppendLine((!string.IsNullOrWhiteSpace(_artifact.SubType) ? _artifact.SubType : _artifact.Type.ToLower()) + ".</b><br />");
+                Html.Append("<b>").Append(_artifact.Name).Append(" was a legendary ").Append(_artifact.Material).AppendLine(" ")
+                    .Append((!string.IsNullOrWhiteSpace(_artifact.SubType) ? _artifact.SubType : _artifact.Type.ToLower())).AppendLine(".</b><br />");
             }
             else
             {
-                Html.AppendLine("<b>" + _artifact.Name + " was a legendary item.</b><br />");
+                Html.Append("<b>").Append(_artifact.Name).AppendLine(" was a legendary item.</b><br />");
             }
             if (!string.IsNullOrWhiteSpace(_artifact.Description))
             {
-                Html.AppendLine("<i>\"" + _artifact.Description + "\"</i><br />");
+                Html.Append("<i>\"").Append(_artifact.Description).AppendLine("\"</i><br />");
             }
             Html.AppendLine("<br />");
 
@@ -44,43 +44,42 @@ namespace LegendsViewer.Controls.HTML
 
             if (_artifact.Site != null || _artifact.Region != null)
             {
-                Html.AppendLine("<b>Current Location:</b><br/>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Current Location:</b><br/>")
+                    .AppendLine("<ul>");
                 if (_artifact.Site != null)
                 {
-                Html.AppendLine("<li>" + _artifact.Site.ToLink());
-                if (_artifact.Structure != null)
-                {
-                    Html.AppendLine(" (" + _artifact.Structure.ToLink() + ")");
-                }
-                Html.AppendLine("</li>");
-                    
+                    Html.Append("<li>").AppendLine(_artifact.Site.ToLink());
+                    if (_artifact.Structure != null)
+                    {
+                        Html.Append(" (").Append(_artifact.Structure.ToLink()).AppendLine(")");
+                    }
+                    Html.AppendLine("</li>");
                 }
                 else if (_artifact.Region != null)
                 {
-                    Html.AppendLine("<li>" + _artifact.Region.ToLink() + "</li>");
+                    Html.Append("<li>").Append(_artifact.Region.ToLink()).AppendLine("</li>");
                 }
 
                 Html.AppendLine("</ul>");
             }
             if (_artifact.Holder != null)
             {
-                Html.AppendLine("<b>Current Holder:</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _artifact.Holder.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<b>Current Holder:</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_artifact.Holder.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>");
             }
             if (_artifact.WrittenContents != null)
             {
-                Html.AppendLine("<b>Written Content:</b><br/>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Written Content:</b><br/>")
+                    .AppendLine("<ul>");
                 if (_artifact.PageCount > 0)
                 {
-                    Html.AppendLine("<li>Pages: " + _artifact.PageCount + "</li>");
+                    Html.Append("<li>Pages: ").Append(_artifact.PageCount).AppendLine("</li>");
                 }
                 foreach (var writtenContent in _artifact.WrittenContents)
                 {
-                    Html.AppendLine("<li>" + writtenContent.ToLink() + "</li>");
+                    Html.Append("<li>").Append(writtenContent.ToLink()).AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }
@@ -96,16 +95,16 @@ namespace LegendsViewer.Controls.HTML
                 return;
             }
 
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-md-12\">");
+            Html.AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-12\">");
             var maps = MapPanel.CreateBitmaps(_world, _artifact);
-            Html.AppendLine("<table>");
-            Html.AppendLine("<tr>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("</tr></table></br>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("<table>")
+                .AppendLine("<tr>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                .AppendLine("</tr></table></br>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         public override string GetTitle()

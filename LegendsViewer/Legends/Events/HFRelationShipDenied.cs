@@ -54,7 +54,7 @@ namespace LegendsViewer.Legends.Events
             UndergroundRegion.AddEvent(this);
             Seeker.AddEvent(this);
             Target.AddEvent(this);
-            if (ReasonHf != null && !ReasonHf.Equals(Seeker) && !ReasonHf.Equals(Target))
+            if (ReasonHf?.Equals(Seeker) == false && !ReasonHf.Equals(Target))
             {
                 ReasonHf.AddEvent(this);
             }

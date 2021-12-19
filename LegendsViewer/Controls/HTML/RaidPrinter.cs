@@ -7,8 +7,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class RaidPrinter : HtmlPrinter
     {
-        Raid _raid;
-        World _world;
+        private readonly Raid _raid;
+        private readonly World _world;
 
         public RaidPrinter(Raid raid, World world)
         {
@@ -25,7 +25,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _raid.GetIcon() + " " + _raid.Name + "</h1><br />");
+            Html.Append("<h1>").Append(_raid.GetIcon()).Append(' ').Append(_raid.Name).AppendLine("</h1><br />");
 
             PrintMaps();
 
@@ -41,16 +41,16 @@ namespace LegendsViewer.Controls.HTML
                 return;
             }
 
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-md-12\">");
+            Html.AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-12\">");
             var maps = MapPanel.CreateBitmaps(_world, _raid.Site);
-            Html.AppendLine("<table>");
-            Html.AppendLine("<tr>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("</tr></table></br>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("<table>")
+                .AppendLine("<tr>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                .AppendLine("</tr></table></br>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
     }
 }

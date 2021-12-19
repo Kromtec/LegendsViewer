@@ -10,7 +10,7 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.Tabs
 {
-    [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof (IDesigner))]
+    [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(IDesigner))]
     public partial class CivsTab : BaseSearchTab
     {
         private EntitiesList _entitySearch;
@@ -21,7 +21,7 @@ namespace LegendsViewer.Controls.Tabs
 
         internal override void InitializeTab()
         {
-            EventTabs = new[] { tpCivEvents};
+            EventTabs = new[] { tpCivEvents };
             EventTabTypes = new[] { typeof(Entity) };
 
             listCivSearch.AllColumns.Add(new OLVColumn { AspectName = "Race", IsVisible = false, Text = "Race", TextAlign = HorizontalAlignment.Left });

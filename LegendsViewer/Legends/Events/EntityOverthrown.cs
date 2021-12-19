@@ -75,7 +75,7 @@ namespace LegendsViewer.Legends.Events
             }
             eventString += PrintParentCollection(link, pov);
             eventString += ".";
-            if (Conspirators.Any())
+            if (Conspirators.Count > 0)
             {
                 eventString += " The support of ";
                 for (int i = 0; i < Conspirators.Count; i++)

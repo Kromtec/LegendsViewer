@@ -20,10 +20,7 @@ namespace LegendsViewer.Legends
         //public int GlobalID { get; set; }
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public EntityOccasion(List<Property> properties, World world, Entity entity)
             : base(properties, world)

@@ -15,7 +15,6 @@ namespace LegendsViewer.Controls.Tabs
             InitializeComponent();
         }
 
-
         public FileLoader CreateLoader()
         {
             return new FileLoader(
@@ -29,7 +28,6 @@ namespace LegendsViewer.Controls.Tabs
 
         internal override void InitializeTab()
         {
-            
         }
 
         internal override void AfterLoad(World world)
@@ -94,6 +92,5 @@ namespace LegendsViewer.Controls.Tabs
                 }
             }
         }
-
     }
 }

@@ -7,17 +7,14 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Legends.EventCollections
 {
-    class Insurrection : EventCollection
+    internal class Insurrection : EventCollection
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
         public Site Site { get; set; }
         public Entity TargetEntity { get; set; }
         public int Ordinal { get; set; }
         public List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Insurrection(List<Property> properties, World world)
             : base(properties, world)
@@ -33,7 +30,7 @@ namespace LegendsViewer.Legends.EventCollections
                     case "target_enid":
                         TargetEntity = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
-                    case"ordinal":
+                    case "ordinal":
                         Ordinal = Convert.ToInt32(property.Value);
                         break;
                 }

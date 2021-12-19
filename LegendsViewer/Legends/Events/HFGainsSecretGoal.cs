@@ -10,7 +10,7 @@ namespace LegendsViewer.Legends.Events
     {
         public HistoricalFigure HistoricalFigure { get; set; }
         public SecretGoal Goal { get; set; }
-        private string _unknownGoal;
+        private readonly string _unknownGoal;
 
         public HfGainsSecretGoal(List<Property> properties, World world)
             : base(properties, world)

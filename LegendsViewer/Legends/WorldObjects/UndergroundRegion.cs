@@ -25,18 +25,9 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Location> Coordinates { get; set; } // legends_plus.xml
         [AllowAdvancedSearch("Square Tiles")]
         [ShowInAdvancedSearchResults("Square Tiles")]
-        public int SquareTiles
-        {
-            get
-            {
-                return Coordinates.Count;
-            }
-        }
+        public int SquareTiles => Coordinates.Count;
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public UndergroundRegion() { Type = "INVALID UNDERGROUND REGION"; Depth = 0; Battles = new List<Battle>(); }
         public UndergroundRegion(List<Property> properties, World world)
             : base(properties, world)
@@ -73,13 +64,9 @@ namespace LegendsViewer.Legends.WorldObjects
             {
                 name = "the depths of the world";
             }
-            else if (Type == "Underworld")
-            {
-                name = "the Underworld";
-            }
             else
             {
-                name = "an underground region (" + Type + ")";
+                name = Type == "Underworld" ? "the Underworld" : "an underground region (" + Type + ")";
             }
 
             if (link)
@@ -88,12 +75,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                if (pov != this)
-                {
-                    return Icon + "<a href = \"uregion#" + Id + "\" title=\"" + title + "\">" + name + "</a>";
-                }
-
-                return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(name) + "</a>";
+                return pov != this
+                    ? Icon + "<a href = \"uregion#" + Id + "\" title=\"" + title + "\">" + name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(name) + "</a>";
             }
             return name;
         }

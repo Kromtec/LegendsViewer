@@ -35,7 +35,7 @@ namespace LegendsViewer.Controls
             IEnumerable<HistoricalFigure> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(hf => hf.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(hf => hf.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Race != "All")
@@ -141,7 +141,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Site> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(s => s.Name.ToLower().Contains(Name.ToLower()) || s.UntranslatedName.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(s => s.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0 || s.UntranslatedName.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -171,14 +171,9 @@ namespace LegendsViewer.Controls
 
             if (SortPopulation)
             {
-                if (PopulationType != "All")
-                {
-                    filtered = filtered.Where(site => site.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
-                }
-                else
-                {
-                    filtered = filtered.OrderByDescending(site => site.Populations.Sum(population => population.Count));
-                }
+                filtered = PopulationType != "All"
+                    ? filtered.Where(site => site.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(site => site.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count))
+                    : filtered.OrderByDescending(site => site.Populations.Sum(population => population.Count));
             }
 
             if (SortConnections)
@@ -214,7 +209,7 @@ namespace LegendsViewer.Controls
             IEnumerable<WorldRegion> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(r => r.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(r => r.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -300,7 +295,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Landmass> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -330,7 +325,7 @@ namespace LegendsViewer.Controls
             IEnumerable<MountainPeak> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -360,7 +355,7 @@ namespace LegendsViewer.Controls
             IEnumerable<River> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -392,7 +387,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Entity> filtered = BaseList.Where(entity => entity.Name != "");
             if (Name != "")
             {
-                filtered = filtered.Where(e => e.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(e => e.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -432,14 +427,9 @@ namespace LegendsViewer.Controls
 
             if (SortPopulation)
             {
-                if (PopulationType != "All")
-                {
-                    filtered = filtered.Where(entity => entity.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count));
-                }
-                else
-                {
-                    filtered = filtered.OrderByDescending(civ => civ.Populations.Sum(population => population.Count));
-                }
+                filtered = PopulationType != "All"
+                    ? filtered.Where(entity => entity.Populations.Count(population => population.Race.NamePlural == PopulationType) > 0).OrderByDescending(civ => civ.Populations.Where(population => population.Race.NamePlural == PopulationType).Sum(population => population.Count))
+                    : filtered.OrderByDescending(civ => civ.Populations.Sum(population => population.Count));
             }
 
             return MaxResults > 0 ? filtered.Take(MaxResults) : filtered;
@@ -460,7 +450,7 @@ namespace LegendsViewer.Controls
             IEnumerable<War> filtered = BaseList; // BaseList.Where(war => !World.FilterBattles || war.Notable);
             if (Name != "")
             {
-                filtered = filtered.Where(war => war.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(war => war.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Ongoing)
@@ -516,7 +506,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Battle> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(battle => battle.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(battle => battle.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -552,7 +542,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Raid> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(raid => raid.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(raid => raid.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -588,22 +578,22 @@ namespace LegendsViewer.Controls
             IEnumerable<Artifact> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(artifact => artifact.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(artifact => artifact.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (!string.IsNullOrEmpty(Type) && Type != "All")
             {
-                filtered = filtered.Where(artifact => artifact.Type.ToLower().Contains(Type.ToLower()));
+                filtered = filtered.Where(artifact => artifact.Type.IndexOf(Type, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (!string.IsNullOrEmpty(Material))
             {
-                filtered = filtered.Where(artifact => artifact.Material.ToLower().Contains(Material.ToLower()));
+                filtered = filtered.Where(artifact => artifact.Material.IndexOf(Material, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (!ShowWrittenContent)
             {
-                filtered = filtered.Where(artifact => !artifact.WrittenContentIds.Any());
+                filtered = filtered.Where(artifact => artifact.WrittenContentIds.Count == 0);
             }
 
             if (SortEvents)
@@ -633,7 +623,7 @@ namespace LegendsViewer.Controls
             IEnumerable<WrittenContent> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -668,7 +658,7 @@ namespace LegendsViewer.Controls
             IEnumerable<DanceForm> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -698,7 +688,7 @@ namespace LegendsViewer.Controls
             IEnumerable<MusicalForm> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -728,7 +718,7 @@ namespace LegendsViewer.Controls
             IEnumerable<PoeticForm> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)
@@ -751,13 +741,14 @@ namespace LegendsViewer.Controls
         public readonly List<WorldConstruction> BaseList;
         public WorldConstructionsList(World setWorld) : base(setWorld)
         {
-            BaseList = World.WorldConstructions; }
+            BaseList = World.WorldConstructions;
+        }
         public IEnumerable<WorldConstruction> GetList()
         {
             IEnumerable<WorldConstruction> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -792,7 +783,7 @@ namespace LegendsViewer.Controls
             IEnumerable<Structure> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(element => element.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(element => element.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -828,7 +819,7 @@ namespace LegendsViewer.Controls
             IEnumerable<SiteConquered> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(pillaging => pillaging.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(pillaging => pillaging.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (Type != "All")
@@ -869,7 +860,7 @@ namespace LegendsViewer.Controls
             IEnumerable<BeastAttack> filtered = BaseList;
             if (Name != "")
             {
-                filtered = filtered.Where(beastAttack => beastAttack.Name.ToLower().Contains(Name.ToLower()));
+                filtered = filtered.Where(beastAttack => beastAttack.Name.IndexOf(Name, System.StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
             if (SortEvents)

@@ -10,7 +10,7 @@ namespace LegendsViewer.Legends.EventCollections
     public class Theft : EventCollection
     {
         public string Ordinal;
-        Location _coordinates;
+        private readonly Location _coordinates;
         public WorldRegion Region;
         public UndergroundRegion UndergroundRegion;
         public Site Site;
@@ -18,10 +18,7 @@ namespace LegendsViewer.Legends.EventCollections
         public Entity Defender;
 
         public List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public Theft(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -63,7 +60,6 @@ namespace LegendsViewer.Legends.EventCollections
                         theft.ReturnSite.Events = theft.ReturnSite.Events.OrderBy(ev => ev.Id).ToList();
                     }
                 }
-
             }
             Attacker.AddEventCollection(this);
             Defender.AddEventCollection(this);

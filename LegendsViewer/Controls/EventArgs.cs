@@ -10,6 +10,5 @@ namespace LegendsViewer.Controls
         {
             Arg = arg;
         }
-
     }
 }

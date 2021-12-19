@@ -38,7 +38,7 @@ namespace LegendsViewer.Legends
             {
                 foreach (var honorId in HonorIds)
                 {
-                    var honor = Entity.Honors.FirstOrDefault(h => h.Id == honorId);
+                    var honor = Entity.Honors.Find(h => h.Id == honorId);
                     if (honor != null)
                     {
                         honor.HonoredHfs.Add(historicalFigure);

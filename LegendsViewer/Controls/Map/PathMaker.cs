@@ -11,7 +11,6 @@ namespace LegendsViewer.Controls.Map
     {
         public static List<List<Site>> Create(Entity civ, int year)
         {
-
             List<SiteNode> sites = CreateSiteNodes(civ, year);
             //SetPathsDijkstra(Sites);
             SetPathsPrim(sites);
@@ -221,7 +220,6 @@ namespace LegendsViewer.Controls.Map
             }
 
             return sites;
-
         }
     }
 }

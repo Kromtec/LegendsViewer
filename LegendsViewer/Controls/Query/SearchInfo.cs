@@ -30,11 +30,9 @@ namespace LegendsViewer.Controls.Query
                 }
             }
 
-            if (expression is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression && unaryMemberExpression.Expression != null)
-            {
-                return CombineNullCheckWithCurrentExpression(expression, unaryMemberExpression);
-            }
-            return expression;
+            return expression is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression && unaryMemberExpression.Expression != null
+                ? CombineNullCheckWithCurrentExpression(expression, unaryMemberExpression)
+                : expression;
         }
 
         private static Expression CombineNullCheckWithCurrentExpression(Expression expression, MemberExpression memberExpression)
@@ -65,30 +63,16 @@ namespace LegendsViewer.Controls.Query
         public static SearchInfo Make(Type type)
         {
             Type genericSearchInfo = typeof(SearchInfo<>);
-            Type searchType;
-            if (type.IsGenericType)
-            {
-                searchType = genericSearchInfo.MakeGenericType(type.GetGenericArguments()[0]);
-            }
-            else
-            {
-                searchType = genericSearchInfo.MakeGenericType(type);
-            }
-
+            Type searchType = type.IsGenericType
+                ? genericSearchInfo.MakeGenericType(type.GetGenericArguments()[0])
+                : genericSearchInfo.MakeGenericType(type);
             return Activator.CreateInstance(searchType) as SearchInfo;
         }
         public void SetupComparers(QueryComparer comparer)
         {
             if (Next != null)
             {
-                if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType)
-                {
-                    Comparer = QueryComparer.Count;
-                }
-                else
-                {
-                    Comparer = QueryComparer.Property;
-                }
+                Comparer = GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType ? QueryComparer.Count : QueryComparer.Property;
 
                 Next.SetupComparers(comparer);
             }
@@ -114,7 +98,6 @@ namespace LegendsViewer.Controls.Query
                     {
                         comparer = QueryComparer.Is;
                     }
-
 
                 }
                 if (PropertyName != "Value" && GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType)
@@ -152,43 +135,33 @@ namespace LegendsViewer.Controls.Query
 
                 Next.SetupOrderByComparers(comparer);
             }
+            else if (comparer == QueryComparer.All)
+            {
+                Comparer = QueryComparer.All;
+                Next = Make(GetSearchType().GetProperty(PropertyName).PropertyType);
+                Next.Operator = QueryOperator.Or;
+                Next.Previous = Next;
+                Next.Comparer = QueryComparer.All;
+            }
             else
             {
-                if (comparer == QueryComparer.All)
+                if (comparer == QueryComparer.Equals || comparer == QueryComparer.NotEqual)
                 {
-                    Comparer = QueryComparer.All;
-                    Next = Make(GetSearchType().GetProperty(PropertyName).PropertyType);
-                    Next.Operator = QueryOperator.Or;
-                    Next.Previous = Next;
-                    Next.Comparer = QueryComparer.All;
-                }
-                else
-                {
-                    if (comparer == QueryComparer.Equals || comparer == QueryComparer.NotEqual)
+                    bool propertyIsString = PropertyName != "Value"
+                        ? GetSearchType().GetProperty(PropertyName).PropertyType == typeof(string)
+                        : Previous.GetSearchType().GetProperty(Previous.PropertyName).PropertyType.GetGenericArguments()[0] == typeof(string);
+                    if (propertyIsString && comparer == QueryComparer.Equals)
                     {
-                        bool propertyIsString;
-                        if (PropertyName != "Value")
-                        {
-                            propertyIsString = GetSearchType().GetProperty(PropertyName).PropertyType == typeof(string);
-                        }
-                        else
-                        {
-                            propertyIsString = Previous.GetSearchType().GetProperty(Previous.PropertyName).PropertyType.GetGenericArguments()[0] == typeof(string);
-                        }
-
-                        if (propertyIsString && comparer == QueryComparer.Equals)
-                        {
-                            comparer = QueryComparer.StringEquals;
-                        }
-
-                        if (propertyIsString && comparer == QueryComparer.NotEqual)
-                        {
-                            comparer = QueryComparer.StringNotEqual;
-                        }
+                        comparer = QueryComparer.StringEquals;
                     }
 
-                    Comparer = comparer;
+                    if (propertyIsString && comparer == QueryComparer.NotEqual)
+                    {
+                        comparer = QueryComparer.StringNotEqual;
+                    }
                 }
+
+                Comparer = comparer;
             }
         }
 
@@ -223,12 +196,7 @@ namespace LegendsViewer.Controls.Query
                 return PropertyName;
             }
 
-            if (Next.PropertyName == null)
-            {
-                return PropertyName;
-            }
-
-            return PropertyName + "." + Next.PropertyString();
+            return Next.PropertyName == null ? PropertyName : PropertyName + "." + Next.PropertyString();
         }
 
         public bool ContainsListProperties()
@@ -238,18 +206,13 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            if (Next != null)
-            {
-                return Next.ContainsListProperties();
-            }
-
-            return false;
+            return Next != null && Next.ContainsListProperties();
         }
 
         public bool ContainsListPropertyLast()
         {
             var propertyInfo = GetSearchType().GetProperty(PropertyName);
-            if (propertyInfo.PropertyType.IsGenericType && Next != null && Next.Comparer == QueryComparer.All)
+            if (propertyInfo.PropertyType.IsGenericType && Next?.Comparer == QueryComparer.All)
             {
                 return true;
             }
@@ -264,18 +227,12 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            if (Next != null)
-            {
-                return Next.ContainsListPropertyLast();
-            }
-
-            return false;
+            return Next != null && Next.ContainsListPropertyLast();
         }
     }
 
     public class SearchInfo<T> : SearchInfo
     {
-
         public override Type GetSearchType()
         {
             return typeof(T);
@@ -296,7 +253,6 @@ namespace LegendsViewer.Controls.Query
         }
         public Expression<Func<T, bool>> GetPredicate()
         {
-
             ParameterExpression e = Expression.Parameter(typeof(T));
             Expression<Func<T, bool>> predicate = t => false;
 
@@ -315,16 +271,11 @@ namespace LegendsViewer.Controls.Query
 
             var exp = whereArg as Expression<Func<T, bool>>;
 
-            if (Previous != null)
-            {
-                predicate = Operator == QueryOperator.And
+            predicate = Previous != null
+                ? Operator == QueryOperator.And
                             ? predicate.And(exp)
-                            : predicate.Or(exp);
-            }
-            else
-            {
-                predicate = exp;
-            }
+                            : predicate.Or(exp)
+                : exp;
 
             return predicate;
         }
@@ -348,7 +299,6 @@ namespace LegendsViewer.Controls.Query
             LambdaExpression valueArg = Expression.Lambda(comparer, e);
             return valueArg as Expression<Func<T, double>>;
         }
-
 
         public override Expression GetComparer(Expression property)
         {
@@ -390,10 +340,10 @@ namespace LegendsViewer.Controls.Query
 
                     break;
                 case QueryComparer.Equals:
-                    methodInfo = GetMethodInfo();
+                    _ = GetMethodInfo();
                     comparer = Expression.Equal(property, Expression.Constant(Value)); break;
                 case QueryComparer.NotEqual:
-                    methodInfo = GetMethodInfo();
+                    _ = GetMethodInfo();
                     comparer = Expression.Not(Expression.Equal(property, Expression.Constant(Value))); break;
                 case QueryComparer.Count:
                 case QueryComparer.ListGreaterThan:
@@ -426,8 +376,6 @@ namespace LegendsViewer.Controls.Query
             comparer = comparer.AddNullCheck();
             return comparer;
         }
-
-        
 
         public override Expression GetTypeAs(Expression property)
         {
@@ -474,16 +422,11 @@ namespace LegendsViewer.Controls.Query
                 case QueryComparer.ListGreaterThan:
                 case QueryComparer.ListLessThan:
                     types.Add(typeof(Func<T, bool>));
-                    if (Next != null)
-                    {
-                        methodInfo = typeof(Enumerable).GetMethods().Single(method => method.Name == "Count"
-                            && method.IsStatic && method.GetParameters().Length == 2);
-                    }
-                    else
-                    {
-                        methodInfo = typeof(Enumerable).GetMethods().Single(method => method.Name == "Count"
+                    methodInfo = Next != null
+                        ? typeof(Enumerable).GetMethods().Single(method => method.Name == "Count"
+                            && method.IsStatic && method.GetParameters().Length == 2)
+                        : typeof(Enumerable).GetMethods().Single(method => method.Name == "Count"
                             && method.IsStatic && method.GetParameters().Length == 1);
-                    }
 
                     break;
                 case QueryComparer.Min:
@@ -491,13 +434,7 @@ namespace LegendsViewer.Controls.Query
                     break;
             }
 
-            if (methodInfo == null)
-            {
-                throw new ArgumentException("No method info supported for " + Comparer);
-            }
-
-            return methodInfo;
-
+            return methodInfo == null ? throw new ArgumentException("No method info supported for " + Comparer) : methodInfo;
         }
 
         public override int GetCount(object item)
@@ -516,37 +453,19 @@ namespace LegendsViewer.Controls.Query
             }
             else
             {
-                List<T> itemList;
-                if (item.GetType().IsGenericType)
-                {
-                    itemList = item as List<T>;
-                }
-                else
-                {
-                    itemList = new List<T> { (T)item };
-                }
-
+                List<T> itemList = item.GetType().IsGenericType ? item as List<T> : new List<T> { (T)item };
                 count = itemList.Count(GetPredicate().Compile());
             }
             return count;
         }
 
-
         public override List<object> Select(object baseObject)
         {
             if (baseObject.GetType().IsGenericType)
             {
-
-                List<T> baseList;
-                if (baseObject.GetType().GetGenericArguments()[0] == typeof(object))
-                {
-                    baseList = (baseObject as List<object>).OfType<T>().ToList();
-                }
-                else
-                {
-                    baseList = baseObject as List<T>;
-                }
-
+                List<T> baseList = baseObject.GetType().GetGenericArguments()[0] == typeof(object)
+                    ? (baseObject as List<object>).OfType<T>().ToList()
+                    : baseObject as List<T>;
                 if (PropertyName == "Value")
                 {
                     return baseList.Cast<object>().ToList();
@@ -556,29 +475,19 @@ namespace LegendsViewer.Controls.Query
 
                 if (GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType)
                 {
-                    if (Next == null || Next.Comparer == QueryComparer.All)
-                    {
-                        return baseList.AsQueryable().Select(PropertyName + ".Count").Cast<object>().ToList();
-                    }
-
-                    return Next.Select(baseList.AsQueryable().SelectMany(PropertyName).Cast<object>().ToList());
+                    return Next == null || Next.Comparer == QueryComparer.All
+                        ? baseList.AsQueryable().Select(PropertyName + ".Count").Cast<object>().ToList()
+                        : Next.Select(baseList.AsQueryable().SelectMany(PropertyName).Cast<object>().ToList());
                 }
 
-                if (Next == null)
-                {
-                    return baseList.AsQueryable().Select(PropertyName).Cast<object>().ToList();
-                }
-
-                return Next.Select(baseList.AsQueryable().Select(PropertyName).Cast<object>().ToList());
+                return Next == null
+                    ? baseList.AsQueryable().Select(PropertyName).Cast<object>().ToList()
+                    : Next.Select(baseList.AsQueryable().Select(PropertyName).Cast<object>().ToList());
             }
             PropertyInfo property = baseObject.GetType().GetProperty(PropertyName);
-            if (property.PropertyType.IsGenericType)
-            {
-                return Next?.Select(property.GetValue(baseObject, null));
-            }
-
-            return new List<object> { property.GetValue(baseObject, null) };
+            return property.PropertyType.IsGenericType
+                ? (Next?.Select(property.GetValue(baseObject, null)))
+                : new List<object> { property.GetValue(baseObject, null) };
         }
-
     }
 }

@@ -11,10 +11,7 @@ namespace LegendsViewer.Legends.EventCollections
     {
         public string Ordinal;
         public List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public Journey(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -22,7 +19,7 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 switch (property.Name)
                 {
-                    case "ordinal": Ordinal = String.Intern(property.Value); break;
+                    case "ordinal": Ordinal = string.Intern(property.Value); break;
                 }
             }
         }

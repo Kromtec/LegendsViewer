@@ -37,11 +37,11 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Entity> Groups { get; set; }
         public List<OwnerPeriod> SiteHistory { get; set; }
         [AllowAdvancedSearch("Current Sites", true)]
-        public List<Site> CurrentSites { get { return SiteHistory.Where(site => site.EndYear == -1).Select(site => site.Site).ToList(); } set { } }
+        public List<Site> CurrentSites { get => SiteHistory.Where(site => site.EndYear == -1).Select(site => site.Site).ToList(); set { } }
         [AllowAdvancedSearch("Lost Sites", true)]
-        public List<Site> LostSites { get { return SiteHistory.Where(site => site.EndYear >= 0).Select(site => site.Site).ToList(); } set { } }
+        public List<Site> LostSites { get => SiteHistory.Where(site => site.EndYear >= 0).Select(site => site.Site).ToList(); set { } }
         [AllowAdvancedSearch("Related Sites", true)]
-        public List<Site> Sites { get { return SiteHistory.Select(site => site.Site).ToList(); } set { } }
+        public List<Site> Sites { get => SiteHistory.ConvertAll(site => site.Site); set { } }
         public List<Honor> Honors { get; set; }
 
         [AllowAdvancedSearch]
@@ -50,7 +50,7 @@ namespace LegendsViewer.Legends.WorldObjects
         [AllowAdvancedSearch("Is Civilization")]
         [ShowInAdvancedSearchResults("Is Civilization")]
         public bool IsCiv { get; set; }
-        public string TypeAsString { get { return Type.GetDescription(); } set { } }
+        public string TypeAsString { get => Type.GetDescription(); set { } }
         public List<EntitySiteLink> SiteLinks { get; set; } // legends_plus.xml
         public List<EntityEntityLink> EntityLinks { get; set; } // legends_plus.xml
         public List<EntityPosition> EntityPositions { get; set; } // legends_plus.xml
@@ -63,13 +63,13 @@ namespace LegendsViewer.Legends.WorldObjects
         [AllowAdvancedSearch("Wars (All)", true)]
         public List<War> Wars { get; set; }
         [AllowAdvancedSearch("Wars (Attacking)", true)]
-        public List<War> WarsAttacking { get { return Wars.Where(war => war.Attacker == this).ToList(); } set { } }
+        public List<War> WarsAttacking { get => Wars.Where(war => war.Attacker == this).ToList(); set { } }
         [AllowAdvancedSearch("Wars (Defending)", true)]
-        public List<War> WarsDefending { get { return Wars.Where(war => war.Defender == this).ToList(); } set { } }
-        public int WarVictories { get { return WarsAttacking.Sum(war => war.AttackerBattleVictories.Count) + WarsDefending.Sum(war => war.DefenderBattleVictories.Count); } set { } }
-        public int WarLosses { get { return WarsAttacking.Sum(war => war.DefenderBattleVictories.Count) + WarsDefending.Sum(war => war.AttackerBattleVictories.Count); } set { } }
-        public int WarKills { get { return WarsAttacking.Sum(war => war.DefenderDeathCount) + WarsDefending.Sum(war => war.AttackerDeathCount); } set { } }
-        public int WarDeaths { get { return WarsAttacking.Sum(war => war.AttackerDeathCount) + WarsDefending.Sum(war => war.DefenderDeathCount); } set { } }
+        public List<War> WarsDefending { get => Wars.Where(war => war.Defender == this).ToList(); set { } }
+        public int WarVictories { get => WarsAttacking.Sum(war => war.AttackerBattleVictories.Count) + WarsDefending.Sum(war => war.DefenderBattleVictories.Count); set { } }
+        public int WarLosses { get => WarsAttacking.Sum(war => war.DefenderBattleVictories.Count) + WarsDefending.Sum(war => war.AttackerBattleVictories.Count); set { } }
+        public int WarKills { get => WarsAttacking.Sum(war => war.DefenderDeathCount) + WarsDefending.Sum(war => war.AttackerDeathCount); set { } }
+        public int WarDeaths { get => WarsAttacking.Sum(war => war.AttackerDeathCount) + WarsDefending.Sum(war => war.DefenderDeathCount); set { } }
         [AllowAdvancedSearch("Leaders", true)]
         public List<HistoricalFigure> AllLeaders => Leaders.SelectMany(l => l).ToList();
         public List<string> PopulationsAsList
@@ -94,8 +94,7 @@ namespace LegendsViewer.Legends.WorldObjects
             get
             {
                 if (WarDeaths == 0 && WarKills == 0) return 0;
-                if (WarDeaths == 0) return double.MaxValue;
-                return Math.Round(WarKills / Convert.ToDouble(WarDeaths), 2);
+                return WarDeaths == 0 ? double.MaxValue : Math.Round(WarKills / Convert.ToDouble(WarDeaths), 2);
             }
         }
 
@@ -139,15 +138,12 @@ namespace LegendsViewer.Legends.WorldObjects
                 }
                 return _icon;
             }
-            set { _icon = value; }
+            set => _icon = value;
         }
 
         public static List<string> Filters;
 
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Entity(List<Property> properties, World world)
             : base(properties, world)
@@ -304,8 +300,6 @@ namespace LegendsViewer.Legends.WorldObjects
         }
         public override string ToString() { return Name; }
 
-
-
         public bool EqualsOrParentEquals(Entity entity)
         {
             return this == entity || Parent == entity;
@@ -349,7 +343,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             foreach (Population population in populations)
             {
-                Population popMatch = Populations.FirstOrDefault(pop => pop.Race.NamePlural.Equals(population.Race.NamePlural, StringComparison.InvariantCultureIgnoreCase));
+                Population popMatch = Populations.Find(pop => pop.Race.NamePlural.Equals(population.Race.NamePlural, StringComparison.InvariantCultureIgnoreCase));
                 if (popMatch != null)
                 {
                     popMatch.Count += population.Count;
@@ -387,11 +381,9 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             if (link)
             {
-                if (pov != this)
-                {
-                    return Icon + "<a href = \"entity#" + Id + "\" title=\"" + GetToolTip() + "\">" + Name + "</a>";
-                }
-                return Icon + "<a title=\"" + GetToolTip() + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
+                return pov != this
+                    ? Icon + "<a href = \"entity#" + Id + "\" title=\"" + GetToolTip() + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + GetToolTip() + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
         }

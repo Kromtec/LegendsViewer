@@ -33,8 +33,8 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                OldStructure = Site.Structures.FirstOrDefault(structure => structure.Id == OldStructureId);
-                NewStructure = Site.Structures.FirstOrDefault(structure => structure.Id == NewStructureId);
+                OldStructure = Site.Structures.Find(structure => structure.Id == OldStructureId);
+                NewStructure = Site.Structures.Find(structure => structure.Id == NewStructureId);
             }
             Civ.AddEvent(this);
             SiteEntity.AddEvent(this);

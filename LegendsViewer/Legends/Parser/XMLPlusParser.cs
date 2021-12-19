@@ -32,7 +32,6 @@ namespace LegendsViewer.Legends.Parser
 
             while (!Xml.EOF && _currentItem == null)
             {
-
                 if (!_inMiddleOfSection)
                 {
                     CurrentSection = GetSectionType(Xml.Name);
@@ -101,7 +100,7 @@ namespace LegendsViewer.Legends.Parser
                 while (xmlParserSection > CurrentSection &&
                        (null != _currentItem || ReadState.Closed != Xml.ReadState))
                 {
-                    if(null != _currentItem)
+                    if (null != _currentItem)
                         AddItemToWorld(_currentItem);
                     _currentItem = null;
                     Parse();
@@ -117,7 +116,7 @@ namespace LegendsViewer.Legends.Parser
             {
                 Property id = GetPropertyByName(existingProperties, "id");
                 Property currentId = GetPropertyByName(_currentItem, "id");
-                while (currentId != null && currentId.ValueAsInt() < 0)
+                while (currentId?.ValueAsInt() < 0)
                 {
                     _currentItem = ParseItem();
                     if (_currentItem != null)

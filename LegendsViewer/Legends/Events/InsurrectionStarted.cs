@@ -11,8 +11,8 @@ namespace LegendsViewer.Legends.Events
         public Entity Civ { get; set; }
         public Site Site { get; set; }
         public InsurrectionOutcome Outcome { get; set; }
-        public Boolean ActualStart { get; set; }
-        private string _unknownOutcome;
+        public bool ActualStart { get; set; }
+        private readonly string _unknownOutcome;
 
         public InsurrectionStarted(List<Property> properties, World world) : base(properties, world)
         {

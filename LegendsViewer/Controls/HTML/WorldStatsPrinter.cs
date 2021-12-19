@@ -41,89 +41,82 @@ namespace LegendsViewer.Controls.HTML
             PrintEntitiesAndHFs();
             PrintGeography();
             PrintPopulations();
-            
+
             return Html.ToString();
         }
 
         private void PrintEvents()
         {
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-            Html.AppendLine("<h1>Events: " + _world.Events.Count + "</h1> ");
-            Html.AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview));
-            Html.AppendLine("</br>");
-            Html.AppendLine("</br>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-4 col-sm-6\">")
+                .Append("<h1>Events: ").Append(_world.Events.Count).AppendLine("</h1> ")
+                .AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview))
+                .AppendLine("</br>")
+                .AppendLine("</br>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         private void PrintWorldInfo()
         {
-            Html.AppendLine("<h1>" + _world.Name + "</h1></br>");
-
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
+            Html.Append("<h1>").Append(_world.Name).AppendLine("</h1></br>")
+                .AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-4 col-sm-6\">");
             PrintMap();
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 300px\">");
-            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("</div>")
+                .AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 300px\">")
+                .AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         private void PrintWarCharts()
         {
-            if (!_world.Wars.Any())
+            if (_world.Wars.Count == 0)
             {
                 return;
             }
 
-            Html.AppendLine("<div class=\"container-fluid\">");
-
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine(_world.CivilizedPopulations.Count > 20
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine(_world.CivilizedPopulations.Count > 20
                ? "<div class=\"col-lg-12\">"
-               : "<div class=\"col-md-6 col-sm-12\">");
-            Html.AppendLine("<h1>Wars Fought by Race</h1>");
-            Html.AppendLine("<canvas id=\"chart-countbyrace\" class=\"bar-chart\"></canvas>");
-            Html.AppendLine("</div>");
-            
+               : "<div class=\"col-md-6 col-sm-12\">")
+                .AppendLine("<h1>Wars Fought by Race</h1>")
+                .AppendLine("<canvas id=\"chart-countbyrace\" class=\"bar-chart\"></canvas>")
+                .AppendLine("</div>");
+
             var warParticipants =
                 _world.Wars.Select(x => x.Attacker.Name).Concat(_world.Wars.Select(x => x.Defender.Name)).Distinct().ToList();
             Html.AppendLine(warParticipants.Count > 20
                 ? "<div class=\"col-lg-12\">"
-                : "<div class=\"col-md-6 col-sm-12\">");
-            Html.AppendLine("<h1>Wars Fought by Civilization</h1>");
-            Html.AppendLine("<canvas id=\"chart-countbyciv\" class=\"bar-chart\"></canvas>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
-            Html.AppendLine("</br>");
-
-            Html.AppendLine("</div>");
+                : "<div class=\"col-md-6 col-sm-12\">")
+                .AppendLine("<h1>Wars Fought by Civilization</h1>")
+                .AppendLine("<canvas id=\"chart-countbyciv\" class=\"bar-chart\"></canvas>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>")
+                .AppendLine("</br>")
+                .AppendLine("</div>");
         }
 
         private void LoadCustomScripts()
         {
-            Html.AppendLine("<script>");
-            Html.AppendLine("window.onload = function(){");
+            Html.AppendLine("<script>")
+                .AppendLine("window.onload = function(){");
 
             PopulatePopulationChartData(_world.CivilizedPopulations);
-            if (_world.Wars.Any())
+            if (_world.Wars.Count > 0)
             {
                 PopulateWarOverview();
             }
 
-            Html.AppendLine("}");
-            Html.AppendLine("</script>");
+            Html.AppendLine("}")
+                .AppendLine("</script>");
         }
 
         private void PopulateWarOverview()
@@ -169,13 +162,12 @@ namespace LegendsViewer.Controls.HTML
                     "hoverBorderColor: 'rgba(" + atkColor + ", 1)' " +
                 "}";
 
-
             var allCivs = allWars.Select(x => x.attackerCiv).Concat(allWars.Select(x => x.defenderCiv)).Distinct().ToList();
             Dictionary<Tuple<string, string>, Tuple<int, int>> warInfo = new Dictionary<Tuple<string, string>, Tuple<int, int>>();
 
             foreach (string civ in allCivs)
             {
-                CreatureInfo race = allWars.FirstOrDefault(w => w.defenderCiv == civ)?.defenderRace ?? allWars.FirstOrDefault(w => w.attackerCiv == civ)?.attackerRace;
+                CreatureInfo race = allWars.Find(w => w.defenderCiv == civ)?.defenderRace ?? allWars.Find(w => w.attackerCiv == civ)?.attackerRace;
                 Tuple<string, string> raceAndCiv = new Tuple<string, string>(race.NamePlural, civ);
                 Tuple<int, int> defatkCounts = new Tuple<int, int>(allWars.Count(y => y.defenderCiv == civ), allWars.Count(y => y.attackerCiv == civ));
                 warInfo.Add(raceAndCiv, defatkCounts);
@@ -251,94 +243,89 @@ namespace LegendsViewer.Controls.HTML
                     "hoverBorderColor: 'rgba(" + atkColor + ", 1)' " +
                 "}";
 
-            Html.AppendLine("var warsByRaceChart = new Chart(document.getElementById('chart-countbyrace').getContext('2d'), { type: 'horizontalBar', ");
-            Html.AppendLine("data: {");
-            Html.AppendLine("labels: [" + raceLabels + "], ");
-            Html.AppendLine("datasets:[" + defendersByRace + "," + attackersByRace + "],");
-            Html.AppendLine("},");
-            Html.AppendLine("options:{");
-            Html.AppendLine("scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] },");
-            Html.AppendLine("legend:{");
-            Html.AppendLine("position:'top',");
-            Html.AppendLine("labels: { boxWidth: 12 }");
-            Html.AppendLine("}");
-            Html.AppendLine("}");
-            Html.AppendLine("});");
-
-            Html.AppendLine("var warsByCivChart = new Chart(document.getElementById('chart-countbyciv').getContext('2d'), { type: 'horizontalBar', ");
-            Html.AppendLine("data: {");
-            Html.AppendLine("labels: [" + civLabels + "], ");
-            Html.AppendLine("datasets:[" + defendersByCiv + "," + attackersByCiv + "],");
-            Html.AppendLine("},");
-            Html.AppendLine("options:{");
-            Html.AppendLine("maxBarThickness: 20,");
-            Html.AppendLine("scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] },");
-            Html.AppendLine("legend:{");
-            Html.AppendLine("position:'top',");
-            Html.AppendLine("labels: { boxWidth: 12 }");
-            Html.AppendLine("}");
-            Html.AppendLine("}");
-            Html.AppendLine("});");
+            Html.AppendLine("var warsByRaceChart = new Chart(document.getElementById('chart-countbyrace').getContext('2d'), { type: 'horizontalBar', ")
+                .AppendLine("data: {")
+                .Append("labels: [").Append(raceLabels).AppendLine("], ")
+                .Append("datasets:[").Append(defendersByRace).Append(',').Append(attackersByRace).AppendLine("],")
+                .AppendLine("},")
+                .AppendLine("options:{")
+                .AppendLine("scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] },")
+                .AppendLine("legend:{")
+                .AppendLine("position:'top',")
+                .AppendLine("labels: { boxWidth: 12 }")
+                .AppendLine("}")
+                .AppendLine("}")
+                .AppendLine("});")
+                .AppendLine("var warsByCivChart = new Chart(document.getElementById('chart-countbyciv').getContext('2d'), { type: 'horizontalBar', ")
+                .AppendLine("data: {")
+                .Append("labels: [").Append(civLabels).AppendLine("], ")
+                .Append("datasets:[").Append(defendersByCiv).Append(',').Append(attackersByCiv).AppendLine("],")
+                .AppendLine("},")
+                .AppendLine("options:{")
+                .AppendLine("maxBarThickness: 20,")
+                .AppendLine("scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true }] },")
+                .AppendLine("legend:{")
+                .AppendLine("position:'top',")
+                .AppendLine("labels: { boxWidth: 12 }")
+                .AppendLine("}")
+                .AppendLine("}")
+                .AppendLine("});");
         }
 
         private void PrintEras()
         {
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-            Html.AppendLine("<h1>Eras</h1>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-4 col-sm-6\">")
+                .AppendLine("<h1>Eras</h1>")
+                .AppendLine("<ol>");
             foreach (Era era in _world.Eras)
             {
-                Html.AppendLine("<li>" + era.Name + " (" + (era.StartYear < 0 ? 0 : era.StartYear) + " - " + era.EndYear + ")</li>");
+                Html.Append("<li>").Append(era.Name).Append(" (").Append((era.StartYear < 0 ? 0 : era.StartYear)).Append(" - ").Append(era.EndYear).AppendLine(")</li>");
             }
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</br>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</br>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         private void PrintPlayerRelatedDwarfObjects()
         {
-            if (!_world.PlayerRelatedObjects.Any())
+            if (_world.PlayerRelatedObjects.Count == 0)
             {
                 return;
             }
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-            Html.AppendLine("<h1>Player Related</h1>");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-4 col-sm-6\">")
+                .AppendLine("<h1>Player Related</h1>");
             var fortressModeLinks = _world.PlayerRelatedObjects.Where(o => !(o is HistoricalFigure));
             var adventureModeLinks = _world.PlayerRelatedObjects.Where(o => o is HistoricalFigure);
             if (fortressModeLinks.Any())
             {
-                Html.AppendLine("<h2>Fortress Mode</h2>");
-                Html.AppendLine("<ol>");
+                Html.AppendLine("<h2>Fortress Mode</h2>")
+                    .AppendLine("<ol>");
                 foreach (DwarfObject dwarfObject in fortressModeLinks)
                 {
-                    Html.AppendLine("<li>" + dwarfObject.ToLink() + "</li>");
+                    Html.Append("<li>").Append(dwarfObject.ToLink()).AppendLine("</li>");
                 }
                 Html.AppendLine("</ol>");
             }
             if (adventureModeLinks.Any())
             {
-                Html.AppendLine("<h2>Adventure Mode</h2>");
-                Html.AppendLine("<ol>");
+                Html.AppendLine("<h2>Adventure Mode</h2>")
+                    .AppendLine("<ol>");
                 foreach (DwarfObject dwarfObject in adventureModeLinks)
                 {
-                    Html.AppendLine("<li>" + dwarfObject.ToLink() + "</li>");
+                    Html.Append("<li>").Append(dwarfObject.ToLink()).AppendLine("</li>");
                 }
                 Html.AppendLine("</ol>");
             }
-            Html.AppendLine("</br>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("</br>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         private void PrintCivs()
@@ -350,68 +337,67 @@ namespace LegendsViewer.Controls.HTML
             var currentCivs = civsByRace.Where(civ => civ.Populations.Any(pop => pop.IsMainRace && pop.Count > 0)).ToList();
             var fallenCivs = civsByRace.Where(civ => !civ.Populations.Any(pop => pop.IsMainRace && pop.Count > 0)).ToList();
 
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-            if (currentCivs.Any())
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">");
+            if (currentCivs.Count > 0)
             {
-                Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-                Html.AppendLine("<h1>Current Civilizations: " + currentCivs.Count() + "</h1>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<div class=\"col-md-4 col-sm-6\">")
+                    .Append("<h1>Current Civilizations: ").Append(currentCivs.Count()).AppendLine("</h1>")
+                    .AppendLine("<ul>");
                 foreach (var civRace in currentCivs.Select(cc => cc.Race).Distinct())
                 {
-                    Html.AppendLine("<li><b>" + civRace.NamePlural + ":</b> " + currentCivs.Count(cc => cc.Race == civRace) + "</li>");
-                    Html.AppendLine("<ul>");
+                    Html.Append("<li><b>").Append(civRace.NamePlural).Append(":</b> ").Append(currentCivs.Count(cc => cc.Race == civRace)).AppendLine("</li>")
+                        .AppendLine("<ul>");
                     foreach (var civ in currentCivs.Where(civ => civ.Race == civRace))
                     {
                         var intelligentPop = civ.Populations.Where(pop => pop.IsMainRace).ToList();
                         var intelligentPopCount = intelligentPop.Sum(cp => cp.Count);
-                        var civPop = intelligentPop.FirstOrDefault(pop => pop.Race == civ.Race);
+                        var civPop = intelligentPop.Find(pop => pop.Race == civ.Race);
                         var civPopCount = civPop != null ? civPop.Count : 0;
-                        Html.AppendLine("<li class=\"legends_civilization_listitem\">");
-                        Html.AppendLine(civ.ToLink());
-                        Html.AppendLine("<div class=\"legends_civilization_metainformation\">");
+                        Html.AppendLine("<li class=\"legends_civilization_listitem\">")
+                            .AppendLine(civ.ToLink())
+                            .AppendLine("<div class=\"legends_civilization_metainformation\">");
                         var civPopString = civPopCount + " " + civRace.NamePlural;
-                        Html.AppendLine("<i class=\"fa fa-fw fa-user\" title=\"" + civPopString + "\"></i> " + civPopString);
+                        Html.Append("<i class=\"fa fa-fw fa-user\" title=\"").Append(civPopString).Append("\"></i> ").AppendLine(civPopString);
                         if (intelligentPopCount - civPopCount > 0)
                         {
                             var otherPopCount = intelligentPopCount - civPopCount;
                             var otherPopString = otherPopCount + " Others";
-                            Html.AppendLine(", <i class=\"fa fa-fw fa-plus-circle\" title=\"" + otherPopString + "\"></i> " + otherPopString);
+                            Html.Append(", <i class=\"fa fa-fw fa-plus-circle\" title=\"").Append(otherPopString).Append("\"></i> ").AppendLine(otherPopString);
                         }
                         var siteString = civ.CurrentSites.Count == 1 ? "Site" : "Sites";
                         var siteCountString = civ.CurrentSites.Count + " " + siteString;
-                        Html.AppendLine(", <i class=\"fa fa-fw fa-home\" title=\"" + siteCountString + "\"></i> " + siteCountString);
-                        Html.AppendLine("<div>");
-                        Html.AppendLine("</ li > ");
+                        Html.Append(", <i class=\"fa fa-fw fa-home\" title=\"").Append(siteCountString).Append("\"></i> ").AppendLine(siteCountString)
+                            .AppendLine("<div>")
+                            .AppendLine("</ li > ");
                     }
                     Html.AppendLine("</ul>");
                 }
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</div>");
+                Html.AppendLine("</ul>")
+                    .AppendLine("</div>");
             }
 
-            if (fallenCivs.Any())
+            if (fallenCivs.Count > 0)
             {
-                Html.AppendLine("<div class=\"col-md-4 col-sm-6\">");
-                Html.AppendLine("<h1>Fallen Civilizations: " + fallenCivs.Count() + "</h1>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<div class=\"col-md-4 col-sm-6\">")
+                    .Append("<h1>Fallen Civilizations: ").Append(fallenCivs.Count()).AppendLine("</h1>")
+                    .AppendLine("<ul>");
                 foreach (var civRace in fallenCivs.Select(fc => fc.Race).Distinct())
                 {
-                    Html.AppendLine("<li><b>" + civRace.NamePlural + ":</b> " + fallenCivs.Count(fc => fc.Race == civRace) + "</li>");
-                    Html.AppendLine("<ul>");
+                    Html.Append("<li><b>").Append(civRace.NamePlural).Append(":</b> ").Append(fallenCivs.Count(fc => fc.Race == civRace)).AppendLine("</li>")
+                        .AppendLine("<ul>");
                     foreach (var civ in fallenCivs.Where(civ => civ.Race == civRace))
                     {
-                        Html.AppendLine("<li>" + civ.ToLink() + " " + HtmlStyleUtil.SymbolDead + "</li>");
+                        Html.Append("<li>").Append(civ.ToLink()).Append(' ').Append(HtmlStyleUtil.SymbolDead).AppendLine("</li>");
                     }
                     Html.AppendLine("</ul>");
                 }
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</div>");
+                Html.AppendLine("</ul>")
+                    .AppendLine("</div>");
             }
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>");
         }
 
         private void PrintMap()
@@ -419,14 +405,9 @@ namespace LegendsViewer.Controls.HTML
             int mapSideLength = 300;
             double resizePercent;
             Size mapSize;
-            if (_world.Map.Width > _world.Map.Height)
-            {
-                resizePercent = mapSideLength / Convert.ToDouble(_world.Map.Width);
-            }
-            else
-            {
-                resizePercent = mapSideLength / Convert.ToDouble(_world.Map.Height);
-            }
+            resizePercent = _world.Map.Width > _world.Map.Height
+                ? mapSideLength / Convert.ToDouble(_world.Map.Width)
+                : mapSideLength / Convert.ToDouble(_world.Map.Height);
 
             mapSize = new Size(Convert.ToInt32(_world.Map.Width * resizePercent), Convert.ToInt32(_world.Map.Height * resizePercent));
             using (Bitmap resizedMap = new Bitmap(mapSize.Width, mapSize.Height))
@@ -437,22 +418,22 @@ namespace LegendsViewer.Controls.HTML
                     resize.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     resize.DrawImage(_world.Map, new Rectangle(0, 0, mapSize.Width, mapSize.Height), new Rectangle(0, 0, _world.Map.Width, _world.Map.Height), GraphicsUnit.Pixel);
                 }
-                Html.AppendLine(MakeLink(BitmapToHtml(resizedMap), LinkOption.LoadMap) + "</br>");
+                Html.Append(MakeLink(BitmapToHtml(resizedMap), LinkOption.LoadMap)).AppendLine("</br>");
             }
         }
 
         private void PrintVarious()
         {
-            Html.AppendLine("<h1>Wars: " + _world.EventCollections.OfType<War>().Count() + "</h1>");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Battles: " + _world.EventCollections.OfType<Battle>().Count() + "</li>");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Notable: " + _world.EventCollections.OfType<Battle>().Count(battle => battle.Notable) + "</li>");
-            Html.AppendLine("<li>Unnotable: " + _world.EventCollections.OfType<Battle>().Count(battle => !battle.Notable) + "</li>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Conquerings: " + _world.EventCollections.OfType<SiteConquered>().Count() + "</li>");
+            Html.Append("<h1>Wars: ").Append(_world.EventCollections.OfType<War>().Count()).AppendLine("</h1>")
+                .AppendLine("<ul>")
+                .Append("<li>Battles: ").Append(_world.EventCollections.OfType<Battle>().Count()).AppendLine("</li>")
+                .AppendLine("<ul>")
+                .Append("<li>Notable: ").Append(_world.EventCollections.OfType<Battle>().Count(battle => battle.Notable)).AppendLine("</li>")
+                .Append("<li>Unnotable: ").Append(_world.EventCollections.OfType<Battle>().Count(battle => !battle.Notable)).AppendLine("</li>")
+                .AppendLine("</ul>")
+                .AppendLine("</ul>")
+                .AppendLine("<ul>")
+                .Append("<li>Conquerings: ").Append(_world.EventCollections.OfType<SiteConquered>().Count()).AppendLine("</li>");
             var conquerings = from conquering in _world.EventCollections.OfType<SiteConquered>()
                               group conquering by conquering.ConquerType into conquerType
                               select new { Type = conquerType.Key, Count = conquerType.Count() };
@@ -460,18 +441,18 @@ namespace LegendsViewer.Controls.HTML
             Html.AppendLine("<ul>");
             foreach (var conquering in conquerings)
             {
-                Html.AppendLine("<li>" + conquering.Type + "s: " + conquering.Count + "</li>");
+                Html.Append("<li>").Append(conquering.Type).Append("s: ").Append(conquering.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Deaths</li>");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Historical Figures: " + _world.EventCollections.OfType<Battle>().Sum(battle => battle.Collection.OfType<HfDied>().Count()) + "</li>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</br>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>")
+                .AppendLine("<ul>")
+                .AppendLine("<li>Deaths</li>")
+                .AppendLine("<ul>")
+                .Append("<li>Historical Figures: ").Append(_world.EventCollections.OfType<Battle>().Sum(battle => battle.Collection.OfType<HfDied>().Count())).AppendLine("</li>")
+                .AppendLine("</ul>")
+                .AppendLine("</ul>")
+                .AppendLine("</br>");
 
             Dictionary<CreatureInfo, int> deaths = new Dictionary<CreatureInfo, int>();
             foreach (Battle battle in _world.Battles)
@@ -489,15 +470,15 @@ namespace LegendsViewer.Controls.HTML
                 }
             }
 
-            Html.AppendLine("<h1><b>Battle Deaths by Race: " + deaths.Count + "</b></h2>");
-            Html.AppendLine("<ol>");
+            Html.Append("<h1><b>Battle Deaths by Race: ").Append(deaths.Count).AppendLine("</b></h2>")
+                .AppendLine("<ol>");
             foreach (var raceDeath in deaths)
             {
-                Html.AppendLine("<li>" + raceDeath.Key.NamePlural + ": " + raceDeath.Value + "</li>");
+                Html.Append("<li>").Append(raceDeath.Key.NamePlural).Append(": ").Append(raceDeath.Value).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</br>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</br>");
         }
 
         private void PrintEntitiesAndHFs()
@@ -515,104 +496,98 @@ namespace LegendsViewer.Controls.HTML
             hfRaces = hfRaces.OrderByDescending(hf => hf.Count);
             aliveHFs = aliveHFs.OrderByDescending(hf => hf.Count);
 
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
-            Html.AppendLine("<h1>Historical Figures: " + _world.HistoricalFigures.Count + "</h1>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-sm-4\">")
+                .Append("<h1>Historical Figures: ").Append(_world.HistoricalFigures.Count).AppendLine("</h1>")
+                .AppendLine("<ol>");
             foreach (var hfRace in hfRaces)
             {
                 PrintPopulationEntry(hfRace.Race, hfRace.Count);
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
-            Html.AppendLine("<h2><b>Alive: " + _world.HistoricalFigures.Count(hf => hf.DeathYear == -1) + "</b></h2>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"col-sm-4\">")
+                .Append("<h2><b>Alive: ").Append(_world.HistoricalFigures.Count(hf => hf.DeathYear == -1)).AppendLine("</b></h2>")
+                .AppendLine("<ol>");
             foreach (var aliveHf in aliveHFs)
             {
                 PrintPopulationEntry(aliveHf.Type, aliveHf.Count);
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"col-sm-4\">");
             PrintVarious();
-            Html.AppendLine("<h1>Entities: " + _world.Entities.Count(entity => !entity.IsCiv) + "</h1>");
-            Html.AppendLine("<ol>");
+            Html.Append("<h1>Entities: ").Append(_world.Entities.Count(entity => !entity.IsCiv)).AppendLine("</h1>")
+                .AppendLine("<ol>");
             foreach (var entityRace in entityRaces)
             {
                 PrintPopulationEntry(entityRace.Type, entityRace.Count);
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>");
         }
 
         private void PrintPopulationEntry(CreatureInfo creatureInfo, int count)
         {
             if (count == int.MaxValue)
             {
-                Html.AppendLine("<li>" + creatureInfo.NamePlural + ": Unnumbered" + "</li>");
+                Html.Append("<li>").Append(creatureInfo.NamePlural).Append(": Unnumbered").AppendLine("</li>");
             }
             else if (count == 1)
             {
-                Html.AppendLine("<li>" + creatureInfo.NameSingular + ": " + count + "</li>");
+                Html.Append("<li>").Append(creatureInfo.NameSingular).Append(": ").Append(count).AppendLine("</li>");
             }
             else
             {
-                Html.AppendLine("<li>" + creatureInfo.NamePlural + ": " + count + "</li>");
+                Html.Append("<li>").Append(creatureInfo.NamePlural).Append(": ").Append(count).AppendLine("</li>");
             }
         }
 
         private void PrintPopulationList(List<Population> populations, string header)
         {
-            if (populations.Any())
+            if (populations.Count > 0)
             {
-                Html.AppendLine("<div class=\"col-sm-4\">");
-                Html.AppendLine($"<h1>{header}</h1>");
-                Html.AppendLine("<ol>");
+                Html.AppendLine("<div class=\"col-sm-4\">")
+                    .Append("<h1>").Append(header).AppendLine("</h1>")
+                    .AppendLine("<ol>");
                 foreach (Population population in populations)
                 {
                     PrintPopulationEntry(population.Race, population.Count);
                 }
 
-                Html.AppendLine("</ol>");
-                Html.AppendLine("</div>");
+                Html.AppendLine("</ol>")
+                    .AppendLine("</div>");
             }
         }
 
         private void PrintPopulations()
         {
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">");
 
             PrintPopulationList(_world.OutdoorPopulations, "Outdoor Populations");
             PrintPopulationList(_world.UndergroundPopulations, "Underground Populations");
 
-            if (_world.CivilizedPopulations.Any())
+            if (_world.CivilizedPopulations.Count > 0)
             {
-                Html.AppendLine("<div class=\"col-sm-4\">");
-                Html.AppendLine("<h1>Civilized Populations</h1>");
-                Html.AppendLine("<ol>");
+                Html.AppendLine("<div class=\"col-sm-4\">")
+                    .AppendLine("<h1>Civilized Populations</h1>")
+                    .AppendLine("<ol>");
                 foreach (Population population in _world.CivilizedPopulations)
                 {
                     PrintPopulationEntry(population.Race, population.Count);
                 }
 
-                Html.AppendLine("</ol>");
-                Html.AppendLine("</br>");
-
-                Html.AppendLine("<h1>Site Populations: " + _world.SitePopulations.Sum(population => population.Count) + "</h1>");
+                Html.AppendLine("</ol>")
+                    .AppendLine("</br>")
+                    .Append("<h1>Site Populations: ").Append(_world.SitePopulations.Sum(population => population.Count)).AppendLine("</h1>");
                 var sitePopulations = from population in _world.SitePopulations
                                       group population by population.Race into popType
                                       select new { Type = popType.Key, Count = popType.Sum(population => population.Count) };
@@ -623,15 +598,13 @@ namespace LegendsViewer.Controls.HTML
                     PrintPopulationEntry(sitePopulation.Type, sitePopulation.Count);
                 }
 
-                Html.AppendLine("</ol>");
-
-                Html.AppendLine("</div>");
+                Html.AppendLine("</ol>")
+                    .AppendLine("</div>");
             }
 
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>");
         }
 
         private void PrintGeography()
@@ -650,46 +623,41 @@ namespace LegendsViewer.Controls.HTML
             regions = regions.OrderByDescending(region => region.Count);
             undergroundRegions = undergroundRegions.OrderByDescending(undergroundRegion => undergroundRegion.Count);
 
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
-            Html.AppendLine("<h1>Sites: " + _world.Sites.Count + "</h1>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-sm-4\">")
+                .Append("<h1>Sites: ").Append(_world.Sites.Count).AppendLine("</h1>")
+                .AppendLine("<ol>");
             foreach (var site in sites)
             {
-                Html.AppendLine("<li>" + site.Type + ": " + site.Count + "</li>");
+                Html.Append("<li>").Append(site.Type).Append(": ").Append(site.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
-            Html.AppendLine("<h1>Regions: " + _world.Regions.Count + "</h1>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"col-sm-4\">")
+                .Append("<h1>Regions: ").Append(_world.Regions.Count).AppendLine("</h1>")
+                .AppendLine("<ol>");
             foreach (var region in regions)
             {
-                Html.AppendLine("<li>" + region.Type + ": " + region.Count + "</li>");
+                Html.Append("<li>").Append(region.Type).Append(": ").Append(region.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div class=\"col-sm-4\">");
-            Html.AppendLine("<h1>Underground Regions: " + _world.UndergroundRegions.Count + "</h1>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"col-sm-4\">")
+                .Append("<h1>Underground Regions: ").Append(_world.UndergroundRegions.Count).AppendLine("</h1>")
+                .AppendLine("<ol>");
             foreach (var undergroundRegion in undergroundRegions)
             {
-                Html.AppendLine("<li>" + undergroundRegion.Type + ": " + undergroundRegion.Count + "</li>");
+                Html.Append("<li>").Append(undergroundRegion.Type).Append(": ").Append(undergroundRegion.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>");
         }
     }
 }

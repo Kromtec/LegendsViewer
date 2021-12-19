@@ -64,7 +64,7 @@ namespace LegendsViewer.Legends.Events
 
         public override string Print(bool link = true, DwarfObject pov = null)
         {
-            String eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " routed " + SiteCiv.ToLink(link, pov, this);
+            string eventString = GetYearTime() + Attacker.ToLink(link, pov, this) + " routed " + SiteCiv.ToLink(link, pov, this);
             if (DefenderCiv != null)
             {
                 eventString += " of " + DefenderCiv.ToLink(link, pov, this);

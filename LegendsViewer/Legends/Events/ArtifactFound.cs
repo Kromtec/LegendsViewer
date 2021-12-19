@@ -51,8 +51,8 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
-                SiteProperty = Site.SiteProperties.FirstOrDefault(sp => sp.Id == SitePropertyId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
+                SiteProperty = Site.SiteProperties.Find(sp => sp.Id == SitePropertyId);
             }
             Artifact.AddEvent(this);
             HistoricalFigure.AddEvent(this);

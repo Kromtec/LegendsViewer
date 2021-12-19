@@ -41,11 +41,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             get
             {
-                if (StructureSubType != StructureSubType.Unknown)
-                {
-                    return StructureSubType.GetDescription();
-                }
-                return Type.GetDescription();
+                return StructureSubType != StructureSubType.Unknown ? StructureSubType.GetDescription() : Type.GetDescription();
             }
         }
 
@@ -61,10 +57,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<int> CopiedArtifactIds { get; set; }
         public List<Artifact> CopiedArtifacts { get; set; }
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Structure(List<Property> properties, World world, Site site)
             : base(properties, world)
@@ -202,7 +195,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public void Resolve(World world)
         {
             Inhabitants = new List<HistoricalFigure>();
-            if (InhabitantIDs.Any())
+            if (InhabitantIDs.Count > 0)
             {
                 foreach (int inhabitantId in InhabitantIDs)
                 {
@@ -230,7 +223,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 }
             }
             CopiedArtifacts = new List<Artifact>();
-            if (CopiedArtifactIds.Any())
+            if (CopiedArtifactIds.Count > 0)
             {
                 foreach (int copiedArtifactId in CopiedArtifactIds)
                 {
@@ -238,7 +231,6 @@ namespace LegendsViewer.Legends.WorldObjects
                 }
             }
         }
-
 
         public override string ToString() { return Name; }
 
@@ -258,15 +250,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"structure#" + GlobalId + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"structure#" + GlobalId + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Icon + Name;

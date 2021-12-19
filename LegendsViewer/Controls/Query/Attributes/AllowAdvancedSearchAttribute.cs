@@ -10,7 +10,6 @@ namespace LegendsViewer.Controls.Query.Attributes
 
         public AllowAdvancedSearchAttribute()
         {
-            
         }
 
         public AllowAdvancedSearchAttribute(string description)

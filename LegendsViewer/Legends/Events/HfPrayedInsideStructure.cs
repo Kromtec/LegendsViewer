@@ -14,7 +14,6 @@ namespace LegendsViewer.Legends.Events
         public Structure Structure { get; set; }
         public string Action { get; set; }
 
-
         public HfPrayedInsideStructure(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -56,7 +55,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             HistoricalFigure.AddEvent(this);
             Site.AddEvent(this);

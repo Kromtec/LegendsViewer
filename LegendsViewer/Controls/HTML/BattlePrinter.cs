@@ -10,10 +10,10 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
-    class BattlePrinter : HtmlPrinter
+    internal class BattlePrinter : HtmlPrinter
     {
-        Battle _battle;
-        World _world;
+        private readonly Battle _battle;
+        private readonly World _world;
 
         public BattlePrinter(Battle battle, World world)
         {
@@ -30,7 +30,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _battle.GetIcon() + " " + GetTitle() + "</h1></br>");
+            Html.Append("<h1>").Append(_battle.GetIcon()).Append(' ').Append(GetTitle()).AppendLine("</h1></br>");
 
             string battleDescription = _battle.GetYearTime() + ", " + _battle.ToLink(false);
             if (_battle.ParentCollection != null)
@@ -47,11 +47,11 @@ namespace LegendsViewer.Controls.HTML
             {
                 battleDescription += " in " + _battle.Region.ToLink();
             }
-            Html.AppendLine(battleDescription+".</br>");
+            Html.Append(battleDescription).AppendLine(".</br>");
 
             if (_battle.Conquering != null)
             {
-                Html.AppendLine("<b>Outcome:</b> " + _battle.Conquering.ToLink(true, _battle) + "</br>");
+                Html.Append("<b>Outcome:</b> ").Append(_battle.Conquering.ToLink(true, _battle)).AppendLine("</br>");
             }
 
             Html.AppendLine("</br>");
@@ -59,17 +59,16 @@ namespace LegendsViewer.Controls.HTML
             if (_battle.Attacker != null && _battle.Defender != null)
             {
                 List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _battle);
-                Html.AppendLine("<table>");
-                Html.AppendLine("<tr>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("</tr></table></br>");
+                Html.AppendLine("<table>")
+                    .AppendLine("<tr>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .AppendLine("</tr></table></br>");
             }
 
-            Html.AppendLine("<center>" + MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart) + "</center>" + LineBreak);
-
-            Html.AppendLine("<table>");
-            Html.AppendLine("<tr><td valign=\"top\">");
+            Html.Append("<center>").Append(MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart)).Append("</center>").AppendLine(LineBreak)
+                .AppendLine("<table>")
+                .AppendLine("<tr><td valign=\"top\">");
             if (_battle.Victor == _battle.Attacker)
             {
                 Html.AppendLine("<center><b><u>Victor</u></b></center></br>");
@@ -79,8 +78,8 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.AppendLine("<b>" + (_battle.Attacker?.PrintEntity() ?? "an unknown civilization") + " (Attacker) " + (_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.AttackerDeathCount + " Losses</b> " + LineBreak);
-            Html.AppendLine("<ul>");
+            Html.Append("<b>").Append((_battle.Attacker?.PrintEntity() ?? "an unknown civilization")).Append(" (Attacker) ").Append((_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers))).Append(" Members, ").Append(_battle.AttackerDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
+                .AppendLine("<ul>");
             var squadRaces = from squad in _battle.AttackerSquads
                              group squad by squad.Race into squads
                              select new { Race = squads.Key, Numbers = squads.Sum(squad => squad.Numbers), Deaths = squads.Sum(squad => squad.Deaths) };
@@ -88,12 +87,12 @@ namespace LegendsViewer.Controls.HTML
 
             foreach (var squadRace in squadRaces)
             {
-                Html.AppendLine("<li>" + squadRace.Numbers + " " + squadRace.Race.NamePlural);
-                Html.Append(", " + squadRace.Deaths + " Losses</br>");
+                Html.Append("<li>").Append(squadRace.Numbers).Append(' ').AppendLine(squadRace.Race.NamePlural)
+                    .Append(", ").Append(squadRace.Deaths).Append(" Losses</br>");
             }
             foreach (HistoricalFigure attacker in _battle.NotableAttackers)
             {
-                Html.AppendLine("<li>" + attacker.ToLink());
+                Html.Append("<li>").AppendLine(attacker.ToLink());
                 if (_battle.Collection.OfType<FieldBattle>().Any(fieldBattle => fieldBattle.AttackerGeneral == attacker) ||
                     _battle.Collection.OfType<AttackedSite>().Any(attack => attack.AttackerGeneral == attacker))
                 {
@@ -105,9 +104,8 @@ namespace LegendsViewer.Controls.HTML
                     Html.Append(" (Died) ");
                 }
             }
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</td><td width=\"20\"></td><td valign=\"top\">");
-
+            Html.AppendLine("</ul>")
+                .AppendLine("</td><td width=\"20\"></td><td valign=\"top\">");
 
             if (_battle.Victor == _battle.Defender)
             {
@@ -118,8 +116,8 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.AppendLine("<b>" + (_battle.Defender?.PrintEntity() ?? "an unknown civilization") + " (Defender) " + (_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers)) + " Members, " + _battle.DefenderDeathCount + " Losses</b> "+ LineBreak);
-            Html.AppendLine("<ul>");
+            Html.Append("<b>").Append((_battle.Defender?.PrintEntity() ?? "an unknown civilization")).Append(" (Defender) ").Append((_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers))).Append(" Members, ").Append(_battle.DefenderDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
+                .AppendLine("<ul>");
             squadRaces = from squad in _battle.DefenderSquads
                          group squad by squad.Race into squads
                          select new { Race = squads.Key, Numbers = squads.Sum(squad => squad.Numbers), Deaths = squads.Sum(squad => squad.Deaths) };
@@ -127,12 +125,12 @@ namespace LegendsViewer.Controls.HTML
 
             foreach (var squadRace in squadRaces)
             {
-                Html.AppendLine("<li>" + squadRace.Numbers + " " + squadRace.Race.NamePlural);
-                Html.Append(", " + squadRace.Deaths + " Losses</br>");
+                Html.Append("<li>").Append(squadRace.Numbers).Append(' ').AppendLine(squadRace.Race.NamePlural)
+                    .Append(", ").Append(squadRace.Deaths).Append(" Losses</br>");
             }
             foreach (HistoricalFigure defender in _battle.NotableDefenders)
             {
-                Html.AppendLine("<li>" + defender.ToLink());
+                Html.Append("<li>").AppendLine(defender.ToLink());
                 if (_battle.Collection.OfType<FieldBattle>().Any(fieldBattle => fieldBattle.DefenderGeneral == defender) ||
                     _battle.Collection.OfType<AttackedSite>().Any(attack => attack.DefenderGeneral == defender))
                 {
@@ -144,16 +142,16 @@ namespace LegendsViewer.Controls.HTML
                     Html.Append(" (Died) ");
                 }
             }
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</td></tr></table></br>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</td></tr></table></br>");
 
             if (_battle.NonCombatants.Count > 0)
             {
-                Html.AppendLine("<b>Non Combatants</b></br>");
-                Html.AppendLine("<ol>");
+                Html.AppendLine("<b>Non Combatants</b></br>")
+                    .AppendLine("<ol>");
                 foreach (HistoricalFigure nonCombatant in _battle.NonCombatants)
                 {
-                    Html.AppendLine("<li>" + nonCombatant.ToLink());
+                    Html.Append("<li>").AppendLine(nonCombatant.ToLink());
                     if (_battle.Collection.OfType<HfDied>().Any(death => death.HistoricalFigure == nonCombatant))
                     {
                         Html.Append(" (Died) ");

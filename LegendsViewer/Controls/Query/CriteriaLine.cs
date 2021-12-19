@@ -56,7 +56,7 @@ namespace LegendsViewer.Controls.Query
             //ComparerSelect.FlatStyle = FlatStyle.Popup;
             //ComparerSelect.Font = new System.Drawing.Font("MS Sans Serif", 8, FontStyle.Bold);
             ComparerSelect.FormattingEnabled = true;
-            ComparerSelect.Format += delegate(object sender, ListControlConvertEventArgs e)
+            ComparerSelect.Format += delegate (object sender, ListControlConvertEventArgs e)
             {
                 e.Value = SearchProperty.ComparerToString((QueryComparer)e.Value);
             };
@@ -73,7 +73,7 @@ namespace LegendsViewer.Controls.Query
                 (Parent as CriteriaPanel).UpdateValueSelects(this);
             };
             ValueSelect.FormattingEnabled = true;
-            ValueSelect.Format += delegate(object sender, ListControlConvertEventArgs e)
+            ValueSelect.Format += delegate (object sender, ListControlConvertEventArgs e)
             {
                 //if (e.ListItem.GetType() == typeof(DeathCause))
                 e.Value = e.ListItem.GetDescription();
@@ -99,7 +99,6 @@ namespace LegendsViewer.Controls.Query
 
         private void OnPropertyChange(object sender, EventArgs e)
         {
-
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -127,14 +126,7 @@ namespace LegendsViewer.Controls.Query
                 OrderBySelect.Location = new Point(PropertySelect.GetRightSide() + 3, 0);
             }
 
-            if (OrderByCriteria)
-            {
-                Insert.Location = new Point(OrderBySelect.Right + 15, 0);
-            }
-            else
-            {
-                Insert.Location = new Point(ValueSelect.Right + 15, 0);
-            }
+            Insert.Location = OrderByCriteria ? new Point(OrderBySelect.Right + 15, 0) : new Point(ValueSelect.Right + 15, 0);
 
             Remove.Location = new Point(Insert.Right + 3, 0);
 
@@ -149,7 +141,7 @@ namespace LegendsViewer.Controls.Query
         {
             if (OrderByCriteria)
             {
-                if (PropertySelect.Child != null && PropertySelect.Child.SelectedProperty != null && PropertySelect.ContainsList() && !PropertySelect.ContainsListLast())
+                if (PropertySelect.Child?.SelectedProperty != null && PropertySelect.ContainsList() && !PropertySelect.ContainsListLast())
                 {
                     ComparerSelect.SelectedIndexChanged += ComparerChanged;
                     Controls.AddRange(new Control[] { ComparerSelect, ValueSelect });
@@ -189,7 +181,7 @@ namespace LegendsViewer.Controls.Query
                 {
                     Controls.Remove(ValueSelect);
                 }
-                else if (!Controls.Contains(ValueSelect) && PropertySelect.Child != null && PropertySelect.Child.SelectedProperty != null && !PropertySelect.ContainsListLast())
+                else if (!Controls.Contains(ValueSelect) && PropertySelect.Child?.SelectedProperty != null && !PropertySelect.ContainsListLast())
                 {
                     Controls.Add(ValueSelect);
                 }
@@ -212,7 +204,6 @@ namespace LegendsViewer.Controls.Query
             {
                 ValueSelect.Items.Add(true);
                 ValueSelect.Items.Add(false);
-
             }
             //else if (selectedType == typeof(DeathCause))
             //{
@@ -233,29 +224,15 @@ namespace LegendsViewer.Controls.Query
             //}
             else //if (!selected.Type.IsGenericType)// && selected.Type != typeof(int) && selected.Type != typeof(double))// && PropertySelect.GetLowestProperty().Name != "Name")
             {
-                IEnumerable<object> options;
-                if (SelectCriteria)
-                {
-                    options = (Parent.Parent as QueryControl).SearchSelection(this);
-                }
-                else
-                {
-                    options = (Parent.Parent as QueryControl).Search(this);
-                }
-
+                IEnumerable<object> options = SelectCriteria ? (Parent.Parent as QueryControl).SearchSelection(this) : (Parent.Parent as QueryControl).Search(this);
                 SearchInfo available = BuildSearchInfo(true);
                 if (available != null)
                 {
                     options = available.Select(options);
                     options = options.Where(o => o != null).GroupBy(option => option).Select(option => option.Key);
-                    if (options.FirstOrDefault() != null && (options.First().GetType() == typeof(int) || options.First().GetType() == typeof(double)))
-                    {
-                        options = options.OrderBy(option => option);
-                    }
-                    else
-                    {
-                        options = options.OrderBy(option => option.GetDescription()).ToList();
-                    }
+                    options = options.FirstOrDefault() != null && (options.First().GetType() == typeof(int) || options.First().GetType() == typeof(double))
+                        ? options.OrderBy(option => option)
+                        : (IEnumerable<object>)options.OrderBy(option => option.GetDescription()).ToList();
 
                     ValueSelect.Items.AddRange(options.ToArray());
                 }
@@ -284,7 +261,6 @@ namespace LegendsViewer.Controls.Query
             {
                 ValueSelect.SelectedItem = previousSelection;
             } (Parent as CriteriaPanel).UpdateValueSelects(this);
-
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -394,6 +370,5 @@ namespace LegendsViewer.Controls.Query
 
             return criteria;
         }
-
     }
 }

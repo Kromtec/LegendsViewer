@@ -91,7 +91,7 @@ CTRL+Click on any links, lists, or buttons opens pages in a new tab.
 * Bigger worlds will perform slower. Some pages with a lot of activity can take a few seconds to load. Be careful in 
   the Era tab with events and era length, all events are filtered out by default. Selecting too many events and a 
   lengthy era can result in GBs of memory being used and can take some time to generate the page.
-* Requires [.NET 4](http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&displaylang=en)    and [IE9+](http://windows.microsoft.com/en-us/internet-explorer/download-ie)
+* Requires [.NET 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)    and [IE9+](http://windows.microsoft.com/en-us/internet-explorer/download-ie)
 
 ## Archive Support 
 * Tested with (zip/7zip/rar)

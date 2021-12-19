@@ -25,8 +25,8 @@ namespace LegendsViewer.Legends
             {
                 switch (property.Name)
                 {
-                    case "id": 
-                        Id = Convert.ToInt32(property.Value); 
+                    case "id":
+                        Id = Convert.ToInt32(property.Value);
                         break;
                     case "type":
                         switch (property.Value)
@@ -37,11 +37,11 @@ namespace LegendsViewer.Legends
                                 break;
                         }
                         break;
-                    case "owner_hfid": 
-                        OwnerId = Convert.ToInt32(property.Value); 
+                    case "owner_hfid":
+                        OwnerId = Convert.ToInt32(property.Value);
                         break;
-                    case "structure_id": 
-                        Structure = site.Structures.FirstOrDefault(structure => structure.Id == Convert.ToInt32(property.Value)); 
+                    case "structure_id":
+                        Structure = site.Structures.Find(structure => structure.Id == Convert.ToInt32(property.Value));
                         break;
                     default:
                         property.Known = false;
@@ -54,12 +54,7 @@ namespace LegendsViewer.Legends
 
         public string Print(bool link = true, DwarfObject pov = null)
         {
-            if (Structure != null)
-            {
-                return Structure.ToLink(link, pov);
-            }
-
-            return "a " + Type.GetDescription();
+            return Structure != null ? Structure.ToLink(link, pov) : "a " + Type.GetDescription();
         }
 
         public void Resolve(World world)

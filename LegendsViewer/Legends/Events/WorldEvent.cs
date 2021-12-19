@@ -15,23 +15,13 @@ namespace LegendsViewer.Legends.Events
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
-        public string MonthName
-        {
-            get
-            {
-                return MonthNames[Month - 1];
-            }
-        }
+        public string MonthName => MonthNames[Month - 1];
 
         public string Date
         {
             get
             {
-                if (Year < 0)
-                {
-                    return "-";
-                }
-                return $"{Year:0000}-{Month:00}-{Day:00}";
+                return Year < 0 ? "-" : $"{Year:0000}-{Month:00}-{Day:00}";
             }
         }
 

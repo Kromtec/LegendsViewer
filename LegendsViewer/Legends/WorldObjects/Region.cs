@@ -40,19 +40,13 @@ namespace LegendsViewer.Legends.WorldObjects
             set { }
         }
         [AllowAdvancedSearch("Notable Deaths", true)]
-        public List<HistoricalFigure> NotableDeaths { get { return Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        public List<HistoricalFigure> NotableDeaths { get => Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); set { } }
         [AllowAdvancedSearch(true)]
         public List<Battle> Battles { get; set; }
         public List<Location> Coordinates { get; set; } // legends_plus.xml
         [AllowAdvancedSearch("Square Tiles")]
         [ShowInAdvancedSearchResults("Square Tiles")]
-        public int SquareTiles
-        {
-            get
-            {
-                return Coordinates.Count;
-            }
-        }
+        public int SquareTiles => Coordinates.Count;
 
         [AllowAdvancedSearch(true)]
         public List<Site> Sites { get; set; } // legends_plus.xml
@@ -66,10 +60,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public HistoricalFigure Force { get; set; } // legends_plus.xml
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public WorldRegion(List<Property> properties, World world)
             : base(properties, world)
@@ -130,11 +121,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                if (pov != this)
-                {
-                    return Icon + "<a href = \"region#" + Id + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
+                return pov != this
+                    ? Icon + "<a href = \"region#" + Id + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
         }
@@ -144,13 +133,12 @@ namespace LegendsViewer.Legends.WorldObjects
             return Icon;
         }
 
-
         public void Resolve(World world)
         {
             if (ForceId != -1)
             {
                 Force = world.GetHistoricalFigure(ForceId);
-                if (Force != null && !Force.RelatedRegions.Contains(this))
+                if (Force?.RelatedRegions.Contains(this) == false)
                 {
                     Force.RelatedRegions.Add(this);
                 }

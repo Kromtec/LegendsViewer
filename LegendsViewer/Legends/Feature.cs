@@ -14,10 +14,7 @@ namespace LegendsViewer.Legends
         public int Reference { get; set; } // legends_plus.xml
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Feature(List<Property> properties, World world)
             : base(properties, world)

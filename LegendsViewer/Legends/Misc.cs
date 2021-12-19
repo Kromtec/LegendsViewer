@@ -8,7 +8,7 @@ namespace LegendsViewer.Legends
     {
         public static void AddEvent(this WorldObject worldObject, WorldEvent worldEvent)
         {
-            if (worldObject == null ||worldEvent == null)
+            if (worldObject == null || worldEvent == null)
             {
                 return;
             }

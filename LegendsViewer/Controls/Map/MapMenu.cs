@@ -206,22 +206,15 @@ namespace LegendsViewer.Controls.Map
         public virtual bool HighlightOption(int x, int y)
         {
             if (SelectedOption?.SubMenu != null && SelectedOption.SubMenu.HighlightOption(x, y)) { }
-            else if (x >= MenuBox.Left && x <= MenuBox.Right && y >= MenuBox.Top && y <= MenuBox.Bottom && Options.Count > 0)
-            {
-                SelectedOption = Options[(y - MenuBox.Top - 1) / OptionHeight];
-            }
             else
             {
-                SelectedOption = null;
+                SelectedOption = x >= MenuBox.Left && x <= MenuBox.Right && y >= MenuBox.Top && y <= MenuBox.Bottom && Options.Count > 0
+                    ? Options[(y - MenuBox.Top - 1) / OptionHeight]
+                    : null;
             }
 
             Map.Invalidate();
-            if (SelectedOption != null)
-            {
-                return true;
-            }
-
-            return false;
+            return SelectedOption != null;
         }
 
         public void Click(int x, int y)
@@ -230,7 +223,7 @@ namespace LegendsViewer.Controls.Map
             {
                 SelectedOption.Click();
             }
-            else if (SelectedOption != null && SelectedOption.SubMenu != null)
+            else if (SelectedOption?.SubMenu != null)
             {
                 SelectedOption.SubMenu.Click(x, y);
             }
@@ -241,7 +234,7 @@ namespace LegendsViewer.Controls.Map
     {
         public MapMenu Parent;
         public string Text;
-        public Object OptionObject;
+        public object OptionObject;
 
         //OnClick
         //OnHover
@@ -376,9 +369,9 @@ namespace LegendsViewer.Controls.Map
             {
                 Parent.Map.TabControl.Navigate(ControlOption.Html, OptionObject);
             }
-            else if ((string) OptionObject != Text)
+            else if ((string)OptionObject != Text)
             {
-                if ((string) OptionObject == "Overlay")
+                if ((string)OptionObject == "Overlay")
                 {
                     Parent.Map.MakeOverlay(Text);
                 }
@@ -460,12 +453,7 @@ namespace LegendsViewer.Controls.Map
             }
 
             Map.Invalidate();
-            if (SelectedOption != null)
-            {
-                return true;
-            }
-
-            return false;
+            return SelectedOption != null;
         }
 
         public override void Draw(Graphics g)

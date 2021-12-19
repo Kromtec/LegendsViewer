@@ -12,7 +12,6 @@ namespace LegendsViewer.Legends.Events
         public DissolveReason Reason { get; set; }
         public string ReasonString { get; set; }
 
-
         public EntityDissolved(List<Property> properties, World world) : base(properties, world)
         {
             foreach (Property property in properties)
@@ -26,8 +25,8 @@ namespace LegendsViewer.Legends.Events
                         {
                             case "heavy losses in battle": Reason = DissolveReason.HeavyLossesInBattle; break;
                             case "lack of funds": Reason = DissolveReason.LackOfFunds; break;
-                            default: 
-                                property.Known = false; 
+                            default:
+                                property.Known = false;
                                 break;
                         }
                         break;

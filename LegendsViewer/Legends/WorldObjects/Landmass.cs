@@ -17,10 +17,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<Location> Coordinates { get; set; } // legends_plus.xml
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Landmass(List<Property> properties, World world)
             : base(properties, world)

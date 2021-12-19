@@ -18,10 +18,7 @@ namespace LegendsViewer.Legends.Parser
                 Known = true;
                 return _value ?? string.Empty;
             }
-            set
-            {
-                _value = value;
-            }
+            set => _value = value;
         }
 
         public int ValueAsInt()

@@ -39,7 +39,7 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _attack.GetIcon() + " " + GetTitle() + "</h1></br>");
+            Html.Append("<h1>").Append(_attack.GetIcon()).Append(' ').Append(GetTitle()).AppendLine("</h1></br>");
 
             string beastName = "an unknown creature";
             if (_attack.Beast != null)
@@ -47,14 +47,14 @@ namespace LegendsViewer.Controls.HTML
                 beastName = _attack.Beast.ToLink();
             }
 
-            Html.AppendLine("The " + Formatting.AddOrdinal(_attack.Ordinal) + " Rampage of " + beastName + " in " + _attack.Site.ToLink() + ".</br></br>");
+            Html.Append("The ").Append(Formatting.AddOrdinal(_attack.Ordinal)).Append(" Rampage of ").Append(beastName).Append(" in ").Append(_attack.Site.ToLink()).AppendLine(".</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _attack.Site);
-            Html.AppendLine("<table>");
-            Html.AppendLine("<tr>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("</tr></table></br>");
+            Html.AppendLine("<table>")
+                .AppendLine("<tr>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                .AppendLine("</tr></table></br>");
 
             PrintEventLog(_world, _attack.GetSubEvents(), BeastAttack.Filters, _attack);
 

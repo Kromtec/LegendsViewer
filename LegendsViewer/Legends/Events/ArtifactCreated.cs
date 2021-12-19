@@ -26,8 +26,8 @@ namespace LegendsViewer.Legends.Events
                 {
                     case "artifact_id": Artifact = world.GetArtifact(Convert.ToInt32(property.Value)); break;
                     case "hist_figure_id":
-                    case "creator_hfid": 
-                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); 
+                    case "creator_hfid":
+                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
                         break;
                     case "site_id": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "name_only": ReceivedName = true; property.Known = true; break;
@@ -35,11 +35,6 @@ namespace LegendsViewer.Legends.Events
                     case "site": if (Site == null) { Site = world.GetSite(Convert.ToInt32(property.Value)); } else { property.Known = true; } break;
                     case "unit_id":
                     case "creator_unit_id":
-                        if (property.Value != "-1")
-                        {
-                            property.Known = true;
-                        }
-                        break;
                     case "anon_3":
                         if (property.Value != "-1")
                         {

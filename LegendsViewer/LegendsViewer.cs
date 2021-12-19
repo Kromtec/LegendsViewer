@@ -16,10 +16,9 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer
 {
-
     public partial class FrmLegendsViewer : Form
     {
-        string _version = "n/a";
+        private readonly string _version = "n/a";
         internal readonly DwarfTabControl Browser;
         internal bool DontRefreshBrowserPages = true;
         private readonly string _commandFile;

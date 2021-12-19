@@ -7,10 +7,10 @@ using LegendsViewer.Legends.EventCollections;
 
 namespace LegendsViewer.Controls.HTML
 {
-    class SiteConqueredPrinter : HtmlPrinter
+    internal class SiteConqueredPrinter : HtmlPrinter
     {
-        SiteConquered _conquering;
-        World _world;
+        private readonly SiteConquered _conquering;
+        private readonly World _world;
 
         public SiteConqueredPrinter(SiteConquered conquering, World world)
         {
@@ -27,20 +27,18 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _conquering.GetIcon() + " " + GetTitle() + "</h1></br>");
-
-            Html.AppendLine($"{_conquering.GetYearTime()}, the {Formatting.AddOrdinal(_conquering.Ordinal)} {_conquering.ConquerType} of {_conquering.Site.ToLink()} occurred as a result of {_conquering.Battle.ToLink()}{(_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity() )}.</br></br>");
+            Html.Append("<h1>").Append(_conquering.GetIcon()).Append(' ').Append(GetTitle()).AppendLine("</h1></br>")
+                .Append(_conquering.GetYearTime()).Append(", the ").Append(Formatting.AddOrdinal(_conquering.Ordinal)).Append(' ').Append(_conquering.ConquerType).Append(" of ").Append(_conquering.Site.ToLink()).Append(" occurred as a result of ").Append(_conquering.Battle.ToLink()).Append((_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity())).AppendLine(".</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _conquering);
 
-            Html.AppendLine("<table>");
-            Html.AppendLine("<tr>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-            Html.AppendLine("</tr></table></br>");
-
-            Html.AppendLine("<b>" + _conquering.Attacker.PrintEntity() + " (Attacker)</b></br>");
-            Html.AppendLine("<b>" + _conquering.Defender.PrintEntity() + " (Defender)</b></br></br>");
+            Html.AppendLine("<table>")
+                .AppendLine("<tr>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                .AppendLine("</tr></table></br>")
+                .Append("<b>").Append(_conquering.Attacker.PrintEntity()).AppendLine(" (Attacker)</b></br>")
+                .Append("<b>").Append(_conquering.Defender.PrintEntity()).AppendLine(" (Defender)</b></br></br>");
 
             PrintEventLog(_world, _conquering.GetSubEvents(), SiteConquered.Filters, _conquering);
 

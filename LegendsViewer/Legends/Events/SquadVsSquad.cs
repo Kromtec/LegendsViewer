@@ -59,7 +59,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             AttackerHistoricalFigure.AddEvent(this);
             DefenderHistoricalFigure.AddEvent(this);
@@ -103,17 +103,14 @@ namespace LegendsViewer.Legends.Events
                 eventString += DefenderHistoricalFigure.ToLink(link, pov, this);
                 eventString += " as part of squad";
             }
+            else if (DefenderNumber > 0 && DefenderRaceId > 0)
+            {
+                eventString += Formatting.IntegerToWords(DefenderNumber);
+                eventString += " <span title='" + DefenderRaceId + "'>creatures</span>";
+            }
             else
             {
-                if (DefenderNumber > 0 && DefenderRaceId > 0)
-                {
-                    eventString += Formatting.IntegerToWords(DefenderNumber);
-                    eventString += " <span title='"+ DefenderRaceId + "'>creatures</span>";
-                }
-                else
-                {
-                    eventString += "another squad";
-                }
+                eventString += "another squad";
             }
             if (Site != null)
             {

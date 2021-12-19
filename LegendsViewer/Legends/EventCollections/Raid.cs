@@ -15,7 +15,7 @@ namespace LegendsViewer.Legends.EventCollections
 
         [AllowAdvancedSearch]
         [ShowInAdvancedSearchResults]
-        public string Name { get { return "The " + Formatting.AddOrdinal(Ordinal) + " Raid of " + Site.Name; } set { } }
+        public string Name { get => "The " + Formatting.AddOrdinal(Ordinal) + " Raid of " + Site.Name; set { } }
         public int Ordinal { get; set; }
         public Location Coordinates { get; set; }
         [AllowAdvancedSearch]
@@ -46,16 +46,13 @@ namespace LegendsViewer.Legends.EventCollections
         public Entity Defender { get; set; }
         [AllowAdvancedSearch("Items Stolen")]
         [ShowInAdvancedSearchResults("Items Stolen")]
-        public int ItemsStolenCount { get { return GetSubEvents().OfType<ItemStolen>().Count(); } set { } }
+        public int ItemsStolenCount { get => GetSubEvents().OfType<ItemStolen>().Count(); set { } }
         public EventCollection ParentEventCol { get; set; }
 
         public static List<string> Filters;
         private WorldRegion _region;
 
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public Raid(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -96,15 +93,9 @@ namespace LegendsViewer.Legends.EventCollections
                 title += "&#13";
                 title += "Items Stolen: " + ItemsStolenCount;
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Name;

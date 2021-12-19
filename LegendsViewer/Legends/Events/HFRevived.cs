@@ -7,7 +7,7 @@ namespace LegendsViewer.Legends.Events
 {
     public class HfRevived : WorldEvent
     {
-        private string _ghost;
+        private readonly string _ghost;
         public HistoricalFigure HistoricalFigure { get; set; }
         public HistoricalFigure Actor { get; set; }
         public Site Site { get; set; }
@@ -63,7 +63,6 @@ namespace LegendsViewer.Legends.Events
                 eventString += " by ";
                 eventString += Actor.ToLink(link, pov, this);
             }
-
 
             if (!string.IsNullOrWhiteSpace(_ghost))
             {

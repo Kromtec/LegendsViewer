@@ -105,8 +105,6 @@ namespace LegendsViewer.Legends.Events
             switch (ArtifactReason)
             {
                 case ArtifactReason.ArtifactIsHeirloomOfFamilyHfid:
-                    eventString += " was acquired";
-                    break;
                 case ArtifactReason.ArtifactIsSymbolOfEntityPosition:
                     eventString += " was acquired";
                     break;

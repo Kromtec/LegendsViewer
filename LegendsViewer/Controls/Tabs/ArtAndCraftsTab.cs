@@ -39,7 +39,6 @@ namespace LegendsViewer.Controls.Tabs
             listArtifactSearch.AllColumns.Add(new OLVColumn { AspectName = "PageCount", IsVisible = false, Text = "Page Count", TextAlign = HorizontalAlignment.Right });
             listArtifactSearch.ShowGroups = false;
 
-
             listWrittenContentSearch.AllColumns.Add(new OLVColumn
             {
                 IsVisible = false,
@@ -88,7 +87,6 @@ namespace LegendsViewer.Controls.Tabs
             cbmArtMatFilter.Items.AddRange(artifactMaterials.ToArray());
             lblArtMatFilter.Visible = cbmArtMatFilter.Visible = artifactMaterials.Any();
 
-
             var artifactEvents = from eventType in World.Artifacts.SelectMany(artifact => artifact.Events)
                                  group eventType by eventType.Type into type
                                  select type.Key;
@@ -101,11 +99,11 @@ namespace LegendsViewer.Controls.Tabs
                                   group eventType by eventType.Type into type
                                   select type.Key;
             var musicalFormEvents = from eventType in World.MusicalForms.SelectMany(element => element.Events)
-                                  group eventType by eventType.Type into type
-                                  select type.Key;
+                                    group eventType by eventType.Type into type
+                                    select type.Key;
             var poeticFormEvents = from eventType in World.PoeticForms.SelectMany(element => element.Events)
-                                  group eventType by eventType.Type into type
-                                  select type.Key;
+                                   group eventType by eventType.Type into type
+                                   select type.Key;
 
             TabEvents.Clear();
             TabEvents.Add(artifactEvents.ToList());

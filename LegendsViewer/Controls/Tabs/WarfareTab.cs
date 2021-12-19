@@ -10,7 +10,7 @@ using LegendsViewer.Legends.EventCollections;
 
 namespace LegendsViewer.Controls.Tabs
 {
-    [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof (IDesigner))]
+    [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(IDesigner))]
     public partial class WarfareTab : BaseSearchTab
     {
         private WarsList _warSearch;
@@ -24,13 +24,12 @@ namespace LegendsViewer.Controls.Tabs
             InitializeComponent();
         }
 
-
         internal override void InitializeTab()
         {
             hint.SetToolTip(chkFilterWarfare, "Unnotable Battle = Attackers outnumber defenders 10 to 1 and win and suffer < 10% losses. \nUnnotable Conquering = All Pillagings.");
 
-            EventTabs = new[] {tpWarEvents, tpBattlesEvents, tpConqueringsEvents, tpBeastAttackEvents, tpRaidsEvents };
-            EventTabTypes = new[]{typeof(War), typeof(Battle), typeof(SiteConquered), typeof(BeastAttack), typeof(Raid) };
+            EventTabs = new[] { tpWarEvents, tpBattlesEvents, tpConqueringsEvents, tpBeastAttackEvents, tpRaidsEvents };
+            EventTabTypes = new[] { typeof(War), typeof(Battle), typeof(SiteConquered), typeof(BeastAttack), typeof(Raid) };
 
             listWarSearch.ShowGroups = false;
             listBattleSearch.ShowGroups = false;
@@ -71,11 +70,11 @@ namespace LegendsViewer.Controls.Tabs
                                    group eventType by eventType.Type into type
                                    select type.Key;
             var beastAttackEvents = from eventType in World.EventCollections.OfType<BeastAttack>().SelectMany(beastAttack => beastAttack.GetSubEvents())
-                group eventType by eventType.Type into type
-                select type.Key;
+                                    group eventType by eventType.Type into type
+                                    select type.Key;
             var raidEvents = from eventType in World.EventCollections.OfType<Raid>().SelectMany(raid => raid.GetSubEvents())
-                group eventType by eventType.Type into type
-                select type.Key;
+                             group eventType by eventType.Type into type
+                             select type.Key;
 
             TabEvents.Clear();
             TabEvents.Add(warEvents.ToList());
@@ -97,7 +96,6 @@ namespace LegendsViewer.Controls.Tabs
 
         internal override void ResetTab()
         {
-
             lblBattleList.Text = lblWarList.Text = "All";
             lblWarList.ForeColor = DefaultForeColor;
             lblWarList.Font = new Font(Font.FontFamily, Font.Size, FontStyle.Regular);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LegendsViewer.Controls;
 using LegendsViewer.Controls.HTML.Utilities;
-using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
 using LegendsViewer.Legends.Interfaces;
@@ -15,7 +14,7 @@ namespace LegendsViewer.Legends.WorldObjects
     {
         public string Name { get; set; } // legends_plus.xml
         public WorldConstructionType Type { get; set; } // legends_plus.xml
-        public string TypeAsString { get { return Type.GetDescription(); } set { } }
+        public string TypeAsString { get => Type.GetDescription(); set { } }
         public List<Location> Coordinates { get; set; } // legends_plus.xml
         public Site Site1 { get; set; } // legends_plus.xml
         public Site Site2 { get; set; } // legends_plus.xml
@@ -25,10 +24,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public string Icon = "<i class=\"fa fa-fw fa-puzzle-piece\"></i>";
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public WorldConstruction(List<Property> properties, World world)
             : base(properties, world)

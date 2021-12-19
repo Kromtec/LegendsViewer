@@ -9,9 +9,9 @@ namespace LegendsViewer.Controls.HTML
 {
     public class HtmlControl : PageControl
     {
-        World _world;
+        private readonly World _world;
         public WebBrowser HtmlBrowser;
-        private HtmlPrinter _printer;
+        private readonly HtmlPrinter _printer;
         public int BrowserScrollPosition;
         public object HtmlObject;
 
@@ -29,10 +29,9 @@ namespace LegendsViewer.Controls.HTML
             Dispose(false);
         }
 
-
         public override Control GetControl()
         {
-            if (HtmlBrowser == null || HtmlBrowser.IsDisposed)
+            if (HtmlBrowser?.IsDisposed != false)
             {
                 _lastNav = DateTime.UtcNow;
                 BrowserUtil.SetBrowserEmulationMode();
@@ -95,7 +94,6 @@ namespace LegendsViewer.Controls.HTML
             }
 
             HtmlBrowser.DocumentText = _printer.GetHtmlPage();
-
         }
 
         private DateTime _lastNav;
@@ -207,7 +205,6 @@ namespace LegendsViewer.Controls.HTML
         //e.Cancel = true;
         private void DisposePrinter()
         {
-
             _printer.DeleteTemporaryFiles();
             _printer.Dispose();
         }

@@ -18,7 +18,6 @@ namespace LegendsViewer.Legends
         public string Caste { get; set; }
         public string Profession { get; set; }
 
-
         public Identity(List<Property> properties, World world)
         {
             foreach (Property property in properties)
@@ -28,8 +27,8 @@ namespace LegendsViewer.Legends
                     case "id": Id = Convert.ToInt32(property.Value); break;
                     case "name": Name = Formatting.InitCaps(property.Value.Replace("'", "`")); break;
                     case "nemesis_id":
-                    case "histfig_id": 
-                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); 
+                    case "histfig_id":
+                        HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value));
                         break;
                     case "birth_year": BirthYear = Convert.ToInt32(property.Value); break;
                     case "birth_second": BirthSeconds72 = Convert.ToInt32(property.Value); break;
@@ -90,11 +89,7 @@ namespace LegendsViewer.Legends
             {
                 return HistoricalFigure.MaleIcon;
             }
-            if (Caste == "Default")
-            {
-                return HistoricalFigure.NeuterIcon;
-            }
-            return "";
+            return Caste == "Default" ? HistoricalFigure.NeuterIcon : "";
         }
     }
 }

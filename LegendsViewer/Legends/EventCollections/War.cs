@@ -62,20 +62,20 @@ namespace LegendsViewer.Legends.EventCollections
         [ShowInAdvancedSearchResults]
         public Entity Defender { get; set; }
         [AllowAdvancedSearch(true)]
-        public List<Battle> Battles { get { return Collections.OfType<Battle>().ToList(); } set { } }
+        public List<Battle> Battles { get => Collections.OfType<Battle>().ToList(); set { } }
         [AllowAdvancedSearch(true)]
-        public List<SiteConquered> Conquerings { get { return Collections.OfType<SiteConquered>().ToList(); } set { } }
+        public List<SiteConquered> Conquerings { get => Collections.OfType<SiteConquered>().ToList(); set { } }
         [AllowAdvancedSearch("Lost Sites", true)]
-        public List<Site> SitesLost { get { return Conquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }
-        public List<Site> AttackerSitesLost { get { return DefenderConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }
-        public List<Site> DefenderSitesLost { get { return AttackerConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); } set { } }
+        public List<Site> SitesLost { get => Conquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); set { } }
+        public List<Site> AttackerSitesLost { get => DefenderConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); set { } }
+        public List<Site> DefenderSitesLost { get => AttackerConquerings.Where(conquering => conquering.ConquerType == SiteConqueredType.Conquest || conquering.ConquerType == SiteConqueredType.Destruction).Select(conquering => conquering.Site).ToList(); set { } }
         public List<EventCollection> AttackerVictories { get; set; }
         public List<EventCollection> DefenderVictories { get; set; }
-        public List<Battle> AttackerBattleVictories { get { return Collections.OfType<Battle>().Where(battle => battle.Victor.EqualsOrParentEquals(Attacker)).ToList(); } set { } }
-        public List<Battle> DefenderBattleVictories { get { return Collections.OfType<Battle>().Where(battle => battle.Victor.EqualsOrParentEquals(Defender)).ToList(); } set { } }
-        public List<Battle> ErrorBattles { get { return Collections.OfType<Battle>().Where(battle => !battle.Attacker.EqualsOrParentEquals(Attacker) && !battle.Attacker.EqualsOrParentEquals(Defender) || !battle.Defender.EqualsOrParentEquals(Defender) && !battle.Defender.EqualsOrParentEquals(Attacker)).ToList(); } set { } }
-        public List<SiteConquered> AttackerConquerings { get { return Collections.OfType<SiteConquered>().Where(conquering => conquering.Attacker.EqualsOrParentEquals(Attacker)).ToList(); } set { } }
-        public List<SiteConquered> DefenderConquerings { get { return Collections.OfType<SiteConquered>().Where(conquering => conquering.Attacker.EqualsOrParentEquals(Defender)).ToList(); } set { } }
+        public List<Battle> AttackerBattleVictories { get => Collections.OfType<Battle>().Where(battle => battle.Victor.EqualsOrParentEquals(Attacker)).ToList(); set { } }
+        public List<Battle> DefenderBattleVictories { get => Collections.OfType<Battle>().Where(battle => battle.Victor.EqualsOrParentEquals(Defender)).ToList(); set { } }
+        public List<Battle> ErrorBattles { get => Collections.OfType<Battle>().Where(battle => !battle.Attacker.EqualsOrParentEquals(Attacker) && !battle.Attacker.EqualsOrParentEquals(Defender) || !battle.Defender.EqualsOrParentEquals(Defender) && !battle.Defender.EqualsOrParentEquals(Attacker)).ToList(); set { } }
+        public List<SiteConquered> AttackerConquerings { get => Collections.OfType<SiteConquered>().Where(conquering => conquering.Attacker.EqualsOrParentEquals(Attacker)).ToList(); set { } }
+        public List<SiteConquered> DefenderConquerings { get => Collections.OfType<SiteConquered>().Where(conquering => conquering.Attacker.EqualsOrParentEquals(Defender)).ToList(); set { } }
         public double AttackerToDefenderKills
         {
             get
@@ -85,12 +85,7 @@ namespace LegendsViewer.Legends.EventCollections
                     return 0;
                 }
 
-                if (AttackerDeathCount == 0)
-                {
-                    return double.MaxValue;
-                }
-
-                return Math.Round(DefenderDeathCount / Convert.ToDouble(AttackerDeathCount), 2);
+                return AttackerDeathCount == 0 ? double.MaxValue : Math.Round(DefenderDeathCount / Convert.ToDouble(AttackerDeathCount), 2);
             }
             set { }
         }
@@ -103,20 +98,14 @@ namespace LegendsViewer.Legends.EventCollections
                     return 0;
                 }
 
-                if (DefenderBattleVictories.Count == 0)
-                {
-                    return double.MaxValue;
-                }
-
-                return Math.Round(AttackerBattleVictories.Count / Convert.ToDouble(DefenderBattleVictories.Count), 2);
+                return DefenderBattleVictories.Count == 0
+                    ? double.MaxValue
+                    : Math.Round(AttackerBattleVictories.Count / Convert.ToDouble(DefenderBattleVictories.Count), 2);
             }
             set { }
         }
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public War()
         {
@@ -183,15 +172,9 @@ namespace LegendsViewer.Legends.EventCollections
                 title += "&#13";
                 title += "Deaths: " + DeathCount + " | (" + StartYear + " - " + (EndYear == -1 ? "Present" : EndYear.ToString()) + ")";
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Name;

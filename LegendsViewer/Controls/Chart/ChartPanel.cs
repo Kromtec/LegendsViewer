@@ -13,13 +13,13 @@ namespace LegendsViewer.Controls.Chart
 {
     public class ChartPanel : Panel
     {
-        System.Windows.Forms.DataVisualization.Charting.Chart _dwarfChart;
-        DwarfObject _focusObject;
-        World _world;
-        List<Series> _series = new List<Series>();
+        private readonly System.Windows.Forms.DataVisualization.Charting.Chart _dwarfChart;
+        private readonly DwarfObject _focusObject;
+        private readonly World _world;
+        private readonly List<Series> _series = new List<Series>();
         public bool OtherChart;
-        ToolStripMenuItem _timelineMenu;
-        string _aliveHfRace = "";
+        private ToolStripMenuItem _timelineMenu;
+        private string _aliveHfRace = "";
         public List<ChartOption> SeriesOptions = new List<ChartOption>();
         public ChartPanel(World world, DwarfObject focusObject, List<ChartOption> options = null)
         {
@@ -27,7 +27,7 @@ namespace LegendsViewer.Controls.Chart
 
             _focusObject = focusObject;
             _world = world;
-            _dwarfChart = new System.Windows.Forms.DataVisualization.Charting.Chart {Dock = DockStyle.Fill};
+            _dwarfChart = new System.Windows.Forms.DataVisualization.Charting.Chart { Dock = DockStyle.Fill };
             Controls.Add(_dwarfChart);
             Refresh();
 
@@ -85,14 +85,7 @@ namespace LegendsViewer.Controls.Chart
             for (int i = 0; i < _timelineMenu.DropDownItems.Count; i++)
             {
                 ChartMenuItem item = _timelineMenu.DropDownItems[i] as ChartMenuItem;
-                if (SeriesOptions.Contains(item.Option))
-                {
-                    item.Checked = true;
-                }
-                else
-                {
-                    item.Checked = false;
-                }
+                item.Checked = SeriesOptions.Contains(item.Option);
             }
 
             int newSeries = SeriesOptions.Count - _series.Count;
@@ -150,25 +143,18 @@ namespace LegendsViewer.Controls.Chart
 
             if (!SeriesOptions.Contains(ChartOption.WorldHfRemaining) && !SeriesOptions.Contains(ChartOption.OtherBattleRemaining))
             {
-                _dwarfChart.ChartAreas.First().AxisX.Minimum = _dwarfChart.Series.SelectMany(series => series.Points).Select(point => point.XValue).Min();
-                _dwarfChart.ChartAreas.First().AxisX.Maximum = _dwarfChart.Series.SelectMany(series => series.Points).Select(point => point.XValue).Max();
+                _dwarfChart.ChartAreas.First().AxisX.Minimum = _dwarfChart.Series.SelectMany(series => series.Points).Min(point => point.XValue);
+                _dwarfChart.ChartAreas.First().AxisX.Maximum = _dwarfChart.Series.SelectMany(series => series.Points).Max(point => point.XValue);
             }
             else
             {
-                _dwarfChart.ChartAreas.First().AxisX.Minimum = _dwarfChart.Series.SelectMany(series => series.Points).Select(point => point.XValue).Min() - 1;
-                _dwarfChart.ChartAreas.First().AxisX.Maximum = _dwarfChart.Series.SelectMany(series => series.Points).Select(point => point.XValue).Max() + 1;
+                _dwarfChart.ChartAreas.First().AxisX.Minimum = _dwarfChart.Series.SelectMany(series => series.Points).Min(point => point.XValue) - 1;
+                _dwarfChart.ChartAreas.First().AxisX.Maximum = _dwarfChart.Series.SelectMany(series => series.Points).Max(point => point.XValue) + 1;
             }
 
-            double maxYAxis = _dwarfChart.Series.SelectMany(series => series.Points).Select(point => point.YValues[0]).Max();
+            double maxYAxis = _dwarfChart.Series.SelectMany(series => series.Points).Max(point => point.YValues[0]);
             int minYAxis = 20;
-            if (maxYAxis < minYAxis)
-            {
-                _dwarfChart.ChartAreas.First().AxisY.Maximum = minYAxis;
-            }
-            else
-            {
-                _dwarfChart.ChartAreas.First().AxisY.Maximum = maxYAxis * 1.05;
-            }
+            _dwarfChart.ChartAreas.First().AxisY.Maximum = maxYAxis < minYAxis ? minYAxis : maxYAxis * 1.05;
         }
 
         private List<Series> GenerateSeries(ChartOption option, string command = "")
@@ -255,14 +241,9 @@ namespace LegendsViewer.Controls.Chart
                 case ChartOption.TimelineBattleDeaths:
                     foreach (Series setup in series)
                     {
-                        if (option == ChartOption.TimelineEvents || option == ChartOption.TimelineEventsFiltered)
-                        {
-                            setup.ChartType = SeriesChartType.Area;
-                        }
-                        else
-                        {
-                            setup.ChartType = SeriesChartType.Line;
-                        }
+                        setup.ChartType = option == ChartOption.TimelineEvents || option == ChartOption.TimelineEventsFiltered
+                            ? SeriesChartType.Area
+                            : SeriesChartType.Line;
                         //setup.XValueType = ChartValueType.Int32;
                     }
 
@@ -297,14 +278,9 @@ namespace LegendsViewer.Controls.Chart
                 case ChartOption.OtherSitePopulations:
                 case ChartOption.OtherWarLosses:
                     series.First().ChartType = SeriesChartType.Pie;
-                    if (option == ChartOption.OtherWarLosses)
-                    {
-                        series.First().CustomProperties = "PieLabelStyle=Outside,PieStartAngle=270";
-                    }
-                    else
-                    {
-                        series.First().CustomProperties = "CollectedThreshold=0.75, PieLabelStyle=Outside,PieStartAngle=270";
-                    }
+                    series.First().CustomProperties = option == ChartOption.OtherWarLosses
+                        ? "PieLabelStyle=Outside,PieStartAngle=270"
+                        : "CollectedThreshold=0.75, PieLabelStyle=Outside,PieStartAngle=270";
 
                     series.First().IsValueShownAsLabel = true;
                     series.First().Label = "#LEGENDTEXT\n#VAL (#PERCENT)";
@@ -354,27 +330,15 @@ namespace LegendsViewer.Controls.Chart
                     List<HistoricalFigure> aliveHFs = null;
                     List<HistoricalFigure> hfs = null;
 
-
-                    if (_focusObject is EventCollection)
-                    {
-                        eventsList = (_focusObject as EventCollection).GetSubEvents();
-                    }
-                    else
-                    {
-                        eventsList = (_focusObject as WorldObject).Events;
-                    }
+                    eventsList = _focusObject is EventCollection ? (_focusObject as EventCollection).GetSubEvents() : (_focusObject as WorldObject).Events;
 
                     if (_focusObject.GetType() == typeof(Entity))
                     {
                         wars = (_focusObject as Entity).Wars;
                     }
-                    else if (_focusObject.GetType() == typeof(War))
-                    {
-                        wars = new List<War> { _focusObject as War };
-                    }
                     else
                     {
-                        wars = _world.Wars;
+                        wars = _focusObject.GetType() == typeof(War) ? new List<War> { _focusObject as War } : _world.Wars;
                     }
 
                     if (_focusObject.GetType() == typeof(HistoricalFigure))
@@ -393,26 +357,18 @@ namespace LegendsViewer.Controls.Chart
                     {
                         battles = (_focusObject as War).Collections.OfType<Battle>().ToList();
                     }
-                    else if (_focusObject.GetType() == typeof(WorldRegion))
-                    {
-                        battles = (_focusObject as WorldRegion).Battles;
-                    }
                     else
                     {
-                        battles = _world.Battles;
+                        battles = _focusObject.GetType() == typeof(WorldRegion) ? (_focusObject as WorldRegion).Battles : _world.Battles;
                     }
 
                     if (_focusObject.GetType() == typeof(HistoricalFigure))
                     {
                         beastAttacks = (_focusObject as HistoricalFigure).BeastAttacks;
                     }
-                    else if (_focusObject.GetType() == typeof(Site))
-                    {
-                        beastAttacks = (_focusObject as Site).BeastAttacks;
-                    }
                     else
                     {
-                        beastAttacks = _world.BeastAttacks;
+                        beastAttacks = _focusObject.GetType() == typeof(Site) ? (_focusObject as Site).BeastAttacks : _world.BeastAttacks;
                     }
 
                     eventsList = eventsList.OrderBy(events => events.Year).ToList();
@@ -437,15 +393,8 @@ namespace LegendsViewer.Controls.Chart
 
                         aliveHFs = hfs.Where(hf => hf.BirthYear <= startYear).ToList();
                         //hfs = World.HistoricalFigures.OrderBy(hf => hf.BirthYear).ToList();
-                        HistoricalFigure firstHfIndex = hfs.FirstOrDefault(hf => hf.BirthYear > startYear);
-                        if (firstHfIndex == null)
-                        {
-                            hfIndex = 0;
-                        }
-                        else
-                        {
-                            hfIndex = hfs.IndexOf(firstHfIndex);
-                        }
+                        HistoricalFigure firstHfIndex = hfs.Find(hf => hf.BirthYear > startYear);
+                        hfIndex = firstHfIndex == null ? 0 : hfs.IndexOf(firstHfIndex);
                     }
 
                     int offset = 0;
@@ -465,31 +414,21 @@ namespace LegendsViewer.Controls.Chart
 
                     int beastAttackStartYear = 0;
                     int beastAttackIndex = 0;
-                    if (beastAttacks != null && beastAttacks.Count(ba => ba.StartYear >= startYear) > 0)
+                    if (beastAttacks?.Count(ba => ba.StartYear >= startYear) > 0)
                     {
-                        if (beastAttacks.FindIndex(ba => ba.StartYear == startYear) >= 0)
-                        {
-                            beastAttackStartYear = startYear;
-                        }
-                        else
-                        {
-                            beastAttackStartYear = beastAttacks.First(ba => ba.StartYear > startYear).StartYear;
-                        }
+                        beastAttackStartYear = beastAttacks.FindIndex(ba => ba.StartYear == startYear) >= 0
+                            ? startYear
+                            : beastAttacks.First(ba => ba.StartYear > startYear).StartYear;
 
                         beastAttackIndex = beastAttacks.IndexOf(beastAttacks.First(ba => ba.StartYear == beastAttackStartYear));
                     }
                     int battleStartYear = 0;
                     int battleIndex = 0;
-                    if (battles != null && battles.Count > 0)
+                    if (battles?.Count > 0)
                     {
-                        if (battles.FindIndex(battle => battle.StartYear == startYear) >= 0)
-                        {
-                            battleStartYear = startYear;
-                        }
-                        else
-                        {
-                            battleStartYear = battles.First(battle => battle.StartYear > startYear).StartYear;
-                        }
+                        battleStartYear = battles.FindIndex(battle => battle.StartYear == startYear) >= 0
+                            ? startYear
+                            : battles.First(battle => battle.StartYear > startYear).StartYear;
 
                         battleIndex = battles.IndexOf(battles.First(battle => battle.StartYear == battleStartYear));
                     }
@@ -515,14 +454,9 @@ namespace LegendsViewer.Controls.Chart
                                 }
                                 break;
                             case ChartOption.TimelineActiveSites:
-                                if (_focusObject.GetType() == typeof(Era))
-                                {
-                                    count = _world.Entities.Where(entity => entity.IsCiv).Sum(entity => entity.SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1)));
-                                }
-                                else
-                                {
-                                    count = (_focusObject as Entity).SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1));
-                                }
+                                count = _focusObject.GetType() == typeof(Era)
+                                    ? _world.Entities.Where(entity => entity.IsCiv).Sum(entity => entity.SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1)))
+                                    : (_focusObject as Entity).SiteHistory.Count(site => year >= site.StartYear && (year <= site.EndYear || site.EndYear == -1));
 
                                 break;
                             case ChartOption.TimelineActiveSitesByRace:
@@ -686,8 +620,7 @@ namespace LegendsViewer.Controls.Chart
                         squads = _world.Battles.Where(battle => battle.StartYear >= era.StartYear && battle.StartYear <= era.EndYear).SelectMany(battle => battle.AttackerSquads.Concat(battle.DefenderSquads)).ToList();
                     }
 
-
-                    hfDeaths.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRaces.Add(death.NamePlural));
+                    hfDeaths.ConvertAll(death => death.HistoricalFigure.Race).ForEach(death => deathRaces.Add(death.NamePlural));
                     foreach (Battle.Squad squad in squads)
                     {
                         for (int i = 0; i < squad.Deaths; i++)
@@ -751,7 +684,7 @@ namespace LegendsViewer.Controls.Chart
                         hfDeathsList = hfDeathsList.Concat(battles1.Where(battle => battle.Defender == entity || battle.Defender.Parent == entity).SelectMany(battle => battle.GetSubEvents().OfType<HfDied>().Where(death => battle.NotableDefenders.Contains(death.HistoricalFigure))).ToList()).ToList();
                         squadsList = battles1.Where(battle => battle.Attacker == entity || battle.Attacker.Parent == entity).SelectMany(battle => battle.AttackerSquads).ToList();
                         squadsList = squadsList.Concat(battles1.Where(battle => battle.Defender == entity || battle.Defender.Parent == entity).SelectMany(battle => battle.DefenderSquads).ToList()).ToList();
-                        hfDeathsList.Select(death => death.HistoricalFigure.Race).ToList().ForEach(death => deathRacesList.Add(death.NamePlural));
+                        hfDeathsList.ConvertAll(death => death.HistoricalFigure.Race).ForEach(death => deathRacesList.Add(death.NamePlural));
 
                         //squadsList.GroupBy(squad => squad.Race).Select(squad => new { Race = squad.Key, Count = squad.Sum(race => race.Deaths) });
                         foreach (Battle.Squad squad in squadsList)
@@ -779,7 +712,7 @@ namespace LegendsViewer.Controls.Chart
                     break;
                 case ChartOption.OtherBattleRemaining:
                     Battle battle1 = _focusObject as Battle;
-                    List<string> attackers = battle1.NotableAttackers.Select(hf => hf.Race.NamePlural).ToList();
+                    List<string> attackers = battle1.NotableAttackers.ConvertAll(hf => hf.Race.NamePlural);
                     List<string> attackersKilled = battle1.NotableAttackers.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => hf.Race.NamePlural).ToList();
                     foreach (Battle.Squad squad in battle1.AttackerSquads)
                     {
@@ -823,7 +756,7 @@ namespace LegendsViewer.Controls.Chart
                     series.Last().Points.Last().Label = "";
                     series.Last().Points.Last().AxisLabel = "VS.";
 
-                    List<string> defenders = battle1.NotableDefenders.Select(hf => hf.Race.NamePlural).ToList();
+                    List<string> defenders = battle1.NotableDefenders.ConvertAll(hf => hf.Race.NamePlural);
                     List<string> defendersKilled = battle1.NotableDefenders.Where(hf => battle1.GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == hf) > 0).Select(hf => hf.Race.NamePlural).ToList();
                     foreach (Battle.Squad squad in battle1.DefenderSquads)
                     {
@@ -890,7 +823,6 @@ namespace LegendsViewer.Controls.Chart
             timeline.Text = "Timeline";
             other.Text = "Other";
             world.Text = "World";
-
 
             if (_focusObject is WorldObject && (_focusObject as WorldObject).Events.Count > 0
                 || _focusObject.GetType() == typeof(War) && (_focusObject as EventCollection).GetSubEvents().Count > 0)
@@ -1009,7 +941,6 @@ namespace LegendsViewer.Controls.Chart
             world.DropDownItems.Add(new ChartMenuItem(this) { Option = ChartOption.WorldDeaths });
             world.DropDownItems.Add(new ChartMenuItem(this) { Option = ChartOption.WorldOutdoorPopulations });
             world.DropDownItems.Add(new ChartMenuItem(this) { Option = ChartOption.WorldUndergroundPopulations });
-
 
             menu.Items.Add(timeline);
             menu.Items.Add(other);

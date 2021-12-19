@@ -10,7 +10,7 @@ namespace LegendsViewer.Legends.Events
     {
         public Entity Civ, SiteEntity;
         public Site Site;
-        public Boolean Abandoned;
+        public bool Abandoned;
         public SiteDied(List<Property> properties, World world)
             : base(properties, world)
         {

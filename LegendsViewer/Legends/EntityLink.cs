@@ -35,11 +35,11 @@ namespace LegendsViewer.Legends
                         Entity = world.GetEntity(id);
                         break;
                     case "position_profile_id": PositionId = Convert.ToInt32(property.Value); break;
-                    case "start_year": 
+                    case "start_year":
                         StartYear = Convert.ToInt32(property.Value);
                         Type = EntityLinkType.Position;
                         break;
-                    case "end_year": 
+                    case "end_year":
                         EndYear = Convert.ToInt32(property.Value);
                         Type = EntityLinkType.FormerPosition;
                         break;

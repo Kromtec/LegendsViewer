@@ -135,8 +135,8 @@ namespace LegendsViewer.Legends.Parser
                 }
                 else
                 {
-                    var siteOwners = _site.OwnerHistory.Select(entry => entry.Owner).ToList();
-                    if (siteOwners.Any())
+                    var siteOwners = _site.OwnerHistory.ConvertAll(entry => entry.Owner);
+                    if (siteOwners.Count > 0)
                     {
                         foreach (var entity in entities)
                         {
@@ -197,7 +197,7 @@ namespace LegendsViewer.Legends.Parser
                     {
                         parent = possibleEntities.First();
                     }
-                    else if (!possibleEntities.Any())
+                    else if (possibleEntities.Count == 0)
                     {
                         _world.ParsingErrors.Report($"Couldn\'t Find Entity by Name and Race:\n{civName}, Parent Civ of {_owner?.Name ?? "UNKNOWN"}");
                     }
@@ -310,15 +310,12 @@ namespace LegendsViewer.Legends.Parser
                             _site.OwnerHistory.Add(new OwnerPeriod(_site, _owner, founder.DeathYear, "after death of its founder (" + founder.DeathCause + ") took over"));
                             found = true;
                         }
-                        else
+                        else if (_site.Type == "Vault")
                         {
-                            if (_site.Type == "Vault")
+                            if (_owner is Entity entity)
                             {
-                                if (_owner is Entity entity)
-                                {
-                                    _site.OwnerHistory.Add(new OwnerPeriod(_site, entity, -1, "moved into"));
-                                    found = true;
-                                }
+                                _site.OwnerHistory.Add(new OwnerPeriod(_site, entity, -1, "moved into"));
+                                found = true;
                             }
                         }
                     }
@@ -364,7 +361,7 @@ namespace LegendsViewer.Legends.Parser
 
                 CreatureInfo population = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
                 var countString = _currentLine.Substring(1, _currentLine.IndexOf(" ", StringComparison.Ordinal) - 1);
-                var count = countString == "Unnumbered" ? Int32.MaxValue : Convert.ToInt32(countString);
+                var count = countString == "Unnumbered" ? int.MaxValue : Convert.ToInt32(countString);
 
                 _world.OutdoorPopulations.Add(new Population(population, count));
                 _currentLine = _sitesAndPops.ReadLine();
@@ -386,14 +383,13 @@ namespace LegendsViewer.Legends.Parser
 
                 CreatureInfo population = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(" ", StringComparison.Ordinal) + 1));
                 var countString = _currentLine.Substring(1, _currentLine.IndexOf(" ", StringComparison.Ordinal) - 1);
-                var count = countString == "Unnumbered" ? Int32.MaxValue : Convert.ToInt32(countString);
+                var count = countString == "Unnumbered" ? int.MaxValue : Convert.ToInt32(countString);
 
                 _world.UndergroundPopulations.Add(new Population(population, count));
                 _currentLine = _sitesAndPops.ReadLine();
             }
             _world.UndergroundPopulations = _world.UndergroundPopulations.OrderByDescending(population => population.Count).ToList();
         }
-
 
         public void Dispose()
         {
@@ -408,6 +404,5 @@ namespace LegendsViewer.Legends.Parser
                 _sitesAndPops.Dispose();
             }
         }
-
     }
 }

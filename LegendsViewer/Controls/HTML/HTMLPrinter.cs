@@ -148,32 +148,29 @@ namespace LegendsViewer.Controls.HTML
                 return new RaidPrinter(printObject as Raid, world);
             }
 
-            if (printType == typeof(string))
-            {
-                return new StringPrinter(printObject as string);
-            }
-
-            throw new Exception("No HTML Printer for type: " + printObject.GetType());
+            return printType == typeof(string)
+                ? new StringPrinter(printObject as string)
+                : throw new Exception("No HTML Printer for type: " + printObject.GetType());
         }
 
         public string GetHtmlPage()
         {
             var htmlPage = new StringBuilder();
-            htmlPage.AppendLine("<!DOCTYPE html><html><head>");
-            htmlPage.AppendLine("<title>" + GetTitle() + "</title>");
-            htmlPage.AppendLine("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
-            htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/jquery-3.1.1.min.js\"></script>");
-            htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/jquery.dataTables.min.js\"></script>");
-            htmlPage.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/Chart.bundle.min.js\"></script>");
-            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/bootstrap.min.css\">");
-            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/font-awesome.min.css\">");
-            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/legends.css\">");
-            htmlPage.AppendLine("<link rel=\"stylesheet\" href=\"" + LocalFileProvider.LocalPrefix + "WebContent/styles/jquery.dataTables.min.css\">");
-            htmlPage.AppendLine("</head>");
-            htmlPage.AppendLine("<body>");
-            htmlPage.AppendLine(Print());
-            htmlPage.AppendLine("</body>");
-            htmlPage.AppendLine("</html>");
+            htmlPage.AppendLine("<!DOCTYPE html><html><head>")
+                .Append("<title>").Append(GetTitle()).AppendLine("</title>")
+                .AppendLine("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">")
+                .Append("<script type=\"text/javascript\" src=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/scripts/jquery-3.1.1.min.js\"></script>")
+                .Append("<script type=\"text/javascript\" src=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/scripts/jquery.dataTables.min.js\"></script>")
+                .Append("<script type=\"text/javascript\" src=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/scripts/Chart.bundle.min.js\"></script>")
+                .Append("<link rel=\"stylesheet\" href=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/styles/bootstrap.min.css\">")
+                .Append("<link rel=\"stylesheet\" href=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/styles/font-awesome.min.css\">")
+                .Append("<link rel=\"stylesheet\" href=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/styles/legends.css\">")
+                .Append("<link rel=\"stylesheet\" href=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/styles/jquery.dataTables.min.css\">")
+                .AppendLine("</head>")
+                .AppendLine("<body>")
+                .AppendLine(Print())
+                .AppendLine("</body>")
+                .AppendLine("</html>");
             return htmlPage.ToString();
         }
 
@@ -270,7 +267,7 @@ namespace LegendsViewer.Controls.HTML
 
         protected string BitmapToHtml(Bitmap image)
         {
-            int imageSectionCount = 2;
+            const int imageSectionCount = 2;
             Size imageSectionSize = new Size(image.Width / imageSectionCount, image.Height / imageSectionCount);
             string html = "";
             using (Bitmap section = new Bitmap(imageSectionSize.Width, imageSectionSize.Height))
@@ -285,15 +282,12 @@ namespace LegendsViewer.Controls.HTML
                                 new Rectangle(new Point(section.Size.Width * column, section.Size.Height * row),
                                     section.Size), GraphicsUnit.Pixel);
                             string tempName;
-                            while (true)
+                            do
                             {
                                 tempName = Path.Combine(LocalFileProvider.RootFolder, "temp",
                                     Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + Formatting.RemoveSpecialCharacters(GetTitle()) + ".png");
-                                if (!File.Exists(tempName))
-                                {
-                                    break;
-                                }
                             }
+                            while (File.Exists(tempName));
 
                             var directoryName = Path.GetDirectoryName(tempName);
                             if (directoryName != null && !Directory.Exists(directoryName))
@@ -366,7 +360,7 @@ namespace LegendsViewer.Controls.HTML
 
         protected void PrintPopulations(List<Population> populations)
         {
-            if (!populations.Any())
+            if (populations.Count == 0)
             {
                 return;
             }
@@ -423,26 +417,26 @@ namespace LegendsViewer.Controls.HTML
         {
             if (count == int.MaxValue)
             {
-                Html.AppendLine("<li>Unnumbered " + creatureInfo.NamePlural + "</li>");
+                Html.Append("<li>Unnumbered ").Append(creatureInfo.NamePlural).AppendLine("</li>");
             }
             else if (count == 1)
             {
-                Html.AppendLine("<li>" + count + " " + creatureInfo.NameSingular + "</li>");
+                Html.Append("<li>").Append(count).Append(' ').Append(creatureInfo.NameSingular).AppendLine("</li>");
             }
             else
             {
-                Html.AppendLine("<li>" + count + " " + creatureInfo.NamePlural + "</li>");
+                Html.Append("<li>").Append(count).Append(' ').Append(creatureInfo.NamePlural).AppendLine("</li>");
             }
         }
 
         private void AddPopulationList(List<Population> populations, string populationName)
         {
-            if (!populations.Any())
+            if (populations.Count == 0)
             {
                 return;
             }
-            Html.AppendLine($"<b>{populationName}</b></br>");
-            Html.AppendLine("<ul>");
+            Html.Append("<b>").Append(populationName).AppendLine("</b></br>")
+                .AppendLine("<ul>");
             foreach (Population population in populations)
             {
                 PrintPopulationEntry(population.Race, population.Count);
@@ -476,29 +470,29 @@ namespace LegendsViewer.Controls.HTML
                 backgroundColors += (i != 0 ? "," : "") + "'" + ColorTranslator.ToHtml(darkenedPopColor) + "'";
             }
 
-            Html.AppendLine("setTimeout(function(){");
-            Html.AppendLine("var chartPopulationByRace = new Chart(document.getElementById('chart-populationbyrace').getContext('2d'), { type: 'doughnut', ");
-            Html.AppendLine("data: {");
-            Html.AppendLine("labels: [" + races + "], ");
-            Html.AppendLine("datasets:[{");
-            Html.AppendLine("data:[" + popCounts + "], ");
-            Html.AppendLine("backgroundColor:[" + backgroundColors + "]");
-            Html.AppendLine("}],");
-            Html.AppendLine("},");
-            Html.AppendLine("options:{");
-            Html.AppendLine("maintainAspectRatio: false,");
-            Html.AppendLine("legend:{");
-            Html.AppendLine("position:'right',");
-            Html.AppendLine("labels: { boxWidth: 12 }");
-            Html.AppendLine("}");
-            Html.AppendLine("}");
-            Html.AppendLine("});");
-            Html.AppendLine("}, 10);");
+            Html.AppendLine("setTimeout(function(){")
+                .AppendLine("var chartPopulationByRace = new Chart(document.getElementById('chart-populationbyrace').getContext('2d'), { type: 'doughnut', ")
+                .AppendLine("data: {")
+                .Append("labels: [").Append(races).AppendLine("], ")
+                .AppendLine("datasets:[{")
+                .Append("data:[").Append(popCounts).AppendLine("], ")
+                .Append("backgroundColor:[").Append(backgroundColors).AppendLine("]")
+                .AppendLine("}],")
+                .AppendLine("},")
+                .AppendLine("options:{")
+                .AppendLine("maintainAspectRatio: false,")
+                .AppendLine("legend:{")
+                .AppendLine("position:'right',")
+                .AppendLine("labels: { boxWidth: 12 }")
+                .AppendLine("}")
+                .AppendLine("}")
+                .AppendLine("});")
+                .AppendLine("}, 10);");
         }
 
         protected void PrintEventLog(World world, List<WorldEvent> events, List<string> filters, DwarfObject dfo)
         {
-            if (!events.Any())
+            if (events.Count == 0)
             {
                 return;
             }
@@ -520,7 +514,7 @@ namespace LegendsViewer.Controls.HTML
                 if (eventsOfCurrentYear.Value == null)
                 {
                     eventDataSet.Add("0");
-                    if (filters != null && filters.Any())
+                    if (filters?.Any() == true)
                     {
                         filteredEventDataSet.Add("0");
                     }
@@ -529,7 +523,7 @@ namespace LegendsViewer.Controls.HTML
                 }
                 var eventsOfCurrentYearCount = eventsOfCurrentYear.Value.Count;
                 eventDataSet.Add(eventsOfCurrentYearCount.ToString());
-                if (filters != null && filters.Any())
+                if (filters?.Any() == true)
                 {
                     var hiddenEventsOfCurrentYearCount = eventsOfCurrentYear.Value.Count(e => filters.Contains(e.Type));
                     var filteredEventsPerYearCount = eventsOfCurrentYearCount - hiddenEventsOfCurrentYearCount;
@@ -537,103 +531,102 @@ namespace LegendsViewer.Controls.HTML
                 }
             }
 
-            Html.AppendLine(Bold("Event Chart"));
-            Html.AppendLine("<div class=\"line-chart\">");
-            Html.AppendLine("<canvas id=\"event-chart\"></canvas>");
-            Html.AppendLine("</div>" + LineBreak);
-
-            Html.AppendLine("<b>Event Log</b> ");
-            Html.AppendLine("(");
-            if (filters != null && filters.Any())
+            Html.AppendLine(Bold("Event Chart"))
+                .AppendLine("<div class=\"line-chart\">")
+                .AppendLine("<canvas id=\"event-chart\"></canvas>")
+                .AppendLine("</div>" + LineBreak)
+                .AppendLine("<b>Event Log</b> ")
+                .AppendLine("(");
+            if (filters?.Any() == true)
             {
-                Html.AppendLine(events.Count(e => !filters.Contains(e.Type)) + "/");
+                Html.Append(events.Count(e => !filters.Contains(e.Type))).AppendLine("/");
             }
-            Html.AppendLine(events.Count.ToString());
-            Html.AppendLine(") ");
-            Html.AppendLine(MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart));
-            Html.AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview));
-            Html.AppendLine("<br/><br/>");
-            Html.AppendLine("<table id=\"lv_eventtable\" class=\"display\" width=\"100 %\"></table>");
-            Html.AppendLine("<script>");
-            Html.AppendLine("$(document).ready(function() {");
-            Html.AppendLine("   var dataSet = [");
+            Html.AppendLine(events.Count.ToString())
+                .AppendLine(") ")
+                .AppendLine(MakeLink(Font("[Chart]", "Maroon"), LinkOption.LoadChart))
+                .AppendLine(MakeLink(Font("[Event Overview]", "Maroon"), LinkOption.LoadEventOverview))
+                .AppendLine("<br/><br/>")
+                .AppendLine("<table id=\"lv_eventtable\" class=\"display\" width=\"100 %\"></table>")
+                .AppendLine("<script>")
+                .AppendLine("$(document).ready(function() {")
+                .AppendLine("   var dataSet = [");
             foreach (var e in events.OrderBy(e => e.Year).ThenBy(e => e.Id))
             {
-                if (filters == null || !filters.Contains(e.Type))
+                if (filters?.Contains(e.Type) != true)
                 {
-                    Html.AppendLine("['" + e.Date + "','" + e.Print(true, dfo).Replace("'", "`") + "','" + e.Type + "'],");
+                    Html.Append("['").Append(e.Date).Append("','").Append(e.Print(true, dfo).Replace("'", "`")).Append("','").Append(e.Type).AppendLine("'],");
                 }
             }
 
-            Html.AppendLine("   ];");
-            Html.AppendLine("   $('#lv_eventtable').dataTable({");
-            Html.AppendLine("       pageLength: 100,");
-            Html.AppendLine("       data: dataSet,");
-            Html.AppendLine("       columns: [");
-            Html.AppendLine("           { title: \"Date\", type: \"string\", width: \"60px\" },");
-            Html.AppendLine("           { title: \"Description\", type: \"html\" },");
-            Html.AppendLine("           { title: \"Type\", type: \"string\" }");
-            Html.AppendLine("       ]");
-            Html.AppendLine("   });");
-            Html.AppendLine("   var eventChart = new Chart(document.getElementById('event-chart').getContext('2d'), { ");
-            Html.AppendLine("       type: 'line', ");
-            Html.AppendLine("       data: {");
-            Html.AppendLine("           labels: [" + string.Join(",", chartLabels) + "], ");
-            Html.AppendLine("           datasets:[");
+            Html.AppendLine("   ];")
+                .AppendLine("   $('#lv_eventtable').dataTable({")
+                .AppendLine("       pageLength: 100,")
+                .AppendLine("       data: dataSet,")
+                .AppendLine("       columns: [")
+                .AppendLine("           { title: \"Date\", type: \"string\", width: \"60px\" },")
+                .AppendLine("           { title: \"Description\", type: \"html\" },")
+                .AppendLine("           { title: \"Type\", type: \"string\" }")
+                .AppendLine("       ]")
+                .AppendLine("   });")
+                .AppendLine("   var eventChart = new Chart(document.getElementById('event-chart').getContext('2d'), { ")
+                .AppendLine("       type: 'line', ")
+                .AppendLine("       data: {")
+                .Append("           labels: [").Append(string.Join(",", chartLabels)).AppendLine("], ")
+                .AppendLine("           datasets:[");
 
-            if (filters != null && filters.Any())
+            if (filters?.Any() == true)
             {
-                Html.AppendLine("               {");
-                Html.AppendLine("                   label:'Events (filtered)',");
-                Html.AppendLine("                   borderColor:'rgba(255, 205, 86, 0.4)',");
-                Html.AppendLine("                   backgroundColor:'rgba(255, 205, 86, 0.2)',");
-                Html.AppendLine("                   data:[" + string.Join(",", filteredEventDataSet) + "]");
-                Html.AppendLine("               }");
+                Html.AppendLine("               {")
+                    .AppendLine("                   label:'Events (filtered)',")
+                    .AppendLine("                   borderColor:'rgba(255, 205, 86, 0.4)',")
+                    .AppendLine("                   backgroundColor:'rgba(255, 205, 86, 0.2)',")
+                    .Append("                   data:[").Append(string.Join(",", filteredEventDataSet)).AppendLine("]")
+                    .AppendLine("               }");
             }
             else
             {
-                Html.AppendLine("               {");
-                Html.AppendLine("                   label:'Events',");
-                Html.AppendLine("                   borderColor:'rgba(54, 162, 235, 0.4)',");
-                Html.AppendLine("                   backgroundColor:'rgba(54, 162, 235, 0.2)',");
-                Html.AppendLine("                   data:[" + string.Join(",", eventDataSet) + "]");
-                Html.AppendLine("               }");
+                Html.AppendLine("               {")
+                    .AppendLine("                   label:'Events',")
+                    .AppendLine("                   borderColor:'rgba(54, 162, 235, 0.4)',")
+                    .AppendLine("                   backgroundColor:'rgba(54, 162, 235, 0.2)',")
+                    .Append("                   data:[").Append(string.Join(",", eventDataSet)).AppendLine("]")
+                    .AppendLine("               }");
             }
 
-            Html.AppendLine("           ]");
-            Html.AppendLine("       },");
-            Html.AppendLine("       options:{");
-            Html.AppendLine("           maintainAspectRatio: false, ");
-            Html.AppendLine("           legend:{");
-            Html.AppendLine("               position:'top',");
-            Html.AppendLine("               labels: { boxWidth: 12 }");
-            Html.AppendLine("           },");
-            Html.AppendLine("           scales:{");
-            Html.AppendLine("               yAxes: [{");
-            Html.AppendLine("                   ticks: {");
-            Html.AppendLine("                       beginAtZero: true,");
-            Html.AppendLine("                       min: 0,");
-            Html.AppendLine("                       precision: 0");
-            Html.AppendLine("                   }");
-            Html.AppendLine("               }]");
-            Html.AppendLine("           }");
-            Html.AppendLine("       }");
-            Html.AppendLine("   });");
-            Html.AppendLine("});");
-            Html.AppendLine("</script>");
+            Html.AppendLine("           ]")
+                .AppendLine("       },")
+                .AppendLine("       options:{")
+                .AppendLine("           maintainAspectRatio: false, ")
+                .AppendLine("           legend:{")
+                .AppendLine("               position:'top',")
+                .AppendLine("               labels: { boxWidth: 12 }")
+                .AppendLine("           },")
+                .AppendLine("           scales:{")
+                .AppendLine("               yAxes: [{")
+                .AppendLine("                   ticks: {")
+                .AppendLine("                       beginAtZero: true,")
+                .AppendLine("                       min: 0,")
+                .AppendLine("                       precision: 0")
+                .AppendLine("                   }")
+                .AppendLine("               }]")
+                .AppendLine("           }")
+                .AppendLine("       }")
+                .AppendLine("   });")
+                .AppendLine("});")
+                .AppendLine("</script>");
         }
 
         protected void PrintEventDetails(List<WorldEvent> eventList)
         {
-            Html.AppendLine("<h1>Events: " + eventList.Count + "</h1>");
+            Html.Append("<h1>Events: ").Append(eventList.Count).AppendLine("</h1>");
             var eventTypesAndCounts = from dEvent in eventList
-                         group dEvent by dEvent.Type into eventType
-                         select new { Type = eventType.Key, Count = eventType.Count() };
+                                      group dEvent by dEvent.Type into eventType
+                                      select new { Type = eventType.Key, Count = eventType.Count() };
             eventTypesAndCounts = eventTypesAndCounts.OrderByDescending(dEvent => dEvent.Count);
             Html.AppendLine("<ul>");
             foreach (var eventTypeAndCount in eventTypesAndCounts)
             {
-                Html.AppendLine("<li title='" + eventTypeAndCount.Type + "'>" + AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == eventTypeAndCount.Type))][1] + ": " + eventTypeAndCount.Count + "</li>");
+                Html.Append("<li title='").Append(eventTypeAndCount.Type).Append("'>").Append(AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == eventTypeAndCount.Type))][1]).Append(": ").Append(eventTypeAndCount.Count).AppendLine("</li>");
                 switch (eventTypeAndCount.Type)
                 {
                     case "hf died":
@@ -662,8 +655,8 @@ namespace LegendsViewer.Controls.HTML
                         break;
                 }
             }
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</br>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</br>");
         }
 
         private void PrintEventDetailsCreatureDevoured(List<WorldEvent> eventList)
@@ -676,16 +669,16 @@ namespace LegendsViewer.Controls.HTML
                     Count = grouping.Count()
                 });
             eventInfos = eventInfos.OrderByDescending(grouping => grouping.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Eaten by</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Eaten by</li>")
+                .AppendLine("<ul>");
             foreach (var grouping in eventInfos)
             {
-                Html.AppendLine("<li>" + Formatting.InitCaps(grouping.Type) + ": " + grouping.Count + "</li>");
+                Html.Append("<li>").Append(Formatting.InitCaps(grouping.Type)).Append(": ").Append(grouping.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsAddHfHfLink(List<WorldEvent> eventList)
@@ -698,16 +691,16 @@ namespace LegendsViewer.Controls.HTML
                     Count = grouping.Count()
                 });
             eventInfos = eventInfos.OrderByDescending(grouping => grouping.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Types</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Types</li>")
+                .AppendLine("<ul>");
             foreach (var grouping in eventInfos)
             {
-                Html.AppendLine("<li>" + grouping.Type.GetDescription() + ": " + grouping.Count + "</li>");
+                Html.Append("<li>").Append(grouping.Type.GetDescription()).Append(": ").Append(grouping.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsAddHfEntityLink(List<WorldEvent> eventList)
@@ -720,16 +713,16 @@ namespace LegendsViewer.Controls.HTML
                     Count = grouping.Count()
                 });
             eventInfos = eventInfos.OrderByDescending(grouping => grouping.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Types</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Types</li>")
+                .AppendLine("<ul>");
             foreach (var grouping in eventInfos)
             {
-                Html.AppendLine("<li>" + grouping.Type.GetDescription() + ": " + grouping.Count + "</li>");
+                Html.Append("<li>").Append(grouping.Type.GetDescription()).Append(": ").Append(grouping.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsWrittenContentComposed(List<WorldEvent> eventList)
@@ -742,16 +735,16 @@ namespace LegendsViewer.Controls.HTML
                     Count = grouping.Count()
                 });
             eventInfos = eventInfos.OrderByDescending(grouping => grouping.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Types</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Types</li>")
+                .AppendLine("<ul>");
             foreach (var grouping in eventInfos)
             {
-                Html.AppendLine("<li>" + grouping.Type.GetDescription() + ": " + grouping.Count + "</li>");
+                Html.Append("<li>").Append(grouping.Type.GetDescription()).Append(": ").Append(grouping.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsChangeHfJob(List<WorldEvent> eventList)
@@ -764,16 +757,16 @@ namespace LegendsViewer.Controls.HTML
                     Count = jobs.Count()
                 });
             jobChangeInfo = jobChangeInfo.OrderByDescending(job => job.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Jobs</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Jobs</li>")
+                .AppendLine("<ul>");
             foreach (var job in jobChangeInfo)
             {
-                Html.AppendLine("<li>" + Formatting.InitCaps(job.Type) + ": " + job.Count + "</li>");
+                Html.Append("<li>").Append(Formatting.InitCaps(job.Type)).Append(": ").Append(job.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsChangeHfState(List<WorldEvent> eventList)
@@ -795,137 +788,134 @@ namespace LegendsViewer.Controls.HTML
                     Count = changeStateEventsGroupedByMood.Count()
                 });
             moodChangeInfo = moodChangeInfo.OrderByDescending(mood => mood.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>States</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>States</li>")
+                .AppendLine("<ul>");
             foreach (var state in stateChangeInfo)
             {
-                Html.AppendLine("<li>" + state.Type.GetDescription() + ": " + state.Count + "</li>");
+                Html.Append("<li>").Append(state.Type.GetDescription()).Append(": ").Append(state.Count).AppendLine("</li>");
             }
 
             if (moodChangeInfo.Any())
             {
-                Html.AppendLine("<li>Moods</li>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<li>Moods</li>")
+                    .AppendLine("<ul>");
                 foreach (var mood in moodChangeInfo)
                 {
-                    Html.AppendLine("<li>" + mood.Type.GetDescription() + ": " + mood.Count + "</li>");
+                    Html.Append("<li>").Append(mood.Type.GetDescription()).Append(": ").Append(mood.Count).AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsHfSimpleBattle(List<WorldEvent> eventList)
         {
             var fightTypes = from fight in eventList.OfType<HfSimpleBattleEvent>()
-                group fight by fight.SubType
+                             group fight by fight.SubType
                 into fightType
-                select new {Type = fightType.Key, Count = fightType.Count()};
+                             select new { Type = fightType.Key, Count = fightType.Count() };
             fightTypes = fightTypes.OrderByDescending(fightType => fightType.Count);
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Fight SubTypes</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>Fight SubTypes</li>")
+                .AppendLine("<ul>");
             foreach (var fightType in fightTypes)
             {
-                Html.AppendLine("<li>" + fightType.Type.GetDescription() + ": " + fightType.Count + "</li>");
+                Html.Append("<li>").Append(fightType.Type.GetDescription()).Append(": ").Append(fightType.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         private void PrintEventDetailsHfDied(List<WorldEvent> eventList)
         {
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>As part of Collection</li>");
+            Html.AppendLine("<ul>")
+                .AppendLine("<li>As part of Collection</li>");
             var deathCollections = from death in eventList.OfType<HfDied>().Where(death => death.ParentCollection != null)
-                group death by death.ParentCollection.Type
+                                   group death by death.ParentCollection.Type
                 into collectionType
-                select new {Type = collectionType.Key, Count = collectionType.Count()};
+                                   select new { Type = collectionType.Key, Count = collectionType.Count() };
             deathCollections = deathCollections.OrderByDescending(collectionType => collectionType.Count);
             Html.AppendLine("<ul>");
             foreach (var deathCollection in deathCollections)
             {
-                Html.AppendLine("<li>" + Formatting.InitCaps(deathCollection.Type) + ": " + deathCollection.Count + "</li>");
+                Html.Append("<li>").Append(Formatting.InitCaps(deathCollection.Type)).Append(": ").Append(deathCollection.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("<li>None: " + eventList.OfType<HfDied>().Count(death => death.ParentCollection == null) + "</li>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
-
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Deceased by Race</li>");
-            Html.AppendLine("<ol>");
+            Html.Append("<li>None: ").Append(eventList.OfType<HfDied>().Count(death => death.ParentCollection == null)).AppendLine("</li>")
+                .AppendLine("</ul>")
+                .AppendLine("</ul>")
+                .AppendLine("<ul>")
+                .AppendLine("<li>Deceased by Race</li>")
+                .AppendLine("<ol>");
             var hfDeaths = from death in eventList.OfType<HfDied>()
-                group death by death.HistoricalFigure?.GetRaceString() ?? "Unknown"
+                           group death by death.HistoricalFigure?.GetRaceString() ?? "Unknown"
                 into deathRace
-                select new {Type = deathRace.Key, Count = deathRace.Count()};
+                           select new { Type = deathRace.Key, Count = deathRace.Count() };
             hfDeaths = hfDeaths.OrderByDescending(death => death.Count);
             foreach (var hfdeath in hfDeaths)
             {
-                Html.AppendLine("<li>" + Formatting.InitCaps(hfdeath.Type) + ": " + hfdeath.Count + "</li>");
+                Html.Append("<li>").Append(Formatting.InitCaps(hfdeath.Type)).Append(": ").Append(hfdeath.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</ul>");
-
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Slayers by Race</li>");
-            Html.AppendLine("<ol>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</ul>")
+                .AppendLine("<ul>")
+                .AppendLine("<li>Slayers by Race</li>")
+                .AppendLine("<ol>");
             var eventInfos = from death in eventList.OfType<HfDied>().Where(e => e.Slayer != null)
-                group death by death.Slayer?.GetRaceString() ?? "Unknown"
+                             group death by death.Slayer?.GetRaceString() ?? "Unknown"
                 into deathRace
-                select new { Type = deathRace.Key, Count = deathRace.Count() };
+                             select new { Type = deathRace.Key, Count = deathRace.Count() };
             eventInfos = eventInfos.OrderByDescending(death => death.Count);
             foreach (var eventInfo in eventInfos)
             {
-                Html.AppendLine("<li>" + Formatting.InitCaps(eventInfo.Type) + ": " + eventInfo.Count + "</li>");
+                Html.Append("<li>").Append(Formatting.InitCaps(eventInfo.Type)).Append(": ").Append(eventInfo.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ol>");
-            Html.AppendLine("</ul>");
-
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>Deaths by Cause</li>");
-            Html.AppendLine("<ul>");
+            Html.AppendLine("</ol>")
+                .AppendLine("</ul>")
+                .AppendLine("<ul>")
+                .AppendLine("<li>Deaths by Cause</li>")
+                .AppendLine("<ul>");
             var deathCauses = from death in eventList.OfType<HfDied>()
-                group death by death.Cause
+                              group death by death.Cause
                 into deathCause
-                select new {Cause = deathCause.Key, Count = deathCause.Count()};
+                              select new { Cause = deathCause.Key, Count = deathCause.Count() };
             deathCauses = deathCauses.OrderByDescending(death => death.Count);
             foreach (var deathCause in deathCauses)
             {
-                Html.AppendLine("<li>" + deathCause.Cause.GetDescription() + ": " + deathCause.Count + "</li>");
+                Html.Append("<li>").Append(deathCause.Cause.GetDescription()).Append(": ").Append(deathCause.Count).AppendLine("</li>");
             }
 
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</ul>");
+            Html.AppendLine("</ul>")
+                .AppendLine("</ul>");
         }
 
         protected void PrintEventCollectionDetails(List<EventCollection> eventCollectionList)
         {
-            Html.AppendLine("<h1>Event Collections: " + eventCollectionList.Count + "</h1>");
+            Html.Append("<h1>Event Collections: ").Append(eventCollectionList.Count).AppendLine("</h1>");
             var collectionTypes = from collection in eventCollectionList
                                   group collection by collection.Type into collectionType
                                   select new { Type = collectionType.Key, Count = collectionType.Count() };
             collectionTypes = collectionTypes.OrderByDescending(collection => collection.Count);
             foreach (var collectionType in collectionTypes)
             {
-                Html.AppendLine("<h2>" + Formatting.InitCaps(collectionType.Type) + ": " + collectionType.Count + "</h2>");
-                Html.AppendLine("<ul>");
+                Html.Append("<h2>").Append(Formatting.InitCaps(collectionType.Type)).Append(": ").Append(collectionType.Count).AppendLine("</h2>")
+                    .AppendLine("<ul>");
                 var subCollections = from subCollection in eventCollectionList.Where(collection => collection.Type == collectionType.Type).SelectMany(collection => collection.Collections)
                                      group subCollection by subCollection.Type into subCollectionType
                                      select new { Type = subCollectionType.Key, Count = subCollectionType.Count() };
                 subCollections = subCollections.OrderByDescending(collection => collection.Count);
                 if (subCollections.Any())
                 {
-                    Html.AppendLine("<li>Sub Collections");
-                    Html.AppendLine("<ul>");
+                    Html.AppendLine("<li>Sub Collections")
+                        .AppendLine("<ul>");
                     foreach (var subCollection in subCollections)
                     {
-                        Html.AppendLine("<li>" + Formatting.InitCaps(subCollection.Type) + ": " + subCollection.Count + "</li>");
+                        Html.Append("<li>").Append(Formatting.InitCaps(subCollection.Type)).Append(": ").Append(subCollection.Count).AppendLine("</li>");
                     }
 
                     Html.AppendLine("</ul>");
@@ -939,12 +929,11 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("<ul>");
                 foreach (var eventType in eventTypes)
                 {
-                    Html.AppendLine("<li>" + AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == eventType.Type))][1] + ": " + eventType.Count + "</li>");
+                    Html.Append("<li>").Append(AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == eventType.Type))][1]).Append(": ").Append(eventType.Count).AppendLine("</li>");
                 }
 
-                Html.AppendLine("</ul>");
-
-                Html.AppendLine("</ul>");
+                Html.AppendLine("</ul>")
+                    .AppendLine("</ul>");
             }
         }
 
@@ -956,7 +945,7 @@ namespace LegendsViewer.Controls.HTML
 
         protected virtual void Dispose(bool disposing)
         {
-            _disposed &= !_temporaryFiles.Any();
+            _disposed &= _temporaryFiles.Count == 0;
             if (!_disposed)
             {
                 if (disposing)
@@ -1003,9 +992,9 @@ namespace LegendsViewer.Controls.HTML
 
     public class TableMaker
     {
-        readonly StringBuilder _html;
-        readonly bool _numbered;
-        int _count;
+        private readonly StringBuilder _html;
+        private readonly bool _numbered;
+        private int _count;
         public TableMaker(bool numbered = false, int width = 0)
         {
             _html = new StringBuilder();

@@ -16,9 +16,9 @@ namespace LegendsViewer.Legends.EventCollections
         public string Icon = "<i class=\"glyphicon fa-fw glyphicon-pawn\"></i>";
 
         [ShowInAdvancedSearchResults]
-        public string Name { get { return Formatting.AddOrdinal(Ordinal) + " " + ConquerType.GetDescription() + " of " + Site.Name; } set { } }
+        public string Name { get => Formatting.AddOrdinal(Ordinal) + " " + ConquerType.GetDescription() + " of " + Site.Name; set { } }
         [ShowInAdvancedSearchResults("Deaths")]
-        public int DeathCount { get { return Deaths.Count; } set { } }
+        public int DeathCount { get => Deaths.Count; set { } }
 
         [AllowAdvancedSearch]
         public int Ordinal { get; set; }
@@ -38,12 +38,9 @@ namespace LegendsViewer.Legends.EventCollections
         [ShowInAdvancedSearchResults]
         public Battle Battle { get; set; }
         [AllowAdvancedSearch(true)]
-        public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        public List<HistoricalFigure> Deaths { get => GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); set { } }
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public SiteConquered()
         {
             Initialize();
@@ -77,17 +74,13 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 ConquerType = SiteConqueredType.Conquest;
             }
-            else if (Collection.OfType<SiteTributeForced>().Any())
-            {
-                ConquerType = SiteConqueredType.TributeEnforcement;
-            }
             else
             {
-                ConquerType = SiteConqueredType.Invasion;
+                ConquerType = Collection.OfType<SiteTributeForced>().Any() ? SiteConqueredType.TributeEnforcement : SiteConqueredType.Invasion;
             }
 
-            if (ConquerType == SiteConqueredType.Pillaging || 
-                ConquerType == SiteConqueredType.Invasion || 
+            if (ConquerType == SiteConqueredType.Pillaging ||
+                ConquerType == SiteConqueredType.Invasion ||
                 ConquerType == SiteConqueredType.TributeEnforcement)
             {
                 Notable = false;

@@ -17,28 +17,29 @@ namespace LegendsViewer.Controls.Map
     public class MapPanel : Panel
     {
         public DwarfTabControl TabControl;
-        Bitmap _map, _minimap;
+        private readonly Bitmap _map;
+        private Bitmap _minimap;
         public Bitmap AlternateMap, Overlay;
         //Size MinimapSize;
         public object FocusObject;
-        List<object> _focusObjects;
-        World _world;
-        List<object> _displayObjects;
+        private readonly List<object> _focusObjects;
+        private readonly World _world;
+        private readonly List<object> _displayObjects;
         public Point MousePanStart, Center, MouseClickLocation, MouseLocation;
         public Rectangle Source;
-        Rectangle _zoomBounds;
+        private Rectangle _zoomBounds;
         public double ZoomCurrent = 1;
         public double PixelWidth, PixelHeight, ZoomChange = 0.15, ZoomMax = 10.0, ZoomMin = 0.2;
-        MapMenu _hoverMenu, _controlMenu, _yearMenu;
-        MapMenuHorizontal _optionsMenu;
+        private readonly MapMenu _hoverMenu, _controlMenu, _yearMenu;
+        private readonly MapMenuHorizontal _optionsMenu;
         public bool ZoomToBoundsOnFirstPaint, CivsToggled, SitesToggled, WarsToggled, BattlesToggled, OverlayToggled, AlternateMapToggled;
         public int TileSize = 16, MinYear, MaxYear, CurrentYear, MiniMapAreaSideLength = 200;
-        List<CivPaths> _allCivPaths = new List<CivPaths>();
-        List<Entity> _warEntities = new List<Entity>();
-        List<Battle> _battles = new List<Battle>();
-        List<Location> _battleLocations = new List<Location>();
-        TrackBar _altMapTransparency = new TrackBar();
-        float _altMapAlpha = 1.0f;
+        private List<CivPaths> _allCivPaths = new List<CivPaths>();
+        private readonly List<Entity> _warEntities = new List<Entity>();
+        private readonly List<Battle> _battles = new List<Battle>();
+        private List<Location> _battleLocations = new List<Location>();
+        private readonly TrackBar _altMapTransparency = new TrackBar();
+        private float _altMapAlpha = 1.0f;
 
         public MapPanel(Bitmap map, World world, DwarfTabControl dwarfTabControl, object focusObject)
         {
@@ -85,7 +86,6 @@ namespace LegendsViewer.Controls.Map
             _altMapTransparency.Value = 100;
             Controls.Add(_altMapTransparency);
             _altMapTransparency.Location = new Point(MiniMapAreaSideLength + _yearMenu.MenuBox.Width, Height - _altMapTransparency.Height);
-
 
             MinYear = _world.Eras.First().StartYear;
             if (MinYear == -1)
@@ -254,16 +254,7 @@ namespace LegendsViewer.Controls.Map
 
                 if (FocusObject.GetType() == typeof(Battle) || FocusObject.GetType() == typeof(SiteConquered))
                 {
-                    Battle battle;
-                    if (FocusObject.GetType() == typeof(Battle))
-                    {
-                        battle = FocusObject as Battle;
-                    }
-                    else
-                    {
-                        battle = (FocusObject as SiteConquered).Battle;
-                    }
-
+                    Battle battle = FocusObject.GetType() == typeof(Battle) ? FocusObject as Battle : (FocusObject as SiteConquered).Battle;
                     Center = new Point(battle.Coordinates.X * TileSize + TileSize / 2, battle.Coordinates.Y * TileSize + TileSize / 2);
                     _zoomBounds.Y = _zoomBounds.Height = battle.Coordinates.Y;
                     _zoomBounds.X = _zoomBounds.Width = battle.Coordinates.X;
@@ -410,7 +401,6 @@ namespace LegendsViewer.Controls.Map
                             g.DrawImage(AlternateMap, ClientRectangle, Source.X, Source.Y, Source.Width, Source.Height, GraphicsUnit.Pixel, adjustAlpha);
                         }
                     }
-
                 }
                 else
                 {
@@ -430,16 +420,9 @@ namespace LegendsViewer.Controls.Map
 
         private void DrawMiniMap(Graphics g)
         {
-            double minimapRatio;
-            if (_map.Width > _map.Height)
-            {
-                minimapRatio = Convert.ToDouble(_minimap.Width) / Convert.ToDouble(_map.Width);
-            }
-            else
-            {
-                minimapRatio = Convert.ToDouble(_minimap.Height) / Convert.ToDouble(_map.Height);
-            }
-
+            double minimapRatio = _map.Width > _map.Height
+                ? Convert.ToDouble(_minimap.Width) / Convert.ToDouble(_map.Width)
+                : Convert.ToDouble(_minimap.Height) / Convert.ToDouble(_map.Height);
             Rectangle minimapArea = new Rectangle(0, Height - MiniMapAreaSideLength, MiniMapAreaSideLength, MiniMapAreaSideLength);
             Point miniMapDrawLocation = new Point(minimapArea.X + MiniMapAreaSideLength / 2 - _minimap.Width / 2, minimapArea.Y + MiniMapAreaSideLength / 2 - _minimap.Height / 2);
             g.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 50)), minimapArea);
@@ -477,7 +460,7 @@ namespace LegendsViewer.Controls.Map
 
             DrawEntities(g, _displayObjects.OfType<Entity>().ToList(), originalSize);
             DrawCivPaths(g, originalSize);
-            
+
             Rectangle rectangle = originalSize ? getOriginalSize(_map) : Source;
             SizeF scaleTileSize = new SizeF((float)(PixelWidth * TileSize), (float)(PixelHeight * TileSize));
 
@@ -610,8 +593,7 @@ namespace LegendsViewer.Controls.Map
                     Y = (float)((site.Coordinates.Y * TileSize - rectangle.Y) * PixelHeight)
                 };
                 OwnerPeriod ownerPeriod = site.OwnerHistory.LastOrDefault(op => op.StartYear <= CurrentYear && (op.EndYear >= CurrentYear || op.EndYear == -1));
-                Entity entity = ownerPeriod?.Owner as Entity;
-                if (entity == null)
+                if (!(ownerPeriod?.Owner is Entity entity))
                 {
                     continue;
                 }
@@ -729,7 +711,6 @@ namespace LegendsViewer.Controls.Map
             font.Dispose();
             fontBrush.Dispose();
             boxBrush.Dispose();
-
         }
 
         public void ToggleCivs()
@@ -760,7 +741,6 @@ namespace LegendsViewer.Controls.Map
             }
 
             Invalidate();
-
         }
 
         public void ToggleSites()
@@ -840,7 +820,6 @@ namespace LegendsViewer.Controls.Map
                 {
                     //DisplayObjects.AddRange((FocusObject as War).Collections.OfType<Battle>());
                     _battles.AddRange(((War)FocusObject).Collections.OfType<Battle>());
-
                 }
                 //BattleLocations = DisplayObjects.OfType<Battle>().GroupBy(battle => battle.Coordinates).Select(battle => battle.Key).ToList();
                 _battleLocations = _battles.GroupBy(battle => battle.Coordinates).Select(battle => battle.Key).ToList();
@@ -935,16 +914,7 @@ namespace LegendsViewer.Controls.Map
             }
             if (FocusObject != null && (FocusObject.GetType() == typeof(Battle) || FocusObject.GetType() == typeof(SiteConquered)))
             {
-                Battle battle;
-                if (FocusObject.GetType() == typeof(Battle))
-                {
-                    battle = FocusObject as Battle;
-                }
-                else
-                {
-                    battle = ((SiteConquered)FocusObject).Battle;
-                }
-
+                Battle battle = FocusObject.GetType() == typeof(Battle) ? FocusObject as Battle : ((SiteConquered)FocusObject).Battle;
                 if (battle != null)
                 {
                     if (battle.Attacker.Parent != null)
@@ -1035,19 +1005,11 @@ namespace LegendsViewer.Controls.Map
                 coordinatesList[i] = new Location(coordinatesList[i].X * TileSize + TileSize / 2, coordinatesList[i].Y * TileSize + TileSize / 2);
             }
 
-            if (Overlay != null)
-            {
-                Overlay.Dispose();
-            }
+            Overlay?.Dispose();
 
-            if (occurences.Count > 0)
-            {
-                Overlay = HeatMapMaker.Create(_map.Width, _map.Height, coordinatesList, occurences);
-            }
-            else
-            {
-                Overlay = HeatMapMaker.Create(_map.Width, _map.Height, coordinatesList);
-            }
+            Overlay = occurences.Count > 0
+                ? HeatMapMaker.Create(_map.Width, _map.Height, coordinatesList, occurences)
+                : HeatMapMaker.Create(_map.Width, _map.Height, coordinatesList);
 
             OverlayToggled = false;
             ToggleOverlay();
@@ -1346,7 +1308,6 @@ namespace LegendsViewer.Controls.Map
 
                 _optionsMenu.SelectedOption = null;
             }
-
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -1358,7 +1319,7 @@ namespace LegendsViewer.Controls.Map
                 foreach (Site site in _displayObjects.OfType<Entity>().SelectMany(entity => entity.Sites).Where(site => site.Coordinates == tile).Distinct())
                 {
                     OwnerPeriod ownerPeriod = site.OwnerHistory.LastOrDefault(op => op.StartYear <= CurrentYear && op.EndYear >= CurrentYear || op.EndYear == -1);
-                    if(ownerPeriod != null && ownerPeriod.Owner is Entity entity)
+                    if (ownerPeriod?.Owner is Entity entity)
                     {
                         addOptions.Add(entity);
                         addOptions.Add(ownerPeriod.Site);
@@ -1432,7 +1393,6 @@ namespace LegendsViewer.Controls.Map
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-
             if (e.Delta > 0)
             {
                 if (ModifierKeys == (Keys.Control | Keys.Shift))

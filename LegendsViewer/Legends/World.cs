@@ -151,9 +151,8 @@ namespace LegendsViewer.Legends
             {
                 Log.Append(' ').Append(minutes).Append(" mins,");
             }
-            Log.Append(' ').Append(seconds).Append(" secs,");
-            Log.Append(' ').AppendFormat("{0:D3}", milliSeconds).Append(" ms");
-            Log.AppendLine();
+            Log.Append(' ').Append(seconds).Append(" secs,")
+                .Append(' ').AppendFormat("{0:D3}", milliSeconds).AppendLine(" ms");
         }
 
         public void AddPlayerRelatedDwarfObjects(DwarfObject dwarfObject)
@@ -181,7 +180,7 @@ namespace LegendsViewer.Legends
             //Races 7 to 12 get a light color
             //Races 13 to 18 get a dark color
             //19+ reduced color variance
-            int maxHue = 300;
+            const int maxHue = 300;
             int colorVariance;
             if (races.Count <= 1)
             {
@@ -191,13 +190,9 @@ namespace LegendsViewer.Legends
             {
                 colorVariance = Convert.ToInt32(Math.Floor(maxHue / Convert.ToDouble(races.Count - 1)));
             }
-            else if (races.Count > 18)
-            {
-                colorVariance = Convert.ToInt32(Math.Floor(maxHue / (Math.Ceiling(races.Count / 3.0) - 1)));
-            }
             else
             {
-                colorVariance = 60;
+                colorVariance = races.Count > 18 ? Convert.ToInt32(Math.Floor(maxHue / (Math.Ceiling(races.Count / 3.0) - 1))) : 60;
             }
 
             foreach (Entity civ in civs)
@@ -212,16 +207,12 @@ namespace LegendsViewer.Legends
                 {
                     raceColor = Formatting.HsvToRgb(colorIndex * colorVariance - 360, 0.4, 1);
                 }
-                else if (colorIndex * colorVariance < 1080)
-                {
-                    raceColor = Formatting.HsvToRgb(colorIndex * colorVariance - 720, 1, 0.4);
-                }
                 else
                 {
-                    raceColor = Color.Black;
+                    raceColor = colorIndex * colorVariance < 1080 ? Formatting.HsvToRgb(colorIndex * colorVariance - 720, 1, 0.4) : Color.Black;
                 }
 
-                var alpha = 176;
+                const int alpha = 176;
 
                 if (!MainRaces.ContainsKey(civ.Race))
                 {
@@ -273,7 +264,7 @@ namespace LegendsViewer.Legends
             int[] worldSizes = { 17, 33, 65, 129, 257 };
             int worldSizeWidth = worldSizes[0];
             int worldSizeHeight = worldSizes[0];
-            int tileSize = 16;
+            const int tileSize = 16;
             foreach (Site site in Sites)
             {
                 if (site.Coordinates.X > biggestXCoordinate)
@@ -300,7 +291,6 @@ namespace LegendsViewer.Legends
                 }
             }
 
-
             using (FileStream mapStream = new FileStream(mapFile, FileMode.Open))
             {
                 Map = new Bitmap(mapStream);
@@ -326,11 +316,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < Regions.Count && Regions[id].Id == id)
-            {
-                return Regions[id];
-            }
-            return Regions.GetWorldObject(id);
+            return id < Regions.Count && Regions[id].Id == id ? Regions[id] : Regions.GetWorldObject(id);
         }
         public UndergroundRegion GetUndergroundRegion(int id)
         {
@@ -339,11 +325,9 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < UndergroundRegions.Count && UndergroundRegions[id].Id == id)
-            {
-                return UndergroundRegions[id];
-            }
-            return UndergroundRegions.GetWorldObject(id);
+            return id < UndergroundRegions.Count && UndergroundRegions[id].Id == id
+                ? UndergroundRegions[id]
+                : UndergroundRegions.GetWorldObject(id);
         }
         public HistoricalFigure GetHistoricalFigure(int id)
         {
@@ -352,11 +336,9 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < HistoricalFigures.Count && HistoricalFigures[id].Id == id)
-            {
-                return HistoricalFigures[id];
-            }
-            return HistoricalFigures.GetWorldObject(id) ?? HistoricalFigure.Unknown;
+            return id < HistoricalFigures.Count && HistoricalFigures[id].Id == id
+                ? HistoricalFigures[id]
+                : HistoricalFigures.GetWorldObject(id) ?? HistoricalFigure.Unknown;
         }
         public Entity GetEntity(int id)
         {
@@ -365,11 +347,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < Entities.Count && Entities[id].Id == id)
-            {
-                return Entities[id];
-            }
-            return Entities.GetWorldObject(id);
+            return id < Entities.Count && Entities[id].Id == id ? Entities[id] : Entities.GetWorldObject(id);
         }
 
         public Artifact GetArtifact(int id)
@@ -379,11 +357,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < Artifacts.Count && Artifacts[id].Id == id)
-            {
-                return Artifacts[id];
-            }
-            return Artifacts.GetWorldObject(id);
+            return id < Artifacts.Count && Artifacts[id].Id == id ? Artifacts[id] : Artifacts.GetWorldObject(id);
         }
         public PoeticForm GetPoeticForm(int id)
         {
@@ -392,11 +366,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < PoeticForms.Count && PoeticForms[id].Id == id)
-            {
-                return PoeticForms[id];
-            }
-            return PoeticForms.GetWorldObject(id);
+            return id < PoeticForms.Count && PoeticForms[id].Id == id ? PoeticForms[id] : PoeticForms.GetWorldObject(id);
         }
         public MusicalForm GetMusicalForm(int id)
         {
@@ -405,11 +375,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < MusicalForms.Count && MusicalForms[id].Id == id)
-            {
-                return MusicalForms[id];
-            }
-            return MusicalForms.GetWorldObject(id);
+            return id < MusicalForms.Count && MusicalForms[id].Id == id ? MusicalForms[id] : MusicalForms.GetWorldObject(id);
         }
         public DanceForm GetDanceForm(int id)
         {
@@ -418,11 +384,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < DanceForms.Count && DanceForms[id].Id == id)
-            {
-                return DanceForms[id];
-            }
-            return DanceForms.GetWorldObject(id);
+            return id < DanceForms.Count && DanceForms[id].Id == id ? DanceForms[id] : DanceForms.GetWorldObject(id);
         }
         public WrittenContent GetWrittenContent(int id)
         {
@@ -431,11 +393,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < WrittenContents.Count && WrittenContents[id].Id == id)
-            {
-                return WrittenContents[id];
-            }
-            return WrittenContents.GetWorldObject(id);
+            return id < WrittenContents.Count && WrittenContents[id].Id == id ? WrittenContents[id] : WrittenContents.GetWorldObject(id);
         }
 
         public EntityPopulation GetEntityPopulation(int id)
@@ -445,11 +403,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id < EntityPopulations.Count && EntityPopulations[id].Id == id)
-            {
-                return EntityPopulations[id];
-            }
-            return EntityPopulations.GetWorldObject(id);
+            return id < EntityPopulations.Count && EntityPopulations[id].Id == id ? EntityPopulations[id] : EntityPopulations.GetWorldObject(id);
         }
 
         public EventCollection GetEventCollection(int id)
@@ -556,11 +510,7 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id <= Sites.Count && Sites[id - 1].Id == id)
-            {
-                return Sites[id - 1];
-            }
-            return Sites.GetWorldObject(id);
+            return id <= Sites.Count && Sites[id - 1].Id == id ? Sites[id - 1] : Sites.GetWorldObject(id);
         }
 
         public WorldConstruction GetWorldConstruction(int id)
@@ -571,11 +521,9 @@ namespace LegendsViewer.Legends
                 return null;
             }
 
-            if (id <= WorldConstructions.Count && WorldConstructions[id - 1].Id == id)
-            {
-                return WorldConstructions[id - 1];
-            }
-            return WorldConstructions.GetWorldObject(id);
+            return id <= WorldConstructions.Count && WorldConstructions[id - 1].Id == id
+                ? WorldConstructions[id - 1]
+                : WorldConstructions.GetWorldObject(id);
         }
 
         public Era GetEra(int id)
@@ -594,15 +542,11 @@ namespace LegendsViewer.Legends
             {
                 return _creatureInfosById[id.ToLower()];
             }
-            var creatureInfo = _creatureInfos.FirstOrDefault(ci =>
+            var creatureInfo = _creatureInfos.Find(ci =>
                 ci.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase) ||
                 ci.NameSingular.Equals(id, StringComparison.InvariantCultureIgnoreCase) ||
                 ci.NamePlural.Equals(id, StringComparison.InvariantCultureIgnoreCase));
-            if (creatureInfo != null)
-            {
-                return creatureInfo;
-            }
-            return AddCreatureInfo(id);
+            return creatureInfo ?? AddCreatureInfo(id);
         }
 
         private CreatureInfo AddCreatureInfo(string id)
@@ -655,7 +599,7 @@ namespace LegendsViewer.Legends
 
         public void ProcessHFtoEntityLinks()
         {
-            if (_hFtoEntityLinks.Any())
+            if (_hFtoEntityLinks.Count > 0)
             {
                 _worker.ReportProgress(0, "... Historical Figures and Entities");
             }
@@ -756,7 +700,7 @@ namespace LegendsViewer.Legends
             }
             foreach (var site in Sites)
             {
-                if (site.SiteProperties.Any())
+                if (site.SiteProperties.Count > 0)
                 {
                     foreach (SiteProperty siteProperty in site.SiteProperties)
                     {

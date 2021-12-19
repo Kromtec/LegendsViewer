@@ -11,7 +11,7 @@ using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML
 {
-    class EntityPrinter : HtmlPrinter
+    internal class EntityPrinter : HtmlPrinter
     {
         private readonly Entity _entity;
         private readonly World _world;
@@ -38,41 +38,35 @@ namespace LegendsViewer.Controls.HTML
 
             PrintTitle();
 
-
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
+            Html.AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-6 col-sm-12\">");
             PrintMaps();
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">");
-            Html.AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-md-12 col-sm-12\">");
-            Html.AppendLine(_entity.GetSummary(true, _entity) + "</br></br>");
-            Html.AppendLine("</div>");
-            Html.AppendLine("<div class=\"row\">");
+            Html.AppendLine("</div>")
+                .AppendLine("<div id=\"chart-populationbyrace-container\" class=\"col-md-4 col-sm-6\" style=\"height: 250px\">")
+                .AppendLine("<canvas id=\"chart-populationbyrace\"></canvas>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-12 col-sm-12\">")
+                .Append(_entity.GetSummary(true, _entity)).AppendLine("</br></br>")
+                .AppendLine("</div>")
+                .AppendLine("<div class=\"row\">");
 
             PrintPopulations(_entity.Populations);
             Html.AppendLine("<div class=\"col-lg-4 col-md-6 col-sm-12\">");
             PrintEntityLinks();
             if (_entity.EntityLinks.Count > 5)
             {
-                Html.AppendLine("</div>");
-                Html.AppendLine("<div class=\"col-lg-4 col-md-6 col-sm-12\">");
+                Html.AppendLine("</div>")
+                    .AppendLine("<div class=\"col-lg-4 col-md-6 col-sm-12\">");
             }
             PrintOriginStructure();
             PrintWorships();
             PrintLeaders();
             PrintHonors();
             PrintCurrentLeadership();
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
+            Html.AppendLine("</div>")
+                .AppendLine("</div>");
             PrintWars();
             PrintWarfareInfo();
             PrintSiteHistory();
@@ -95,7 +89,7 @@ namespace LegendsViewer.Controls.HTML
             mapTable.AddData(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap));
             mapTable.AddData(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap));
             mapTable.EndRow();
-            Html.AppendLine(mapTable.GetTable() + "</br>");
+            Html.Append(mapTable.GetTable()).AppendLine("</br>");
             maps[0].Dispose();
             maps[1].Dispose();
         }
@@ -106,7 +100,7 @@ namespace LegendsViewer.Controls.HTML
             {
                 return;
             }
-            Html.AppendLine(Bold("Originated in") + LineBreak);
+            Html.Append(Bold("Originated in")).AppendLine(LineBreak);
             StartList(ListType.Unordered);
             Html.Append(ListItem).Append(_entity.OriginStructure.ToLink(true, _entity)).Append(" (").Append(_entity.OriginStructure.Site.ToLink(true, _entity)).AppendLine(")");
             EndList(ListType.Unordered);
@@ -133,7 +127,7 @@ namespace LegendsViewer.Controls.HTML
             {
                 return;
             }
-            Html.AppendLine(Bold("Related Entities") + LineBreak);
+            Html.Append(Bold("Related Entities")).AppendLine(LineBreak);
             StartList(ListType.Unordered);
             foreach (EntityEntityLink parentLink in _entity.EntityLinks.Where(entityLink => entityLink.Type == EntityEntityLinkType.Parent))
             {
@@ -154,17 +148,17 @@ namespace LegendsViewer.Controls.HTML
 
         private void LoadCustomScripts()
         {
-            Html.AppendLine("<script>");
-            Html.AppendLine("window.onload = function(){");
+            Html.AppendLine("<script>")
+                .AppendLine("window.onload = function(){");
 
             PopulatePopulationChartData(_entity.Populations.Where(pop => pop.IsMainRace || pop.IsAnimalPeople).ToList());
-            if (_entity.Wars.Any())
+            if (_entity.Wars.Count > 0)
             {
                 PopulateWarOverview();
             }
 
-            Html.AppendLine("}");
-            Html.AppendLine("</script>");
+            Html.AppendLine("}")
+                .AppendLine("</script>");
         }
 
         private void PopulateWarOverview()
@@ -209,25 +203,24 @@ namespace LegendsViewer.Controls.HTML
                     "hoverBorderColor: 'rgba(" + loserColor + ", 1)' " +
                 "}";
 
-
-            Html.AppendLine("var warsByEntityChart = new Chart(document.getElementById('chart-countbyEntity').getContext('2d'), { type: 'horizontalBar', ");
-            Html.AppendLine("data: {");
-            Html.AppendLine("labels: [" + entityLabels + "], ");
-            Html.AppendLine("datasets:[" + battleVictorEntity + "," + battleLoserEntity + "],");
-            Html.AppendLine("},");
-            Html.AppendLine("options:{");
-            Html.AppendLine("maxBarThickness: 20,");
-            Html.AppendLine("legend:{");
-            Html.AppendLine("position:'top',");
-            Html.AppendLine("labels: { boxWidth: 12 }");
-            Html.AppendLine("}");
-            Html.AppendLine("}");
-            Html.AppendLine("});");
+            Html.AppendLine("var warsByEntityChart = new Chart(document.getElementById('chart-countbyEntity').getContext('2d'), { type: 'horizontalBar', ")
+                .AppendLine("data: {")
+                .Append("labels: [").Append(entityLabels).AppendLine("], ")
+                .Append("datasets:[").Append(battleVictorEntity).Append(',').Append(battleLoserEntity).AppendLine("],")
+                .AppendLine("},")
+                .AppendLine("options:{")
+                .AppendLine("maxBarThickness: 20,")
+                .AppendLine("legend:{")
+                .AppendLine("position:'top',")
+                .AppendLine("labels: { boxWidth: 12 }")
+                .AppendLine("}")
+                .AppendLine("}")
+                .AppendLine("});");
         }
 
         private void PrintWarfareInfo()
         {
-            if (!_entity.Wars.Any())
+            if (_entity.Wars.Count == 0)
             {
                 return;
             }
@@ -237,9 +230,8 @@ namespace LegendsViewer.Controls.HTML
             PrintWarfareGraph();
             PrintWarfareChart();
 
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</div>")
+                .AppendLine("</br>");
         }
 
         private void PrintWarfareChart()
@@ -252,14 +244,14 @@ namespace LegendsViewer.Controls.HTML
             {
                 Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
             }
-            Html.AppendLine(Bold("Battles against other Entities - Victory/Defeat Chart") + LineBreak);
-            Html.AppendLine("<canvas id=\"chart-countbyEntity\" class=\"bar-chart\" width=\"600\" height=\"300\"></canvas>");
-            Html.AppendLine("</div>");
+            Html.Append(Bold("Battles against other Entities - Victory/Defeat Chart")).AppendLine(LineBreak)
+                .AppendLine("<canvas id=\"chart-countbyEntity\" class=\"bar-chart\" width=\"600\" height=\"300\"></canvas>")
+                .AppendLine("</div>");
         }
 
         private void PrintWarfareGraph()
         {
-            if (!_entity.Wars.Any())
+            if (_entity.Wars.Count == 0)
             {
                 return;
             }
@@ -312,27 +304,25 @@ namespace LegendsViewer.Controls.HTML
             {
                 Html.AppendLine("<div class=\"col-md-6 col-sm-12\">");
             }
-            Html.AppendLine(Bold("Battles against other Entities - Sum of battles - Graph") + LineBreak);
-            Html.AppendLine("<div id=\"warfaregraph\" class=\"legends_graph\"></div>");
-            Html.AppendLine("</div>");
-
-
-            Html.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/cytoscape.min.js\"></script>");
-            Html.AppendLine("<script>");
-            Html.AppendLine("window.warfaregraph_nodes = [");
+            Html.Append(Bold("Battles against other Entities - Sum of battles - Graph")).AppendLine(LineBreak)
+                .AppendLine("<div id=\"warfaregraph\" class=\"legends_graph\"></div>")
+                .AppendLine("</div>")
+                .Append("<script type=\"text/javascript\" src=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/scripts/cytoscape.min.js\"></script>")
+                .AppendLine("<script>")
+                .AppendLine("window.warfaregraph_nodes = [");
             foreach (var node in nodes)
             {
                 Html.AppendLine(node);
             }
-            Html.AppendLine("]");
-            Html.AppendLine("window.warfaregraph_edges = [");
+            Html.AppendLine("]")
+                .AppendLine("window.warfaregraph_edges = [");
             foreach (var edge in edges)
             {
                 Html.AppendLine(edge.Key.Replace("WIDTH", edge.Value > 15 ? "15" : edge.Value.ToString()).Replace("LABEL", edge.Value.ToString()));
             }
-            Html.AppendLine("]");
-            Html.AppendLine("</script>");
-            Html.AppendLine("<script type=\"text/javascript\" src=\"" + LocalFileProvider.LocalPrefix + "WebContent/scripts/warfaregraph.js\"></script>");
+            Html.AppendLine("]")
+                .AppendLine("</script>")
+                .Append("<script type=\"text/javascript\" src=\"").Append(LocalFileProvider.LocalPrefix).AppendLine("WebContent/scripts/warfaregraph.js\"></script>");
         }
 
         private string CreateNode(Entity entity)
@@ -369,8 +359,8 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintTitle()
         {
-            Html.AppendLine("<div class=\"row\">");
-            Html.AppendLine("<div class=\"col-md-12\">");
+            Html.AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-md-12\">");
             string title = _entity.GetIcon() + " " + _entity.ToLink(false);
             title += " is a " + _entity.GetTitle().ToLower();
             if (_entity.Parent != null)
@@ -379,11 +369,11 @@ namespace LegendsViewer.Controls.HTML
             }
 
             title += ".";
-            Html.AppendLine("<h1>" + title + "</h1></br>");
+            Html.Append("<h1>").Append(title).AppendLine("</h1></br>");
 
             if (_entity.IsCiv)
             {
-                Html.AppendLine(_entity.PrintIdenticon(true) + LineBreak + LineBreak);
+                Html.Append(_entity.PrintIdenticon(true)).Append(LineBreak).AppendLine(LineBreak);
             }
 
             if (_entity.SiteHistory.Count > 0)
@@ -393,18 +383,18 @@ namespace LegendsViewer.Controls.HTML
                     Html.AppendLine(Font("Last Known Sites. Year: " + (_entity.SiteHistory.Max(sitePeriod => sitePeriod.EndYear) - 1), "red"));
                 }
             }
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
+            Html.AppendLine("</div>")
+                .AppendLine("</div>");
         }
 
         private void PrintLeaders()
         {
-            if (_entity.Leaders != null && _entity.Leaders.Count > 0)
+            if (_entity.Leaders?.Count > 0)
             {
-                Html.AppendLine(Bold("Leaderhistory") + " " + LineBreak);
+                Html.Append(Bold("Leaderhistory")).Append(' ').AppendLine(LineBreak);
                 foreach (string leaderType in _entity.LeaderTypes)
                 {
-                    Html.AppendLine(leaderType + "s" + LineBreak);
+                    Html.Append(leaderType).Append('s').AppendLine(LineBreak);
                     TableMaker leaderTable = new TableMaker(true);
                     foreach (HistoricalFigure leader in _entity.Leaders[_entity.LeaderTypes.IndexOf(leaderType)])
                     {
@@ -413,7 +403,7 @@ namespace LegendsViewer.Controls.HTML
                         leaderTable.AddData(leader.ToLink());
                         leaderTable.EndRow();
                     }
-                    Html.AppendLine(leaderTable.GetTable() + LineBreak);
+                    Html.Append(leaderTable.GetTable()).AppendLine(LineBreak);
                 }
             }
         }
@@ -422,13 +412,13 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Honors.Count > 0)
             {
-                Html.AppendLine(Bold("Honors") + " " + LineBreak);
-                Html.AppendLine("<ul>");
+                Html.Append(Bold("Honors")).Append(' ').AppendLine(LineBreak)
+                    .AppendLine("<ul>");
                 foreach (Honor honor in _entity.Honors)
                 {
-                    Html.AppendLine("<li>");
-                    Html.AppendLine(honor.Print(true));
-                    Html.AppendLine("</li>");
+                    Html.AppendLine("<li>")
+                        .AppendLine(honor.Print(true))
+                        .AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }
@@ -436,13 +426,13 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintCurrentLeadership()
         {
-            if (_entity.EntityPositionAssignments.Any() && _entity.EntityPositionAssignments.Where(epa => epa.HistoricalFigure != null).Any())
+            if (_entity.EntityPositionAssignments.Count > 0 && _entity.EntityPositionAssignments.Any(epa => epa.HistoricalFigure != null))
             {
-                Html.AppendLine("<b>Current Leadership</b><br />");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Current Leadership</b><br />")
+                    .AppendLine("<ul>");
                 foreach (EntityPositionAssignment assignment in _entity.EntityPositionAssignments)
                 {
-                    EntityPosition position = _entity.EntityPositions.FirstOrDefault(pos => pos.Id == assignment.PositionId);
+                    EntityPosition position = _entity.EntityPositions.Find(pos => pos.Id == assignment.PositionId);
                     if (position != null && assignment.HistoricalFigure != null)
                     {
                         string positionName = position.GetTitleByCaste(assignment.HistoricalFigure.Caste);
@@ -451,7 +441,7 @@ namespace LegendsViewer.Controls.HTML
 
                         if (!string.IsNullOrEmpty(position.Spouse))
                         {
-                            HistoricalFigureLink spouseLink = assignment.HistoricalFigure.RelatedHistoricalFigures.FirstOrDefault(hfLink => hfLink.Type == HistoricalFigureLinkType.Spouse);
+                            HistoricalFigureLink spouseLink = assignment.HistoricalFigure.RelatedHistoricalFigures.Find(hfLink => hfLink.Type == HistoricalFigureLinkType.Spouse);
                             if (spouseLink != null)
                             {
                                 HistoricalFigure spouse = spouseLink.HistoricalFigure;
@@ -470,9 +460,9 @@ namespace LegendsViewer.Controls.HTML
 
         private void PrintWorships()
         {
-            if (_entity.Worshiped != null && _entity.Worshiped.Count > 0)
+            if (_entity.Worshiped?.Count > 0)
             {
-                Html.AppendLine(Bold("Worships") + LineBreak);
+                Html.Append(Bold("Worships")).AppendLine(LineBreak);
                 StartList(ListType.Unordered);
                 foreach (HistoricalFigure worship in _entity.Worshiped)
                 {
@@ -486,7 +476,7 @@ namespace LegendsViewer.Controls.HTML
 
                         associations += association;
                     }
-                    Html.AppendLine(ListItem + worship.ToLink() + " (" + associations + ")");
+                    Html.Append(ListItem).Append(worship.ToLink()).Append(" (").Append(associations).AppendLine(")");
                 }
                 EndList(ListType.Unordered);
             }
@@ -496,21 +486,12 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.Wars.Count(war => !_world.FilterBattles || war.Notable) > 0)
             {
-                Html.AppendLine(Bold("Wars") + LineBreak);
+                Html.Append(Bold("Wars")).AppendLine(LineBreak);
                 TableMaker warTable = new TableMaker(true);
                 foreach (War war in _entity.Wars.Where(war => !_world.FilterBattles || war.Notable))
                 {
                     warTable.StartRow();
-                    string endString;
-                    if (war.EndYear == -1)
-                    {
-                        endString = "Present";
-                    }
-                    else
-                    {
-                        endString = war.EndYear.ToString();
-                    }
-
+                    string endString = war.EndYear == -1 ? "Present" : war.EndYear.ToString();
                     warTable.AddData(war.StartYear + " - " + endString);
                     warTable.AddData(war.ToLink());
 
@@ -573,8 +554,7 @@ namespace LegendsViewer.Controls.HTML
                     warTable.AddData(losses.ToString());
                     warTable.EndRow();
                 }
-                Html.AppendLine(warTable.GetTable() + LineBreak);
-
+                Html.Append(warTable.GetTable()).AppendLine(LineBreak);
             }
         }
 
@@ -582,7 +562,7 @@ namespace LegendsViewer.Controls.HTML
         {
             if (_entity.SiteHistory.Count > 0)
             {
-                Html.AppendLine(Bold("Site History") + LineBreak);
+                Html.Append(Bold("Site History")).AppendLine(LineBreak);
                 TableMaker siteTable = new TableMaker(true);
                 foreach (OwnerPeriod ownedSite in _entity.SiteHistory.OrderBy(sh => sh.StartYear))
                 {
@@ -610,7 +590,7 @@ namespace LegendsViewer.Controls.HTML
                     }
                     siteTable.EndRow();
                 }
-                Html.AppendLine(siteTable.GetTable() + LineBreak);
+                Html.Append(siteTable.GetTable()).AppendLine(LineBreak);
             }
         }
     }

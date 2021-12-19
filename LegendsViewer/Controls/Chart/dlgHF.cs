@@ -39,12 +39,10 @@ namespace LegendsViewer.Controls.Chart
 
         private void btnName_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnNumber_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -58,9 +56,7 @@ namespace LegendsViewer.Controls.Chart
             SelectedRace = "";
             Close();
         }
-
     }
-
 
 
 }

@@ -15,7 +15,7 @@ namespace LegendsViewer.Controls.Query
         private Type _parentType;
         public Type ParentType
         {
-            get { return _parentType; }
+            get => _parentType;
             set
             {
                 _parentType = value;
@@ -33,7 +33,7 @@ namespace LegendsViewer.Controls.Query
 
                 foreach (SearchProperty property in availableProperties)
                 {
-                    if (property.Name == "Value" && _parentProperty != null && _parentProperty.SelectedProperty != null)
+                    if (property.Name == "Value" && _parentProperty?.SelectedProperty != null)
                     {
                         string description = _parentProperty.SelectedProperty.Description;
                         if (description == "Populations" || description == "Deaths" || description == "Attackers" || description == "Defenders")
@@ -70,12 +70,7 @@ namespace LegendsViewer.Controls.Query
                 return SelectedProperty.Type;
             }
 
-            if (SelectedProperty == null)
-            {
-                return ParentType;
-            }
-
-            return Child.GetLowestPropertyType();
+            return SelectedProperty == null ? ParentType : Child.GetLowestPropertyType();
         }
 
         public SearchProperty GetLowestProperty()
@@ -86,12 +81,7 @@ namespace LegendsViewer.Controls.Query
             }
 
             SearchProperty property = Child.GetLowestProperty();
-            if (property == null)
-            {
-                return SelectedProperty;
-            }
-
-            return property;
+            return property == null ? SelectedProperty : property;
         }
 
         public List<PropertyInfo> GetSelectedProperties(List<PropertyInfo> properties = null)
@@ -131,12 +121,7 @@ namespace LegendsViewer.Controls.Query
 
         public int GetRightSide()
         {
-            if (Child == null)
-            {
-                return Right;
-            }
-
-            return Child.GetRightSide();
+            return Child == null ? Right : Child.GetRightSide();
         }
 
         protected override void OnSelectedIndexChanged(EventArgs e)
@@ -145,14 +130,7 @@ namespace LegendsViewer.Controls.Query
             Width = (int)g.MeasureString(Text, Font).Width + 20;
             g.Dispose();
 
-            if (!SelectedItem.Equals(""))
-            {
-                SelectedProperty = SelectedItem as SearchProperty;
-            }
-            else
-            {
-                SelectedProperty = null;
-            }
+            SelectedProperty = !SelectedItem.Equals("") ? SelectedItem as SearchProperty : null;
 
             if (Child != null)
             {
@@ -162,7 +140,7 @@ namespace LegendsViewer.Controls.Query
             }
 
             //if listproperties only and subproperties contains other lists or !list
-            if (!ListPropertiesOnly && SelectedProperty != null && (!ListPropertiesOnly && SelectedProperty.SubProperties.Any() || ListPropertiesOnly && SelectedProperty.SubProperties.Count(property => property.SubProperties.Count > 0) > 0))
+            if (!ListPropertiesOnly && SelectedProperty != null && (!ListPropertiesOnly && SelectedProperty.SubProperties.Count > 0 || ListPropertiesOnly && SelectedProperty.SubProperties.Count(property => property.SubProperties.Count > 0) > 0))
             {
                 Child = new PropertyBox
                 {
@@ -187,7 +165,7 @@ namespace LegendsViewer.Controls.Query
         public void SetupSearchProperties(SearchInfo criteria)
         {
             criteria.PropertyName = SelectedProperty.Name;
-            if (Child != null && Child.SelectedProperty != null)
+            if (Child?.SelectedProperty != null)
             {
                 criteria.Next = SearchInfo.Make(Child.ParentType);
                 criteria.Next.Operator = QueryOperator.Or;
@@ -208,17 +186,12 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            if (Child != null)
-            {
-                return Child.ContainsList();
-            }
-
-            return false;
+            return Child != null && Child.ContainsList();
         }
 
         public bool ContainsListLast()
         {
-            if (SelectedProperty.Type.IsGenericType && Child != null && Child.SelectedProperty != null)
+            if (SelectedProperty.Type.IsGenericType && Child?.SelectedProperty != null)
             {
                 return false;
             }
@@ -233,12 +206,7 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            if (Child != null)
-            {
-                return Child.ContainsListLast();
-            }
-
-            return false;
+            return Child != null && Child.ContainsListLast();
         }
     }
 }

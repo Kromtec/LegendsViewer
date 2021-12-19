@@ -10,8 +10,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class LandmassPrinter : HtmlPrinter
     {
-        Landmass _landmass;
-        World _world;
+        private readonly Landmass _landmass;
+        private readonly World _world;
 
         public LandmassPrinter(Landmass landmass, World world)
         {
@@ -28,17 +28,17 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _landmass.GetIcon() + " " + _landmass.Name + ", Landmass</h1><br />");
+            Html.Append("<h1>").Append(_landmass.GetIcon()).Append(' ').Append(_landmass.Name).AppendLine(", Landmass</h1><br />");
 
-            if (_landmass.Coordinates.Any())
+            if (_landmass.Coordinates.Count > 0)
             {
                 List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _landmass);
 
-                Html.AppendLine("<table>");
-                Html.AppendLine("<tr>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("</tr></table></br>");
+                Html.AppendLine("<table>")
+                    .AppendLine("<tr>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .AppendLine("</tr></table></br>");
             }
 
             PrintEventLog(_world, _landmass.Events, Landmass.Filters, _landmass);

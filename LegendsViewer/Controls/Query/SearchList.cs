@@ -40,12 +40,7 @@ namespace LegendsViewer.Controls.Query
 
         public override Type GetListType()
         {
-            if (SubList != null)
-            {
-                return SubList.GetListType();
-            }
-
-            return typeof(T);
+            return SubList != null ? SubList.GetListType() : typeof(T);
         }
 
         public override Type GetMainListType()
@@ -59,14 +54,9 @@ namespace LegendsViewer.Controls.Query
             Type genericSearchList = typeof(SearchList<>);
             Type subListSearchList;
             Type selectProperty = properties.Last().PropertyType;
-            if (selectProperty.IsGenericType)
-            {
-                subListSearchList = genericSearchList.MakeGenericType(selectProperty.GetGenericArguments()[0]);
-            }
-            else
-            {
-                subListSearchList = genericSearchList.MakeGenericType(selectProperty);
-            }
+            subListSearchList = selectProperty.IsGenericType
+                ? genericSearchList.MakeGenericType(selectProperty.GetGenericArguments()[0])
+                : genericSearchList.MakeGenericType(selectProperty);
 
             SubList = Activator.CreateInstance(subListSearchList) as SearchList;
             SubList.SetupList(List, properties);
@@ -78,14 +68,9 @@ namespace LegendsViewer.Controls.Query
             IQueryable selection = mainList.AsQueryable();
             foreach (PropertyInfo property in properties)
             {
-                if (property.PropertyType.IsGenericType)
-                {
-                    selection = mainList.AsQueryable().SelectMany(property.Name);
-                }
-                else
-                {
-                    selection = mainList.AsQueryable().Select(property.Name);
-                }
+                selection = property.PropertyType.IsGenericType
+                    ? mainList.AsQueryable().SelectMany(property.Name)
+                    : mainList.AsQueryable().Select(property.Name);
             }
 
             IEnumerator list = selection.GetEnumerator();
@@ -132,16 +117,7 @@ namespace LegendsViewer.Controls.Query
         {
             try
             {
-                Expression<Func<T, bool>> predicate;
-                if (searchCriteria.Count > 0)
-                {
-                    predicate = t => false;
-                }
-                else
-                {
-                    predicate = t => true;
-                }
-
+                Expression<Func<T, bool>> predicate = searchCriteria.Count > 0 ? (t => false) : (Expression<Func<T, bool>>)(t => true);
                 foreach (SearchInfo criteria in searchCriteria)
                 {
                     var where = criteria.GetPredicateExpression() as Expression<Func<T, bool>>;
@@ -179,14 +155,7 @@ namespace LegendsViewer.Controls.Query
                         }
                         else if (criteria.PropertyName == "Value")
                         {
-                            if (criteria.OrderByDescending)
-                            {
-                                List = List.OrderByDescending(value => value).ToList();
-                            }
-                            else
-                            {
-                                List = List.OrderBy(value => value).ToList();
-                            }
+                            List = criteria.OrderByDescending ? List.OrderByDescending(value => value).ToList() : List.OrderBy(value => value).ToList();
                         }
                         else
                         {
@@ -195,14 +164,9 @@ namespace LegendsViewer.Controls.Query
                     }
                     else if (criteria.ContainsListPropertyLast() || criteria.Next.Comparer == QueryComparer.All)
                     {
-                        if (criteria.OrderByDescending)
-                        {
-                            List = List.AsQueryable().OrderBy(criteria.PropertyString() + ".Count DESC").ToList();
-                        }
-                        else
-                        {
-                            List = List.AsQueryable().OrderBy(criteria.PropertyString() + ".Count").ToList();
-                        }
+                        List = criteria.OrderByDescending
+                            ? List.AsQueryable().OrderBy(criteria.PropertyString() + ".Count DESC").ToList()
+                            : List.AsQueryable().OrderBy(criteria.PropertyString() + ".Count").ToList();
                     }
                     else
                     {
@@ -235,7 +199,6 @@ namespace LegendsViewer.Controls.Query
                                 default: List = List.OrderBy(t => criteria.GetCount(t)).ToList(); break;
                             }
                         }
-
                     }
                 }
             }
@@ -243,12 +206,7 @@ namespace LegendsViewer.Controls.Query
 
         public override List<object> GetResults()
         {
-            if (SubList != null)
-            {
-                return SubList.GetResults();
-            }
-
-            return List.Cast<object>().ToList();
+            return SubList != null ? SubList.GetResults() : List.Cast<object>().ToList();
         }
 
         public override List<object> GetSelection()
@@ -256,5 +214,4 @@ namespace LegendsViewer.Controls.Query
             return List.Cast<object>().ToList();
         }
     }
-
 }

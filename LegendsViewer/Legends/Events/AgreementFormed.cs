@@ -17,7 +17,7 @@ namespace LegendsViewer.Legends.Events
         public bool Successful { get; set; }
         public bool FailedJudgmentTest { get; set; }
         public bool Delegated { get; set; }
-        
+
         public string Action { get; set; }
         public string Method { get; set; }
 

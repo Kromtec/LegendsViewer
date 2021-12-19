@@ -81,11 +81,6 @@ namespace LegendsViewer.Legends.Events
                         CircumstanceId = Convert.ToInt32(property.Value);
                         break;
                     case "reason":
-                        if (property.Value != "-1")
-                        {
-                            property.Known = false;
-                        }
-                        break;
                     case "reason_id":
                         if (property.Value != "-1")
                         {
@@ -102,7 +97,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             Thief.AddEvent(this);
             Site.AddEvent(this);
@@ -118,21 +113,18 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += Artifact.ToLink(link, pov, this);
             }
+            else if (string.IsNullOrEmpty(ItemType))
+            {
+                eventString += " an unknown item ";
+            }
             else
             {
-                if (string.IsNullOrEmpty(ItemType))
+                eventString += " a ";
+                if (!string.IsNullOrWhiteSpace(Material))
                 {
-                    eventString += " an unknown item ";
+                    eventString += Material + " ";
                 }
-                else
-                {
-                    eventString += " a ";
-                    if (!string.IsNullOrWhiteSpace(Material))
-                    {
-                        eventString += Material + " ";
-                    }
-                    eventString += ItemType;
-                }
+                eventString += ItemType;
             }
             eventString += " was ";
             if (!string.IsNullOrWhiteSpace(TheftMethod))

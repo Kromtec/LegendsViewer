@@ -85,7 +85,7 @@ namespace LegendsViewer.Legends.Events
                     Target.Interaction = InteractionString.Replace(" to assume the form of a ", "").Replace("-like", "").Replace(" every full moon", " curse");
                     if (!string.IsNullOrEmpty(Target.Interaction))
                     {
-                        creatureType = "were" + Target.Interaction.Replace(" monster curse"," ");
+                        creatureType = "were" + Target.Interaction.Replace(" monster curse", " ");
                     }
                 }
 

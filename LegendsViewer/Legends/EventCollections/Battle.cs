@@ -63,23 +63,18 @@ namespace LegendsViewer.Legends.EventCollections
         public List<HistoricalFigure> NonCombatants { get; set; }
         public List<Squad> AttackerSquads { get; set; }
         public List<Squad> DefenderSquads { get; set; }
-        public int AttackerCount { get { return NotableAttackers.Count + AttackerSquads.Sum(squad => squad.Numbers); } set { } }
-        public int DefenderCount { get { return NotableDefenders.Count + DefenderSquads.Sum(squad => squad.Numbers); } set { } }
-        public int AttackersRemainingCount { get { return Attackers.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
-        public int DefendersRemainingCount { get { return Defenders.Sum(squad => squad.Numbers - squad.Deaths); } set { } }
+        public int AttackerCount { get => NotableAttackers.Count + AttackerSquads.Sum(squad => squad.Numbers); set { } }
+        public int DefenderCount { get => NotableDefenders.Count + DefenderSquads.Sum(squad => squad.Numbers); set { } }
+        public int AttackersRemainingCount { get => Attackers.Sum(squad => squad.Numbers - squad.Deaths); set { } }
+        public int DefendersRemainingCount { get => Defenders.Sum(squad => squad.Numbers - squad.Deaths); set { } }
         [AllowAdvancedSearch("Death Count")]
         [ShowInAdvancedSearchResults("Deaths")]
-        public int DeathCount { get { return AttackerDeathCount + DefenderDeathCount; } set { } }
+        public int DeathCount { get => AttackerDeathCount + DefenderDeathCount; set { } }
         public Dictionary<CreatureInfo, int> Deaths { get; set; }
-        public List<HistoricalFigure> NotableDeaths {
-            get
-            {
-                return NotableAttackers.Where(attacker => GetSubEvents().OfType<HfDied>()
-                    .Count(death => death.HistoricalFigure == attacker) > 0)
+        public List<HistoricalFigure> NotableDeaths => NotableAttackers.Where(attacker => GetSubEvents().OfType<HfDied>()
+                                                                         .Count(death => death.HistoricalFigure == attacker) > 0)
                     .Concat(NotableDefenders.Where(defender => GetSubEvents().OfType<HfDied>().Count(death => death.HistoricalFigure == defender) > 0))
-                    .ToList(); 
-            } 
-        }
+                    .ToList();
         public int AttackerDeathCount { get; set; }
         public int DefenderDeathCount { get; set; }
         public double AttackersToDefenders
@@ -87,8 +82,7 @@ namespace LegendsViewer.Legends.EventCollections
             get
             {
                 if (AttackerCount == 0 && DefenderCount == 0) return 0;
-                if (DefenderCount == 0) return double.MaxValue;
-                return Math.Round(AttackerCount / Convert.ToDouble(DefenderCount), 2);
+                return DefenderCount == 0 ? double.MaxValue : Math.Round(AttackerCount / Convert.ToDouble(DefenderCount), 2);
             }
             set { }
         }
@@ -97,8 +91,9 @@ namespace LegendsViewer.Legends.EventCollections
             get
             {
                 if (AttackersRemainingCount == 0 && DefendersRemainingCount == 0) return 0;
-                if (DefendersRemainingCount == 0) return double.MaxValue;
-                return Math.Round(AttackersRemainingCount / Convert.ToDouble(DefendersRemainingCount), 2);
+                return DefendersRemainingCount == 0
+                    ? double.MaxValue
+                    : Math.Round(AttackersRemainingCount / Convert.ToDouble(DefendersRemainingCount), 2);
             }
             set { }
         }
@@ -117,15 +112,11 @@ namespace LegendsViewer.Legends.EventCollections
         public static List<string> Filters;
         private WorldRegion _region;
 
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Battle(List<Property> properties, World world)
             : base(properties, world)
         {
-
             Initialize();
 
             var attackerSquadRaces = new List<CreatureInfo>();
@@ -183,14 +174,14 @@ namespace LegendsViewer.Legends.EventCollections
                     case "noncom_hfid": NonCombatants.Add(world.GetHistoricalFigure(Convert.ToInt32(property.Value))); break;
                     case "individual_merc": property.Known = true; IndividualMercenaries = true; break;
                     case "company_merc": property.Known = true; CompanyMercenaries = true; break;
-                    case "attacking_merc_enid": 
+                    case "attacking_merc_enid":
                         AttackingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
                         //if (AttackingMercenaryEntity != null)
                         //{
                         //    AttackingMercenaryEntity.Type = EntityType.MercenaryCompany;
                         //}
                         break;
-                    case "defending_merc_enid": 
+                    case "defending_merc_enid":
                         DefendingMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
                         //if (DefendingMercenaryEntity != null)
                         //{
@@ -207,7 +198,7 @@ namespace LegendsViewer.Legends.EventCollections
                             //attackerSupportMercenaryEntity.Type = EntityType.MercenaryCompany;
                         }
                         break;
-                    case "d_support_merc_enid": 
+                    case "d_support_merc_enid":
                         var defenderSupportMercenaryEntity = world.GetEntity(Convert.ToInt32(property.Value));
                         if (defenderSupportMercenaryEntity != null)
                         {
@@ -430,15 +421,9 @@ namespace LegendsViewer.Legends.EventCollections
                 title += "&#13";
                 title += "Kills: " + AttackerDeathCount;
 
-                string linkedString;
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + Name + "</font></a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Name;

@@ -17,7 +17,7 @@ namespace LegendsViewer.Legends.Events
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
         public Location Coordinates { get; set; }
-        private string _unknownBodyState;
+        private readonly string _unknownBodyState;
 
         public ChangeHfBodyState(List<Property> properties, World world)
             : base(properties, world)
@@ -50,7 +50,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             Structure.AddEvent(this);
             HistoricalFigure.AddEvent(this);

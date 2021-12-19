@@ -51,10 +51,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public WorldRegion Region { get; set; }
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Artifact(List<Property> properties, World world)
             : base(properties, world)
@@ -117,7 +114,7 @@ namespace LegendsViewer.Legends.WorldObjects
                         HolderId = Convert.ToInt32(property.Value);
                         break;
                     case "structure_local_id":
-                        Structure = Site?.Structures.FirstOrDefault(structure => structure.Id == Convert.ToInt32(property.Value));
+                        Structure = Site?.Structures.Find(structure => structure.Id == Convert.ToInt32(property.Value));
                         break;
                 }
             }
@@ -136,12 +133,12 @@ namespace LegendsViewer.Legends.WorldObjects
             if (HolderId > 0)
             {
                 Holder = world.GetHistoricalFigure(HolderId);
-                if (Holder != null && !Holder.HoldingArtifacts.Contains(this))
+                if (Holder?.HoldingArtifacts.Contains(this) == false)
                 {
                     Holder.HoldingArtifacts.Add(this);
                 }
             }
-            if (WrittenContentIds.Any())
+            if (WrittenContentIds.Count > 0)
             {
                 WrittenContents = new List<WrittenContent>();
                 foreach (var writtenContentId in WrittenContentIds)
@@ -160,11 +157,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 string title = "Artifact" + (!string.IsNullOrEmpty(Type) ? ", " + Type : "");
                 title += "&#13";
                 title += "Events: " + Events.Count;
-                if (pov != this)
-                {
-                    return Icon + "<a href = \"artifact#" + Id + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
+                return pov != this
+                    ? Icon + "<a href = \"artifact#" + Id + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
         }

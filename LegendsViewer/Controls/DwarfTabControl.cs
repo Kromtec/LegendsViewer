@@ -98,14 +98,7 @@ namespace LegendsViewer.Controls
                 TabPages.Remove(dwarfTabPage);
                 dwarfTabPage.Dispose();
 
-                if (TabPages.Count > 0 && newSelectedIndex == -1)
-                {
-                    SelectedIndex = 0;
-                }
-                else
-                {
-                    SelectedIndex = newSelectedIndex;
-                }
+                SelectedIndex = TabPages.Count > 0 && newSelectedIndex == -1 ? 0 : newSelectedIndex;
             }
         }
 
@@ -113,11 +106,11 @@ namespace LegendsViewer.Controls
         {
             foreach (DwarfTabPage page in TabPages.OfType<DwarfTabPage>())
             {
-                if (page.Current.GetType() == typeof(HtmlControl) && ((HtmlControl) page.Current).HtmlObject.GetType() == refreshType)
+                if (page.Current.GetType() == typeof(HtmlControl) && ((HtmlControl)page.Current).HtmlObject.GetType() == refreshType)
                 {
                     page.Current.Refresh();
                 }
-                else if (page.Current.GetType() == typeof(ChartControl) && ((ChartControl) page.Current).FocusObject.GetType() == refreshType)
+                else if (page.Current.GetType() == typeof(ChartControl) && ((ChartControl)page.Current).FocusObject.GetType() == refreshType)
                 {
                     page.Current.Refresh();
                 }

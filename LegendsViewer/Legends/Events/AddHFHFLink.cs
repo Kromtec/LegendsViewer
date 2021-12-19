@@ -167,7 +167,7 @@ namespace LegendsViewer.Legends.Events
                     }
                     break;
                 default:
-                    eventString += " linked ("+ LinkType + ") to ";
+                    eventString += " linked (" + LinkType + ") to ";
                     break;
             }
 

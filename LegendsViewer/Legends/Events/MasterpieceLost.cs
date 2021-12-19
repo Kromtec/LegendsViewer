@@ -22,8 +22,8 @@ namespace LegendsViewer.Legends.Events
                     case "histfig": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "site": Site = world.GetSite(Convert.ToInt32(property.Value)); break;
                     case "creation_event": CreationEvent = world.GetEvent(Convert.ToInt32(property.Value)) as MasterpieceItem; break;
-                    case "method": 
-                        Method = property.Value; 
+                    case "method":
+                        Method = property.Value;
                         break;
                 }
             }

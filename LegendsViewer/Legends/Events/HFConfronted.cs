@@ -16,8 +16,8 @@ namespace LegendsViewer.Legends.Events
         public WorldRegion Region { get; set; }
         public UndergroundRegion UndergroundRegion { get; set; }
         public Location Coordinates { get; set; }
-        private string _unknownSituation;
-        private List<string> _unknownReasons;
+        private readonly string _unknownSituation;
+        private readonly List<string> _unknownReasons;
 
         public HfConfronted(List<Property> properties, World world)
             : base(properties, world)

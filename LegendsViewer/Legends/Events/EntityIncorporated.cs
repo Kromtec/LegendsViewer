@@ -28,8 +28,8 @@ namespace LegendsViewer.Legends.Events
                     case "joined_entity_id": JoinedEntity = world.GetEntity(Convert.ToInt32(property.Value)); break;
                     case "leader_hfid": Leader = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "partial_incorporation":
-                        property.Known = true; 
-                        PartialIncorporation = true; 
+                        property.Known = true;
+                        PartialIncorporation = true;
                         break;
                 }
             }

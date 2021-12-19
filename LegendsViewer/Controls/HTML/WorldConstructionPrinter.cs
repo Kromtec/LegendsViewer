@@ -10,8 +10,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class WorldConstructionPrinter : HtmlPrinter
     {
-        WorldConstruction _worldConstruction;
-        World _world;
+        private readonly WorldConstruction _worldConstruction;
+        private readonly World _world;
 
         public WorldConstructionPrinter(WorldConstruction worldConstruction, World world)
         {
@@ -22,45 +22,45 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _worldConstruction.GetIcon() + " " + _worldConstruction.Name + ", " + _worldConstruction.Type + "</h1><br />");
+            Html.Append("<h1>").Append(_worldConstruction.GetIcon()).Append(' ').Append(_worldConstruction.Name).Append(", ").Append(_worldConstruction.Type).AppendLine("</h1><br />");
 
-            if (_worldConstruction.Coordinates.Any())
+            if (_worldConstruction.Coordinates.Count > 0)
             {
                 List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _worldConstruction);
 
-                Html.AppendLine("<table>");
-                Html.AppendLine("<tr>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("<td>" + MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap) + "</td>");
-                Html.AppendLine("</tr></table></br>");
+                Html.AppendLine("<table>")
+                    .AppendLine("<tr>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[0]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .Append("<td>").Append(MakeLink(BitmapToHtml(maps[1]), LinkOption.LoadMap)).AppendLine("</td>")
+                    .AppendLine("</tr></table></br>");
             }
 
-            Html.AppendLine("<b>Connects</b><br />");
-            Html.AppendLine("<ul>");
-            Html.AppendLine("<li>" + (_worldConstruction.Site1 != null ? _worldConstruction.Site1.ToLink() : "UNKNOWN SITE") + "</li>");
-            Html.AppendLine("<li>" + (_worldConstruction.Site2 != null ? _worldConstruction.Site2.ToLink() : "UNKNOWN SITE") + "</li>");
-            Html.AppendLine("</ul>");
-            Html.AppendLine("</br>");
+            Html.AppendLine("<b>Connects</b><br />")
+                .AppendLine("<ul>")
+                .Append("<li>").Append((_worldConstruction.Site1 != null ? _worldConstruction.Site1.ToLink() : "UNKNOWN SITE")).AppendLine("</li>")
+                .Append("<li>").Append((_worldConstruction.Site2 != null ? _worldConstruction.Site2.ToLink() : "UNKNOWN SITE")).AppendLine("</li>")
+                .AppendLine("</ul>")
+                .AppendLine("</br>");
 
             if (_worldConstruction.MasterConstruction != null)
             {
-                Html.AppendLine("<b>Part of</b><br />");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _worldConstruction.MasterConstruction.ToLink() + ", " + _worldConstruction.MasterConstruction.Type + "</li>");
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</br>");
+                Html.AppendLine("<b>Part of</b><br />")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_worldConstruction.MasterConstruction.ToLink()).Append(", ").Append(_worldConstruction.MasterConstruction.Type).AppendLine("</li>")
+                    .AppendLine("</ul>")
+                    .AppendLine("</br>");
             }
 
-            if (_worldConstruction.Sections.Any())
+            if (_worldConstruction.Sections.Count > 0)
             {
-                Html.AppendLine("<b>Sections</b><br />");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Sections</b><br />")
+                    .AppendLine("<ul>");
                 foreach (WorldConstruction segment in _worldConstruction.Sections)
                 {
-                    Html.AppendLine("<li>" + segment.ToLink() + ", " + segment.Type + "</li>");
+                    Html.Append("<li>").Append(segment.ToLink()).Append(", ").Append(segment.Type).AppendLine("</li>");
                 }
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</br>");
+                Html.AppendLine("</ul>")
+                    .AppendLine("</br>");
             }
 
             PrintEventLog(_world, _worldConstruction.Events, WorldConstruction.Filters, _worldConstruction);

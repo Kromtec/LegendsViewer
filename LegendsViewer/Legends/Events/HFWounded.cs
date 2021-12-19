@@ -22,7 +22,6 @@ namespace LegendsViewer.Legends.Events
         public UndergroundRegion UndergroundRegion { get; set; }
         public bool WasTorture { get; set; }
 
-
         public HfWounded(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -47,7 +46,7 @@ namespace LegendsViewer.Legends.Events
                         {
                             PartLost = partLost != 0;
                         }
-                        else if(bool.TryParse(property.Value, out bool partLostBool))
+                        else if (bool.TryParse(property.Value, out bool partLostBool))
                         {
                             PartLost = partLostBool;
                         }
@@ -57,8 +56,8 @@ namespace LegendsViewer.Legends.Events
                         }
                         break;
                     case "was_torture":
-                        property.Known = true; 
-                        WasTorture = true; 
+                        property.Known = true;
+                        WasTorture = true;
                         break;
                 }
             }

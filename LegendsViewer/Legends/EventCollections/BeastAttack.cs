@@ -11,12 +11,12 @@ namespace LegendsViewer.Legends.EventCollections
 {
     public class BeastAttack : EventCollection
     {
-        private static readonly string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
+        private const string Icon = "<i class=\"glyphicon fa-fw glyphicon-knight\"></i>";
 
         [ShowInAdvancedSearchResults]
-        public string Name { get { return Formatting.AddOrdinal(Ordinal) + " Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); } set { } }
+        public string Name { get => Formatting.AddOrdinal(Ordinal) + " Rampage of " + (Beast != null ? Beast.Name : "an unknown creature"); set { } }
         [ShowInAdvancedSearchResults("Deaths")]
-        public int DeathCount { get { return Deaths.Count; } set { } }
+        public int DeathCount { get => Deaths.Count; set { } }
 
         [AllowAdvancedSearch]
         public int Ordinal { get; set; }
@@ -45,7 +45,7 @@ namespace LegendsViewer.Legends.EventCollections
         }
 
         [AllowAdvancedSearch(true)]
-        public List<HistoricalFigure> Deaths { get { return GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        public List<HistoricalFigure> Deaths { get => GetSubEvents().OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); set { } }
 
         // BUG in XML? 
         // ParentCollection was never set prior to DF 0.42.xx and is now often set to an occasion
@@ -55,10 +55,7 @@ namespace LegendsViewer.Legends.EventCollections
 
         public static List<string> Filters;
 
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public BeastAttack(List<Property> properties, World world)
             : base(properties, world)
@@ -126,23 +123,12 @@ namespace LegendsViewer.Legends.EventCollections
                 title += "&#13";
                 title += "Events: " + GetSubEvents().Count;
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + name + "</font></a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(name) + "</a>";
-                }
-
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"collection#" + Id + "\" title=\"" + title + "\"><font color=\"#6E5007\">" + name + "</font></a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(name) + "</a>";
                 return linkedString;
             }
-            if (pov == this)
-            {
-                return "Rampage of " + Beast.ToLink(false, Beast);
-            }
-            return name;
+            return pov == this ? "Rampage of " + Beast.ToLink(false, Beast) : name;
         }
 
         public override string ToString()

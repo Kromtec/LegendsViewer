@@ -194,7 +194,6 @@ namespace LegendsViewer.Controls
             // xml plus only events
             new[] {"historical event relationship", "Historical Event Relationships", ""},
 
-
             new[] {"INVALID", "INVALID EVENT", ""}
         };
 
@@ -269,9 +268,7 @@ namespace LegendsViewer.Controls
 
         public static double AverageOrZero(this IEnumerable<double> values)
         {
-            if (values.Any()) return values.Average();
-
-            return 0;
+            return values.Any() ? values.Average() : 0;
         }
 
         public static string GetDescription(this object enumerationValue)
@@ -289,7 +286,7 @@ namespace LegendsViewer.Controls
 
                 if (attrs.Length > 0)
                     //Pull out the description value
-                    return ((DescriptionAttribute) attrs[0]).Description;
+                    return ((DescriptionAttribute)attrs[0]).Description;
             }
 
             //If we have no description attribute, just return the ToString of the enum

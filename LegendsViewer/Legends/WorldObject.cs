@@ -12,18 +12,19 @@ namespace LegendsViewer.Legends
         public List<WorldEvent> Events { get; set; }
         public abstract List<WorldEvent> FilteredEvents { get; }
         public List<EventCollection> EventCollectons { get; set; }
-        public int EventCount { get { return Events.Count; } set { } }
+        public int EventCount { get => Events.Count; set { } }
         public int Id { get; set; }
 
-        protected WorldObject() { 
-            Id = -1; 
+        protected WorldObject()
+        {
+            Id = -1;
             Events = new List<WorldEvent>();
             EventCollectons = new List<EventCollection>();
         }
 
         protected WorldObject(List<Property> properties, World world) : this()
         {
-            foreach(Property property in properties)
+            foreach (Property property in properties)
             {
                 switch (property.Name)
                 {
@@ -31,7 +32,6 @@ namespace LegendsViewer.Legends
                 }
             }
         }
-        
 
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {

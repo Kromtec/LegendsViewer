@@ -31,7 +31,7 @@ namespace LegendsViewer.Legends.Events
 
             if (Site != null && sitePropertyId != -1)
             {
-                SiteProperty = Site.SiteProperties.FirstOrDefault(sp => sp.Id == sitePropertyId);
+                SiteProperty = Site.SiteProperties.Find(sp => sp.Id == sitePropertyId);
             }
             Artifact.AddEvent(this);
             Site.AddEvent(this);

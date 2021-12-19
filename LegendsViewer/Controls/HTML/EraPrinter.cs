@@ -19,12 +19,7 @@ namespace LegendsViewer.Controls.HTML
 
         public override string GetTitle()
         {
-            if (_era.Name != "")
-            {
-                return _era.Name;
-            }
-
-            return "(" + (_era.StartYear < 0 ? 0 : _era.StartYear) + " - " + _era.EndYear + ")";
+            return _era.Name != "" ? _era.Name : "(" + (_era.StartYear < 0 ? 0 : _era.StartYear) + " - " + _era.EndYear + ")";
         }
 
         public override string Print()
@@ -32,7 +27,7 @@ namespace LegendsViewer.Controls.HTML
             Html = new StringBuilder();
             string title = string.IsNullOrWhiteSpace(_era.Name) ? "" : _era.Name + " ";
             string timespan = "(" + _era.StartYear + " - " + _era.EndYear + ")";
-            Html.AppendLine("<h1>" + title + timespan + "</h1></br></br>");
+            Html.Append("<h1>").Append(title).Append(timespan).AppendLine("</h1></br></br>");
 
             PrintEventLog(_world, _era.Events, Era.Filters, _era);
             PrintWars();
@@ -45,19 +40,19 @@ namespace LegendsViewer.Controls.HTML
             if (_era.Wars.Count > 0)
             {
                 int warCount = 1;
-                Html.AppendLine("<b>Wars</b></br>");
-                Html.AppendLine("<table>");
+                Html.AppendLine("<b>Wars</b></br>")
+                    .AppendLine("<table>");
                 foreach (War war in _era.Wars)
                 {
-                    Html.AppendLine("<tr>");
-                    Html.AppendLine("<td width=\"20\" align=\"right\">" + warCount + ".</td><td width=\"10\"></td><td>");
+                    Html.AppendLine("<tr>")
+                        .Append("<td width=\"20\" align=\"right\">").Append(warCount).AppendLine(".</td><td width=\"10\"></td><td>");
                     if (war.StartYear < _era.StartYear)
                     {
-                        Html.Append("<font color=\"Blue\">" + war.StartYear + "</font> - ");
+                        Html.Append("<font color=\"Blue\">").Append(war.StartYear).Append("</font> - ");
                     }
                     else
                     {
-                        Html.Append(war.StartYear + " - ");
+                        Html.Append(war.StartYear).Append(" - ");
                     }
 
                     if (war.EndYear == -1)
@@ -66,14 +61,14 @@ namespace LegendsViewer.Controls.HTML
                     }
                     else if (war.EndYear > _era.EndYear)
                     {
-                        Html.Append("<font color=\"Blue\">" + war.EndYear + "</font>");
+                        Html.Append("<font color=\"Blue\">").Append(war.EndYear).Append("</font>");
                     }
                     else
                     {
                         Html.Append(war.EndYear);
                     }
 
-                    Html.Append("</td><td>" + war.ToLink() + "</td><td>" + war.Attacker.PrintEntity() + "</td><td>against</td><td>" + war.Defender.PrintEntity() + "</td>");
+                    Html.Append("</td><td>").Append(war.ToLink()).Append("</td><td>").Append(war.Attacker.PrintEntity()).Append("</td><td>against</td><td>").Append(war.Defender.PrintEntity()).Append("</td>");
 
                     int attackerVictories = 0, defenderVictories = 0, attackerConquerings = 0, defenderConquerings = 0, attackerKills, defenderKills;
                     attackerVictories = war.AttackerVictories.OfType<Battle>().Count();
@@ -83,15 +78,13 @@ namespace LegendsViewer.Controls.HTML
                     attackerKills = war.Collections.OfType<Battle>().Where(battle => war.Attacker == battle.Attacker).Sum(battle => battle.DefenderDeathCount) + war.Collections.OfType<Battle>().Where(battle => war.Attacker == battle.Defender).Sum(battle => battle.AttackerDeathCount);
                     defenderKills = war.Collections.OfType<Battle>().Where(battle => war.Defender == battle.Attacker).Sum(battle => battle.DefenderDeathCount) + war.Collections.OfType<Battle>().Where(battle => war.Defender == battle.Defender).Sum(battle => battle.AttackerDeathCount);
 
-                    Html.AppendLine("<td>(A/D)</td>");
-                    Html.AppendLine("<td>Battles:</td><td align=right>" + attackerVictories + "</td><td>/</td><td>" + defenderVictories + "</td>");
-                    Html.AppendLine("<td>Sites:</td><td align=right>" + attackerConquerings + "</td><td>/</td><td>" + defenderConquerings + "</td>");
-                    Html.AppendLine("<td>Kills:</td><td align=right>" + attackerKills + "</td><td>/</td><td>" + defenderKills + "</td>");
-                    Html.AppendLine("</tr>");
-
-                    Html.AppendLine("</tr>");
+                    Html.AppendLine("<td>(A/D)</td>")
+                        .Append("<td>Battles:</td><td align=right>").Append(attackerVictories).Append("</td><td>/</td><td>").Append(defenderVictories).AppendLine("</td>")
+                        .Append("<td>Sites:</td><td align=right>").Append(attackerConquerings).Append("</td><td>/</td><td>").Append(defenderConquerings).AppendLine("</td>")
+                        .Append("<td>Kills:</td><td align=right>").Append(attackerKills).Append("</td><td>/</td><td>").Append(defenderKills).AppendLine("</td>")
+                        .AppendLine("</tr>")
+                        .AppendLine("</tr>");
                     warCount++;
-
                 }
                 Html.AppendLine("</table></br>");
             }

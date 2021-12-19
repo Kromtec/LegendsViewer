@@ -19,10 +19,7 @@ namespace LegendsViewer.Legends.WorldObjects
         public string Icon = "<i class=\"fa fa-fw fa-tint\"></i>";
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public River(List<Property> properties, World world)
             : base(properties, world)
@@ -35,7 +32,7 @@ namespace LegendsViewer.Legends.WorldObjects
                 switch (property.Name)
                 {
                     case "name": Name = Formatting.InitCaps(property.Value); break;
-                    case "path": 
+                    case "path":
                         Path = property.Value;
                         string[] coordinateStrings = property.Value.Split(new[] { '|' },
                             StringSplitOptions.RemoveEmptyEntries);

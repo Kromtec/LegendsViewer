@@ -20,7 +20,6 @@ namespace LegendsViewer.Controls.Tabs
             InitializeComponent();
         }
 
-
         internal override void InitializeTab()
         {
             lnkMaxResults.Text = WorldObjectList.MaxResults.ToString();
@@ -277,12 +276,7 @@ namespace LegendsViewer.Controls.Tabs
                     return "Value cannot be empty.";
                 }
 
-                if (!new Regex(@"^[0-9]+$").IsMatch(val))
-                {
-                    return "Value is not valid.";
-                }
-
-                return "";
+                return !new Regex(@"^[0-9]+$").IsMatch(val) ? "Value is not valid." : "";
             };
 
             string value = WorldObjectList.MaxResults.ToString();

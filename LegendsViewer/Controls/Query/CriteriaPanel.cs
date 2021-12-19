@@ -19,7 +19,6 @@ namespace LegendsViewer.Controls.Query
 
         public CriteriaPanel()
         {
-
             Add.Text = "Add Criteria"; Add.Width = 90; Add.Height = 19; Add.FlatStyle = FlatStyle.Flat; Add.Font = new Font("Arial", 6.5f);
             Add.Click += AddClick;
             Add.Visible = false;
@@ -172,7 +171,7 @@ namespace LegendsViewer.Controls.Query
         {
             List<SearchInfo> query = new List<SearchInfo>();
 
-            if (breakCriteria != null && breakCriteria.QueryOperatorSelect.Text == "OR")
+            if (breakCriteria?.QueryOperatorSelect.Text == "OR")
             {
                 for (int i = Criteria.IndexOf(breakCriteria); i >= 0; i--)
                 {
@@ -181,9 +180,7 @@ namespace LegendsViewer.Controls.Query
                         breakCriteria = Criteria[i];
                         break;
                     }
-
                 }
-
             }
 
             foreach (CriteriaLine line in Criteria.Where(line => line.IsComplete() || line == breakCriteria))

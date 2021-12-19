@@ -22,7 +22,7 @@ namespace LegendsViewer.Controls.HTML
         public override string Print()
         {
             Html = new StringBuilder();
-            Html.AppendLine("<h1>" + _writtenContent.GetIcon() + " " + _writtenContent.Name + "</h1>");
+            Html.Append("<h1>").Append(_writtenContent.GetIcon()).Append(' ').Append(_writtenContent.Name).AppendLine("</h1>");
             if (_writtenContent.Type != WrittenContentType.Unknown)
             {
                 var type = _writtenContent.Type.GetDescription();
@@ -35,11 +35,11 @@ namespace LegendsViewer.Controls.HTML
                 {
                     Html.AppendLine("<b>A ");
                 }
-                Html.AppendLine(string.Join(", ", _writtenContent.Styles));
-                Html.AppendLine(type.ToLower());
+                Html.AppendLine(string.Join(", ", _writtenContent.Styles))
+                    .AppendLine(type.ToLower());
                 if (_writtenContent.Author != null)
                 {
-                    Html.AppendLine(" written by " + _writtenContent.Author.ToLink() + ".</b>");
+                    Html.Append(" written by ").Append(_writtenContent.Author.ToLink()).AppendLine(".</b>");
                 }
                 Html.AppendLine("<br/>");
             }
@@ -79,20 +79,20 @@ namespace LegendsViewer.Controls.HTML
             //}
             if (artForm != null)
             {
-                Html.AppendLine("<b>" + artForm.FormType.GetDescription() + "</b><br />");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + artForm.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</br>");
+                Html.Append("<b>").Append(artForm.FormType.GetDescription()).AppendLine("</b><br />")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(artForm.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>")
+                    .AppendLine("</br>");
             }
         }
 
         private void PrintReferences()
         {
-            if (_writtenContent.References.Any())
+            if (_writtenContent.References.Count > 0)
             {
-                Html.AppendLine("<b>References</b><br />");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>References</b><br />")
+                    .AppendLine("<ul>");
                 foreach (Reference reference in _writtenContent.References)
                 {
                     if (reference.ID != -1)
@@ -119,7 +119,7 @@ namespace LegendsViewer.Controls.HTML
                                 WorldEvent worldEvent = _world.GetEvent(reference.ID);
                                 if (worldEvent != null)
                                 {
-                                    Html.AppendLine("<li>" + worldEvent.Print() + "</li>");
+                                    Html.Append("<li>").Append(worldEvent.Print()).AppendLine("</li>");
                                 }
                                 break;
                             case ReferenceType.Entity:
@@ -129,38 +129,32 @@ namespace LegendsViewer.Controls.HTML
                                 referencedObject = _world.GetHistoricalFigure(reference.ID);
                                 break;
                             case ReferenceType.ValueLevel:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
-                                break;
                             case ReferenceType.KnowledgeScholarFlag:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
-                                break;
                             case ReferenceType.Interaction:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
-                                break;
                             case ReferenceType.Language:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
+                                Html.Append("<li>").Append(reference.Type).Append(": ").Append(reference.ID).AppendLine("</li>");
                                 break;
                             case ReferenceType.Subregion:
                                 referencedObject = _world.GetUndergroundRegion(reference.ID);
                                 break;
                             case ReferenceType.AbstractBuilding:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
+                                Html.Append("<li>").Append(reference.Type).Append(": ").Append(reference.ID).AppendLine("</li>");
                                 break;
                             case ReferenceType.Artifact:
                                 referencedObject = _world.GetArtifact(reference.ID);
                                 break;
                             case ReferenceType.Sphere:
-                                Html.AppendLine("<li>" + reference.Type + ": " + reference.ID + "</li>");
+                                Html.Append("<li>").Append(reference.Type).Append(": ").Append(reference.ID).AppendLine("</li>");
                                 break;
                         }
                         if (referencedObject != null)
                         {
-                            Html.AppendLine("<li>" + referencedObject.ToLink() + "</li>");
+                            Html.Append("<li>").Append(referencedObject.ToLink()).AppendLine("</li>");
                         }
                     }
                 }
-                Html.AppendLine("</ul>");
-                Html.AppendLine("</br>");
+                Html.AppendLine("</ul>")
+                    .AppendLine("</br>");
             }
         }
 

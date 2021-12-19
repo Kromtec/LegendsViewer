@@ -8,12 +8,12 @@ namespace LegendsViewer.Controls.Map
 {
     public partial class DlgPopulation : Form
     {
-        List<Population> _populations = new List<Population>();
+        private List<Population> _populations = new List<Population>();
         public List<string> SelectedPopulations = new List<string>();
         public DlgPopulation(World world)
         {
             InitializeComponent();
-            
+
             var populationGrouped = from population in world.SitePopulations
                                     group population by population.Race into popType
                                     select new { Type = popType.Key, Count = popType.Sum(population => population.Count) };
@@ -24,7 +24,6 @@ namespace LegendsViewer.Controls.Map
                 _populations.Add(new Population(population.Type, population.Count));
             }
         }
-
 
         private void btnAll_Click(object sender, EventArgs e)
         {
@@ -71,9 +70,7 @@ namespace LegendsViewer.Controls.Map
             SelectedPopulations.Clear();
             Close();
         }
-
     }
-
 
 
 }

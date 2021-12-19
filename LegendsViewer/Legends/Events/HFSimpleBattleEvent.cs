@@ -117,6 +117,5 @@ namespace LegendsViewer.Legends.Events
             eventString += ".";
             return eventString;
         }
-
     }
 }

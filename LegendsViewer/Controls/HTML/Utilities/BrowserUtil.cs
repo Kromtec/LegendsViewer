@@ -17,7 +17,7 @@ namespace LegendsViewer.Controls.HTML.Utilities
             {
                 var appName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
-                if (string.Compare(appName, "devenv.exe", StringComparison.OrdinalIgnoreCase) == 0 || 
+                if (string.Compare(appName, "devenv.exe", StringComparison.OrdinalIgnoreCase) == 0 ||
                     string.Compare(appName, "XDesProc.exe", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     return;

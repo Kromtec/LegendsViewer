@@ -45,7 +45,8 @@ namespace LegendsViewer.Controls
             form.CancelButton = buttonCancel;
             if (validation != null)
             {
-                form.FormClosing += delegate (object sender, FormClosingEventArgs e) {
+                form.FormClosing += delegate (object sender, FormClosingEventArgs e)
+                {
                     if (form.DialogResult == DialogResult.OK)
                     {
                         string errorText = validation(textBox.Text);

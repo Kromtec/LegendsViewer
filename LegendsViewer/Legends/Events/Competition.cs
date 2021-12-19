@@ -42,7 +42,7 @@ namespace LegendsViewer.Legends.Events
         public override string Print(bool link = true, DwarfObject pov = null)
         {
             string eventString = base.Print(link, pov);
-            if (Competitors.Any())
+            if (Competitors.Count > 0)
             {
                 eventString += "</br>";
                 eventString += "Competing were ";

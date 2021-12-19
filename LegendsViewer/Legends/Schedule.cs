@@ -20,10 +20,7 @@ namespace LegendsViewer.Legends
         public string ItemSubType { get; set; }
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public Schedule(List<Property> properties, World world)
             : base(properties, world)

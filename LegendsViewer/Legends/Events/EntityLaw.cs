@@ -12,7 +12,7 @@ namespace LegendsViewer.Legends.Events
         public HistoricalFigure HistoricalFigure { get; set; }
         public EntityLawType Law { get; set; }
         public bool LawLaid { get; set; }
-        private string _unknownLawType;
+        private readonly string _unknownLawType;
 
         public EntityLaw(List<Property> properties, World world)
             : base(properties, world)

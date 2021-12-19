@@ -96,12 +96,12 @@ namespace LegendsViewer.Controls.Tabs
                                  select type.Key;
 
             var mountainPeakEvents = from eventType in World.MountainPeaks.SelectMany(element => element.Events)
-                group eventType by eventType.Type into type
-                select type.Key;
+                                     group eventType by eventType.Type into type
+                                     select type.Key;
 
             var riverEvents = from eventType in World.Rivers.SelectMany(element => element.Events)
-                group eventType by eventType.Type into type
-                select type.Key;
+                              group eventType by eventType.Type into type
+                              select type.Key;
 
             TabEvents.Clear();
             TabEvents.Add(regionEvents.ToList());

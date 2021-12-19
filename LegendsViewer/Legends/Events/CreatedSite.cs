@@ -54,7 +54,7 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += Builder.ToLink(link, pov, this);
                 eventString += " constructed ";
-                eventString += Site.ToLink(link, pov, this) ;
+                eventString += Site.ToLink(link, pov, this);
                 if (ResidentCiv != null)
                 {
                     eventString += " for ";

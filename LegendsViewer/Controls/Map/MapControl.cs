@@ -28,7 +28,7 @@ namespace LegendsViewer.Controls.Map
         }
         public override Control GetControl()
         {
-            if (MapPanel == null || MapPanel.IsDisposed)
+            if (MapPanel?.IsDisposed != false)
             {
                 MapPanel = new MapPanel(World.Map, World, TabControl, FocusObject);
                 if (MapScale > 0)
@@ -84,15 +84,11 @@ namespace LegendsViewer.Controls.Map
                         WarsToggled = MapPanel.WarsToggled;
                         BattlesToggled = MapPanel.BattlesToggled;
                         CurrentYear = MapPanel.CurrentYear;
-                        if (MapPanel.Overlay != null)
-                        {
-                            MapPanel.Overlay.Dispose();
-                        }
+                        MapPanel.Overlay?.Dispose();
 
                         MapPanel.Dispose();
                         MapPanel = null;
                     }
-
                 }
                 base.Dispose(disposing);
                 Disposed = true;

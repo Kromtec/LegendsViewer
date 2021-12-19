@@ -13,7 +13,7 @@ namespace LegendsViewer.Controls.Chart
         public DwarfObject FocusObject;
         public World World;
         public List<ChartOption> SeriesOptions;
-        public Boolean OtherChart;
+        public bool OtherChart;
         public ChartControl(World world, DwarfObject focusObject, DwarfTabControl dwarfTabControl)
         {
             World = world; FocusObject = focusObject; TabControl = dwarfTabControl;
@@ -25,19 +25,14 @@ namespace LegendsViewer.Controls.Chart
         }
         public override Control GetControl()
         {
-            if (DwarfChart == null || DwarfChart.IsDisposed)
+            if (DwarfChart?.IsDisposed != false)
             {
-                if (SeriesOptions != null)
-                {
-                    DwarfChart = new ChartPanel(World, FocusObject, SeriesOptions)
+                DwarfChart = SeriesOptions != null
+                    ? new ChartPanel(World, FocusObject, SeriesOptions)
                     {
                         OtherChart = OtherChart
-                    };
-                }
-                else
-                {
-                    DwarfChart = new ChartPanel(World, FocusObject);
-                }
+                    }
+                    : new ChartPanel(World, FocusObject);
             }
             return DwarfChart;
         }

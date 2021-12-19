@@ -20,9 +20,9 @@ namespace LegendsViewer.Legends
                     case "actor_id": ActorId = Convert.ToInt32(property.Value); break;
                     case "plot_role": PlotRole = property.Value; break;
                     case "agreement_id": AgreementId = Convert.ToInt32(property.Value); break;
-                    case "agreement_has_messenger": 
+                    case "agreement_has_messenger":
                         property.Known = true;
-                        AgreementHasMessenger = true; 
+                        AgreementHasMessenger = true;
                         break;
                 }
             }

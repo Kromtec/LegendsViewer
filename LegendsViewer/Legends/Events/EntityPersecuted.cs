@@ -48,7 +48,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                DestroyedStructure = Site.Structures.FirstOrDefault(structure => structure.Id == DestroyedStructureId);
+                DestroyedStructure = Site.Structures.Find(structure => structure.Id == DestroyedStructureId);
                 DestroyedStructure.AddEvent(this);
             }
             PersecutorHf.AddEvent(this);
@@ -71,7 +71,7 @@ namespace LegendsViewer.Legends.Events
             eventString += TargetEntity.ToLink(link, pov, this);
             eventString += " in ";
             eventString += Site.ToLink(link, pov, this);
-            if (ExpelledHfs.Any())
+            if (ExpelledHfs.Count > 0)
             {
                 eventString += ". ";
                 if (ExpelledHfs.Count == 1)
@@ -117,7 +117,7 @@ namespace LegendsViewer.Legends.Events
                     eventString += " along with several smaller sacred sites";
                 }
             }
-            else if(ShrineAmountDestroyed > 0)
+            else if (ShrineAmountDestroyed > 0)
             {
                 eventString += " and some sacred sites were desecrated";
             }

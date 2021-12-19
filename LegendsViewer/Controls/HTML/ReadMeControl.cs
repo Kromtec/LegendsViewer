@@ -19,7 +19,7 @@ namespace LegendsViewer.Controls.HTML
 
         public override Control GetControl()
         {
-            if (HtmlBrowser == null || HtmlBrowser.IsDisposed)
+            if (HtmlBrowser?.IsDisposed != false)
             {
                 BrowserUtil.SetBrowserEmulationMode();
 

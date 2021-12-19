@@ -23,10 +23,10 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _artform.GetIcon() + " " + _artform.Name + ", " + _artform.FormType + " Form</h1><br />");
+            Html.Append("<h1>").Append(_artform.GetIcon()).Append(' ').Append(_artform.Name).Append(", ").Append(_artform.FormType).AppendLine(" Form</h1><br />");
             if (!string.IsNullOrEmpty(_artform.Description))
             {
-                Html.AppendLine(_artform.Description.Replace("[B]", "<br />") + "<br /><br />");
+                Html.Append(_artform.Description.Replace("[B]", "<br />")).AppendLine("<br /><br />");
             }
             PrintEventLog(_world, _artform.Events, ArtForm.Filters, _artform);
 

@@ -16,7 +16,6 @@ namespace LegendsViewer.Controls.Tabs
             InitializeComponent();
         }
 
-
         internal override void InitializeTab()
         {
             EventTabs = new[] { tpEraEvents };
@@ -28,7 +27,6 @@ namespace LegendsViewer.Controls.Tabs
         internal override void AfterLoad(World world)
         {
             base.AfterLoad(world);
-
 
             listEraSearch.SetObjects(World.Eras.ToArray());
 

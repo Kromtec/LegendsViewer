@@ -19,13 +19,13 @@ namespace LegendsViewer.Controls.Tabs
 
         protected TabPage[] EventTabs = new TabPage[0];
         protected Type[] EventTabTypes = new Type[0];
-        protected List<List<String>> TabEvents = new List<List<string>>();
+        protected List<List<string>> TabEvents = new List<List<string>>();
 
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LvCoordinator Coordinator
         {
-            get { return _coordinator; }
+            get => _coordinator;
             set
             {
                 _coordinator = value;
@@ -36,7 +36,6 @@ namespace LegendsViewer.Controls.Tabs
                 }
             }
         }
-
 
         internal DwarfTabControl Browser => Coordinator?.Browser;
         internal World World => Coordinator?.World;
@@ -49,7 +48,7 @@ namespace LegendsViewer.Controls.Tabs
 
         internal virtual void InitializeTab() { }
 
-        internal virtual void AfterLoad(World world){}
+        internal virtual void AfterLoad(World world) { }
 
         internal virtual void ResetTab() { }
 
@@ -76,15 +75,18 @@ namespace LegendsViewer.Controls.Tabs
                 Coordinator.HandleSelectionChanged(ListView);
             };
 
-            ListView.HotItemChanged += delegate (object sender, HotItemChangedEventArgs args) {
+            ListView.HotItemChanged += delegate (object sender, HotItemChangedEventArgs args)
+            {
                 Coordinator.HandleHotItemChanged(sender, args);
             };
 
-            ListView.GroupTaskClicked += delegate (object sender, GroupTaskClickedEventArgs args) {
+            ListView.GroupTaskClicked += delegate (object sender, GroupTaskClickedEventArgs args)
+            {
                 Coordinator.ShowMessage("Clicked on group task: " + args.Group.Name);
             };
 
-            ListView.GroupStateChanged += delegate (object sender, GroupStateChangedEventArgs e) {
+            ListView.GroupStateChanged += delegate (object sender, GroupStateChangedEventArgs e)
+            {
                 Debug.WriteLine("Group '{0}' was {1}{2}{3}{4}{5}{6}", e.Group.Header, e.Selected ? "Selected" : "", e.Focused ? "Focused" : "", e.Collapsed ? "Collapsed" : "", e.Unselected ? "Unselected" : "", e.Unfocused ? "Unfocused" : "", e.Uncollapsed ? "Uncollapsed" : "");
             };
         }
@@ -102,7 +104,6 @@ namespace LegendsViewer.Controls.Tabs
             }
         }
 
-
         protected internal void GenerateEventFilterCheckBoxes()
         {
             Array.Sort(AppHelpers.EventInfo, delegate (string[] a, string[] b)
@@ -119,14 +120,7 @@ namespace LegendsViewer.Controls.Tabs
                     EventTabs[eventTab].Controls.Add(eventCheck);
                     string[] eventInfo = AppHelpers.EventInfo.Single(a => a[0] == eventType);
                     eventCheck.Text = eventInfo[1];
-                    if (EventTabs[eventTab].Parent.Name == "tcEras")
-                    {
-                        eventCheck.Checked = false;
-                    }
-                    else
-                    {
-                        eventCheck.Checked = true;
-                    }
+                    eventCheck.Checked = EventTabs[eventTab].Parent.Name != "tcEras";
                     eventCheck.CheckedChanged += OnEventFilterCheck;
                     hint.SetToolTip(eventCheck, eventInfo[2]);
                     eventCheck.Location = new Point(10, 23 * count);
@@ -163,7 +157,7 @@ namespace LegendsViewer.Controls.Tabs
             CheckBox eventCheck = sender as CheckBox;
             if (!FileLoader.Working && World != null)
             {
-                foreach ( string[] eventInfo in AppHelpers.EventInfo.Where(a => a[1] == eventCheck.Text) )
+                foreach (string[] eventInfo in AppHelpers.EventInfo.Where(a => a[1] == eventCheck.Text))
                 {
                     int eventPageIndex = Array.IndexOf(EventTabs, eventCheck.Parent);
                     List<string> eventFilter = EventTabTypes[eventPageIndex].GetField("Filters").GetValue(null) as List<string>;
@@ -208,8 +202,6 @@ namespace LegendsViewer.Controls.Tabs
             }
             Browser.RefreshAll(EventTabTypes[Array.IndexOf(EventTabs, selectButton.Parent)]);
             Coordinator.Form.DontRefreshBrowserPages = false;
-
         }
-
     }
 }

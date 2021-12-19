@@ -203,7 +203,7 @@ namespace LegendsViewer.Legends.Events
                     eventString += $"played on sympathy by appealing to a shared worship of {World.GetHistoricalFigure(RelevantIdForMethod)?.ToLink(link, pov, this)}. ";
                     break;
                 case IntrigueMethod.BlackmailOverEmbezzlement:
-                    var position = RelevantEntity?.EntityPositions.FirstOrDefault(p => p.Id == RelevantPositionProfileId);
+                    var position = RelevantEntity?.EntityPositions.Find(p => p.Id == RelevantPositionProfileId);
                     eventString += $"made a blackmail threat, due to embezzlement using the position {position?.Name} of {RelevantEntity?.ToLink(link, pov, this)}. ";
                     break;
                 case IntrigueMethod.RevengeOnGrudge:

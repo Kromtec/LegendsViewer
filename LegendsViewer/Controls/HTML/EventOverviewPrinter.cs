@@ -39,27 +39,24 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
             string icon = _dwarfObject != null ? _dwarfObject.GetIcon() + " " : "";
-            Html.AppendLine("<h1>" + icon + GetTitle() + "</h1></br>");
+            Html.Append("<h1>").Append(icon).Append(GetTitle()).AppendLine("</h1></br>");
             PrintEventStats(Events, EventCollections);
             return Html.ToString();
         }
 
         private void PrintEventStats(List<WorldEvent> eventList, List<EventCollection> eventCollectionList)
         {
-            Html.AppendLine("<div class=\"container-fluid\">");
-            Html.AppendLine("<div class=\"row\">");
-
-            Html.AppendLine("<div class=\"col-sm-6\">");
+            Html.AppendLine("<div class=\"container-fluid\">")
+                .AppendLine("<div class=\"row\">")
+                .AppendLine("<div class=\"col-sm-6\">");
             PrintEventDetails(eventList);
-            Html.AppendLine("</div>");
-            Html.AppendLine("<div class=\"col-sm-6\">");
+            Html.AppendLine("</div>")
+                .AppendLine("<div class=\"col-sm-6\">");
             PrintEventCollectionDetails(eventCollectionList);
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</div>");
-            Html.AppendLine("</div>");
-
-            Html.AppendLine("</br>");
+            Html.AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</div>")
+                .AppendLine("</br>");
         }
 
         public override string GetTitle()

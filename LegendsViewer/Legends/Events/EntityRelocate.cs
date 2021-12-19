@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Parser;
 using LegendsViewer.Legends.WorldObjects;
@@ -43,7 +42,7 @@ namespace LegendsViewer.Legends.Events
             }
             if (Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == StructureId);
+                Structure = Site.Structures.Find(structure => structure.Id == StructureId);
             }
             Entity.AddEvent(this);
             Site.AddEvent(this);

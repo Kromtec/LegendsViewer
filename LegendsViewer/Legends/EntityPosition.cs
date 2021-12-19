@@ -41,29 +41,18 @@ namespace LegendsViewer.Legends
                 {
                     positionName = SpouseFemale;
                 }
-                else if (caste == "Male" && !string.IsNullOrEmpty(SpouseMale))
-                {
-                    positionName = SpouseMale;
-                }
                 else
                 {
-                    positionName = Spouse;
+                    positionName = caste == "Male" && !string.IsNullOrEmpty(SpouseMale) ? SpouseMale : Spouse;
                 }
+            }
+            else if (caste == "Female" && !string.IsNullOrEmpty(NameFemale))
+            {
+                positionName = NameFemale;
             }
             else
             {
-                if (caste == "Female" && !string.IsNullOrEmpty(NameFemale))
-                {
-                    positionName = NameFemale;
-                }
-                else if (caste == "Male" && !string.IsNullOrEmpty(NameMale))
-                {
-                    positionName = NameMale;
-                }
-                else
-                {
-                    positionName = Name;
-                }
+                positionName = caste == "Male" && !string.IsNullOrEmpty(NameMale) ? NameMale : Name;
             }
             return positionName;
         }

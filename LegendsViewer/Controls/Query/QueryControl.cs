@@ -13,12 +13,11 @@ namespace LegendsViewer.Controls.Query
 {
     public partial class QueryControl : UserControl
     {
-
-        SearchList _searchList;
-        PropertyBox _selectProperties;
+        private SearchList _searchList;
+        private PropertyBox _selectProperties;
         public DwarfTabControl Browser;
         public World World;
-        List<object> _results;
+        private List<object> _results;
         public QueryControl(World world, DwarfTabControl browser)
         {
             World = world;
@@ -55,7 +54,7 @@ namespace LegendsViewer.Controls.Query
 
             switch (SelectList.SelectedItem.ToString())
             {
-                case "Historical Figures": 
+                case "Historical Figures":
                     _searchList = new SearchList<HistoricalFigure>(World.HistoricalFigures);
                     _selectProperties.ParentType = typeof(HistoricalFigure);
                     break;
@@ -63,7 +62,7 @@ namespace LegendsViewer.Controls.Query
                     _searchList = new SearchList<Entity>(World.Entities);
                     _selectProperties.ParentType = typeof(Entity);
                     break;
-                case "Sites": 
+                case "Sites":
                     _searchList = new SearchList<Site>(World.Sites);
                     _selectProperties.ParentType = typeof(Site);
                     break;
@@ -125,7 +124,8 @@ namespace LegendsViewer.Controls.Query
 
         private void SelectSubListChanged(object sender, EventArgs e)
         {
-            if (_selectProperties.SelectedIndex > 0) {
+            if (_selectProperties.SelectedIndex > 0)
+            {
                 SelectionPanel.Visible = true;
                 if (SelectionPanel.Criteria.Count == 0)
                 {
@@ -151,36 +151,18 @@ namespace LegendsViewer.Controls.Query
 
             if (_selectProperties.SelectedIndex > 0)
             {
-                if (selectedType == typeof(Site) || selectedType == typeof(Battle))
-                {
-                    btnMapResults.Visible = true;
-                }
-                else
-                {
-                    btnMapResults.Visible = false;
-                }
-            }
-            else if (_selectProperties.ParentType == typeof(Site) || _selectProperties.ParentType == typeof(Battle))
-            {
-                btnMapResults.Visible = true;
+                btnMapResults.Visible = selectedType == typeof(Site) || selectedType == typeof(Battle);
             }
             else
             {
-                btnMapResults.Visible = false;
+                btnMapResults.Visible = _selectProperties.ParentType == typeof(Site) || _selectProperties.ParentType == typeof(Battle);
             }
         }
 
-        void PanelResized(object sender, EventArgs e)
+        private void PanelResized(object sender, EventArgs e)
         {
             SelectionPanel.Top = SelectList.Bottom + 3;
-            if (SelectionPanel.Visible)
-            {
-                SearchPanel.Top = SelectionPanel.Bottom;
-            }
-            else
-            {
-                SearchPanel.Top = SelectList.Bottom + 3;
-            }
+            SearchPanel.Top = SelectionPanel.Visible ? SelectionPanel.Bottom : SelectList.Bottom + 3;
 
             OrderByPanel.Top = SearchPanel.Bottom;
             btnSearch.Top = OrderByPanel.Bottom + 3;
@@ -205,8 +187,8 @@ namespace LegendsViewer.Controls.Query
 
             dgResults.Columns.Clear();
 
-            var columns = AppHelpers.GetColumns(_selectProperties.SelectedProperty == null 
-                ? _selectProperties.ParentType 
+            var columns = AppHelpers.GetColumns(_selectProperties.SelectedProperty == null
+                ? _selectProperties.ParentType
                 : _selectProperties.SelectedProperty.Type);
 
             if (columns.Count > 0)
@@ -275,14 +257,7 @@ namespace LegendsViewer.Controls.Query
                 PropertyBox currentProperty = line.PropertySelect;
                 Type searchType = genericSearch.MakeGenericType(line.PropertySelect.ParentType);
                 SearchInfo newCriteria = Activator.CreateInstance(searchType) as SearchInfo;
-                if (line == inputCriteria.First(line1 => line1.IsComplete()))
-                {
-                    newCriteria.Operator = QueryOperator.Or;
-                }
-                else
-                {
-                    newCriteria.Operator = QueryOperator.And;
-                }
+                newCriteria.Operator = line == inputCriteria.First(line1 => line1.IsComplete()) ? QueryOperator.Or : QueryOperator.And;
 
                 criteria.Add(newCriteria);
                 if (line.OrderByCriteria)
@@ -295,7 +270,6 @@ namespace LegendsViewer.Controls.Query
 
                 while (currentProperty != null)
                 {
-                    
                     if (currentProperty.Child == null || currentProperty.Child.SelectedProperty == null)
                     {
                         if (currentProperty.SelectedProperty != null)
@@ -303,7 +277,7 @@ namespace LegendsViewer.Controls.Query
                             newCriteria.PropertyName = currentProperty.SelectedProperty.Name;
                         }
 
-                        if (currentProperty.SelectedProperty != null && currentProperty.SelectedProperty.Type.IsGenericType && currentProperty.SelectedProperty.Type.GetGenericTypeDefinition() == typeof(List<>))
+                        if (currentProperty.SelectedProperty?.Type.IsGenericType == true && currentProperty.SelectedProperty.Type.GetGenericTypeDefinition() == typeof(List<>))
                         {
                             newCriteria.Comparer = QueryComparer.Count;
                             newCriteria.Value = 0;
@@ -335,30 +309,18 @@ namespace LegendsViewer.Controls.Query
                             }
                         }
 
-                        if (currentProperty.SelectedProperty != null && (currentProperty.SelectedProperty.Type == typeof(int) || currentProperty.SelectedProperty.Type == typeof(List<int>)))
-                        {
-                            newCriteria.Value = Convert.ToInt32(line.ValueSelect.Text);
-                        }
-                        else
-                        {
-                            newCriteria.Value = line.ValueSelect.Text;
-                        }
+                        newCriteria.Value = currentProperty.SelectedProperty != null && (currentProperty.SelectedProperty.Type == typeof(int) || currentProperty.SelectedProperty.Type == typeof(List<int>))
+                            ? Convert.ToInt32(line.ValueSelect.Text)
+                            : (object)line.ValueSelect.Text;
                     }
                     else
                     {
                         newCriteria.Comparer = QueryComparer.Count;
                         newCriteria.PropertyName = currentProperty.SelectedProperty.Name;
                         SearchInfo temp = newCriteria;
-                        Type nextSearchType;
-                        if (currentProperty.Child.ParentType.IsGenericType)
-                        {
-                            nextSearchType = genericSearch.MakeGenericType(currentProperty.Child.ParentType.GetGenericArguments()[0]);
-                        }
-                        else
-                        {
-                            nextSearchType = genericSearch.MakeGenericType(currentProperty.Child.ParentType);
-                        }
-
+                        Type nextSearchType = currentProperty.Child.ParentType.IsGenericType
+                            ? genericSearch.MakeGenericType(currentProperty.Child.ParentType.GetGenericArguments()[0])
+                            : genericSearch.MakeGenericType(currentProperty.Child.ParentType);
                         newCriteria = Activator.CreateInstance(nextSearchType) as SearchInfo;
                         temp.Next = newCriteria;
                         newCriteria.Previous = temp;
@@ -411,7 +373,7 @@ namespace LegendsViewer.Controls.Query
                 {
                     e.Value = e.Value.GetDescription();
                 }
-                else if(e.Value is IList list)
+                else if (e.Value is IList list)
                 {
                     e.Value = list.Count;
                 }
@@ -465,7 +427,6 @@ namespace LegendsViewer.Controls.Query
 
         public override void Refresh()
         {
-
         }
     }
 }

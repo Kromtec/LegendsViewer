@@ -2,7 +2,7 @@
 
 namespace LegendsViewer.Legends.Interfaces
 {
-    interface IHasCoordinates
+    internal interface IHasCoordinates
     {
         List<Location> Coordinates { get; set; } // legends_plus.xml
     }

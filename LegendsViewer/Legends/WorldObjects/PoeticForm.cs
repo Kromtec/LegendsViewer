@@ -24,15 +24,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href=\"poeticform#" + Id + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href=\"poeticform#" + Id + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Name;

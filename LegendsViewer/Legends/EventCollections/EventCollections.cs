@@ -23,7 +23,7 @@ namespace LegendsViewer.Legends.EventCollections
         public List<EventCollection> Collections { get; set; }
         public List<int> CollectionIDs { get; set; }
         public bool Notable { get; set; }
-        public List<WorldEvent> AllEvents { get { return GetSubEvents(); } set { } }
+        public List<WorldEvent> AllEvents { get => GetSubEvents(); set { } }
         public abstract List<WorldEvent> FilteredEvents { get; }
         public World World { get; }
 
@@ -40,7 +40,7 @@ namespace LegendsViewer.Legends.EventCollections
         protected EventCollection(List<Property> properties, World world) : this()
         {
             World = world;
-            foreach(Property property in properties)
+            foreach (Property property in properties)
             {
                 switch (property.Name)
                 {
@@ -70,15 +70,15 @@ namespace LegendsViewer.Legends.EventCollections
         {
             int year;
             int seconds72;
-            if (start) 
-            { 
-                year = StartYear; 
-                seconds72 = StartSeconds72; 
+            if (start)
+            {
+                year = StartYear;
+                seconds72 = StartSeconds72;
             }
-            else 
-            { 
-                year = EndYear; 
-                seconds72 = EndSeconds72; 
+            else
+            {
+                year = EndYear;
+                seconds72 = EndSeconds72;
             }
             if (year == -1)
             {

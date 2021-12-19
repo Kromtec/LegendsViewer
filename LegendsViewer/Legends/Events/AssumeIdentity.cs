@@ -25,15 +25,15 @@ namespace LegendsViewer.Legends.Events
             {
                 switch (property.Name)
                 {
-                    case "identity_id": 
-                        IdentityId = Convert.ToInt32(property.Value); 
+                    case "identity_id":
+                        IdentityId = Convert.ToInt32(property.Value);
                         break;
-                    case "target_enid": 
-                        Target = world.GetEntity(Convert.ToInt32(property.Value)); 
+                    case "target_enid":
+                        Target = world.GetEntity(Convert.ToInt32(property.Value));
                         break;
                     case "identity_histfig_id":
                     case "identity_nemesis_id":
-                    case "trickster_hfid": 
+                    case "trickster_hfid":
                     case "trickster":
                         if (Trickster == null)
                         {
@@ -42,7 +42,7 @@ namespace LegendsViewer.Legends.Events
                         else
                         {
                             property.Known = true;
-                        } 
+                        }
                         break;
                     case "target":
                         if (Target == null)
@@ -52,7 +52,7 @@ namespace LegendsViewer.Legends.Events
                         else
                         {
                             property.Known = true;
-                        } 
+                        }
                         break;
                     case "identity_name":
                         IdentityName = property.Value;
@@ -90,7 +90,7 @@ namespace LegendsViewer.Legends.Events
             {
                 eventString += " assumed the identity of ";
             }
-            Identity identity = Trickster?.Identities.FirstOrDefault(i => i.Id == IdentityId) ?? Identity;
+            Identity identity = Trickster?.Identities.Find(i => i.Id == IdentityId) ?? Identity;
             if (identity != null)
             {
                 eventString += identity.Print(link, pov, this);

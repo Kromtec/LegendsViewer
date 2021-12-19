@@ -4,53 +4,17 @@ namespace LegendsViewer.Legends
 {
     public class Population
     {
-        public bool IsMainRace
-        {
-            get
-            {
-                return World.MainRaces.ContainsKey(Race);
-            }
-        }
+        public bool IsMainRace => World.MainRaces.ContainsKey(Race);
 
-        public bool IsOutcasts
-        {
-            get
-            {
-                return Race.NamePlural.Contains("Outcasts");
-            }
-        }
+        public bool IsOutcasts => Race.NamePlural.Contains("Outcasts");
 
-        public bool IsPrisoners
-        {
-            get
-            {
-                return Race.NamePlural.Contains("Prisoners");
-            }
-        }
+        public bool IsPrisoners => Race.NamePlural.Contains("Prisoners");
 
-        public bool IsSlaves
-        {
-            get
-            {
-                return Race.NamePlural.Contains("Slaves");
-            }
-        }
+        public bool IsSlaves => Race.NamePlural.Contains("Slaves");
 
-        public bool IsVisitors
-        {
-            get
-            {
-                return Race.NamePlural.Contains("Visitors");
-            }
-        }
+        public bool IsVisitors => Race.NamePlural.Contains("Visitors");
 
-        public bool IsAnimalPeople
-        {
-            get
-            {
-                return Race.NamePlural.Contains(" Men") && !IsSlaves && !IsPrisoners && !IsOutcasts && !IsVisitors;
-            }
-        }
+        public bool IsAnimalPeople => Race.NamePlural.Contains(" Men") && !IsSlaves && !IsPrisoners && !IsOutcasts && !IsVisitors;
 
         [AllowAdvancedSearch]
         public CreatureInfo Race { get; set; }

@@ -153,12 +153,9 @@ namespace LegendsViewer.Controls.Query
 
         public static IQueryable Take(this IQueryable source, int count)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            return source.Provider.CreateQuery(
+            return source == null
+                ? throw new ArgumentNullException(nameof(source))
+                : source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Take",
                     new[] { source.ElementType },
@@ -167,12 +164,9 @@ namespace LegendsViewer.Controls.Query
 
         public static IQueryable Skip(this IQueryable source, int count)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            return source.Provider.CreateQuery(
+            return source == null
+                ? throw new ArgumentNullException(nameof(source))
+                : source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Skip",
                     new[] { source.ElementType },
@@ -207,12 +201,9 @@ namespace LegendsViewer.Controls.Query
 
         public static bool Any(this IQueryable source)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            return (bool)source.Provider.Execute(
+            return source == null
+                ? throw new ArgumentNullException(nameof(source))
+                : (bool)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Any",
                     new[] { source.ElementType }, source.Expression));
@@ -220,12 +211,9 @@ namespace LegendsViewer.Controls.Query
 
         public static int Count(this IQueryable source)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            return (int)source.Provider.Execute(
+            return source == null
+                ? throw new ArgumentNullException(nameof(source))
+                : (int)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Count",
                     new[] { source.ElementType }, source.Expression));
@@ -246,9 +234,9 @@ namespace LegendsViewer.Controls.Query
                     sb.Append(", ");
                 }
 
-                sb.Append(props[i].Name);
-                sb.Append("=");
-                sb.Append(props[i].GetValue(this, null));
+                sb.Append(props[i].Name)
+                    .Append("=")
+                    .Append(props[i].GetValue(this, null));
             }
             sb.Append("}");
             return sb.ToString();
@@ -257,24 +245,15 @@ namespace LegendsViewer.Controls.Query
 
     public class DynamicProperty
     {
-        string _name;
-        Type _type;
-
         public DynamicProperty(string name, Type type)
         {
-            this._name = name ?? throw new ArgumentNullException(nameof(name));
-            this._type = type ?? throw new ArgumentNullException(nameof(type));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type { get; }
     }
 
     public static class DynamicExpression
@@ -325,7 +304,7 @@ namespace LegendsViewer.Controls.Query
 
         public Signature(IEnumerable<DynamicProperty> properties)
         {
-            this.Properties = properties.ToArray();
+            Properties = properties.ToArray();
             HashCode = 0;
             foreach (DynamicProperty p in properties)
             {
@@ -340,7 +319,7 @@ namespace LegendsViewer.Controls.Query
 
         public override bool Equals(object obj)
         {
-            return obj is Signature ? Equals((Signature)obj) : false;
+            return obj is Signature signature && Equals(signature);
         }
 
         public bool Equals(Signature other)
@@ -368,10 +347,10 @@ namespace LegendsViewer.Controls.Query
 
         static ClassFactory() { }  // Trigger lazy initialization of static fields
 
-        ModuleBuilder _module;
-        Dictionary<Signature, Type> _classes;
-        int _classCount;
-        ReaderWriterLock _rwLock;
+        private readonly ModuleBuilder _module;
+        private readonly Dictionary<Signature, Type> _classes;
+        private int _classCount;
+        private readonly ReaderWriterLock _rwLock;
 
         private ClassFactory()
         {
@@ -413,7 +392,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        Type CreateDynamicClass(DynamicProperty[] properties)
+        private Type CreateDynamicClass(DynamicProperty[] properties)
         {
             LockCookie cookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
@@ -446,7 +425,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
+        private FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
         {
             FieldInfo[] fields = new FieldBuilder[properties.Length];
             for (int i = 0; i < properties.Length; i++)
@@ -476,7 +455,7 @@ namespace LegendsViewer.Controls.Query
             return fields;
         }
 
-        void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
+        private void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("Equals",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -513,7 +492,7 @@ namespace LegendsViewer.Controls.Query
             gen.Emit(OpCodes.Ret);
         }
 
-        void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
+        private void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("GetHashCode",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -537,77 +516,72 @@ namespace LegendsViewer.Controls.Query
 
     public sealed class ParseException : Exception
     {
-        int _position;
-
         public ParseException(string message, int position)
             : base(message)
         {
-            this._position = position;
+            Position = position;
         }
 
-        public int Position
-        {
-            get { return _position; }
-        }
+        public int Position { get; }
 
         public override string ToString()
         {
-            return string.Format(Res.ParseExceptionFormat, Message, _position);
+            return string.Format(Res.ParseExceptionFormat, Message, Position);
         }
     }
 
     internal class ExpressionParser
     {
-        struct Token
+        private struct Token
         {
             public TokenId Id;
             public string Text;
             public int Pos;
         }
 
-        enum TokenId
+        private enum TokenId
         {
-            Unknown,
-            End,
-            Identifier,
-            StringLiteral,
-            IntegerLiteral,
-            RealLiteral,
-            Exclamation,
-            Percent,
-            Amphersand,
-            OpenParen,
-            CloseParen,
-            Asterisk,
-            Plus,
-            Comma,
-            Minus,
-            Dot,
-            Slash,
-            Colon,
-            LessThan,
-            Equal,
-            GreaterThan,
-            Question,
-            OpenBracket,
-            CloseBracket,
-            Bar,
-            ExclamationEqual,
-            DoubleAmphersand,
-            LessThanEqual,
-            LessGreater,
-            DoubleEqual,
-            GreaterThanEqual,
-            DoubleBar
+            Unknown = 0,
+            End = 1,
+            Identifier = 2,
+            StringLiteral = 3,
+            IntegerLiteral = 4,
+            RealLiteral = 5,
+            Exclamation = 6,
+            Percent = 7,
+            Amphersand = 8,
+            OpenParen = 9,
+            CloseParen = 10,
+            Asterisk = 11,
+            Plus = 12,
+            Comma = 13,
+            Minus = 14,
+            Dot = 15,
+            Slash = 16,
+            Colon = 17,
+            LessThan = 18,
+            Equal = 19,
+            GreaterThan = 20,
+            Question = 21,
+            OpenBracket = 22,
+            CloseBracket = 23,
+            Bar = 24,
+            ExclamationEqual = 25,
+            DoubleAmphersand = 26,
+            LessThanEqual = 27,
+            LessGreater = 28,
+            DoubleEqual = 29,
+            GreaterThanEqual = 30,
+            DoubleBar = 31
         }
 
-        interface ILogicalSignatures
+        private interface ILogicalSignatures
         {
             void F(bool x, bool y);
             void F(bool? x, bool? y);
         }
 
-        interface IArithmeticSignatures
+        private interface IArithmeticSignatures
         {
             void F(int x, int y);
             void F(uint x, uint y);
@@ -625,7 +599,7 @@ namespace LegendsViewer.Controls.Query
             void F(decimal? x, decimal? y);
         }
 
-        interface IRelationalSignatures : IArithmeticSignatures
+        private interface IRelationalSignatures : IArithmeticSignatures
         {
             void F(string x, string y);
             void F(char x, char y);
@@ -636,13 +610,13 @@ namespace LegendsViewer.Controls.Query
             void F(TimeSpan? x, TimeSpan? y);
         }
 
-        interface IEqualitySignatures : IRelationalSignatures
+        private interface IEqualitySignatures : IRelationalSignatures
         {
             void F(bool x, bool y);
             void F(bool? x, bool? y);
         }
 
-        interface IAddSignatures : IArithmeticSignatures
+        private interface IAddSignatures : IArithmeticSignatures
         {
             void F(DateTime x, TimeSpan y);
             void F(TimeSpan x, TimeSpan y);
@@ -650,13 +624,13 @@ namespace LegendsViewer.Controls.Query
             void F(TimeSpan? x, TimeSpan? y);
         }
 
-        interface ISubtractSignatures : IAddSignatures
+        private interface ISubtractSignatures : IAddSignatures
         {
             void F(DateTime x, DateTime y);
             void F(DateTime? x, DateTime? y);
         }
 
-        interface INegationSignatures
+        private interface INegationSignatures
         {
             void F(int x);
             void F(long x);
@@ -670,13 +644,13 @@ namespace LegendsViewer.Controls.Query
             void F(decimal? x);
         }
 
-        interface INotSignatures
+        private interface INotSignatures
         {
             void F(bool x);
             void F(bool? x);
         }
 
-        interface IEnumerableSignatures
+        private interface IEnumerableSignatures
         {
             void Where(bool predicate);
             void Any();
@@ -708,48 +682,44 @@ namespace LegendsViewer.Controls.Query
             void Average(decimal? selector);
         }
 
-        static readonly Type[] PredefinedTypes = {
-            typeof(Object),
-            typeof(Boolean),
-            typeof(Char),
-            typeof(String),
-            typeof(SByte),
-            typeof(Byte),
-            typeof(Int16),
-            typeof(UInt16),
-            typeof(Int32),
-            typeof(UInt32),
-            typeof(Int64),
-            typeof(UInt64),
-            typeof(Single),
-            typeof(Double),
-            typeof(Decimal),
+        private static readonly Type[] PredefinedTypes = {
+            typeof(object),
+            typeof(bool),
+            typeof(char),
+            typeof(string),
+            typeof(sbyte),
+            typeof(byte),
+            typeof(short),
+            typeof(ushort),
+            typeof(int),
+            typeof(uint),
+            typeof(long),
+            typeof(ulong),
+            typeof(float),
+            typeof(double),
+            typeof(decimal),
             typeof(DateTime),
             typeof(TimeSpan),
             typeof(Guid),
             typeof(Math),
             typeof(Convert)
         };
-
-        static readonly Expression TrueLiteral = Expression.Constant(true);
-        static readonly Expression FalseLiteral = Expression.Constant(false);
-        static readonly Expression NullLiteral = Expression.Constant(null);
-
-        static readonly string KeywordIt = "it";
-        static readonly string KeywordIif = "iif";
-        static readonly string KeywordNew = "new";
-
-        static Dictionary<string, object> _keywords;
-
-        Dictionary<string, object> _symbols;
-        IDictionary<string, object> _externals;
-        Dictionary<Expression, string> _literals;
-        ParameterExpression _it;
-        string _text;
-        int _textPos;
-        int _textLen;
-        char _ch;
-        Token _token;
+        private static readonly Expression TrueLiteral = Expression.Constant(true);
+        private static readonly Expression FalseLiteral = Expression.Constant(false);
+        private static readonly Expression NullLiteral = Expression.Constant(null);
+        private const string KeywordIt = "it";
+        private const string KeywordIif = "iif";
+        private const string KeywordNew = "new";
+        private static Dictionary<string, object> _keywords;
+        private readonly Dictionary<string, object> _symbols;
+        private IDictionary<string, object> _externals;
+        private readonly Dictionary<Expression, string> _literals;
+        private ParameterExpression _it;
+        private readonly string _text;
+        private int _textPos;
+        private readonly int _textLen;
+        private char _ch;
+        private Token _token;
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
         {
@@ -776,30 +746,30 @@ namespace LegendsViewer.Controls.Query
             NextToken();
         }
 
-        void ProcessParameters(ParameterExpression[] parameters)
+        private void ProcessParameters(ParameterExpression[] parameters)
         {
             foreach (ParameterExpression pe in parameters)
             {
-                if (!String.IsNullOrEmpty(pe.Name))
+                if (!string.IsNullOrEmpty(pe.Name))
                 {
                     AddSymbol(pe.Name, pe);
                 }
             }
 
-            if (parameters.Length == 1 && String.IsNullOrEmpty(parameters[0].Name))
+            if (parameters.Length == 1 && string.IsNullOrEmpty(parameters[0].Name))
             {
                 _it = parameters[0];
             }
         }
 
-        void ProcessValues(object[] values)
+        private void ProcessValues(object[] values)
         {
             for (int i = 0; i < values.Length; i++)
             {
                 object value = values[i];
-                if (i == values.Length - 1 && value is IDictionary<string, object>)
+                if (i == values.Length - 1 && value is IDictionary<string, object> dictionary)
                 {
-                    _externals = (IDictionary<string, object>)value;
+                    _externals = dictionary;
                 }
                 else
                 {
@@ -808,7 +778,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        void AddSymbol(string name, object value)
+        private void AddSymbol(string name, object value)
         {
             if (_symbols.ContainsKey(name))
             {
@@ -822,19 +792,15 @@ namespace LegendsViewer.Controls.Query
         {
             int exprPos = _token.Pos;
             Expression expr = ParseExpression();
-            if (resultType != null)
+            if (resultType != null && (expr = PromoteExpression(expr, resultType, true)) == null)
             {
-                if ((expr = PromoteExpression(expr, resultType, true)) == null)
-                {
-                    throw ParseError(exprPos, Res.ExpressionTypeMismatch, GetTypeName(resultType));
-                }
+                throw ParseError(exprPos, Res.ExpressionTypeMismatch, GetTypeName(resultType));
             }
 
             ValidateToken(TokenId.End, Res.SyntaxError);
             return expr;
         }
 
-#pragma warning disable 0219
         public IEnumerable<DynamicOrdering> ParseOrdering()
         {
             List<DynamicOrdering> orderings = new List<DynamicOrdering>();
@@ -862,10 +828,9 @@ namespace LegendsViewer.Controls.Query
             ValidateToken(TokenId.End, Res.SyntaxError);
             return orderings;
         }
-#pragma warning restore 0219
 
         // ?: operator
-        Expression ParseExpression()
+        private Expression ParseExpression()
         {
             int errorPos = _token.Pos;
             Expression expr = ParseLogicalOr();
@@ -882,7 +847,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // ||, or operator
-        Expression ParseLogicalOr()
+        private Expression ParseLogicalOr()
         {
             Expression left = ParseLogicalAnd();
             while (_token.Id == TokenId.DoubleBar || TokenIdentifierIs("or"))
@@ -897,7 +862,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // &&, and operator
-        Expression ParseLogicalAnd()
+        private Expression ParseLogicalAnd()
         {
             Expression left = ParseComparison();
             while (_token.Id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
@@ -912,7 +877,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // =, ==, !=, <>, >, >=, <, <= operators
-        Expression ParseComparison()
+        private Expression ParseComparison()
         {
             Expression left = ParseAdditive();
             while (_token.Id == TokenId.Equal || _token.Id == TokenId.DoubleEqual ||
@@ -933,13 +898,11 @@ namespace LegendsViewer.Controls.Query
                         {
                             right = Expression.Convert(right, left.Type);
                         }
-                        else if (right.Type.IsAssignableFrom(left.Type))
-                        {
-                            left = Expression.Convert(left, right.Type);
-                        }
                         else
                         {
-                            throw IncompatibleOperandsError(op.Text, left, right, op.Pos);
+                            left = right.Type.IsAssignableFrom(left.Type)
+                                ? Expression.Convert(left, right.Type)
+                                : throw IncompatibleOperandsError(op.Text, left, right, op.Pos);
                         }
                     }
                 }
@@ -952,13 +915,9 @@ namespace LegendsViewer.Controls.Query
                         {
                             right = e;
                         }
-                        else if ((e = PromoteExpression(left, right.Type, true)) != null)
-                        {
-                            left = e;
-                        }
                         else
                         {
-                            throw IncompatibleOperandsError(op.Text, left, right, op.Pos);
+                            left = (e = PromoteExpression(left, right.Type, true)) != null ? e : throw IncompatibleOperandsError(op.Text, left, right, op.Pos);
                         }
                     }
                 }
@@ -995,7 +954,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // +, -, & operators
-        Expression ParseAdditive()
+        private Expression ParseAdditive()
         {
             Expression left = ParseMultiplicative();
             while (_token.Id == TokenId.Plus || _token.Id == TokenId.Minus ||
@@ -1028,7 +987,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // *, /, %, mod operators
-        Expression ParseMultiplicative()
+        private Expression ParseMultiplicative()
         {
             Expression left = ParseUnary();
             while (_token.Id == TokenId.Asterisk || _token.Id == TokenId.Slash ||
@@ -1056,7 +1015,7 @@ namespace LegendsViewer.Controls.Query
         }
 
         // -, !, not unary operators
-        Expression ParseUnary()
+        private Expression ParseUnary()
         {
             if (_token.Id == TokenId.Minus || _token.Id == TokenId.Exclamation ||
                 TokenIdentifierIs("not"))
@@ -1074,19 +1033,16 @@ namespace LegendsViewer.Controls.Query
                 if (op.Id == TokenId.Minus)
                 {
                     CheckAndPromoteOperand(typeof(INegationSignatures), op.Text, ref expr, op.Pos);
-                    expr = Expression.Negate(expr);
+                    return Expression.Negate(expr);
                 }
-                else
-                {
-                    CheckAndPromoteOperand(typeof(INotSignatures), op.Text, ref expr, op.Pos);
-                    expr = Expression.Not(expr);
-                }
-                return expr;
+                CheckAndPromoteOperand(typeof(INotSignatures), op.Text, ref expr, op.Pos);
+
+                return Expression.Not(expr);
             }
             return ParsePrimary();
         }
 
-        Expression ParsePrimary()
+        private Expression ParsePrimary()
         {
             Expression expr = ParsePrimaryStart();
             while (true)
@@ -1108,7 +1064,7 @@ namespace LegendsViewer.Controls.Query
             return expr;
         }
 
-        Expression ParsePrimaryStart()
+        private Expression ParsePrimaryStart()
         {
             switch (_token.Id)
             {
@@ -1127,7 +1083,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        Expression ParseStringLiteral()
+        private Expression ParseStringLiteral()
         {
             ValidateToken(TokenId.StringLiteral);
             char quote = _token.Text[0];
@@ -1158,53 +1114,40 @@ namespace LegendsViewer.Controls.Query
             return CreateLiteral(s, s);
         }
 
-        Expression ParseIntegerLiteral()
+        private Expression ParseIntegerLiteral()
         {
             ValidateToken(TokenId.IntegerLiteral);
             string text = _token.Text;
             if (text[0] != '-')
             {
-                if (!UInt64.TryParse(text, out ulong value))
+                if (!ulong.TryParse(text, out ulong uvalue))
                 {
                     throw ParseError(Res.InvalidIntegerLiteral, text);
                 }
 
                 NextToken();
-                if (value <= Int32.MaxValue)
+                if (uvalue <= int.MaxValue)
                 {
-                    return CreateLiteral((int)value, text);
+                    return CreateLiteral((int)uvalue, text);
                 }
 
-                if (value <= UInt32.MaxValue)
+                if (uvalue <= uint.MaxValue)
                 {
-                    return CreateLiteral((uint)value, text);
+                    return CreateLiteral((uint)uvalue, text);
                 }
 
-                if (value <= Int64.MaxValue)
-                {
-                    return CreateLiteral((long)value, text);
-                }
-
-                return CreateLiteral(value, text);
+                return uvalue <= long.MaxValue ? CreateLiteral((long)uvalue, text) : CreateLiteral(uvalue, text);
             }
-            else
+            if (!long.TryParse(text, out long value))
             {
-                if (!Int64.TryParse(text, out long value))
-                {
-                    throw ParseError(Res.InvalidIntegerLiteral, text);
-                }
-
-                NextToken();
-                if (value >= Int32.MinValue && value <= Int32.MaxValue)
-                {
-                    return CreateLiteral((int)value, text);
-                }
-
-                return CreateLiteral(value, text);
+                throw ParseError(Res.InvalidIntegerLiteral, text);
             }
+
+            NextToken();
+            return value >= int.MinValue && value <= int.MaxValue ? CreateLiteral((int)value, text) : CreateLiteral(value, text);
         }
 
-        Expression ParseRealLiteral()
+        private Expression ParseRealLiteral()
         {
             ValidateToken(TokenId.RealLiteral);
             string text = _token.Text;
@@ -1212,17 +1155,14 @@ namespace LegendsViewer.Controls.Query
             char last = text[text.Length - 1];
             if (last == 'F' || last == 'f')
             {
-                if (Single.TryParse(text.Substring(0, text.Length - 1), out float f))
+                if (float.TryParse(text.Substring(0, text.Length - 1), out float f))
                 {
                     value = f;
                 }
             }
-            else
+            else if (double.TryParse(text, out double d))
             {
-                if (Double.TryParse(text, out double d))
-                {
-                    value = d;
-                }
+                value = d;
             }
             if (value == null)
             {
@@ -1233,14 +1173,14 @@ namespace LegendsViewer.Controls.Query
             return CreateLiteral(value, text);
         }
 
-        Expression CreateLiteral(object value, string text)
+        private Expression CreateLiteral(object value, string text)
         {
             ConstantExpression expr = Expression.Constant(value);
             _literals.Add(expr, text);
             return expr;
         }
 
-        Expression ParseParenExpression()
+        private Expression ParseParenExpression()
         {
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
             NextToken();
@@ -1250,14 +1190,14 @@ namespace LegendsViewer.Controls.Query
             return e;
         }
 
-        Expression ParseIdentifier()
+        private Expression ParseIdentifier()
         {
             ValidateToken(TokenId.Identifier);
             if (_keywords.TryGetValue(_token.Text, out object value))
             {
-                if (value is Type)
+                if (value is Type type)
                 {
-                    return ParseTypeAccess((Type)value);
+                    return ParseTypeAccess(type);
                 }
 
                 if ((string)value == KeywordIt)
@@ -1281,30 +1221,21 @@ namespace LegendsViewer.Controls.Query
             if (_symbols.TryGetValue(_token.Text, out value) ||
                 _externals != null && _externals.TryGetValue(_token.Text, out value))
             {
-                Expression expr = value as Expression;
-                if (expr == null)
+                if (!(value is Expression expr))
                 {
                     expr = Expression.Constant(value);
                 }
-                else
+                else if (expr is LambdaExpression lambda)
                 {
-                    if (expr is LambdaExpression lambda)
-                    {
-                        return ParseLambdaInvocation(lambda);
-                    }
+                    return ParseLambdaInvocation(lambda);
                 }
                 NextToken();
                 return expr;
             }
-            if (_it != null)
-            {
-                return ParseMemberAccess(null, _it);
-            }
-
-            throw ParseError(Res.UnknownIdentifier, _token.Text);
+            return _it != null ? ParseMemberAccess(null, _it) : throw ParseError(Res.UnknownIdentifier, _token.Text);
         }
 
-        Expression ParseIt()
+        private Expression ParseIt()
         {
             if (_it == null)
             {
@@ -1315,20 +1246,17 @@ namespace LegendsViewer.Controls.Query
             return _it;
         }
 
-        Expression ParseIif()
+        private Expression ParseIif()
         {
             int errorPos = _token.Pos;
             NextToken();
             Expression[] args = ParseArgumentList();
-            if (args.Length != 3)
-            {
-                throw ParseError(errorPos, Res.IifRequiresThreeArgs);
-            }
-
-            return GenerateConditional(args[0], args[1], args[2], errorPos);
+            return args.Length != 3
+                ? throw ParseError(errorPos, Res.IifRequiresThreeArgs)
+                : GenerateConditional(args[0], args[1], args[2], errorPos);
         }
 
-        Expression GenerateConditional(Expression test, Expression expr1, Expression expr2, int errorPos)
+        private Expression GenerateConditional(Expression test, Expression expr1, Expression expr2, int errorPos)
         {
             if (test.Type != typeof(bool))
             {
@@ -1362,7 +1290,7 @@ namespace LegendsViewer.Controls.Query
             return Expression.Condition(test, expr1, expr2);
         }
 
-        Expression ParseNew()
+        private Expression ParseNew()
         {
             NextToken();
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
@@ -1382,8 +1310,7 @@ namespace LegendsViewer.Controls.Query
                 }
                 else
                 {
-                    MemberExpression me = expr as MemberExpression;
-                    if (me == null)
+                    if (!(expr is MemberExpression me))
                     {
                         throw ParseError(exprPos, Res.MissingAsClause);
                     }
@@ -1411,20 +1338,17 @@ namespace LegendsViewer.Controls.Query
             return Expression.MemberInit(Expression.New(type), bindings);
         }
 
-        Expression ParseLambdaInvocation(LambdaExpression lambda)
+        private Expression ParseLambdaInvocation(LambdaExpression lambda)
         {
             int errorPos = _token.Pos;
             NextToken();
             Expression[] args = ParseArgumentList();
-            if (FindMethod(lambda.Type, "Invoke", false, args, out MethodBase method) != 1)
-            {
-                throw ParseError(errorPos, Res.ArgsIncompatibleWithLambda);
-            }
-
-            return Expression.Invoke(lambda, args);
+            return FindMethod(lambda.Type, "Invoke", false, args, out _) != 1
+                ? throw ParseError(errorPos, Res.ArgsIncompatibleWithLambda)
+                : Expression.Invoke(lambda, args);
         }
 
-        Expression ParseTypeAccess(Type type)
+        private Expression ParseTypeAccess(Type type)
         {
             int errorPos = _token.Pos;
             NextToken();
@@ -1461,7 +1385,7 @@ namespace LegendsViewer.Controls.Query
             return ParseMemberAccess(type, null);
         }
 
-        Expression GenerateConversion(Expression expr, Type type, int errorPos)
+        private Expression GenerateConversion(Expression expr, Type type, int errorPos)
         {
             Type exprType = expr.Type;
             if (exprType == type)
@@ -1483,17 +1407,14 @@ namespace LegendsViewer.Controls.Query
                     return Expression.ConvertChecked(expr, type);
                 }
             }
-            if (exprType.IsAssignableFrom(type) || type.IsAssignableFrom(exprType) ||
-                exprType.IsInterface || type.IsInterface)
-            {
-                return Expression.Convert(expr, type);
-            }
-
-            throw ParseError(errorPos, Res.CannotConvertValue,
+            return exprType.IsAssignableFrom(type) || type.IsAssignableFrom(exprType) ||
+                exprType.IsInterface || type.IsInterface
+                ? Expression.Convert(expr, type)
+                : throw ParseError(errorPos, Res.CannotConvertValue,
                 GetTypeName(exprType), GetTypeName(type));
         }
 
-        Expression ParseMemberAccess(Type type, Expression instance)
+        private Expression ParseMemberAccess(Type type, Expression instance)
         {
             if (instance != null)
             {
@@ -1542,16 +1463,19 @@ namespace LegendsViewer.Controls.Query
             MemberInfo member = FindPropertyOrField(type, id, instance == null);
             if (member == null)
             {
-                throw ParseError(errorPos, Res.UnknownPropertyOrField,
-                    id, GetTypeName(type));
+                throw ParseError(errorPos, Res.UnknownPropertyOrField, id, GetTypeName(type));
             }
-
-            return member is PropertyInfo ?
-                Expression.Property(instance, (PropertyInfo)member) :
-                Expression.Field(instance, (FieldInfo)member);
+            else if (member is PropertyInfo info)
+            {
+                return Expression.Property(instance, info);
+            }
+            else
+            {
+                return Expression.Field(instance, (FieldInfo)member);
+            }
         }
 
-        static Type FindGenericType(Type generic, Type type)
+        private static Type FindGenericType(Type generic, Type type)
         {
             while (type != null && type != typeof(object))
             {
@@ -1576,7 +1500,7 @@ namespace LegendsViewer.Controls.Query
             return null;
         }
 
-        Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
+        private Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
         {
             ParameterExpression outerIt = _it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
@@ -1588,27 +1512,12 @@ namespace LegendsViewer.Controls.Query
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
             }
 
-            Type[] typeArgs;
-            if (signature.Name == "Min" || signature.Name == "Max")
-            {
-                typeArgs = new[] { elementType, args[0].Type };
-            }
-            else
-            {
-                typeArgs = new[] { elementType };
-            }
-            if (args.Length == 0)
-            {
-                args = new[] { instance };
-            }
-            else
-            {
-                args = new[] { instance, Expression.Lambda(args[0], innerIt) };
-            }
+            Type[] typeArgs = signature.Name == "Min" || signature.Name == "Max" ? (new[] { elementType, args[0].Type }) : (new[] { elementType });
+            args = args.Length == 0 ? (new[] { instance }) : (new[] { instance, Expression.Lambda(args[0], innerIt) });
             return Expression.Call(typeof(Enumerable), signature.Name, typeArgs, args);
         }
 
-        Expression[] ParseArgumentList()
+        private Expression[] ParseArgumentList()
         {
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
             NextToken();
@@ -1618,7 +1527,7 @@ namespace LegendsViewer.Controls.Query
             return args;
         }
 
-        Expression[] ParseArguments()
+        private Expression[] ParseArguments()
         {
             List<Expression> argList = new List<Expression>();
             while (true)
@@ -1634,7 +1543,7 @@ namespace LegendsViewer.Controls.Query
             return argList.ToArray();
         }
 
-        Expression ParseElementAccess(Expression expr)
+        private Expression ParseElementAccess(Expression expr)
         {
             int errorPos = _token.Pos;
             ValidateToken(TokenId.OpenBracket, Res.OpenParenExpected);
@@ -1650,12 +1559,7 @@ namespace LegendsViewer.Controls.Query
                 }
 
                 Expression index = PromoteExpression(args[0], typeof(int), true);
-                if (index == null)
-                {
-                    throw ParseError(errorPos, Res.InvalidIndex);
-                }
-
-                return Expression.ArrayIndex(expr, index);
+                return index == null ? throw ParseError(errorPos, Res.InvalidIndex) : Expression.ArrayIndex(expr, index);
             }
             switch (FindIndexer(expr.Type, args, out MethodBase mb))
             {
@@ -1670,7 +1574,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        static bool IsPredefinedType(Type type)
+        private static bool IsPredefinedType(Type type)
         {
             foreach (Type t in PredefinedTypes)
             {
@@ -1683,17 +1587,17 @@ namespace LegendsViewer.Controls.Query
             return false;
         }
 
-        static bool IsNullableType(Type type)
+        private static bool IsNullableType(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        static Type GetNonNullableType(Type type)
+        private static Type GetNonNullableType(Type type)
         {
             return IsNullableType(type) ? type.GetGenericArguments()[0] : type;
         }
 
-        static string GetTypeName(Type type)
+        private static string GetTypeName(Type type)
         {
             Type baseType = GetNonNullableType(type);
             string s = baseType.Name;
@@ -1705,22 +1609,22 @@ namespace LegendsViewer.Controls.Query
             return s;
         }
 
-        static bool IsNumericType(Type type)
+        private static bool IsNumericType(Type type)
         {
             return GetNumericTypeKind(type) != 0;
         }
 
-        static bool IsSignedIntegralType(Type type)
+        private static bool IsSignedIntegralType(Type type)
         {
             return GetNumericTypeKind(type) == 2;
         }
 
-        static bool IsUnsignedIntegralType(Type type)
+        private static bool IsUnsignedIntegralType(Type type)
         {
             return GetNumericTypeKind(type) == 3;
         }
 
-        static int GetNumericTypeKind(Type type)
+        private static int GetNumericTypeKind(Type type)
         {
             type = GetNonNullableType(type);
             if (type.IsEnum)
@@ -1750,15 +1654,15 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        static bool IsEnumType(Type type)
+        private static bool IsEnumType(Type type)
         {
             return GetNonNullableType(type).IsEnum;
         }
 
-        void CheckAndPromoteOperand(Type signatures, string opName, ref Expression expr, int errorPos)
+        private void CheckAndPromoteOperand(Type signatures, string opName, ref Expression expr, int errorPos)
         {
             Expression[] args = { expr };
-            if (FindMethod(signatures, "F", false, args, out MethodBase method) != 1)
+            if (FindMethod(signatures, "F", false, args, out _) != 1)
             {
                 throw ParseError(errorPos, Res.IncompatibleOperand,
                     opName, GetTypeName(args[0].Type));
@@ -1767,10 +1671,10 @@ namespace LegendsViewer.Controls.Query
             expr = args[0];
         }
 
-        void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
+        private void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
         {
             Expression[] args = { left, right };
-            if (FindMethod(signatures, "F", false, args, out MethodBase method) != 1)
+            if (FindMethod(signatures, "F", false, args, out _) != 1)
             {
                 throw IncompatibleOperandsError(opName, left, right, errorPos);
             }
@@ -1779,13 +1683,13 @@ namespace LegendsViewer.Controls.Query
             right = args[1];
         }
 
-        Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
+        private Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
         {
             return ParseError(pos, Res.IncompatibleOperands,
                 opName, GetTypeName(left.Type), GetTypeName(right.Type));
         }
 
-        MemberInfo FindPropertyOrField(Type type, string memberName, bool staticAccess)
+        private MemberInfo FindPropertyOrField(Type type, string memberName, bool staticAccess)
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
@@ -1801,7 +1705,7 @@ namespace LegendsViewer.Controls.Query
             return null;
         }
 
-        int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
+        private int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
@@ -1819,7 +1723,7 @@ namespace LegendsViewer.Controls.Query
             return 0;
         }
 
-        int FindIndexer(Type type, Expression[] args, out MethodBase method)
+        private int FindIndexer(Type type, Expression[] args, out MethodBase method)
         {
             foreach (Type t in SelfAndBaseTypes(type))
             {
@@ -1841,7 +1745,7 @@ namespace LegendsViewer.Controls.Query
             return 0;
         }
 
-        static IEnumerable<Type> SelfAndBaseTypes(Type type)
+        private static IEnumerable<Type> SelfAndBaseTypes(Type type)
         {
             if (type.IsInterface)
             {
@@ -1852,7 +1756,7 @@ namespace LegendsViewer.Controls.Query
             return SelfAndBaseClasses(type);
         }
 
-        static IEnumerable<Type> SelfAndBaseClasses(Type type)
+        private static IEnumerable<Type> SelfAndBaseClasses(Type type)
         {
             while (type != null)
             {
@@ -1861,7 +1765,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        static void AddInterface(List<Type> types, Type type)
+        private static void AddInterface(List<Type> types, Type type)
         {
             if (!types.Contains(type))
             {
@@ -1873,14 +1777,14 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        class MethodData
+        private class MethodData
         {
             public MethodBase MethodBase;
             public ParameterInfo[] Parameters;
             public Expression[] Args;
         }
 
-        int FindBestMethod(IEnumerable<MethodBase> methods, Expression[] args, out MethodBase method)
+        private int FindBestMethod(IEnumerable<MethodBase> methods, Expression[] args, out MethodBase method)
         {
             MethodData[] applicable = methods.
                 Select(m => new MethodData { MethodBase = m, Parameters = m.GetParameters() }).
@@ -1909,7 +1813,7 @@ namespace LegendsViewer.Controls.Query
             return applicable.Length;
         }
 
-        bool IsApplicable(MethodData method, Expression[] args)
+        private bool IsApplicable(MethodData method, Expression[] args)
         {
             if (method.Parameters.Length != args.Length)
             {
@@ -1937,7 +1841,7 @@ namespace LegendsViewer.Controls.Query
             return true;
         }
 
-        Expression PromoteExpression(Expression expr, Type type, bool exact)
+        private Expression PromoteExpression(Expression expr, Type type, bool exact)
         {
             if (expr.Type == type)
             {
@@ -1953,51 +1857,43 @@ namespace LegendsViewer.Controls.Query
                         return Expression.Constant(null, type);
                     }
                 }
-                else
+                else if (_literals.TryGetValue(ce, out string text))
                 {
-                    if (_literals.TryGetValue(ce, out string text))
+                    Type target = GetNonNullableType(type);
+                    object value = null;
+                    switch (Type.GetTypeCode(ce.Type))
                     {
-                        Type target = GetNonNullableType(type);
-                        Object value = null;
-                        switch (Type.GetTypeCode(ce.Type))
-                        {
-                            case TypeCode.Int32:
-                            case TypeCode.UInt32:
-                            case TypeCode.Int64:
-                            case TypeCode.UInt64:
+                        case TypeCode.Int32:
+                        case TypeCode.UInt32:
+                        case TypeCode.Int64:
+                        case TypeCode.UInt64:
+                            value = ParseNumber(text, target);
+                            break;
+                        case TypeCode.Double:
+                            if (target == typeof(decimal))
+                            {
                                 value = ParseNumber(text, target);
-                                break;
-                            case TypeCode.Double:
-                                if (target == typeof(decimal))
-                                {
-                                    value = ParseNumber(text, target);
-                                }
+                            }
 
-                                break;
-                            case TypeCode.String:
-                                value = ParseEnum(text, target);
-                                break;
-                        }
-                        if (value != null)
-                        {
-                            return Expression.Constant(value, type);
-                        }
+                            break;
+                        case TypeCode.String:
+                            value = ParseEnum(text, target);
+                            break;
+                    }
+                    if (value != null)
+                    {
+                        return Expression.Constant(value, type);
                     }
                 }
             }
             if (IsCompatibleWith(expr.Type, type))
             {
-                if (type.IsValueType || exact)
-                {
-                    return Expression.Convert(expr, type);
-                }
-
-                return expr;
+                return type.IsValueType || exact ? Expression.Convert(expr, type) : expr;
             }
             return null;
         }
 
-        static object ParseNumber(string text, Type type)
+        private static object ParseNumber(string text, Type type)
         {
             switch (Type.GetTypeCode(GetNonNullableType(type)))
             {
@@ -2093,7 +1989,7 @@ namespace LegendsViewer.Controls.Query
             return null;
         }
 
-        static object ParseEnum(string name, Type type)
+        private static object ParseEnum(string name, Type type)
         {
             if (type.IsEnum)
             {
@@ -2108,7 +2004,7 @@ namespace LegendsViewer.Controls.Query
             return null;
         }
 
-        static bool IsCompatibleWith(Type source, Type target)
+        private static bool IsCompatibleWith(Type source, Type target)
         {
             if (source == target)
             {
@@ -2248,7 +2144,7 @@ namespace LegendsViewer.Controls.Query
             return false;
         }
 
-        static bool IsBetterThan(Expression[] args, MethodData m1, MethodData m2)
+        private static bool IsBetterThan(Expression[] args, MethodData m1, MethodData m2)
         {
             bool better = false;
             for (int i = 0; i < args.Length; i++)
@@ -2272,7 +2168,7 @@ namespace LegendsViewer.Controls.Query
         // Return 1 if s -> t1 is a better conversion than s -> t2
         // Return -1 if s -> t2 is a better conversion than s -> t1
         // Return 0 if neither conversion is better
-        static int CompareConversions(Type s, Type t1, Type t2)
+        private static int CompareConversions(Type s, Type t1, Type t2)
         {
             if (t1 == t2)
             {
@@ -2306,87 +2202,72 @@ namespace LegendsViewer.Controls.Query
                 return 1;
             }
 
-            if (IsSignedIntegralType(t2) && IsUnsignedIntegralType(t1))
-            {
-                return -1;
-            }
-
-            return 0;
+            return IsSignedIntegralType(t2) && IsUnsignedIntegralType(t1) ? -1 : 0;
         }
 
-        Expression GenerateEqual(Expression left, Expression right)
+        private Expression GenerateEqual(Expression left, Expression right)
         {
             return Expression.Equal(left, right);
         }
 
-        Expression GenerateNotEqual(Expression left, Expression right)
+        private Expression GenerateNotEqual(Expression left, Expression right)
         {
             return Expression.NotEqual(left, right);
         }
 
-        Expression GenerateGreaterThan(Expression left, Expression right)
+        private Expression GenerateGreaterThan(Expression left, Expression right)
         {
-            if (left.Type == typeof(string))
-            {
-                return Expression.GreaterThan(
+            return left.Type == typeof(string)
+                ? Expression.GreaterThan(
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
-                );
-            }
-            return Expression.GreaterThan(left, right);
+                )
+                : Expression.GreaterThan(left, right);
         }
 
-        Expression GenerateGreaterThanEqual(Expression left, Expression right)
+        private Expression GenerateGreaterThanEqual(Expression left, Expression right)
         {
-            if (left.Type == typeof(string))
-            {
-                return Expression.GreaterThanOrEqual(
+            return left.Type == typeof(string)
+                ? Expression.GreaterThanOrEqual(
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
-                );
-            }
-            return Expression.GreaterThanOrEqual(left, right);
+                )
+                : Expression.GreaterThanOrEqual(left, right);
         }
 
-        Expression GenerateLessThan(Expression left, Expression right)
+        private Expression GenerateLessThan(Expression left, Expression right)
         {
-            if (left.Type == typeof(string))
-            {
-                return Expression.LessThan(
+            return left.Type == typeof(string)
+                ? Expression.LessThan(
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
-                );
-            }
-            return Expression.LessThan(left, right);
+                )
+                : Expression.LessThan(left, right);
         }
 
-        Expression GenerateLessThanEqual(Expression left, Expression right)
+        private Expression GenerateLessThanEqual(Expression left, Expression right)
         {
-            if (left.Type == typeof(string))
-            {
-                return Expression.LessThanOrEqual(
+            return left.Type == typeof(string)
+                ? Expression.LessThanOrEqual(
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
-                );
-            }
-            return Expression.LessThanOrEqual(left, right);
+                )
+                : Expression.LessThanOrEqual(left, right);
         }
 
-        Expression GenerateAdd(Expression left, Expression right)
+        private Expression GenerateAdd(Expression left, Expression right)
         {
-            if (left.Type == typeof(string) && right.Type == typeof(string))
-            {
-                return GenerateStaticMethodCall("Concat", left, right);
-            }
-            return Expression.Add(left, right);
+            return left.Type == typeof(string) && right.Type == typeof(string)
+                ? GenerateStaticMethodCall("Concat", left, right)
+                : Expression.Add(left, right);
         }
 
-        Expression GenerateSubtract(Expression left, Expression right)
+        private Expression GenerateSubtract(Expression left, Expression right)
         {
             return Expression.Subtract(left, right);
         }
 
-        Expression GenerateStringConcat(Expression left, Expression right)
+        private Expression GenerateStringConcat(Expression left, Expression right)
         {
             return Expression.Call(
                 null,
@@ -2394,23 +2275,23 @@ namespace LegendsViewer.Controls.Query
                 new[] { left, right });
         }
 
-        MethodInfo GetStaticMethod(string methodName, Expression left, Expression right)
+        private MethodInfo GetStaticMethod(string methodName, Expression left, Expression right)
         {
             return left.Type.GetMethod(methodName, new[] { left.Type, right.Type });
         }
 
-        Expression GenerateStaticMethodCall(string methodName, Expression left, Expression right)
+        private Expression GenerateStaticMethodCall(string methodName, Expression left, Expression right)
         {
             return Expression.Call(null, GetStaticMethod(methodName, left, right), new[] { left, right });
         }
 
-        void SetTextPos(int pos)
+        private void SetTextPos(int pos)
         {
             _textPos = pos;
             _ch = _textPos < _textLen ? _text[_textPos] : '\0';
         }
 
-        void NextChar()
+        private void NextChar()
         {
             if (_textPos < _textLen)
             {
@@ -2420,9 +2301,9 @@ namespace LegendsViewer.Controls.Query
             _ch = _textPos < _textLen ? _text[_textPos] : '\0';
         }
 
-        void NextToken()
+        private void NextToken()
         {
-            while (Char.IsWhiteSpace(_ch))
+            while (char.IsWhiteSpace(_ch))
             {
                 NextChar();
             }
@@ -2581,22 +2462,22 @@ namespace LegendsViewer.Controls.Query
                     t = TokenId.StringLiteral;
                     break;
                 default:
-                    if (Char.IsLetter(_ch) || _ch == '@' || _ch == '_')
+                    if (char.IsLetter(_ch) || _ch == '@' || _ch == '_')
                     {
                         do
                         {
                             NextChar();
-                        } while (Char.IsLetterOrDigit(_ch) || _ch == '_');
+                        } while (char.IsLetterOrDigit(_ch) || _ch == '_');
                         t = TokenId.Identifier;
                         break;
                     }
-                    if (Char.IsDigit(_ch))
+                    if (char.IsDigit(_ch))
                     {
                         t = TokenId.IntegerLiteral;
                         do
                         {
                             NextChar();
-                        } while (Char.IsDigit(_ch));
+                        } while (char.IsDigit(_ch));
                         if (_ch == '.')
                         {
                             t = TokenId.RealLiteral;
@@ -2605,7 +2486,7 @@ namespace LegendsViewer.Controls.Query
                             do
                             {
                                 NextChar();
-                            } while (Char.IsDigit(_ch));
+                            } while (char.IsDigit(_ch));
                         }
                         if (_ch == 'E' || _ch == 'e')
                         {
@@ -2620,7 +2501,7 @@ namespace LegendsViewer.Controls.Query
                             do
                             {
                                 NextChar();
-                            } while (Char.IsDigit(_ch));
+                            } while (char.IsDigit(_ch));
                         }
                         if (_ch == 'F' || _ch == 'f')
                         {
@@ -2641,12 +2522,12 @@ namespace LegendsViewer.Controls.Query
             _token.Pos = tokenPos;
         }
 
-        bool TokenIdentifierIs(string id)
+        private bool TokenIdentifierIs(string id)
         {
-            return _token.Id == TokenId.Identifier && String.Equals(id, _token.Text, StringComparison.OrdinalIgnoreCase);
+            return _token.Id == TokenId.Identifier && string.Equals(id, _token.Text, StringComparison.OrdinalIgnoreCase);
         }
 
-        string GetIdentifier()
+        private string GetIdentifier()
         {
             ValidateToken(TokenId.Identifier, Res.IdentifierExpected);
             string id = _token.Text;
@@ -2658,15 +2539,15 @@ namespace LegendsViewer.Controls.Query
             return id;
         }
 
-        void ValidateDigit()
+        private void ValidateDigit()
         {
-            if (!Char.IsDigit(_ch))
+            if (!char.IsDigit(_ch))
             {
                 throw ParseError(_textPos, Res.DigitExpected);
             }
         }
 
-        void ValidateToken(TokenId t, string errorMessage)
+        private void ValidateToken(TokenId t, string errorMessage)
         {
             if (_token.Id != t)
             {
@@ -2674,7 +2555,7 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        void ValidateToken(TokenId t)
+        private void ValidateToken(TokenId t)
         {
             if (_token.Id != t)
             {
@@ -2682,17 +2563,17 @@ namespace LegendsViewer.Controls.Query
             }
         }
 
-        Exception ParseError(string format, params object[] args)
+        private Exception ParseError(string format, params object[] args)
         {
             return ParseError(_token.Pos, format, args);
         }
 
-        Exception ParseError(int pos, string format, params object[] args)
+        private Exception ParseError(int pos, string format, params object[] args)
         {
             return new ParseException(string.Format(CultureInfo.CurrentCulture, format, args), pos);
         }
 
-        static Dictionary<string, object> CreateKeywords()
+        private static Dictionary<string, object> CreateKeywords()
         {
             Dictionary<string, object> d = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
             {
@@ -2712,7 +2593,7 @@ namespace LegendsViewer.Controls.Query
         }
     }
 
-    static class Res
+    internal static class Res
     {
         public const string DuplicateIdentifier = "The identifier '{0}' was defined more than once";
         public const string ExpressionTypeMismatch = "Expression of type '{0}' expected";

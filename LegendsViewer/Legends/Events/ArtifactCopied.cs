@@ -19,7 +19,6 @@ namespace LegendsViewer.Legends.Events
         public Entity SourceEntity { get; set; }
         public bool FromOriginal { get; set; }
 
-
         public ArtifactCopied(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -43,12 +42,12 @@ namespace LegendsViewer.Legends.Events
 
             if (DestSite != null)
             {
-                DestStructure = DestSite.Structures.FirstOrDefault(structure => structure.Id == DestStructureId);
+                DestStructure = DestSite.Structures.Find(structure => structure.Id == DestStructureId);
             }
 
             if (SourceSite != null)
             {
-                SourceStructure = SourceSite.Structures.FirstOrDefault(structure => structure.Id == SourceStructureId);
+                SourceStructure = SourceSite.Structures.Find(structure => structure.Id == SourceStructureId);
             }
 
             Artifact.AddEvent(this);

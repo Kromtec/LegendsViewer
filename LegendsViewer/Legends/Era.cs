@@ -13,10 +13,7 @@ namespace LegendsViewer.Legends
     {
         public static List<string> Filters;
         public List<War> Wars { get; set; }
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public int StartYear, EndYear;
         public string Name;
         public Era(List<Property> properties, World world)
@@ -24,7 +21,7 @@ namespace LegendsViewer.Legends
         {
             Wars = new List<War>();
             Id = world.Eras.Count;
-            foreach(Property property in properties)
+            foreach (Property property in properties)
             {
                 switch (property.Name)
                 {
@@ -48,15 +45,10 @@ namespace LegendsViewer.Legends
                                                                                                     || war.StartYear <= StartYear && war.EndYear >= EndYear //war started before & ended after
                                                                                                     || war.StartYear <= StartYear && war.EndYear == -1));
         }
-        
+
         public override string ToLink(bool link = true, DwarfObject pov = null, WorldEvent worldEvent = null)
         {
-            if (Name != "")
-            {
-                return Name;
-            }
-
-            return $"({StartYear} - {EndYear})";
+            return Name != "" ? Name : $"({StartYear} - {EndYear})";
         }
         public override string ToString() { return Name; }
     }

@@ -39,9 +39,9 @@ namespace LegendsViewer.Legends.WorldObjects
         public List<EventCollection> Warfare { get; set; }
         [AllowAdvancedSearch(true)]
         [ShowInAdvancedSearchResults]
-        public List<Battle> Battles { get { return Warfare.OfType<Battle>().ToList(); } set { } }
+        public List<Battle> Battles { get => Warfare.OfType<Battle>().ToList(); set { } }
         [AllowAdvancedSearch(true)]
-        public List<SiteConquered> Conquerings { get { return Warfare.OfType<SiteConquered>().ToList(); } set { } }
+        public List<SiteConquered> Conquerings { get => Warfare.OfType<SiteConquered>().ToList(); set { } }
         public List<OwnerPeriod> OwnerHistory { get; set; }
         [AllowAdvancedSearch("Related Historical Figures", true)]
         public List<HistoricalFigure> RelatedHistoricalFigures { get; set; }
@@ -52,12 +52,7 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             get
             {
-                if (OwnerHistory.Count(site => site.EndYear == -1) > 0)
-                {
-                    return OwnerHistory.First(site => site.EndYear == -1).Owner;
-                }
-
-                return null;
+                return OwnerHistory.Count(site => site.EndYear == -1) > 0 ? OwnerHistory.First(site => site.EndYear == -1).Owner : null;
             }
             set { }
         }
@@ -104,13 +99,10 @@ namespace LegendsViewer.Legends.WorldObjects
             set { }
         }
         [AllowAdvancedSearch("Notable Deaths", true)]
-        public List<HistoricalFigure> NotableDeaths { get { return Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); } set { } }
+        public List<HistoricalFigure> NotableDeaths { get => Events.OfType<HfDied>().Select(death => death.HistoricalFigure).ToList(); set { } }
         [AllowAdvancedSearch("Rampages", true)]
         public List<BeastAttack> BeastAttacks { get; set; }
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public class Official
         {
             public HistoricalFigure HistoricalFigure;
@@ -185,7 +177,7 @@ namespace LegendsViewer.Legends.WorldObjects
                             }
                         }
                         break;
-                    case "civ_id": property.Known = true; break;
+                    case "civ_id":
                     case "cur_owner_id": property.Known = true; break;
                     case "rectangle":
                         char[] delimiterChars = { ':', ',' };
@@ -301,11 +293,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                if (pov != this)
-                {
-                    return Icon + "<a href = \"site#" + Id + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                return Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
+                return pov != this
+                    ? Icon + "<a href = \"site#" + Id + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
             }
             return Name;
         }

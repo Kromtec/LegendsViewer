@@ -27,7 +27,7 @@ namespace LegendsViewer.Legends.Events
                             case "treequota": Topic = AgreementTopic.TreeQuota; break;
                             case "becomelandholder": Topic = AgreementTopic.BecomeLandHolder; break;
                             case "promotelandholder": Topic = AgreementTopic.PromoteLandHolder; break;
-                            case "tributeagreement": Topic = AgreementTopic.Tribute; break;
+                            case "tributeagreement":
                             case "unknown 9": Topic = AgreementTopic.Tribute; break;
                             default:
                                 Topic = AgreementTopic.Unknown;

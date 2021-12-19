@@ -41,10 +41,10 @@ namespace LegendsViewer.Legends.WorldObjects
         public HistoricalFigure Author { get; set; } // legends_plus.xml
         public List<string> Styles { get; set; } // legends_plus.xml
         public List<Reference> References { get; set; } // legends_plus.xml
-        public string TypeAsString { get { return Type.GetDescription(); } set { } }
+        public string TypeAsString { get => Type.GetDescription(); set { } }
         [AllowAdvancedSearch("Pages")]
         [ShowInAdvancedSearchResults("Pages")]
-        public int PageCount { get { return PageEnd - PageStart + 1; } set { } }
+        public int PageCount { get => PageEnd - PageStart + 1; set { } }
         public int AuthorRoll { get; set; }
         public int FormId { get; set; }
 
@@ -52,10 +52,7 @@ namespace LegendsViewer.Legends.WorldObjects
 
         public static List<string> Filters;
 
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
 
         public WrittenContent(List<Property> properties, World world)
             : base(properties, world)
@@ -217,15 +214,9 @@ namespace LegendsViewer.Legends.WorldObjects
                 title += "&#13";
                 title += "Events: " + Events.Count;
 
-                string linkedString = "";
-                if (pov != this)
-                {
-                    linkedString = Icon + "<a href = \"writtencontent#" + Id + "\" title=\"" + title + "\">" + Name + "</a>";
-                }
-                else
-                {
-                    linkedString = Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
-                }
+                string linkedString = pov != this
+                    ? Icon + "<a href = \"writtencontent#" + Id + "\" title=\"" + title + "\">" + Name + "</a>"
+                    : Icon + "<a title=\"" + title + "\">" + HtmlStyleUtil.CurrentDwarfObject(Name) + "</a>";
                 return linkedString;
             }
             return Name;

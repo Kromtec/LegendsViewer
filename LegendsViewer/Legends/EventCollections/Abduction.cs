@@ -20,10 +20,7 @@ namespace LegendsViewer.Legends.EventCollections
         public Entity Defender;
 
         public List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => AllEvents.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public Abduction(List<Property> properties, World world)
             : base(properties, world)
         {
@@ -31,7 +28,7 @@ namespace LegendsViewer.Legends.EventCollections
             {
                 switch (property.Name)
                 {
-                    case "ordinal": Ordinal = String.Intern(property.Value); break;
+                    case "ordinal": Ordinal = string.Intern(property.Value); break;
                     case "coords": Coordinates = Formatting.ConvertToLocation(property.Value); break;
                     case "parent_eventcol": ParentCollection = world.GetEventCollection(Convert.ToInt32(property.Value)); break;
                     case "subregion_id": Region = world.GetRegion(Convert.ToInt32(property.Value)); break;

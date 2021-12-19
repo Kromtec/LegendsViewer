@@ -8,8 +8,8 @@ namespace LegendsViewer.Controls.HTML
 {
     public class StructurePrinter : HtmlPrinter
     {
-        Structure _structure;
-        World _world;
+        private readonly Structure _structure;
+        private readonly World _world;
 
         public StructurePrinter(Structure structure, World world)
         {
@@ -21,56 +21,56 @@ namespace LegendsViewer.Controls.HTML
         {
             Html = new StringBuilder();
 
-            Html.AppendLine("<h1>" + _structure.GetIcon() + " " + _structure.Name + "</h1>");
-            Html.AppendLine("<b>");
-            Html.AppendLine(_structure.TypeAsString);
-            Html.AppendLine(" in " + _structure.Site.ToLink() + "</b><br/><br/>");
+            Html.Append("<h1>").Append(_structure.GetIcon()).Append(' ').Append(_structure.Name).AppendLine("</h1>")
+                .AppendLine("<b>")
+                .AppendLine(_structure.TypeAsString)
+                .Append(" in ").Append(_structure.Site.ToLink()).AppendLine("</b><br/><br/>");
 
             if (_structure.Deity != null)
             {
-                Html.AppendLine("<b>Deity:</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _structure.Deity.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<b>Deity:</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_structure.Deity.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>");
             }
             if (_structure.Religion != null)
             {
-                Html.AppendLine("<b>Religion:</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _structure.Religion.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<b>Religion:</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_structure.Religion.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>");
             }
             if (_structure.Entity != null)
             {
-                Html.AppendLine("<b>Entity:</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _structure.Entity.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<b>Entity:</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_structure.Entity.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>");
             }
             if (_structure.Owner != null)
             {
-                Html.AppendLine("<b>Owner:</b><br/>");
-                Html.AppendLine("<ul>");
-                Html.AppendLine("<li>" + _structure.Owner.ToLink() + "</li>");
-                Html.AppendLine("</ul>");
+                Html.AppendLine("<b>Owner:</b><br/>")
+                    .AppendLine("<ul>")
+                    .Append("<li>").Append(_structure.Owner.ToLink()).AppendLine("</li>")
+                    .AppendLine("</ul>");
             }
-            if (_structure.Inhabitants.Any())
+            if (_structure.Inhabitants.Count > 0)
             {
-                Html.AppendLine("<b>Inhabitants:</b><br/>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Inhabitants:</b><br/>")
+                    .AppendLine("<ul>");
                 foreach (var inhabitant in _structure.Inhabitants)
                 {
-                    Html.AppendLine("<li>" + inhabitant.ToLink() + "</li>");
+                    Html.Append("<li>").Append(inhabitant.ToLink()).AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }
-            if (_structure.CopiedArtifacts.Any())
+            if (_structure.CopiedArtifacts.Count > 0)
             {
-                Html.AppendLine("<b>Copied Artifacts:</b><br/>");
-                Html.AppendLine("<ul>");
+                Html.AppendLine("<b>Copied Artifacts:</b><br/>")
+                    .AppendLine("<ul>");
                 foreach (var artifact in _structure.CopiedArtifacts)
                 {
-                    Html.AppendLine("<li>" + artifact.ToLink() + "</li>");
+                    Html.Append("<li>").Append(artifact.ToLink()).AppendLine("</li>");
                 }
                 Html.AppendLine("</ul>");
             }

@@ -78,5 +78,4 @@ namespace LegendsViewer.Legends.Events
             return eventString;
         }
     }
-
 }

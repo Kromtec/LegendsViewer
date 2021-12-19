@@ -40,8 +40,6 @@ namespace LegendsViewer.Legends.Events
                                 Claim = Claim.Symbol;
                                 break;
                             case "heirloom":
-                                Claim = Claim.Heirloom;
-                                break;
                             case "treasure":
                                 Claim = Claim.Heirloom;
                                 break;
@@ -81,7 +79,7 @@ namespace LegendsViewer.Legends.Events
                     foreach (EntityPositionAssignment assignment in Entity.EntityPositionAssignments)
                     {
                         EntityPosition position =
-                            Entity.EntityPositions.FirstOrDefault(pos => pos.Id == assignment.PositionId);
+                            Entity.EntityPositions.Find(pos => pos.Id == assignment.PositionId);
                         if (position != null && assignment.HistoricalFigure != null)
                         {
                             string positionName = position.GetTitleByCaste(assignment.HistoricalFigure.Caste);

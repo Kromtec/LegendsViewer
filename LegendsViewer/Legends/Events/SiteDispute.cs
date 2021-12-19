@@ -13,7 +13,7 @@ namespace LegendsViewer.Legends.Events
         public Entity Entity2 { get; set; }
         public Site Site1 { get; set; }
         public Site Site2 { get; set; }
-        private string _unknownDispute;
+        private readonly string _unknownDispute;
 
         public SiteDispute(List<Property> properties, World world) : base(properties, world)
         {

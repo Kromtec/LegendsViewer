@@ -37,7 +37,7 @@ namespace LegendsViewer.Legends.Events
                         break;
                     case "link":
                     case "link_type":
-                        switch (property.Value.Replace("_"," "))
+                        switch (property.Value.Replace("_", " "))
                         {
                             case "position":
                                 LinkType = HfEntityLinkType.Position;
@@ -112,13 +112,13 @@ namespace LegendsViewer.Legends.Events
                     break;
                 case HfEntityLinkType.Squad:
                 case HfEntityLinkType.Position:
-                    EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower() || pos.Id == PositionId);
+                    EntityPosition position = Entity.EntityPositions.Find(pos => string.Equals(pos.Name, Position, StringComparison.OrdinalIgnoreCase) || pos.Id == PositionId);
                     if (position != null)
                     {
                         string positionName = position.GetTitleByCaste(HistoricalFigure?.Caste);
                         eventString += " became the " + positionName + " of ";
                     }
-                    else if(!string.IsNullOrWhiteSpace(Position))
+                    else if (!string.IsNullOrWhiteSpace(Position))
                     {
                         eventString += " became the " + Position + " of ";
                     }
@@ -164,7 +164,7 @@ namespace LegendsViewer.Legends.Events
             eventString += " to the position of ";
             if (Position != null)
             {
-                EntityPosition position = Entity.EntityPositions.FirstOrDefault(pos => pos.Name.ToLower() == Position.ToLower());
+                EntityPosition position = Entity.EntityPositions.Find(pos => string.Equals(pos.Name, Position, StringComparison.OrdinalIgnoreCase));
                 if (position != null)
                 {
                     string positionName = position.GetTitleByCaste(HistoricalFigure?.Caste);

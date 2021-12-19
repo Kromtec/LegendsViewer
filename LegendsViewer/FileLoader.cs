@@ -16,16 +16,16 @@ namespace LegendsViewer
     public class FileLoader
     {
         public bool Working;
-        private Button _xmlButton, _historyButton, _sitesButton, _mapButton, _xmlPlusButton;
-        private TextBox _xmlText, _historyText, _sitesText, _mapText, _xmlPlusText;
-        private RichTextBox _logText;
-        private Label _statusLabel;
-        private Color _readyColor = Color.FromArgb(220, 255, 220);
-        private Color _notReadyColor = Color.FromArgb(255, 220, 220);
-        private Color _notAvailableColor = Color.DarkGray;
-        private Color _defaultColor = SystemColors.Control;
+        private readonly Button _xmlButton, _historyButton, _sitesButton, _mapButton, _xmlPlusButton;
+        private readonly TextBox _xmlText, _historyText, _sitesText, _mapText, _xmlPlusText;
+        private readonly RichTextBox _logText;
+        private readonly Label _statusLabel;
+        private readonly Color _readyColor = Color.FromArgb(220, 255, 220);
+        private readonly Color _notReadyColor = Color.FromArgb(255, 220, 220);
+        private readonly Color _notAvailableColor = Color.DarkGray;
+        private readonly Color _defaultColor = SystemColors.Control;
         private FileState _xmlState, _historyState, _sitesState, _mapState, _xmlPlusState;
-        private string _xmlTextDefault = "Legends XML / Archive";
+        private readonly string _xmlTextDefault = "Legends XML / Archive";
         private const string HistoryTextDefault = "World History Text";
         private const string SitesTextDefault = "Sites and Populations Text";
         private const string MapTextDefault = "Map Image";
@@ -42,7 +42,7 @@ namespace LegendsViewer
 
         private FileState XmlState
         {
-            get { return _xmlState; }
+            get => _xmlState;
             set
             {
                 _xmlState = value;
@@ -70,7 +70,7 @@ namespace LegendsViewer
 
         private FileState HistoryState
         {
-            get { return _historyState; }
+            get => _historyState;
             set
             {
                 _historyState = value;
@@ -98,7 +98,7 @@ namespace LegendsViewer
 
         private FileState SitesState
         {
-            get { return _sitesState; }
+            get => _sitesState;
             set
             {
                 _sitesState = value;
@@ -126,7 +126,7 @@ namespace LegendsViewer
 
         private FileState MapState
         {
-            get { return _mapState; }
+            get => _mapState;
             set
             {
                 _mapState = value;
@@ -154,7 +154,7 @@ namespace LegendsViewer
 
         private FileState XmlPlusState
         {
-            get { return _xmlPlusState; }
+            get => _xmlPlusState;
             set
             {
                 _xmlPlusState = value;
@@ -180,7 +180,7 @@ namespace LegendsViewer
             }
         }
 
-        private List<string> _extractedFiles;
+        private readonly List<string> _extractedFiles;
 
         public FileLoader(
               Button xmlButton, TextBox xmlText
@@ -225,11 +225,7 @@ namespace LegendsViewer
             {
                 Filter = filter
             };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                return dialog.FileName;
-            }
-            return "";
+            return dialog.ShowDialog() == DialogResult.OK ? dialog.FileName : "";
         }
 
         private void XmlClick(object sender, EventArgs e)
@@ -304,16 +300,15 @@ namespace LegendsViewer
             _mapText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldMapBmp).FirstOrDefault();
             _xmlPlusText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierLegendsPlusXml).FirstOrDefault();
 
-            XmlState = String.IsNullOrEmpty(_xmlText.Text) ? FileState.NotReady : FileState.Ready;
-            HistoryState = String.IsNullOrEmpty(_historyText.Text) ? FileState.NotReady : FileState.Ready;
-            SitesState = String.IsNullOrEmpty(_sitesText.Text) ? FileState.NotReady : FileState.Ready;
-            MapState = String.IsNullOrEmpty(_mapText.Text) ? FileState.NotReady : FileState.Ready;
-            XmlPlusState = String.IsNullOrEmpty(_xmlPlusText.Text) ? FileState.NotReady : FileState.Ready;
+            XmlState = string.IsNullOrEmpty(_xmlText.Text) ? FileState.NotReady : FileState.Ready;
+            HistoryState = string.IsNullOrEmpty(_historyText.Text) ? FileState.NotReady : FileState.Ready;
+            SitesState = string.IsNullOrEmpty(_sitesText.Text) ? FileState.NotReady : FileState.Ready;
+            MapState = string.IsNullOrEmpty(_mapText.Text) ? FileState.NotReady : FileState.Ready;
+            XmlPlusState = string.IsNullOrEmpty(_xmlPlusText.Text) ? FileState.NotReady : FileState.Ready;
 
-            if (String.IsNullOrEmpty(_mapText.Text))
+            if (string.IsNullOrEmpty(_mapText.Text))
             {
-                string imageFile = Directory.GetFiles(directory)
-                    .FirstOrDefault(f =>
+                string imageFile = Array.Find(Directory.GetFiles(directory), f =>
                         (f.EndsWith(".bmp") ||
                          f.EndsWith(".png") ||
                          f.EndsWith(".jpg") ||
@@ -450,7 +445,6 @@ namespace LegendsViewer
 
         private void BackgroundWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
             if (e.Result != null)
             {
                 if (e.Error != null)
@@ -496,7 +490,7 @@ namespace LegendsViewer
 
         private void extract_DoWork(object sender, DoWorkEventArgs e)
         {
-            using (SevenZipExtractor extractor = new SevenZipExtractor(e.Argument as String))
+            using (SevenZipExtractor extractor = new SevenZipExtractor(e.Argument as string))
             {
                 string fileNameLegendsXml = extractor.ArchiveFileNames.FirstOrDefault(file => file.EndsWith(FileIdentifierLegendsXml, StringComparison.OrdinalIgnoreCase));
                 if (string.IsNullOrEmpty(fileNameLegendsXml))

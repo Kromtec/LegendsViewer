@@ -36,7 +36,7 @@ namespace LegendsViewer.Legends
         {
             switch (property.Name)
             {
-                case "id": 
+                case "id":
                     IdentityId = Convert.ToInt32(property.Value);
                     break;
                 case "rep_friendly": Type = ReputationType.Friendly; Strength = Convert.ToInt32(property.Value); break;

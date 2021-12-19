@@ -9,13 +9,10 @@ namespace LegendsViewer.Controls.Chart
 
         public ChartOption Option
         {
-            get
-            {
-                return _chartOption;
-            }
+            get => _chartOption;
             set
             {
-                _chartOption= value;
+                _chartOption = value;
                 switch (_chartOption)
                 {
                     case ChartOption.TimelineEvents: Text = "Events"; break;
@@ -45,11 +42,10 @@ namespace LegendsViewer.Controls.Chart
                     case ChartOption.WorldOutdoorPopulations: Text = "Outdoor Populations"; break;
                     case ChartOption.WorldUndergroundPopulations: Text = "Underground Populations"; break;
                 }
-
             }
         }
 
-        ChartPanel _chart;
+        private readonly ChartPanel _chart;
         public ChartMenuItem(ChartPanel chart)
         {
             _chart = chart;

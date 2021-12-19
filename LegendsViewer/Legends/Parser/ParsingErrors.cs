@@ -15,7 +15,7 @@ namespace LegendsViewer.Legends.Parser
                 _log.Append(description);
                 if (!string.IsNullOrWhiteSpace(details))
                 {
-                    _log.AppendLine(" (" + details + ")");
+                    _log.Append(" (").Append(details).AppendLine(")");
                 }
                 else
                 {

@@ -50,15 +50,15 @@ namespace LegendsViewer.Legends.Events
                     case "histfig": HistoricalFigure = world.GetHistoricalFigure(Convert.ToInt32(property.Value)); break;
                     case "props_item_type":
                     case "item_type":
-                        ItemType = property.Value; 
+                        ItemType = property.Value;
                         break;
                     case "props_item_subtype":
                     case "item_subtype":
-                        ItemSubType = property.Value; 
+                        ItemSubType = property.Value;
                         break;
                     case "props_item_mat":
                     case "item_mat":
-                        Material = property.Value; 
+                        Material = property.Value;
                         break;
                     case "abuse_type":
                         switch (property.Value)
@@ -143,7 +143,7 @@ namespace LegendsViewer.Legends.Events
             Victim.AddEvent(this);
             if (structureId != -1 && Site != null)
             {
-                Structure = Site.Structures.FirstOrDefault(structure => structure.Id == structureId);
+                Structure = Site.Structures.Find(structure => structure.Id == structureId);
                 Structure.AddEvent(this);
             }
         }

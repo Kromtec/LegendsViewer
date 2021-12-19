@@ -14,13 +14,10 @@ namespace LegendsViewer.Legends
         public int Count { get; set; } // legends_plus.xml
         public int EntityId { get; set; } // legends_plus.xml
         public Entity Entity { get; set; } // legends_plus.xml
-        public List<HistoricalFigure> Member { get; set; } 
+        public List<HistoricalFigure> Member { get; set; }
 
         public static List<string> Filters;
-        public override List<WorldEvent> FilteredEvents
-        {
-            get { return Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList(); }
-        }
+        public override List<WorldEvent> FilteredEvents => Events.Where(dwarfEvent => !Filters.Contains(dwarfEvent.Type)).ToList();
         public EntityPopulation(List<Property> properties, World world)
             : base(properties, world)
         {

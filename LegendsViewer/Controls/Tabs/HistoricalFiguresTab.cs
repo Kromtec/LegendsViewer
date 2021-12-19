@@ -125,14 +125,7 @@ namespace LegendsViewer.Controls.Tabs
         {
             if (!FileLoader.Working && World != null)
             {
-                if (txtHFSearch.Text.Length > 1)
-                {
-                    _hfSearch.Name = txtHFSearch.Text;
-                }
-                else
-                {
-                    _hfSearch.Name = "";
-                }
+                _hfSearch.Name = txtHFSearch.Text.Length > 1 ? txtHFSearch.Text : "";
 
                 _hfSearch.Race = cmbRace.SelectedItem.ToString();
                 _hfSearch.Caste = cmbCaste.SelectedItem.ToString();
@@ -197,12 +190,7 @@ namespace LegendsViewer.Controls.Tabs
                     return "Value cannot be empty.";
                 }
 
-                if (!new Regex(@"^[0-9]+$").IsMatch(val))
-                {
-                    return "Value is not valid.";
-                }
-
-                return "";
+                return !new Regex(@"^[0-9]+$").IsMatch(val) ? "Value is not valid." : "";
             };
 
             string value = WorldObjectList.MaxResults.ToString();

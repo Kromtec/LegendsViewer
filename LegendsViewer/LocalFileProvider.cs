@@ -9,7 +9,6 @@ namespace LegendsViewer
 {
     public static class LocalFileProvider
     {
-
         public static readonly string LocalPrefix = "";
         public static readonly string RootFolder = "";
 
@@ -18,7 +17,7 @@ namespace LegendsViewer
         static LocalFileProvider()
         {
             RootFolder = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            
+
             int freePort = FreeTcpPort();
             LocalPrefix = "http://localhost:" + freePort + "/";
             if (!HttpListener.IsSupported)
@@ -33,7 +32,7 @@ namespace LegendsViewer
 
         public static void Run()
         {
-            ThreadPool.QueueUserWorkItem(o =>
+            ThreadPool.QueueUserWorkItem(_ =>
             {
                 Console.WriteLine("Webserver running...");
                 try
@@ -45,11 +44,9 @@ namespace LegendsViewer
                             var context = ctx as HttpListenerContext;
                             try
                             {
-                                
                                 // Without leading / and please with windows style directory separators
-                                string pathToFile = context.Request.Url.LocalPath.TrimStart('/').Replace("/", Path.DirectorySeparatorChar+"");
+                                string pathToFile = context.Request.Url.LocalPath.TrimStart('/').Replace("/", Path.DirectorySeparatorChar + "");
 
-                                
                                 pathToFile = LinkToFile(pathToFile);
 
                                 if (File.Exists(pathToFile))
@@ -60,13 +57,13 @@ namespace LegendsViewer
                                     {
                                         context.Response.ContentLength64 = fs.Length;
                                         context.Response.ContentType = mime;
-                                        if (!(mime.IndexOf("png", StringComparison.OrdinalIgnoreCase) >= 0))
+                                        if (mime.IndexOf("png", StringComparison.OrdinalIgnoreCase) < 0)
                                         {
                                             context.Response.AddHeader("Access-Control-Allow-Origin", "*");
                                         }
                                         byte[] buffer = new byte[fs.Length];
                                         fs.Read(buffer, 0, buffer.Length);
-                                        context.Response.OutputStream.Write(buffer,0,buffer.Length);
+                                        context.Response.OutputStream.Write(buffer, 0, buffer.Length);
                                     }
                                 }
                             }
@@ -89,7 +86,7 @@ namespace LegendsViewer
             Listener.Close();
         }
 
-        static int FreeTcpPort()
+        private static int FreeTcpPort()
         {
             TcpListener l = new TcpListener(IPAddress.Loopback, 0);
             l.Start();
@@ -98,8 +95,7 @@ namespace LegendsViewer
             return port;
         }
 
-        private static Dictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
-
+        private static readonly Dictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
         #region Big freaking list of mime types
         // combination of values from Windows 7 Registry and 
         // from C:\Windows\System32\inetsrv\config\applicationHost.config
@@ -667,7 +663,7 @@ namespace LegendsViewer
         {".z", "application/x-compress"},
         {".zip", "application/x-zip-compressed"},
         {".ttf",   "application/x-font-truetype"},
-        #endregion
+        #endregion Big freaking list of mime types
 
         };
 
@@ -683,13 +679,11 @@ namespace LegendsViewer
                 extension = "." + extension;
             }
 
-
             return _mappings.TryGetValue(extension, out string mime) ? mime : "application/octet-stream";
         }
 
         private static string LinkToFile(string uri)
         {
-
             // /!\ Security check  /!\
             return Path.Combine(RootFolder, uri);
         }

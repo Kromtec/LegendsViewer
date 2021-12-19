@@ -9,7 +9,6 @@ namespace LegendsViewer.Controls.Query.Attributes
 
         public ShowInAdvancedSearchResultsAttribute()
         {
-            
         }
 
         public ShowInAdvancedSearchResultsAttribute(string header)

@@ -19,7 +19,7 @@ namespace LegendsViewer.Legends
                     case "hfid":
                         HfId = Convert.ToInt32(property.Value);
                         break;
-                    case "war_buddy": 
+                    case "war_buddy":
                     case "athlete_buddy":
                     case "childhood_friend":
                     case "persecution_grudge":
@@ -32,7 +32,7 @@ namespace LegendsViewer.Legends
                     case "scholar_buddy":
                     case "business_rival":
                     case "atheletic_rival":
-                        Type = GetVagueRelationshipTypeByProperty(property, property.Name); 
+                        Type = GetVagueRelationshipTypeByProperty(property, property.Name);
                         break;
                 }
             }
