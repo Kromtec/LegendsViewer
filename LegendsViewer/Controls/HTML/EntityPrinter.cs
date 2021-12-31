@@ -64,7 +64,7 @@ namespace LegendsViewer.Controls.HTML
             PrintWorships();
             PrintLeaders();
             PrintHonors();
-            PrintCurrentLeadership();
+            PrintCurrentPositionAssignments();
             Html.AppendLine("</div>")
                 .AppendLine("</div>");
             PrintWars();
@@ -424,38 +424,53 @@ namespace LegendsViewer.Controls.HTML
             }
         }
 
-        private void PrintCurrentLeadership()
+        private void PrintCurrentPositionAssignments()
         {
-            if (_entity.EntityPositionAssignments.Count > 0 && _entity.EntityPositionAssignments.Any(epa => epa.HistoricalFigure != null))
+            if (_entity.EntityPositionAssignments.Count == 0 || !_entity.EntityPositionAssignments.Any(epa => epa.HistoricalFigure != null))
             {
-                Html.AppendLine("<b>Current Leadership</b><br />")
-                    .AppendLine("<ul>");
-                foreach (EntityPositionAssignment assignment in _entity.EntityPositionAssignments)
-                {
-                    EntityPosition position = _entity.EntityPositions.Find(pos => pos.Id == assignment.PositionId);
-                    if (position != null && assignment.HistoricalFigure != null)
-                    {
-                        string positionName = position.GetTitleByCaste(assignment.HistoricalFigure.Caste);
-
-                        Html.Append("<li>").Append(assignment.HistoricalFigure.ToLink()).Append(", ").Append(positionName).AppendLine("</li>");
-
-                        if (!string.IsNullOrEmpty(position.Spouse))
-                        {
-                            HistoricalFigureLink spouseLink = assignment.HistoricalFigure.RelatedHistoricalFigures.Find(hfLink => hfLink.Type == HistoricalFigureLinkType.Spouse);
-                            if (spouseLink != null)
-                            {
-                                HistoricalFigure spouse = spouseLink.HistoricalFigure;
-                                if (spouse != null)
-                                {
-                                    string spousePositionName = position.GetTitleByCaste(spouse.Caste, true);
-                                    Html.Append("<li>").Append(spouse.ToLink()).Append(", ").Append(spousePositionName).AppendLine("</li>");
-                                }
-                            }
-                        }
-                    }
-                }
-                Html.AppendLine("</ul>");
+                return;
             }
+            Html.AppendLine("<b>Current Leadership</b><br />")
+                .AppendLine("<ul>");
+            foreach (EntityPositionAssignment assignment in _entity.EntityPositionAssignments.Where(a => a.HistoricalFigure != null))
+            {
+                EntityPosition position = _entity.EntityPositions.Find(pos => pos.Id == assignment.PositionId);
+                if (position == null)
+                {
+                    continue;
+                }
+
+                PrintCurrentPositionAssignment(assignment, position);
+                PrintCurrentPositionAssignmentSpouse(assignment, position);
+            }
+            Html.AppendLine("</ul>");
+        }
+
+        private void PrintCurrentPositionAssignment(EntityPositionAssignment assignment, EntityPosition position)
+        {
+            string positionName = position.GetTitleByCaste(assignment.HistoricalFigure.Caste);
+
+            Html.Append("<li>").Append(assignment.HistoricalFigure.ToLink()).Append(", ").Append(positionName).AppendLine("</li>");
+        }
+
+        private void PrintCurrentPositionAssignmentSpouse(EntityPositionAssignment assignment, EntityPosition position)
+        {
+            if (string.IsNullOrEmpty(position.Spouse))
+            {
+                return;
+            }
+            HistoricalFigureLink spouseLink = assignment.HistoricalFigure.RelatedHistoricalFigures.Find(hfLink => hfLink.Type == HistoricalFigureLinkType.Spouse);
+            if (spouseLink == null)
+            {
+                return;
+            }
+            HistoricalFigure spouse = spouseLink.HistoricalFigure;
+            if (spouse == null)
+            {
+                return;
+            }
+            string spousePositionName = position.GetTitleByCaste(spouse.Caste, true);
+            Html.Append("<li>").Append(spouse.ToLink()).Append(", ").Append(spousePositionName).AppendLine("</li>");
         }
 
         private void PrintWorships()

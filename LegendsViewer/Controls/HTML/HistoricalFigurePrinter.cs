@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -210,7 +211,6 @@ namespace LegendsViewer.Controls.HTML
             if (hf.Positions.Count > 0)
             {
                 title += hf.GetLastNoblePosition();
-                title += "\\n--------------------\\n";
                 classes += " leader";
             }
             title += hf.Race != null && hf.Race != _historicalFigure.Race ? hf.Race.NameSingular + " " : "";
@@ -236,7 +236,24 @@ namespace LegendsViewer.Controls.HTML
                 description += "Ghost ";
                 classes += " ghost";
             }
-            description += !string.IsNullOrWhiteSpace(hf.AssociatedType) && hf.AssociatedType != "Standard" ? hf.AssociatedType : "";
+            var hfAssignment = hf.GetLastAssignmentString();
+            var hfHighestSkill = Formatting.InitCaps(hf.GetHighestSkillAsString());
+            if (!string.IsNullOrWhiteSpace(hfAssignment) && !string.Equals(hfAssignment, "Standard", StringComparison.OrdinalIgnoreCase) && hfAssignment != title && !hfHighestSkill.Contains(hfAssignment))
+            {
+                description += hfAssignment;
+            }
+            if (!string.IsNullOrWhiteSpace(hfHighestSkill))
+            {
+                if (!string.IsNullOrWhiteSpace(description))
+                {
+                    description += "\\n--------------------\\n";
+                }
+                description += hfHighestSkill;
+            }
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                title += "\\n--------------------\\n";
+            }
             if (!string.IsNullOrWhiteSpace(description))
             {
                 description += "\\n--------------------\\n";
@@ -446,7 +463,7 @@ namespace LegendsViewer.Controls.HTML
                 title = "Is a force said to permeate nature. ";
                 if (_historicalFigure.WorshippedBy != null)
                 {
-                    title += "Worshiped by " + _historicalFigure.WorshippedBy.ToLink();
+                    title += "Worshipped by " + _historicalFigure.WorshippedBy.ToLink();
                 }
             }
             else
@@ -492,6 +509,16 @@ namespace LegendsViewer.Controls.HTML
             if (!string.IsNullOrWhiteSpace(_historicalFigure.AssociatedType) && _historicalFigure.AssociatedType != "Standard")
             {
                 Html.Append("<b>Type:</b> ").Append(_historicalFigure.AssociatedType).AppendLine("</br>");
+            }
+            var lastAssignmentString = _historicalFigure.GetLastAssignmentString();
+            if (!string.IsNullOrWhiteSpace(lastAssignmentString) && lastAssignmentString != "Standard")
+            {
+                Html.Append("<b>Last Assignment:</b> ").Append(lastAssignmentString).AppendLine("</br>");
+            }
+            var highestSkillString = _historicalFigure.GetHighestSkillAsString();
+            if (!string.IsNullOrWhiteSpace(highestSkillString))
+            {
+                Html.Append("<b>Highest Skill:</b> ").Append(highestSkillString).AppendLine("</br>");
             }
         }
 

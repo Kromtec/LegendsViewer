@@ -598,6 +598,91 @@ namespace LegendsViewer.Legends.WorldObjects
             return title;
         }
 
+        private List<Assignment> _assignments;
+        public string GetLastAssignmentString()
+        {
+            if (_assignments != null && _assignments.Count > 0)
+            {
+                Assignment lastAssignment = _assignments.Last();
+                if (lastAssignment.Ended != -1)
+                {
+                    return $"Former {lastAssignment.Title}";
+                }
+                return lastAssignment.Title;
+            }
+            var lastAssignmentString = GetLastNoblePosition();
+            if (!string.IsNullOrEmpty(lastAssignmentString))
+            {
+                return lastAssignmentString;
+            }
+            _assignments = new List<Assignment>();
+            var relevantEvents = Events.Where(e => e is ChangeHfJob || e is AddHfEntityLink);
+            if (relevantEvents.Any())
+            {
+                foreach (var relevantEvent in relevantEvents)
+                {
+                    var lastAssignment = _assignments.LastOrDefault();
+                    if (relevantEvent is ChangeHfJob changeHfJobEvent)
+                    {
+                        if (!string.Equals(changeHfJobEvent.NewJob, "UNKNOWN JOB", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (lastAssignment != null)
+                            {
+                                lastAssignment.Ended = changeHfJobEvent.Year;
+                            }
+                            _assignments.Add(new Assignment(changeHfJobEvent.Site, changeHfJobEvent.Year, -1, changeHfJobEvent.NewJob));
+                        }
+                        else if (lastAssignment != null && changeHfJobEvent.OldJob == lastAssignment.Title)
+                        {
+                            lastAssignment.Ended = changeHfJobEvent.Year;
+                        }
+                    }
+                    else if (relevantEvent is AddHfEntityLink addHfEntityLinkEvent && (addHfEntityLinkEvent.LinkType == HfEntityLinkType.Squad || addHfEntityLinkEvent.LinkType == HfEntityLinkType.Position))
+                    {
+                        EntityPosition position = addHfEntityLinkEvent.Entity.EntityPositions.Find(pos => string.Equals(pos.Name, addHfEntityLinkEvent.Position, StringComparison.OrdinalIgnoreCase) || pos.Id == addHfEntityLinkEvent.PositionId);
+                        if (position != null)
+                        {
+                            if (lastAssignment != null)
+                            {
+                                lastAssignment.Ended = addHfEntityLinkEvent.Year;
+                            }
+                            string positionName = position.GetTitleByCaste(addHfEntityLinkEvent.HistoricalFigure?.Caste);
+                            _assignments.Add(new Assignment(addHfEntityLinkEvent.Entity, addHfEntityLinkEvent.Year, -1, positionName));
+                        }
+                        else if (!string.IsNullOrWhiteSpace(addHfEntityLinkEvent.Position))
+                        {
+                            if (lastAssignment != null)
+                            {
+                                lastAssignment.Ended = addHfEntityLinkEvent.Year;
+                            }
+                            _assignments.Add(new Assignment(addHfEntityLinkEvent.Entity, addHfEntityLinkEvent.Year, -1, addHfEntityLinkEvent.Position));
+                        }
+                    }
+                }
+            }
+            if (_assignments != null && _assignments.Count > 0)
+            {
+                Assignment lastAssignment = _assignments.Last();
+                if (lastAssignment.Ended != -1)
+                {
+                    return $"Former {lastAssignment.Title}";
+                }
+                return lastAssignment.Title;
+            }
+            return AssociatedType;
+        }
+
+        public string GetHighestSkillAsString()
+        {
+            if (Skills.Count > 0)
+            {
+                var highestSkill = Skills.OrderBy(skill => skill.Points).Last();
+                var highestSkillDescription = SkillDictionary.LookupSkill(highestSkill);
+                return $"{highestSkillDescription.Rank} {highestSkillDescription.Name}";
+            }
+            return string.Empty;
+        }
+
         public string GetSpheresAsString()
         {
             if (Spheres == null)
@@ -629,6 +714,35 @@ namespace LegendsViewer.Legends.WorldObjects
                 : "<a " + (Deity ? "class=\"hf_deity\"" : "") + " title=\"" + Title + "\">" + GetRaceString() + "<br/>" + HtmlStyleUtil.CurrentDwarfObject(Name) + dead + "</a>";
         }
 
+        public class Assignment : Position
+        {
+            public Assignment(Site site, int began, int ended, string title) : this(site?.CurrentOwner as Entity, began, ended, title)
+            {
+                Site = site;
+            }
+
+            public Assignment(Entity entity, int began, int ended, string title) : base(entity, began, ended, title)
+            {
+
+            }
+
+            [AllowAdvancedSearch]
+            public Site Site { get; set; }
+
+            public override string ToString()
+            {
+                if (Site != null)
+                {
+                    return $"{Title} in  {Site.Name}";
+                }
+                if (Entity != null)
+                {
+                    return $"{Title} of {Entity.Name}";
+                }
+                return Title;
+            }
+        }
+
         public class Position
         {
             [AllowAdvancedSearch]
@@ -642,9 +756,9 @@ namespace LegendsViewer.Legends.WorldObjects
             [AllowAdvancedSearch]
             public int Length { get; set; }
 
-            public Position(Entity civ, int began, int ended, string title)
+            public Position(Entity entity, int began, int ended, string title)
             {
-                Entity = civ; Began = began; Ended = ended; Title = title;
+                Entity = entity; Began = began; Ended = ended; Title = Formatting.InitCaps(title);
             }
         }
 

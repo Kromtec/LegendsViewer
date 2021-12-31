@@ -130,6 +130,7 @@
             })
           .selector('node.dead')
             .css({
+                'background-blacken': -0.4,
                 'background-opacity': 0.75,
                 'shadow-opacity': 0
             })
