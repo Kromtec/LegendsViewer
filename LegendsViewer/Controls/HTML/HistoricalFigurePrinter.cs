@@ -260,12 +260,13 @@ namespace LegendsViewer.Controls.HTML
             }
             title += description;
             title += hf.Name;
+            title += $"\\n({hf.Age}y) {hf.BirthYear} - ";
             if (!hf.Alive)
             {
-                title += "\\n✝";
+                title += hf.DeathYear + " ✝";
                 classes += " dead";
             }
-            return "{ data: { id: '" + hf.Id + "', name: '" + WebUtility.HtmlEncode(title) + "', href: 'hf#" + hf.Id + "' , faveColor: '" + (hf.Caste == "Male" ? "#6FB1FC" : "#EDA1ED") + "' }, classes: '" + classes + "' },";
+            return $"{{ data: {{ id: '{hf.Id}', name: '{WebUtility.HtmlEncode(title)}', href: 'hf#{hf.Id}' , faveColor: '{(hf.Caste == "Male" ? "#6FB1FC" : "#EDA1ED")}' }}, classes: '{classes}' }},";
         }
 
         private void GetFamilyDataChildren(HistoricalFigure hf, ref string nodes, ref string edges)
@@ -501,7 +502,7 @@ namespace LegendsViewer.Controls.HTML
                     title += ". ";
                 }
             }
-            Html.Append("<b>").Append(title).AppendLine("</b></br>");
+            Html.Append("<b>").Append(title).Append("(").Append(_historicalFigure.Age).Append("y)").AppendLine("</b></br>");
             if (!string.IsNullOrWhiteSpace(_historicalFigure.Caste) && _historicalFigure.Caste != "Default")
             {
                 Html.Append("<b>Caste:</b> ").Append(_historicalFigure.Caste).AppendLine("</br>");
