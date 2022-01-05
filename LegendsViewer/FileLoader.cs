@@ -292,13 +292,22 @@ namespace LegendsViewer
 
         private void LocateOtherFiles(string xmlFile)
         {
-            string directory = new FileInfo(xmlFile).DirectoryName;
+            FileInfo fileInfo = new FileInfo(xmlFile);
+            SaveDirectory = fileInfo.DirectoryName;
+            if (fileInfo.Name.Contains(FileIdentifierLegendsXml))
+            {
+                RegionId = fileInfo.Name.Replace(FileIdentifierLegendsXml, "");
+            }
+            else if (fileInfo.Name.Contains(FileIdentifierLegendsPlusXml))
+            {
+                RegionId = fileInfo.Name.Replace(FileIdentifierLegendsPlusXml, "");
+            }
 
-            _xmlText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierLegendsXml).FirstOrDefault();
-            _historyText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldHistoryTxt).FirstOrDefault();
-            _sitesText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldSitesAndPops).FirstOrDefault();
-            _mapText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierWorldMapBmp).FirstOrDefault();
-            _xmlPlusText.Text = Directory.EnumerateFiles(directory, "*" + FileIdentifierLegendsPlusXml).FirstOrDefault();
+            _xmlText.Text = Directory.EnumerateFiles(SaveDirectory, "*" + FileIdentifierLegendsXml).FirstOrDefault();
+            _historyText.Text = Directory.EnumerateFiles(SaveDirectory, "*" + FileIdentifierWorldHistoryTxt).FirstOrDefault();
+            _sitesText.Text = Directory.EnumerateFiles(SaveDirectory, "*" + FileIdentifierWorldSitesAndPops).FirstOrDefault();
+            _mapText.Text = Directory.EnumerateFiles(SaveDirectory, "*" + FileIdentifierWorldMapBmp).FirstOrDefault();
+            _xmlPlusText.Text = Directory.EnumerateFiles(SaveDirectory, "*" + FileIdentifierLegendsPlusXml).FirstOrDefault();
 
             XmlState = string.IsNullOrEmpty(_xmlText.Text) ? FileState.NotReady : FileState.Ready;
             HistoryState = string.IsNullOrEmpty(_historyText.Text) ? FileState.NotReady : FileState.Ready;
@@ -308,11 +317,11 @@ namespace LegendsViewer
 
             if (string.IsNullOrEmpty(_mapText.Text))
             {
-                string imageFile = Array.Find(Directory.GetFiles(directory), f =>
-                        (f.EndsWith(".bmp") ||
-                         f.EndsWith(".png") ||
-                         f.EndsWith(".jpg") ||
-                         f.EndsWith(".jpeg")));
+                string imageFile = Array.Find(Directory.GetFiles(SaveDirectory), f =>
+                         f.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
+                         f.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                         f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                         f.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(imageFile))
                 {
                     _mapText.Text = imageFile;
