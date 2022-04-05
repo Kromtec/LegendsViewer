@@ -81,7 +81,11 @@ namespace LegendsViewer.Legends.EventCollections
         {
             get
             {
-                if (AttackerCount == 0 && DefenderCount == 0) return 0;
+                if (AttackerCount == 0 && DefenderCount == 0)
+                {
+                    return 0;
+                }
+
                 return DefenderCount == 0 ? double.MaxValue : Math.Round(AttackerCount / Convert.ToDouble(DefenderCount), 2);
             }
             set { }
@@ -90,7 +94,11 @@ namespace LegendsViewer.Legends.EventCollections
         {
             get
             {
-                if (AttackersRemainingCount == 0 && DefendersRemainingCount == 0) return 0;
+                if (AttackersRemainingCount == 0 && DefendersRemainingCount == 0)
+                {
+                    return 0;
+                }
+
                 return DefendersRemainingCount == 0
                     ? double.MaxValue
                     : Math.Round(AttackersRemainingCount / Convert.ToDouble(DefendersRemainingCount), 2);

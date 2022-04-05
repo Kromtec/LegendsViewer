@@ -72,5 +72,4 @@ namespace LegendsViewer.Controls.Map
         }
     }
 
-
 }

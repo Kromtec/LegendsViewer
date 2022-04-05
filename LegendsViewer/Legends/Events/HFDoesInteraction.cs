@@ -104,7 +104,7 @@ namespace LegendsViewer.Legends.Events
         {
             string eventString = GetYearTime();
             eventString += Doer.ToLink(link, pov, this);
-            if (InteractionString == "")
+            if (InteractionString?.Length == 0)
             {
                 eventString += " bit ";
                 eventString += Target.ToLink(link, pov, this);

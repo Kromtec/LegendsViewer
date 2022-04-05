@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using LegendsViewer.Controls.Map;
 using LegendsViewer.Legends;
@@ -37,8 +36,8 @@ namespace LegendsViewer.Controls.HTML
 
             Html.AppendLine("<b>Connects</b><br />")
                 .AppendLine("<ul>")
-                .Append("<li>").Append((_worldConstruction.Site1 != null ? _worldConstruction.Site1.ToLink() : "UNKNOWN SITE")).AppendLine("</li>")
-                .Append("<li>").Append((_worldConstruction.Site2 != null ? _worldConstruction.Site2.ToLink() : "UNKNOWN SITE")).AppendLine("</li>")
+                .Append("<li>").Append(_worldConstruction.Site1 != null ? _worldConstruction.Site1.ToLink() : "UNKNOWN SITE").AppendLine("</li>")
+                .Append("<li>").Append(_worldConstruction.Site2 != null ? _worldConstruction.Site2.ToLink() : "UNKNOWN SITE").AppendLine("</li>")
                 .AppendLine("</ul>")
                 .AppendLine("</br>");
 

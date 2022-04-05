@@ -110,7 +110,7 @@ namespace LegendsViewer.Controls.Tabs
             {
                 return string.Compare(a[1], b[1]);
             });
-            for (int eventTab = 0; eventTab < EventTabs.Count(); eventTab++)
+            for (int eventTab = 0; eventTab < EventTabs.Length; eventTab++)
             {
                 int count = 0;
                 TabEvents[eventTab].Sort((a, b) => AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == a))][1].CompareTo(AppHelpers.EventInfo[Array.IndexOf(AppHelpers.EventInfo, AppHelpers.EventInfo.Single(eventInfo => eventInfo[0] == b))][1]));

@@ -21,7 +21,7 @@ namespace LegendsViewer
         {
             if (listFiles.SelectedIndex >= 0)
             {
-                SelectedFile = (listFiles.SelectedItem as MapFile).FileName;
+                SelectedFile = (listFiles.SelectedItem as MapFile)?.FileName;
                 Close();
             }
         }

@@ -212,10 +212,7 @@ namespace LegendsViewer.Controls.HTML
                 {
                     sortedWarInfo.Remove(item);
                 }
-                foreach (var item in toAdd)
-                {
-                    sortedWarInfo.Add(item);
-                }
+                sortedWarInfo.AddRange(toAdd);
                 sortedWarInfo = sortedWarInfo.OrderBy(entry => entry.Key.Item1).ThenByDescending(entry => entry.Value.Item1 + entry.Value.Item2).ToList();
             }
             var civLabels = string.Join(",", sortedWarInfo.Select(x => $"'{x.Key.Item2} - {x.Key.Item1}'"));
@@ -281,7 +278,7 @@ namespace LegendsViewer.Controls.HTML
                 .AppendLine("<ol>");
             foreach (Era era in _world.Eras)
             {
-                Html.Append("<li>").Append(era.Name).Append(" (").Append((era.StartYear < 0 ? 0 : era.StartYear)).Append(" - ").Append(era.EndYear).AppendLine(")</li>");
+                Html.Append("<li>").Append(era.Name).Append(" (").Append(era.StartYear < 0 ? 0 : era.StartYear).Append(" - ").Append(era.EndYear).AppendLine(")</li>");
             }
             Html.AppendLine("</ol>")
                 .AppendLine("</br>")
@@ -342,7 +339,7 @@ namespace LegendsViewer.Controls.HTML
             if (currentCivs.Count > 0)
             {
                 Html.AppendLine("<div class=\"col-md-4 col-sm-6\">")
-                    .Append("<h1>Current Civilizations: ").Append(currentCivs.Count()).AppendLine("</h1>")
+                    .Append("<h1>Current Civilizations: ").Append(currentCivs.Count).AppendLine("</h1>")
                     .AppendLine("<ul>");
                 foreach (var civRace in currentCivs.Select(cc => cc.Race).Distinct())
                 {
@@ -380,7 +377,7 @@ namespace LegendsViewer.Controls.HTML
             if (fallenCivs.Count > 0)
             {
                 Html.AppendLine("<div class=\"col-md-4 col-sm-6\">")
-                    .Append("<h1>Fallen Civilizations: ").Append(fallenCivs.Count()).AppendLine("</h1>")
+                    .Append("<h1>Fallen Civilizations: ").Append(fallenCivs.Count).AppendLine("</h1>")
                     .AppendLine("<ul>");
                 foreach (var civRace in fallenCivs.Select(fc => fc.Race).Distinct())
                 {

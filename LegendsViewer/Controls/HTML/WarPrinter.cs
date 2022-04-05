@@ -55,7 +55,7 @@ namespace LegendsViewer.Controls.HTML
             _war.Collections.OfType<Battle>().Sum(battle => battle.Collection.OfType<HfDied>().Count(death => battle.NotableAttackers.Contains(death.HistoricalFigure)));
             Html.Append("<b>").Append(_war.Attacker.PrintEntity()).AppendLine(" (Attacker)</b>")
                 .AppendLine("<ul>")
-                .Append("<li>Kills: ").Append((_war.Collections.OfType<Battle>().Where(battle => battle.Attacker == _war.Attacker).Sum(battle => battle.DefenderDeathCount) + _war.Collections.OfType<Battle>().Where(battle => battle.Defender == _war.Attacker).Sum(battle => battle.AttackerDeathCount))).AppendLine("</br>")
+                .Append("<li>Kills: ").Append(_war.Collections.OfType<Battle>().Where(battle => battle.Attacker == _war.Attacker).Sum(battle => battle.DefenderDeathCount) + _war.Collections.OfType<Battle>().Where(battle => battle.Defender == _war.Attacker).Sum(battle => battle.AttackerDeathCount)).AppendLine("</br>")
                 .Append("<li>Battle Victories: ").Append(_war.AttackerVictories.OfType<Battle>().Count()).AppendLine()
                 .Append("<li>Conquerings: ").Append(_war.AttackerVictories.OfType<SiteConquered>().Count()).AppendLine()
                 .Append(" (").Append(_war.AttackerVictories.OfType<SiteConquered>().Count(conquering => conquering.ConquerType == SiteConqueredType.Pillaging)).AppendLine(" Pillagings, ")
@@ -64,7 +64,7 @@ namespace LegendsViewer.Controls.HTML
                 .AppendLine("</ul>")
                 .Append("<b>").Append(_war.Defender.PrintEntity()).AppendLine(" (Defender)</b>")
                 .AppendLine("<ul>")
-                .Append("<li>Kills: ").Append((_war.Collections.OfType<Battle>().Where(battle => battle.Attacker == _war.Defender).Sum(battle => battle.DefenderDeathCount) + _war.Collections.OfType<Battle>().Where(battle => battle.Defender == _war.Defender).Sum(battle => battle.AttackerDeathCount))).AppendLine("</br>")
+                .Append("<li>Kills: ").Append(_war.Collections.OfType<Battle>().Where(battle => battle.Attacker == _war.Defender).Sum(battle => battle.DefenderDeathCount) + _war.Collections.OfType<Battle>().Where(battle => battle.Defender == _war.Defender).Sum(battle => battle.AttackerDeathCount)).AppendLine("</br>")
                 .Append("<li>Battle Victories: ").Append(_war.DefenderVictories.OfType<Battle>().Count()).AppendLine()
                 .Append("<li>Conquerings: ").Append(_war.DefenderVictories.OfType<SiteConquered>().Count()).AppendLine()
                 .Append(" (").Append(_war.DefenderVictories.OfType<SiteConquered>().Count(conquering => conquering.ConquerType == SiteConqueredType.Pillaging)).AppendLine(" Pillagings, ")
@@ -107,14 +107,14 @@ namespace LegendsViewer.Controls.HTML
                     if (warfare.GetType() == typeof(Battle))
                     {
                         Battle battle = warfare as Battle;
-                        Html.Append("<td>").Append((battle.Victor == _war.Attacker ? battle.Attacker.PrintEntity() : battle.Defender.PrintEntity())).AppendLine("</td>")
-                            .Append("<td align=right>").Append((battle.Attacker == _war.Attacker ? battle.DefenderDeathCount : battle.AttackerDeathCount)).AppendLine("</td>")
+                        Html.Append("<td>").Append(battle.Victor == _war.Attacker ? battle.Attacker.PrintEntity() : battle.Defender.PrintEntity()).AppendLine("</td>")
+                            .Append("<td align=right>").Append(battle.Attacker == _war.Attacker ? battle.DefenderDeathCount : battle.AttackerDeathCount).AppendLine("</td>")
                             .AppendLine("<td>/</td>")
-                            .Append("<td align=left>").Append((battle.Defender == _war.Attacker ? battle.DefenderDeathCount : battle.AttackerDeathCount)).AppendLine("</td>");
+                            .Append("<td align=left>").Append(battle.Defender == _war.Attacker ? battle.DefenderDeathCount : battle.AttackerDeathCount).AppendLine("</td>");
                     }
                     else if (warfare.GetType() == typeof(SiteConquered))
                     {
-                        Html.Append("<td align=right>").Append((warfare as SiteConquered).Attacker.PrintEntity()).AppendLine("</td>");
+                        Html.Append("<td align=right>").Append((warfare as SiteConquered)?.Attacker.PrintEntity()).AppendLine("</td>");
                     }
 
                     Html.AppendLine("</tr>");

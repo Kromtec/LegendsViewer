@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.Events;
@@ -26,7 +24,7 @@ namespace LegendsViewer.Controls.HTML
             if (_writtenContent.Type != WrittenContentType.Unknown)
             {
                 var type = _writtenContent.Type.GetDescription();
-                string firstWord = _writtenContent.Styles.Count > 0 ? _writtenContent.Styles.First() : type;
+                string firstWord = _writtenContent.Styles.Count > 0 ? _writtenContent.Styles[0] : type;
                 if (firstWord.StartsWith("A") || firstWord.StartsWith("E") || firstWord.StartsWith("I") || firstWord.StartsWith("O") || firstWord.StartsWith("U"))
                 {
                     Html.AppendLine("<b>An ");

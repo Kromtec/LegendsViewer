@@ -145,7 +145,7 @@ namespace LegendsViewer.Controls.Query
                 Child = new PropertyBox
                 {
                     _parentProperty = this,
-                    ParentType = (SelectedItem as SearchProperty).Type,
+                    ParentType = (SelectedItem as SearchProperty)?.Type,
                     ListPropertiesOnly = ListPropertiesOnly,
                     Location = new Point(Right + 0, Top)
                 };
@@ -153,10 +153,10 @@ namespace LegendsViewer.Controls.Query
             }
             if (Parent.GetType() == typeof(CriteriaLine))
             {
-                (Parent as CriteriaLine).GetComparers();
-                (Parent as CriteriaLine).ValueSelect.ResetText();
-                (Parent as CriteriaLine).GetValueOptions();
-                (Parent as CriteriaLine).ResizeSelf();
+                (Parent as CriteriaLine)?.GetComparers();
+                (Parent as CriteriaLine)?.ValueSelect.ResetText();
+                (Parent as CriteriaLine)?.GetValueOptions();
+                (Parent as CriteriaLine)?.ResizeSelf();
             }
 
             base.OnSelectedIndexChanged(e);
@@ -186,7 +186,7 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            return Child != null && Child.ContainsList();
+            return Child?.ContainsList() == true;
         }
 
         public bool ContainsListLast()
@@ -206,7 +206,7 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            return Child != null && Child.ContainsListLast();
+            return Child?.ContainsListLast() == true;
         }
     }
 }

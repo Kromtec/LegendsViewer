@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using LegendsViewer.Legends;
-using LegendsViewer.Legends.Enums;
 using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls.HTML

@@ -36,8 +36,8 @@ namespace LegendsViewer.Controls.HTML
             if (_battle.ParentCollection != null)
             {
                 battleDescription += " occured as part of " + _battle.ParentCollection.ToLink();
-                battleDescription += " waged by " + (_battle.ParentCollection as War).Attacker.PrintEntity();
-                battleDescription += " on " + (_battle.ParentCollection as War).Defender.PrintEntity();
+                battleDescription += " waged by " + (_battle.ParentCollection as War)?.Attacker.PrintEntity();
+                battleDescription += " on " + (_battle.ParentCollection as War)?.Defender.PrintEntity();
             }
             if (_battle.Site != null)
             {
@@ -78,7 +78,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.Append("<b>").Append((_battle.Attacker?.PrintEntity() ?? "an unknown civilization")).Append(" (Attacker) ").Append((_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers))).Append(" Members, ").Append(_battle.AttackerDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
+            Html.Append("<b>").Append(_battle.Attacker?.PrintEntity() ?? "an unknown civilization").Append(" (Attacker) ").Append(_battle.NotableAttackers.Count + _battle.AttackerSquads.Sum(squad => squad.Numbers)).Append(" Members, ").Append(_battle.AttackerDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
                 .AppendLine("<ul>");
             var squadRaces = from squad in _battle.AttackerSquads
                              group squad by squad.Race into squads
@@ -116,7 +116,7 @@ namespace LegendsViewer.Controls.HTML
                 Html.AppendLine("</br></br>");
             }
 
-            Html.Append("<b>").Append((_battle.Defender?.PrintEntity() ?? "an unknown civilization")).Append(" (Defender) ").Append((_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers))).Append(" Members, ").Append(_battle.DefenderDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
+            Html.Append("<b>").Append(_battle.Defender?.PrintEntity() ?? "an unknown civilization").Append(" (Defender) ").Append(_battle.NotableDefenders.Count + _battle.DefenderSquads.Sum(squad => squad.Numbers)).Append(" Members, ").Append(_battle.DefenderDeathCount).Append(" Losses</b> ").AppendLine(LineBreak)
                 .AppendLine("<ul>");
             squadRaces = from squad in _battle.DefenderSquads
                          group squad by squad.Race into squads

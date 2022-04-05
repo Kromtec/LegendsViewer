@@ -87,7 +87,7 @@ namespace LegendsViewer.Controls.Map
             Controls.Add(_altMapTransparency);
             _altMapTransparency.Location = new Point(MiniMapAreaSideLength + _yearMenu.MenuBox.Width, Height - _altMapTransparency.Height);
 
-            MinYear = _world.Eras.First().StartYear;
+            MinYear = _world.Eras[0].StartYear;
             if (MinYear == -1)
             {
                 MinYear = 0;
@@ -111,7 +111,7 @@ namespace LegendsViewer.Controls.Map
             if (focusObject != null && focusObject.GetType() == typeof(List<object>))
             {
                 _focusObjects = ((List<object>)focusObject).GroupBy(item => item).Select(item => item.Key).ToList();
-                if (_focusObjects.First().GetType() == typeof(Battle))
+                if (_focusObjects[0].GetType() == typeof(Battle))
                 {
                     _battles.AddRange(_focusObjects.Cast<Battle>());
                 }
@@ -146,10 +146,7 @@ namespace LegendsViewer.Controls.Map
                     }
 
                     UpdateWarDisplay();
-                    foreach (Battle battle in war.Collections.OfType<Battle>())
-                    {
-                        _battles.Add(battle);
-                    }
+                    _battles.AddRange(war.Collections.OfType<Battle>());
                 }
             }
 
@@ -183,8 +180,8 @@ namespace LegendsViewer.Controls.Map
                 }
                 else if (FocusObject.GetType() == typeof(War))
                 {
-                    entities.Add((FocusObject as War).Attacker);
-                    entities.Add((FocusObject as War).Defender);
+                    entities.Add((FocusObject as War)?.Attacker);
+                    entities.Add((FocusObject as War)?.Defender);
                 }
                 _zoomBounds = new Rectangle(-1, -1, -1, -1);
 
@@ -254,7 +251,7 @@ namespace LegendsViewer.Controls.Map
 
                 if (FocusObject.GetType() == typeof(Battle) || FocusObject.GetType() == typeof(SiteConquered))
                 {
-                    Battle battle = FocusObject.GetType() == typeof(Battle) ? FocusObject as Battle : (FocusObject as SiteConquered).Battle;
+                    Battle battle = FocusObject.GetType() == typeof(Battle) ? FocusObject as Battle : (FocusObject as SiteConquered)?.Battle;
                     Center = new Point(battle.Coordinates.X * TileSize + TileSize / 2, battle.Coordinates.Y * TileSize + TileSize / 2);
                     _zoomBounds.Y = _zoomBounds.Height = battle.Coordinates.Y;
                     _zoomBounds.X = _zoomBounds.Width = battle.Coordinates.X;
@@ -385,7 +382,7 @@ namespace LegendsViewer.Controls.Map
             {
                 if (_altMapAlpha < 1)
                 {
-                    g.DrawImage(_map, originalSize ? getOriginalSize(_map) : ClientRectangle, originalSize ? getOriginalSize(_map) : Source, GraphicsUnit.Pixel);
+                    g.DrawImage(_map, originalSize ? GetOriginalSize(_map) : ClientRectangle, originalSize ? GetOriginalSize(_map) : Source, GraphicsUnit.Pixel);
                     using (ImageAttributes adjustAlpha = new ImageAttributes())
                     {
                         ColorMatrix adjustAlphaMatrix = new ColorMatrix();
@@ -394,7 +391,7 @@ namespace LegendsViewer.Controls.Map
                         adjustAlpha.SetColorMatrix(adjustAlphaMatrix);
                         if (originalSize)
                         {
-                            g.DrawImage(AlternateMap, getOriginalSize(AlternateMap), 0, 0, AlternateMap.Width, AlternateMap.Height, GraphicsUnit.Pixel, adjustAlpha);
+                            g.DrawImage(AlternateMap, GetOriginalSize(AlternateMap), 0, 0, AlternateMap.Width, AlternateMap.Height, GraphicsUnit.Pixel, adjustAlpha);
                         }
                         else
                         {
@@ -404,16 +401,16 @@ namespace LegendsViewer.Controls.Map
                 }
                 else
                 {
-                    g.DrawImage(AlternateMap, originalSize ? getOriginalSize(AlternateMap) : ClientRectangle, originalSize ? getOriginalSize(AlternateMap) : Source, GraphicsUnit.Pixel);
+                    g.DrawImage(AlternateMap, originalSize ? GetOriginalSize(AlternateMap) : ClientRectangle, originalSize ? GetOriginalSize(AlternateMap) : Source, GraphicsUnit.Pixel);
                 }
             }
             else
             {
-                g.DrawImage(_map, originalSize ? getOriginalSize(_map) : ClientRectangle, originalSize ? getOriginalSize(_map) : Source, GraphicsUnit.Pixel);
+                g.DrawImage(_map, originalSize ? GetOriginalSize(_map) : ClientRectangle, originalSize ? GetOriginalSize(_map) : Source, GraphicsUnit.Pixel);
             }
         }
 
-        private Rectangle getOriginalSize(Bitmap map)
+        private Rectangle GetOriginalSize(Bitmap map)
         {
             return new Rectangle(0, 0, map.Width, map.Height);
         }
@@ -461,7 +458,7 @@ namespace LegendsViewer.Controls.Map
             DrawEntities(g, _displayObjects.OfType<Entity>().ToList(), originalSize);
             DrawCivPaths(g, originalSize);
 
-            Rectangle rectangle = originalSize ? getOriginalSize(_map) : Source;
+            Rectangle rectangle = originalSize ? GetOriginalSize(_map) : Source;
             SizeF scaleTileSize = new SizeF((float)(PixelWidth * TileSize), (float)(PixelHeight * TileSize));
 
             foreach (Site site in _displayObjects.OfType<Site>())
@@ -575,13 +572,13 @@ namespace LegendsViewer.Controls.Map
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             if (OverlayToggled)
             {
-                g.DrawImage(Overlay, originalSize ? getOriginalSize(_map) : ClientRectangle, originalSize ? getOriginalSize(_map) : Source, GraphicsUnit.Pixel);
+                g.DrawImage(Overlay, originalSize ? GetOriginalSize(_map) : ClientRectangle, originalSize ? GetOriginalSize(_map) : Source, GraphicsUnit.Pixel);
             }
         }
 
         private void DrawEntities(Graphics g, List<Entity> entities, bool originalSize = false)
         {
-            var rectangle = originalSize ? getOriginalSize(_map) : Source;
+            var rectangle = originalSize ? GetOriginalSize(_map) : Source;
             SizeF scaleTileSize = new SizeF((float)PixelWidth * TileSize, (float)PixelHeight * TileSize);
             g.InterpolationMode = InterpolationMode.Default;
             g.PixelOffsetMode = PixelOffsetMode.Half;
@@ -667,8 +664,8 @@ namespace LegendsViewer.Controls.Map
             {
                 foreach (List<Site> path in civPaths.SitePaths)
                 {
-                    Site site1 = path.First();
-                    Site site2 = path.Last();
+                    Site site1 = path[0];
+                    Site site2 = path[path.Count - 1];
                     Size tileDistance = new Size(site1.Coordinates.X - site2.Coordinates.X, site1.Coordinates.Y - site2.Coordinates.Y);
                     if (tileDistance.Width < 0)
                     {
@@ -767,10 +764,7 @@ namespace LegendsViewer.Controls.Map
                 List<War> displayWars = new List<War>();
                 foreach (Entity entity in _displayObjects.OfType<Entity>())
                 {
-                    foreach (War war in entity.Wars)
-                    {
-                        displayWars.Add(war);
-                    }
+                    displayWars.AddRange(entity.Wars);
                 }
 
                 foreach (War war in displayWars)
@@ -806,7 +800,7 @@ namespace LegendsViewer.Controls.Map
             {
                 //DisplayObjects.RemoveAll(displayObject => displayObject.GetType() == typeof(Battle) && displayObject != FocusObject);
                 _battles.Clear();
-                if (_focusObjects.Count > 0 && _focusObjects.First().GetType() == typeof(Battle))
+                if (_focusObjects.Count > 0 && _focusObjects[0].GetType() == typeof(Battle))
                 {
                     _battles.AddRange(_focusObjects.Cast<Battle>());
                 }
@@ -985,7 +979,7 @@ namespace LegendsViewer.Controls.Map
                     foreach (Location coordinates in _world.Sites.GroupBy(site => site.Coordinates).Select(site => site.Key).ToList())
                     {
                         coordinatesList.Add(coordinates);
-                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Events.Count()));
+                        occurences.Add(_world.Sites.Where(site => site.Coordinates == coordinates).Sum(site => site.Events.Count));
                     }
                     break;
                 case "Site Events (Filtered)":
@@ -1059,7 +1053,6 @@ namespace LegendsViewer.Controls.Map
                                 map.Save(exportStream, ImageFormat.Png);
                                 break;
                         }
-                        exportStream.Close();
                     }
                 }
             }
@@ -1089,7 +1082,7 @@ namespace LegendsViewer.Controls.Map
                     {
                         DlgFileSelect fileSelect = new DlgFileSelect(extractor.ArchiveFileNames.Where(file => file.EndsWith(".bmp") || file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg")).ToList());
                         fileSelect.ShowDialog();
-                        if (fileSelect.SelectedFile == "")
+                        if (fileSelect.SelectedFile?.Length == 0)
                         {
                             return;
                         }
@@ -1148,7 +1141,7 @@ namespace LegendsViewer.Controls.Map
 
         private PointF SiteToScreen(Location siteCoordinates, bool originalSize = false)
         {
-            var rectangle = originalSize ? getOriginalSize(_map) : Source;
+            var rectangle = originalSize ? GetOriginalSize(_map) : Source;
             PointF screenCoordinates = new PointF
             {
                 X = (float)((siteCoordinates.X * TileSize - rectangle.X + TileSize / 2) * PixelWidth),
@@ -1202,13 +1195,8 @@ namespace LegendsViewer.Controls.Map
 
             ZoomCurrent += ZoomCurrent * ZoomChange;
             UpdateScales();
-            while (true) //Zoom out till bounds are within the map source
+            while (Source.X > _zoomBounds.X || Source.Right < _zoomBounds.Width || Source.Y > _zoomBounds.Y || Source.Bottom < _zoomBounds.Height) //Zoom out till bounds are within the map source
             {
-                if (Source.X <= _zoomBounds.X && Source.Right >= _zoomBounds.Width && Source.Y <= _zoomBounds.Y && Source.Bottom >= _zoomBounds.Height)
-                {
-                    break;
-                }
-
                 ZoomCurrent += ZoomCurrent * ZoomChange;
                 if (ZoomCurrent > ZoomMax)
                 {
@@ -1242,8 +1230,8 @@ namespace LegendsViewer.Controls.Map
         public Point WindowToTilePoint(Point window)
         {
             Point tilePoint = WindowToWorldPoint(window);
-            tilePoint.X = tilePoint.X / TileSize;
-            tilePoint.Y = tilePoint.Y / TileSize;
+            tilePoint.X /= TileSize;
+            tilePoint.Y /= TileSize;
             return tilePoint;
         }
 
@@ -1290,7 +1278,7 @@ namespace LegendsViewer.Controls.Map
                 }
                 else if (_hoverMenu.Options.Count == 1 && _hoverMenu.Options.Count(option => option.SubMenu.Options.Count(option2 => option2.SubMenu != null) > 0) == 0)
                 {
-                    _hoverMenu.Options.First().Click();
+                    _hoverMenu.Options[0].Click();
                 }
                 else if (!_hoverMenu.Open && _hoverMenu.Options.Count > 0)
                 {
@@ -1326,20 +1314,14 @@ namespace LegendsViewer.Controls.Map
                     }
                 }
 
-                foreach (Site site in _displayObjects.OfType<Site>().Where(site => site.Coordinates == tile && !addOptions.Contains(site)))
-                {
-                    addOptions.Add(site);
-                }
+                addOptions.AddRange(_displayObjects.OfType<Site>().Where(site => site.Coordinates == tile && !addOptions.Contains(site)));
 
                 if (FocusObject != null && FocusObject.GetType() == typeof(Battle) && ((Battle)FocusObject).Coordinates == tile)
                 {
                     addOptions.Add(FocusObject as Battle);
                 }
 
-                foreach (Battle battle in _displayObjects.OfType<War>().SelectMany(war => war.Collections).OfType<Battle>().Where(battle => battle != FocusObject && battle.StartYear == CurrentYear && battle.Coordinates == tile))
-                {
-                    addOptions.Add(battle);
-                }
+                addOptions.AddRange(_displayObjects.OfType<War>().SelectMany(war => war.Collections).OfType<Battle>().Where(battle => battle != FocusObject && battle.StartYear == CurrentYear && battle.Coordinates == tile));
 
                 if (BattlesToggled || _battles.Count > 0)
                 {

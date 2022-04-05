@@ -28,7 +28,7 @@ namespace LegendsViewer.Controls.HTML
             if (!string.IsNullOrWhiteSpace(_artifact.Type) && _artifact.Type != "Unknown")
             {
                 Html.Append("<b>").Append(_artifact.Name).Append(" was a legendary ").Append(_artifact.Material).AppendLine(" ")
-                    .Append((!string.IsNullOrWhiteSpace(_artifact.SubType) ? _artifact.SubType : _artifact.Type.ToLower())).AppendLine(".</b><br />");
+                    .Append(!string.IsNullOrWhiteSpace(_artifact.SubType) ? _artifact.SubType : _artifact.Type.ToLower()).AppendLine(".</b><br />");
             }
             else
             {

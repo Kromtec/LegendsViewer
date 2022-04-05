@@ -60,11 +60,11 @@
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net45\CommonMark.dll</HintPath>
     </Reference>
-    <Reference Include="Jdenticon, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon-net.2.2.1\lib\net40\Jdenticon.dll</HintPath>
+    <Reference Include="Jdenticon, Version=3.1.2.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jdenticon-net.3.1.2\lib\net45\Jdenticon.dll</HintPath>
     </Reference>
-    <Reference Include="Jdenticon.Gdi, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon.Gdi.2.2.1\lib\net40\Jdenticon.Gdi.dll</HintPath>
+    <Reference Include="Jdenticon.Gdi, Version=3.1.2.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jdenticon.Gdi.3.1.2\lib\net45\Jdenticon.Gdi.dll</HintPath>
     </Reference>
     <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
       <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
@@ -571,9 +571,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <None Include="..\appveyor.yml">
       <Link>appveyor.yml</Link>
     </None>

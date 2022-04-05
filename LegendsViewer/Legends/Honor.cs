@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using LegendsViewer.Controls.HTML;
 using LegendsViewer.Controls.HTML.Utilities;
 using LegendsViewer.Legends.Parser;

@@ -64,7 +64,7 @@ namespace LegendsViewer.Legends.EventCollections
 
                     if (parentWar != null)
                     {
-                        (ParentCollection.ParentCollection as War).DeathCount++;
+                        parentWar.DeathCount++;
                     }
                 }
             }

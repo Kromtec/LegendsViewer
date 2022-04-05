@@ -101,7 +101,10 @@ namespace LegendsViewer.Legends.Parser
                        (null != _currentItem || ReadState.Closed != Xml.ReadState))
                 {
                     if (null != _currentItem)
+                    {
                         AddItemToWorld(_currentItem);
+                    }
+
                     _currentItem = null;
                     Parse();
                 }

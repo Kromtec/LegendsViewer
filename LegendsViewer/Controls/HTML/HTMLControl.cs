@@ -99,8 +99,8 @@ namespace LegendsViewer.Controls.HTML
         private DateTime _lastNav;
         private void AfterPageLoad(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            (sender as WebBrowser).Document.Window.ScrollTo(0, BrowserScrollPosition);
-            (sender as WebBrowser).Focus();
+            (sender as WebBrowser)?.Document.Window.ScrollTo(0, BrowserScrollPosition);
+            (sender as WebBrowser)?.Focus();
             GC.Collect();
         }
 

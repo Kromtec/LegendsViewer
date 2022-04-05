@@ -348,11 +348,11 @@ namespace LegendsViewer.Controls.Query
                 object navigateTo = dgResults.Rows[e.RowIndex].DataBoundItem;
                 if (navigateTo.GetType() == typeof(HistoricalFigureLink))
                 {
-                    navigateTo = (navigateTo as HistoricalFigureLink).HistoricalFigure;
+                    navigateTo = (navigateTo as HistoricalFigureLink)?.HistoricalFigure;
                 }
                 else if (navigateTo.GetType() == typeof(SiteLink))
                 {
-                    navigateTo = (navigateTo as SiteLink).Site;
+                    navigateTo = (navigateTo as SiteLink)?.Site;
                 }
 
                 Browser.Navigate(ControlOption.Html, navigateTo);

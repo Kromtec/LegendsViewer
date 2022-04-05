@@ -52,7 +52,7 @@ namespace LegendsViewer.Legends.EventCollections
                 {
                     if (theft.ReturnSite == null)
                     {
-                        theft.ReturnSite = Attacker.SiteHistory.First().Site;
+                        theft.ReturnSite = Attacker.SiteHistory[0].Site;
                     }
                     if (!theft.ReturnSite.Events.Contains(theft))
                     {

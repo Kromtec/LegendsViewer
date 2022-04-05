@@ -60,10 +60,10 @@ namespace LegendsViewer.Legends.Parser
             CreatureInfo civRace = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
                 _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2).ToLower());
             var entities = _world.Entities
-                .Where(entity => string.Compare(entity.Name, civName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                .Where(entity => string.Equals(entity.Name, civName, StringComparison.OrdinalIgnoreCase)).ToList();
             if (entities.Count == 1)
             {
-                _currentCiv = entities.First();
+                _currentCiv = entities[0];
             }
             else if (entities.Count == 0)
             {
@@ -74,7 +74,7 @@ namespace LegendsViewer.Legends.Parser
                 var possibleEntities = entities.Where(entity => entity.Race == civRace).ToList();
                 if (possibleEntities.Count == 1)
                 {
-                    _currentCiv = possibleEntities.First();
+                    _currentCiv = possibleEntities[0];
                 }
                 else if (possibleEntities.Count == 0)
                 {
@@ -85,7 +85,7 @@ namespace LegendsViewer.Legends.Parser
                     var possibleCivilizations = possibleEntities.Where(entity => entity.Type == EntityType.Civilization).ToList();
                     if (possibleCivilizations.Count == 1)
                     {
-                        _currentCiv = possibleEntities.First();
+                        _currentCiv = possibleEntities[0];
                     }
                     else
                     {
@@ -124,7 +124,7 @@ namespace LegendsViewer.Legends.Parser
                         var deities = _world.HistoricalFigures.Where(h => h.Name.Equals(deityName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase) && (h.Deity || h.Force)).ToList();
                         if (deities.Count == 1)
                         {
-                            var deity = deities.First();
+                            var deity = deities[0];
                             deity.WorshippedBy = _currentCiv;
                             if (!_currentCiv.Worshiped.Contains(deity))
                             {
@@ -167,10 +167,10 @@ namespace LegendsViewer.Legends.Parser
                         string leaderName = Formatting.ReplaceNonAscii(_currentLine.Substring(_currentLine.IndexOf("[*]", StringComparison.Ordinal) + 4,
                             _currentLine.IndexOf("(b", StringComparison.Ordinal) - _currentLine.IndexOf("[*]", StringComparison.Ordinal) - 5));
                         var leaders = _world.HistoricalFigures.Where(hf =>
-                                string.Compare(hf.Name, leaderName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                                string.Equals(hf.Name, leaderName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase)).ToList();
                         if (leaders.Count == 1)
                         {
-                            var leader = leaders.First();
+                            var leader = leaders[0];
                             int reignBegan = Convert.ToInt32(_currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                                 _currentLine.IndexOf("), ", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2));
                             if (_currentCiv.Leaders[_currentCiv.LeaderTypes.Count - 1].Count > 0) //End of previous leader's reign

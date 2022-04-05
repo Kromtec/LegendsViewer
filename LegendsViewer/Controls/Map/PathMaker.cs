@@ -90,7 +90,6 @@ namespace LegendsViewer.Controls.Map
 
         //        sites.Remove(current);
 
-
         //        foreach (SitePath path in current.Paths)
         //        {
         //            double distance = current.Distance + path.Weight;
@@ -115,8 +114,8 @@ namespace LegendsViewer.Controls.Map
             SiteNode current = null;
             if (sites.Count > 0)
             {
-                sites.First().Distance = 0;
-                current = sites.First();
+                sites[0].Distance = 0;
+                current = sites[0];
             }
             while (sites.Count > 0)
             {
@@ -145,7 +144,6 @@ namespace LegendsViewer.Controls.Map
                 }
             }
         }
-
 
         private static List<SiteNode> CreateSiteNodes(Entity civ, int year)
         {

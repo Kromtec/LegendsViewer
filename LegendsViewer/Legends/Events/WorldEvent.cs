@@ -124,7 +124,7 @@ namespace LegendsViewer.Legends.Events
                         ordinal = "th";
                         break;
                 }
-                if (ordinal == "")
+                if (ordinal?.Length == 0)
                 {
                     switch (num % 10)
                     {

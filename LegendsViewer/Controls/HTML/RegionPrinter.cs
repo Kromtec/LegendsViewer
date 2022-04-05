@@ -99,7 +99,7 @@ namespace LegendsViewer.Controls.HTML
                         Html.AppendLine("<td></td>");
                     }
 
-                    Html.Append("<td>(Deaths: ").Append((battle.AttackerDeathCount + battle.DefenderDeathCount)).AppendLine(")</td>")
+                    Html.Append("<td>(Deaths: ").Append(battle.AttackerDeathCount + battle.DefenderDeathCount).AppendLine(")</td>")
                         .AppendLine("</tr>");
                     battleCount++;
                 }

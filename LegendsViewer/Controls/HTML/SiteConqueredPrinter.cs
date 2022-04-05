@@ -28,7 +28,7 @@ namespace LegendsViewer.Controls.HTML
             Html = new StringBuilder();
 
             Html.Append("<h1>").Append(_conquering.GetIcon()).Append(' ').Append(GetTitle()).AppendLine("</h1></br>")
-                .Append(_conquering.GetYearTime()).Append(", the ").Append(Formatting.AddOrdinal(_conquering.Ordinal)).Append(' ').Append(_conquering.ConquerType).Append(" of ").Append(_conquering.Site.ToLink()).Append(" occurred as a result of ").Append(_conquering.Battle.ToLink()).Append((_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War).Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War).Defender.PrintEntity())).AppendLine(".</br></br>");
+                .Append(_conquering.GetYearTime()).Append(", the ").Append(Formatting.AddOrdinal(_conquering.Ordinal)).Append(' ').Append(_conquering.ConquerType).Append(" of ").Append(_conquering.Site.ToLink()).Append(" occurred as a result of ").Append(_conquering.Battle.ToLink()).Append(_conquering.ParentCollection == null ? "" : " in " + _conquering.ParentCollection.ToLink() + " waged by " + (_conquering.ParentCollection as War)?.Attacker.PrintEntity() + " on " + (_conquering.ParentCollection as War)?.Defender.PrintEntity()).AppendLine(".</br></br>");
 
             List<Bitmap> maps = MapPanel.CreateBitmaps(_world, _conquering);
 

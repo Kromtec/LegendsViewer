@@ -29,7 +29,9 @@ namespace LegendsViewer.Legends
         public static string ToUpperFirstLetter(this string source)
         {
             if (string.IsNullOrEmpty(source))
+            {
                 return string.Empty;
+            }
             // convert to char array of the string
             char[] letters = source.ToCharArray();
             // upper case the first char
@@ -458,7 +460,9 @@ namespace LegendsViewer.Legends
             }
 
             if (inputNum == 0)
+            {
                 return "zero";
+            }
 
             string s = inputNum.ToString();
 
@@ -489,7 +493,9 @@ namespace LegendsViewer.Legends
 
                 // if a hundreds part is there, translate it
                 if (dig1 > 0)
+                {
                     retval = ones[dig1] + " hundred " + retval;
+                }
 
                 s = s.Length - 3 > 0 ? s.Substring(0, s.Length - 3) : "";
                 level++;
@@ -511,4 +517,3 @@ namespace LegendsViewer.Legends
         }
     }
 }
-

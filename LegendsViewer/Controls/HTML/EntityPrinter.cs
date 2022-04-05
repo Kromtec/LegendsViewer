@@ -179,8 +179,8 @@ namespace LegendsViewer.Controls.HTML
             var battleVictorData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor == _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
             var battleLoserData = string.Join(",", _allEnemies.Where(x => x.Name != _entity.Name).Select(x => $"{allBattles.Count(y => y.Victor != _entity && (y.Attacker?.Name == x.Name || y.Defender?.Name == x.Name))}"));
 
-            var victorColor = "255, 206, 86";
-            var loserColor = "153, 102, 255";
+            const string victorColor = "255, 206, 86";
+            const string loserColor = "153, 102, 255";
 
             var battleVictorEntity =
                 "{ " +
@@ -376,12 +376,9 @@ namespace LegendsViewer.Controls.HTML
                 Html.Append(_entity.PrintIdenticon(true)).Append(LineBreak).AppendLine(LineBreak);
             }
 
-            if (_entity.SiteHistory.Count > 0)
+            if (_entity.SiteHistory.Count > 0 && _entity.SiteHistory.Count(sitePeriod => sitePeriod.EndYear == -1) == 0)
             {
-                if (_entity.SiteHistory.Count(sitePeriod => sitePeriod.EndYear == -1) == 0)
-                {
-                    Html.AppendLine(Font("Last Known Sites. Year: " + (_entity.SiteHistory.Max(sitePeriod => sitePeriod.EndYear) - 1), "red"));
-                }
+                Html.AppendLine(Font("Last Known Sites. Year: " + (_entity.SiteHistory.Max(sitePeriod => sitePeriod.EndYear) - 1), "red"));
             }
             Html.AppendLine("</div>")
                 .AppendLine("</div>");

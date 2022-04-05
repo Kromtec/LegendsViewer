@@ -98,7 +98,6 @@ namespace LegendsViewer.Controls.Query
                     {
                         comparer = QueryComparer.Is;
                     }
-
                 }
                 if (PropertyName != "Value" && GetSearchType().GetProperty(PropertyName).PropertyType.IsGenericType)
                 {
@@ -206,7 +205,7 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            return Next != null && Next.ContainsListProperties();
+            return Next?.ContainsListProperties() == true;
         }
 
         public bool ContainsListPropertyLast()
@@ -227,7 +226,7 @@ namespace LegendsViewer.Controls.Query
                 return true;
             }
 
-            return Next != null && Next.ContainsListPropertyLast();
+            return Next?.ContainsListPropertyLast() == true;
         }
     }
 
@@ -332,7 +331,7 @@ namespace LegendsViewer.Controls.Query
                     MethodInfo toLower = typeof(string).GetMethod("ToLower", new Type[] { });
                     property = Expression.Call(property, toLower);
                     methodInfo = GetMethodInfo();
-                    comparer = Expression.Call(property, methodInfo, Expression.Constant((Value as string).ToLower()));
+                    comparer = Expression.Call(property, methodInfo, Expression.Constant((Value as string)?.ToLower()));
                     if (Comparer == QueryComparer.NotContains)
                     {
                         comparer = Expression.Not(comparer);
@@ -413,7 +412,7 @@ namespace LegendsViewer.Controls.Query
                         types.Add(typeof(T).GetProperty(PropertyName).PropertyType);
                     }
 
-                    methodInfo = types.First().GetMethod("Equals", types.ToArray()); break;
+                    methodInfo = types[0].GetMethod("Equals", types.ToArray()); break;
                 case QueryComparer.StringEquals:
                 case QueryComparer.StringNotEqual:
                     methodInfo = typeof(string).GetMethod("Equals", new[] { typeof(string), typeof(StringComparison) }); break;

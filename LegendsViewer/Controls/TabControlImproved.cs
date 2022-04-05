@@ -36,7 +36,7 @@ namespace LegendsViewer.Controls
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Overridden Methods
 
@@ -183,7 +183,7 @@ namespace LegendsViewer.Controls
             base.WndProc(ref m);
         }
 
-        #endregion
+        #endregion Overridden Methods
 
         #region Private Methods
 
@@ -316,7 +316,7 @@ namespace LegendsViewer.Controls
             return closeRect;
         }
 
-        #endregion
+        #endregion Private Methods
 
         #region Interop
 
@@ -357,6 +357,6 @@ namespace LegendsViewer.Controls
         private const int TcmHittest = TcmFirst + 13;
         private const int TcmSetpadding = TcmFirst + 43;
 
-        #endregion
+        #endregion Interop
     }
 }

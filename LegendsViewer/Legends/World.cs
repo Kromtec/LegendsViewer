@@ -567,7 +567,7 @@ namespace LegendsViewer.Legends
             _creatureInfosById[creatureInfo.Id.ToLower()] = creatureInfo;
         }
 
-        #endregion
+        #endregion GetWorldItemsFunctions
 
         #region AfterXMLSectionProcessing
 
@@ -848,7 +848,7 @@ namespace LegendsViewer.Legends
             }
         }
 
-        #endregion
+        #endregion AfterXMLSectionProcessing
 
         public void Dispose()
         {

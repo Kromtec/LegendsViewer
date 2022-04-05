@@ -13,13 +13,11 @@ namespace LegendsViewer.Controls.Chart
         {
             InitializeComponent();
 
-            var hfByRace = world.HistoricalFigures.GroupBy(hf => hf.Race).Select(hf => hf.Key).OrderBy(hf => hf);
-            foreach (var race in hfByRace)
+            foreach (var race in world.HistoricalFigures.GroupBy(hf => hf.Race).Select(hf => hf.Key).OrderBy(hf => hf))
             {
                 listHFRaces.Items.Add(race);
             }
         }
-
 
         private void btnAll_Click(object sender, EventArgs e)
         {
@@ -57,6 +55,5 @@ namespace LegendsViewer.Controls.Chart
             Close();
         }
     }
-
 
 }

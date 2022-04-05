@@ -601,7 +601,7 @@ namespace LegendsViewer.Legends.WorldObjects
         private List<Assignment> _assignments;
         public string GetLastAssignmentString()
         {
-            if (_assignments != null && _assignments.Count > 0)
+            if (_assignments?.Count > 0)
             {
                 Assignment lastAssignment = _assignments.Last();
                 if (lastAssignment.Ended != -1)
@@ -660,7 +660,7 @@ namespace LegendsViewer.Legends.WorldObjects
                     }
                 }
             }
-            if (_assignments != null && _assignments.Count > 0)
+            if (_assignments?.Count > 0)
             {
                 Assignment lastAssignment = _assignments.Last();
                 if (lastAssignment.Ended != -1)
@@ -723,7 +723,6 @@ namespace LegendsViewer.Legends.WorldObjects
 
             public Assignment(Entity entity, int began, int ended, string title) : base(entity, began, ended, title)
             {
-
             }
 
             [AllowAdvancedSearch]

@@ -124,10 +124,10 @@ namespace LegendsViewer.Legends.Parser
                 string entityName = _currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                     _currentLine.IndexOf(",", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2);
                 var entities = _world.Entities
-                    .Where(entity => string.Compare(entity.Name, entityName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                    .Where(entity => string.Equals(entity.Name, entityName, StringComparison.OrdinalIgnoreCase)).ToList();
                 if (entities.Count == 1)
                 {
-                    _owner = entities.First();
+                    _owner = entities[0];
                 }
                 else if (entities.Count == 0)
                 {
@@ -181,10 +181,10 @@ namespace LegendsViewer.Legends.Parser
                 CreatureInfo civRace = _world.GetCreatureInfo(_currentLine.Substring(_currentLine.IndexOf(",", StringComparison.Ordinal) + 2,
                     _currentLine.Length - _currentLine.IndexOf(",", StringComparison.Ordinal) - 2));
                 var entities = _world.Entities
-                    .Where(entity => string.Compare(entity.Name, civName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                    .Where(entity => string.Equals(entity.Name, civName, StringComparison.OrdinalIgnoreCase)).ToList();
                 if (entities.Count == 1)
                 {
-                    parent = entities.First();
+                    parent = entities[0];
                 }
                 else if (entities.Count == 0)
                 {
@@ -195,7 +195,7 @@ namespace LegendsViewer.Legends.Parser
                     var possibleEntities = entities.Where(entity => entity.Race == civRace).ToList();
                     if (possibleEntities.Count == 1)
                     {
-                        parent = possibleEntities.First();
+                        parent = possibleEntities[0];
                     }
                     else if (possibleEntities.Count == 0)
                     {
@@ -206,7 +206,7 @@ namespace LegendsViewer.Legends.Parser
                         var possibleCivilizations = possibleEntities.Where(entity => entity.Type == EntityType.Civilization).ToList();
                         if (possibleCivilizations.Count == 1)
                         {
-                            parent = possibleEntities.First();
+                            parent = possibleEntities[0];
                         }
                         else
                         {
@@ -252,10 +252,10 @@ namespace LegendsViewer.Legends.Parser
                     string officialName = Formatting.ReplaceNonAscii(_currentLine.Substring(_currentLine.IndexOf(":", StringComparison.Ordinal) + 2,
                         _currentLine.IndexOf(",", StringComparison.Ordinal) - _currentLine.IndexOf(":", StringComparison.Ordinal) - 2));
                     var officials = _world.HistoricalFigures.Where(hf =>
-                            string.Compare(hf.Name, officialName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                            string.Equals(hf.Name, officialName.Replace("'", "`"), StringComparison.OrdinalIgnoreCase)).ToList();
                     if (officials.Count == 1)
                     {
-                        var siteOfficial = officials.First();
+                        var siteOfficial = officials[0];
                         string siteOfficialPosition = _currentLine.Substring(1, _currentLine.IndexOf(":", StringComparison.Ordinal) - 1);
                         _site.Officials.Add(new Site.Official(siteOfficial, siteOfficialPosition));
                     }

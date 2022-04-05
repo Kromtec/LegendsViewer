@@ -307,7 +307,7 @@ namespace LegendsViewer.Controls.HTML
 
                     Html.Append("<td>").Append(warfareString).AppendLine("</td>")
                         .AppendLine("<td>as part of</td>")
-                        .Append("<td>").Append((warfare.ParentCollection == null ? "UNKNOWN" : warfare.ParentCollection.ToLink())).AppendLine("</td>")
+                        .Append("<td>").Append(warfare.ParentCollection == null ? "UNKNOWN" : warfare.ParentCollection.ToLink()).AppendLine("</td>")
                         .AppendLine("<td>by ");
                     if (warfare.GetType() == typeof(Battle))
                     {
@@ -322,11 +322,11 @@ namespace LegendsViewer.Controls.HTML
                             Html.AppendLine("<td></td>");
                         }
 
-                        Html.Append("<td>(Deaths: ").Append((battle.AttackerDeathCount + battle.DefenderDeathCount)).AppendLine(")</td>");
+                        Html.Append("<td>(Deaths: ").Append(battle.AttackerDeathCount + battle.DefenderDeathCount).AppendLine(")</td>");
                     }
                     if (warfare.GetType() == typeof(SiteConquered))
                     {
-                        Html.Append((warfare as SiteConquered).Attacker.PrintEntity()).Append("</td>");
+                        Html.Append((warfare as SiteConquered)?.Attacker.PrintEntity()).Append("</td>");
                     }
 
                     Html.AppendLine("</tr>");

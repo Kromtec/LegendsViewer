@@ -185,7 +185,7 @@ namespace LegendsViewer.Controls.Tabs
             // returns empty string for valid values and error message for invalid values
             InputBoxValidation validation = delegate (string val)
             {
-                if (val == "")
+                if (val?.Length == 0)
                 {
                     return "Value cannot be empty.";
                 }

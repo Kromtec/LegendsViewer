@@ -42,7 +42,7 @@ namespace LegendsViewer.Controls.Query
             {
                 GetValueOptions();
                 object value = ValueSelect.SelectedItem;
-                (Parent as CriteriaPanel).UpdateValueSelects(this);
+                (Parent as CriteriaPanel)?.UpdateValueSelects(this);
                 ValueSelect.SelectedItem = value;
             };
             //QueryOperatorSelect.Visible = false;
@@ -66,11 +66,11 @@ namespace LegendsViewer.Controls.Query
             ValueSelect.Width = 175;
             ValueSelect.TextChanged += delegate
             {
-                (Parent as CriteriaPanel).UpdateValueSelects(this);
+                (Parent as CriteriaPanel)?.UpdateValueSelects(this);
             };
             ValueSelect.SelectedIndexChanged += delegate
             {
-                (Parent as CriteriaPanel).UpdateValueSelects(this);
+                (Parent as CriteriaPanel)?.UpdateValueSelects(this);
             };
             ValueSelect.FormattingEnabled = true;
             ValueSelect.Format += delegate (object sender, ListControlConvertEventArgs e)
@@ -133,7 +133,7 @@ namespace LegendsViewer.Controls.Query
             Width = Remove.Right;
             if (Parent != null)
             {
-                (Parent as CriteriaPanel).AutoResize();
+                (Parent as CriteriaPanel)?.AutoResize();
             }
         }
 
@@ -224,7 +224,7 @@ namespace LegendsViewer.Controls.Query
             //}
             else //if (!selected.Type.IsGenericType)// && selected.Type != typeof(int) && selected.Type != typeof(double))// && PropertySelect.GetLowestProperty().Name != "Name")
             {
-                IEnumerable<object> options = SelectCriteria ? (Parent.Parent as QueryControl).SearchSelection(this) : (Parent.Parent as QueryControl).Search(this);
+                IEnumerable<object> options = SelectCriteria ? (Parent.Parent as QueryControl)?.SearchSelection(this) : (Parent.Parent as QueryControl)?.Search(this);
                 SearchInfo available = BuildSearchInfo(true);
                 if (available != null)
                 {
@@ -260,7 +260,7 @@ namespace LegendsViewer.Controls.Query
             if (previousSelection != null && ValueSelect.Items.Contains(previousSelection))
             {
                 ValueSelect.SelectedItem = previousSelection;
-            } (Parent as CriteriaPanel).UpdateValueSelects(this);
+            } (Parent as CriteriaPanel)?.UpdateValueSelects(this);
         }
 
         protected override void OnControlAdded(ControlEventArgs e)

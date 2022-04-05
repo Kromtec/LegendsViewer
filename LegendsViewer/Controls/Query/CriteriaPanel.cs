@@ -29,7 +29,7 @@ namespace LegendsViewer.Controls.Query
 
         private void AddClick(object sender, EventArgs e)
         {
-            AddNew(Criteria.IndexOf((sender as Button).Parent as CriteriaLine));
+            AddNew(Criteria.IndexOf((sender as Button)?.Parent as CriteriaLine));
         }
         public void AddNew(int index = -1)
         {
@@ -61,7 +61,7 @@ namespace LegendsViewer.Controls.Query
             Controls.Add(criteria);
             Add.Location = new Point(10, Criteria.Last().Bottom + 3);
             Add.Visible = true;
-            Criteria.First().QueryOperatorSelect.Visible = false;
+            Criteria[0].QueryOperatorSelect.Visible = false;
             if (Criteria.Count > 1)
             {
                 Criteria[1].QueryOperatorSelect.Visible = true;
@@ -72,7 +72,7 @@ namespace LegendsViewer.Controls.Query
 
         public void RemoveClick(object sender, EventArgs e)
         {
-            Remove((sender as Button).Parent as CriteriaLine);
+            Remove((sender as Button)?.Parent as CriteriaLine);
         }
         public void Remove(CriteriaLine criteria)
         {
@@ -90,8 +90,8 @@ namespace LegendsViewer.Controls.Query
                 AddNew();
             }
 
-            Criteria.First().QueryOperatorSelect.Visible = false;
-            Criteria.First().QueryOperatorSelect.SelectedItem = QueryOperator.And;
+            Criteria[0].QueryOperatorSelect.Visible = false;
+            Criteria[0].QueryOperatorSelect.SelectedItem = QueryOperator.And;
             Add.Location = new Point(10, Criteria.Last().Bottom + 3);
             AutoResize();
             UpdateValueSelects(index);
@@ -115,14 +115,14 @@ namespace LegendsViewer.Controls.Query
             IEnumerator selectionEnumerator = Controls.GetEnumerator();
             while (selectionEnumerator.MoveNext())
             {
-                if ((selectionEnumerator.Current as Control).Bottom > panelHeight)
+                if ((selectionEnumerator.Current as Control)?.Bottom > panelHeight)
                 {
-                    panelHeight = (selectionEnumerator.Current as Control).Bottom;
+                    panelHeight = (selectionEnumerator.Current as Control)?.Bottom ?? 0;
                 }
 
-                if ((selectionEnumerator.Current as Control).Right > panelWidth)
+                if ((selectionEnumerator.Current as Control)?.Right > panelWidth)
                 {
-                    panelWidth = (selectionEnumerator.Current as Control).Right;
+                    panelWidth = (selectionEnumerator.Current as Control)?.Right ?? 0;
                 }
             }
             Height = panelHeight + 3;
@@ -137,7 +137,7 @@ namespace LegendsViewer.Controls.Query
             }
             if (SelectCriteria)
             {
-                (Parent as QueryControl).SearchPanel.UpdateAllValueSelects();
+                (Parent as QueryControl)?.SearchPanel.UpdateAllValueSelects();
             }
         }
 
@@ -150,7 +150,7 @@ namespace LegendsViewer.Controls.Query
 
             if (SelectCriteria)
             {
-                (Parent as QueryControl).SearchPanel.UpdateAllValueSelects();
+                (Parent as QueryControl)?.SearchPanel.UpdateAllValueSelects();
             }
         }
 
@@ -163,7 +163,7 @@ namespace LegendsViewer.Controls.Query
 
             if (SelectCriteria)
             {
-                (Parent as QueryControl).SearchPanel.UpdateAllValueSelects();
+                (Parent as QueryControl)?.SearchPanel.UpdateAllValueSelects();
             }
         }
 
@@ -199,7 +199,7 @@ namespace LegendsViewer.Controls.Query
             }
             if (query.Count > 0)
             {
-                query.First().Operator = QueryOperator.Or;
+                query[0].Operator = QueryOperator.Or;
             }
 
             return query;

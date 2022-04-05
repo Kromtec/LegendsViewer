@@ -55,7 +55,7 @@ namespace LegendsViewer.Controls.Tabs
             if (!FileLoader.Working && World != null)
             {
                 Browser.Navigate(ControlOption.Map);
-                ((Browser.SelectedTab as DwarfTabPage).Current.GetControl() as MapPanel)?.ToggleCivs();
+                ((Browser.SelectedTab as DwarfTabPage)?.Current.GetControl() as MapPanel)?.ToggleCivs();
             }
         }
 

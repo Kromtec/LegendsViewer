@@ -151,7 +151,7 @@ namespace LegendsViewer.Controls
 
             if (SortOwners)
             {
-                filtered = filtered.OrderByDescending(s => s.OwnerHistory.Count());
+                filtered = filtered.OrderByDescending(s => s.OwnerHistory.Count);
             }
 
             if (SortEvents)

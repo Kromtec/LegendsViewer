@@ -181,6 +181,7 @@ namespace LegendsViewer
         }
 
         private readonly List<string> _extractedFiles;
+        private static readonly Regex _regex = new Regex("[\x00-\x08\x0B\x0C\x0E-\x1F\x26]");
 
         public FileLoader(
               Button xmlButton, TextBox xmlText
@@ -413,38 +414,24 @@ namespace LegendsViewer
             {
                 string safeFile = Path.GetTempFileName();
                 using (StreamReader inputReader = new StreamReader(xmlFile))
+                using (StreamWriter outputWriter = File.AppendText(safeFile))
                 {
-                    using (StreamWriter outputWriter = File.AppendText(safeFile))
+                    string currentLine;
+                    while ((currentLine = inputReader.ReadLine()) != null)
                     {
-                        string currentLine;
-                        while (null != (currentLine = inputReader.ReadLine()))
+                        var replacedSpecialChars = _regex.Replace(currentLine, string.Empty);
+                        var fixedConspirator = replacedSpecialChars.Replace("</conspirator>", "</conspirator_hfid>");
+                        if (fixedConspirator.Contains("<interrogator_hfid>"))
                         {
-                            var replacedSpecialChars = Regex.Replace(currentLine, "[\x00-\x08\x0B\x0C\x0E-\x1F\x26]", string.Empty);
-                            var fixedConspirator = replacedSpecialChars.Replace("</conspirator>", "</conspirator_hfid>");
-                            if (fixedConspirator.Contains("<interrogator_hfid>"))
-                            {
-                                var fixedInterrogator = fixedConspirator.Replace("</convicted_hfid>", "</interrogator_hfid>");
-                                outputWriter.WriteLine(fixedInterrogator);
-                            }
-                            else
-                            {
-                                outputWriter.WriteLine(fixedConspirator);
-                            }
+                            var fixedInterrogator = fixedConspirator.Replace("</convicted_hfid>", "</interrogator_hfid>");
+                            outputWriter.WriteLine(fixedInterrogator);
                         }
-                        outputWriter.Close();
+                        else
+                        {
+                            outputWriter.WriteLine(fixedConspirator);
+                        }
                     }
-                    inputReader.Close();
                 }
-                //DialogResult overwrite =
-                //    MessageBox.Show(
-                //        "Repair completed. Would you like to overwrite the original file with the repaired version? (Note: No effect if opened from an archive)",
-                //        "Repair Completed", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                //if (overwrite == DialogResult.Yes)
-                //{
-                //    File.Delete(xmlFile);
-                //    File.Copy(safeFile, xmlFile);
-                //    return xmlFile;
-                //}
                 return safeFile;
             }
             return null;
@@ -487,8 +474,8 @@ namespace LegendsViewer
             _statusLabel.ForeColor = Color.Orange;
 
             BackgroundWorker extract = new BackgroundWorker();
-            extract.DoWork += extract_DoWork;
-            extract.RunWorkerCompleted += extract_RunWorkerCompleted;
+            extract.DoWork += Extract_DoWork;
+            extract.RunWorkerCompleted += Extract_RunWorkerCompleted;
 
             extract.RunWorkerAsync(file);
             while (extract.IsBusy)
@@ -497,7 +484,7 @@ namespace LegendsViewer
             }
         }
 
-        private void extract_DoWork(object sender, DoWorkEventArgs e)
+        private void Extract_DoWork(object sender, DoWorkEventArgs e)
         {
             using (SevenZipExtractor extractor = new SevenZipExtractor(e.Argument as string))
             {
@@ -552,7 +539,7 @@ namespace LegendsViewer
             _extractedFiles.Add(Path.Combine(outputDirectory, fileName));
         }
 
-        private void extract_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void Extract_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
             {
@@ -590,9 +577,9 @@ namespace LegendsViewer
 
         private enum FileState
         {
-            Default,
-            Ready,
-            NotReady
+            Default = 0,
+            Ready = 1,
+            NotReady = 2
         }
     }
 }

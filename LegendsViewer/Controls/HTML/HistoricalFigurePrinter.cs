@@ -615,7 +615,7 @@ namespace LegendsViewer.Controls.HTML
                 foreach (HistoricalFigure.Position hfposition in _historicalFigure.Positions)
                 {
                     Html.AppendLine("<li>");
-                    EntityPosition position = hfposition.Entity.EntityPositions.Find(pos => string.Equals(pos.Name, hfposition.Title, System.StringComparison.OrdinalIgnoreCase));
+                    EntityPosition position = hfposition.Entity.EntityPositions.Find(pos => string.Equals(pos.Name, hfposition.Title, StringComparison.OrdinalIgnoreCase));
                     if (position != null)
                     {
                         string positionName = position.GetTitleByCaste(_historicalFigure.Caste);

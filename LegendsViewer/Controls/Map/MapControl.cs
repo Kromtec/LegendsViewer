@@ -21,7 +21,7 @@ namespace LegendsViewer.Controls.Map
             Title = "Map";
             if (focusObject != null && focusObject is DwarfObject)
             {
-                Title += " - " + (focusObject as DwarfObject).ToLink(false, focusObject as DwarfObject);
+                Title += " - " + (focusObject as DwarfObject)?.ToLink(false, focusObject as DwarfObject);
             }
 
             World = world; FocusObject = focusObject; TabControl = dwarfTabControl;

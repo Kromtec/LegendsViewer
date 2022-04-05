@@ -8,7 +8,6 @@ using LegendsViewer.Controls.Query;
 using LegendsViewer.Controls.Query.Attributes;
 using LegendsViewer.Legends;
 using LegendsViewer.Legends.EventCollections;
-using LegendsViewer.Legends.WorldObjects;
 
 namespace LegendsViewer.Controls
 {
@@ -199,7 +198,10 @@ namespace LegendsViewer.Controls
 
         public static List<DataGridViewColumn> GetColumns(Type dataType)
         {
-            if (dataType.IsGenericType) dataType = dataType.GetGenericArguments()[0];
+            if (dataType.IsGenericType)
+            {
+                dataType = dataType.GetGenericArguments()[0];
+            }
 
             var columns = new List<DataGridViewColumn>();
             var bindings = getColumnBindingsByType(dataType);
@@ -274,8 +276,15 @@ namespace LegendsViewer.Controls
         public static string GetDescription(this object enumerationValue)
         {
             var type = enumerationValue.GetType();
-            if (type == typeof(double)) return (enumerationValue as double?)?.ToString("R");
-            if (!type.IsEnum) return enumerationValue.ToString();
+            if (type == typeof(double))
+            {
+                return (enumerationValue as double?)?.ToString("R");
+            }
+
+            if (!type.IsEnum)
+            {
+                return enumerationValue.ToString();
+            }
 
             //Tries to find a DescriptionAttribute for a potential friendly name
             //for the enum
@@ -285,8 +294,10 @@ namespace LegendsViewer.Controls
                 var attrs = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
 
                 if (attrs.Length > 0)
+                {
                     //Pull out the description value
                     return ((DescriptionAttribute)attrs[0]).Description;
+                }
             }
 
             //If we have no description attribute, just return the ToString of the enum

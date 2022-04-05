@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using LegendsViewer.Legends;
 
 namespace LegendsViewer.Controls.HTML
 {

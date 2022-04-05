@@ -93,7 +93,11 @@ namespace LegendsViewer.Legends.WorldObjects
         {
             get
             {
-                if (WarDeaths == 0 && WarKills == 0) return 0;
+                if (WarDeaths == 0 && WarKills == 0)
+                {
+                    return 0;
+                }
+
                 return WarDeaths == 0 ? double.MaxValue : Math.Round(WarKills / Convert.ToDouble(WarDeaths), 2);
             }
         }
@@ -414,48 +418,33 @@ namespace LegendsViewer.Legends.WorldObjects
 
         private string GetTypeAsString()
         {
-            string title;
             switch (Type)
             {
                 case EntityType.Civilization:
-                    title = "Civilization";
-                    break;
+                    return "Civilization";
                 case EntityType.NomadicGroup:
-                    title = "Nomadic group";
-                    break;
+                    return "Nomadic group";
                 case EntityType.MigratingGroup:
-                    title = "Migrating group";
-                    break;
+                    return "Migrating group";
                 case EntityType.Outcast:
-                    title = "Collection of outcasts";
-                    break;
+                    return "Collection of outcasts";
                 case EntityType.Religion:
-                    title = "Religious group";
-                    break;
+                    return "Religious group";
                 case EntityType.SiteGovernment:
-                    title = "Site government";
-                    break;
+                    return "Site government";
                 case EntityType.PerformanceTroupe:
-                    title = "Performance troupe";
-                    break;
+                    return "Performance troupe";
                 case EntityType.MercenaryCompany:
-                    title = "Mercenary company";
-                    break;
+                    return "Mercenary company";
                 case EntityType.MilitaryUnit:
-                    title = "Mercenary order";
-                    break;
+                    return "Mercenary order";
                 case EntityType.Guild:
-                    title = "Guild";
-                    break;
+                    return "Guild";
                 case EntityType.MerchantCompany:
-                    title = "Merchant company";
-                    break;
+                    return "Merchant company";
                 default:
-                    title = "Group";
-                    break;
+                    return "Group";
             }
-
-            return title;
         }
 
         public string GetSummary(bool link = true, DwarfObject pov = null)
@@ -478,14 +467,14 @@ namespace LegendsViewer.Legends.WorldObjects
                 case EntityType.Religion:
                     if (Worshiped.Count > 0)
                     {
-                        summary += " centered around the worship of " + Worshiped.First().ToLink(link, pov);
+                        summary += " centered around the worship of " + Worshiped[0].ToLink(link, pov);
                     }
                     break;
                 case EntityType.MilitaryUnit:
                     bool isWorshipping = false;
                     if (Worshiped.Count > 0)
                     {
-                        summary += " devoted to the worship of " + Worshiped.First().ToLink(link, pov);
+                        summary += " devoted to the worship of " + Worshiped[0].ToLink(link, pov);
                         isWorshipping = true;
                     }
                     if (Weapons.Count > 0)
