@@ -181,7 +181,7 @@ namespace LegendsViewer
         }
 
         private readonly List<string> _extractedFiles;
-        private static readonly Regex _regex = new Regex("[\x00-\x08\x0B\x0C\x0E-\x1F\x26]");
+        private static readonly Regex _regex = new("[\x00-\x08\x0B\x0C\x0E-\x1F\x26]");
 
         public FileLoader(
               Button xmlButton, TextBox xmlText
@@ -222,7 +222,7 @@ namespace LegendsViewer
 
         private string GetFile(string filter)
         {
-            OpenFileDialog dialog = new OpenFileDialog
+            OpenFileDialog dialog = new()
             {
                 Filter = filter
             };
@@ -293,7 +293,7 @@ namespace LegendsViewer
 
         private void LocateOtherFiles(string xmlFile)
         {
-            FileInfo fileInfo = new FileInfo(xmlFile);
+            FileInfo fileInfo = new(xmlFile);
             SaveDirectory = fileInfo.DirectoryName;
             if (fileInfo.Name.Contains(FileIdentifierLegendsXml))
             {
@@ -352,7 +352,7 @@ namespace LegendsViewer
             _statusLabel.Text = "Loading...";
             _statusLabel.ForeColor = Color.Blue;
 
-            BackgroundWorker backgroundWorker = new BackgroundWorker
+            BackgroundWorker backgroundWorker = new()
             {
                 WorkerReportsProgress = true
             };
@@ -413,7 +413,7 @@ namespace LegendsViewer
             if (response == DialogResult.Yes)
             {
                 string safeFile = Path.GetTempFileName();
-                using (StreamReader inputReader = new StreamReader(xmlFile))
+                using (StreamReader inputReader = new(xmlFile))
                 using (StreamWriter outputWriter = File.AppendText(safeFile))
                 {
                     string currentLine;
@@ -473,7 +473,7 @@ namespace LegendsViewer
             _statusLabel.Text = "Extracting...";
             _statusLabel.ForeColor = Color.Orange;
 
-            BackgroundWorker extract = new BackgroundWorker();
+            BackgroundWorker extract = new();
             extract.DoWork += Extract_DoWork;
             extract.RunWorkerCompleted += Extract_RunWorkerCompleted;
 
@@ -486,7 +486,7 @@ namespace LegendsViewer
 
         private void Extract_DoWork(object sender, DoWorkEventArgs e)
         {
-            using (SevenZipExtractor extractor = new SevenZipExtractor(e.Argument as string))
+            using (SevenZipExtractor extractor = new(e.Argument as string))
             {
                 string fileNameLegendsXml = extractor.ArchiveFileNames.FirstOrDefault(file => file.EndsWith(FileIdentifierLegendsXml, StringComparison.OrdinalIgnoreCase));
                 if (string.IsNullOrEmpty(fileNameLegendsXml))

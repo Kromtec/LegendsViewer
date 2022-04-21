@@ -55,12 +55,12 @@ namespace LegendsViewer
             this.warfareTab1 = new LegendsViewer.Controls.Tabs.WarfareTab();
             this.tpCollections = new System.Windows.Forms.TabPage();
             this.collectionsTab1 = new LegendsViewer.Controls.Tabs.CollectionsTab();
+            this.btnAdvancedSearch = new System.Windows.Forms.Button();
             this.btnChart = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.btnStats = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnForward = new System.Windows.Forms.Button();
-            this.btnAdvancedSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.scWorld)).BeginInit();
             this.scWorld.Panel1.SuspendLayout();
             this.scWorld.Panel2.SuspendLayout();
@@ -284,6 +284,18 @@ namespace LegendsViewer
             this.collectionsTab1.Size = new System.Drawing.Size(271, 619);
             this.collectionsTab1.TabIndex = 0;
             // 
+            // btnAdvancedSearch
+            // 
+            this.btnAdvancedSearch.Image = global::LegendsViewer.Properties.Resources.search16x16;
+            this.btnAdvancedSearch.Location = new System.Drawing.Point(361, 3);
+            this.btnAdvancedSearch.Name = "btnAdvancedSearch";
+            this.btnAdvancedSearch.Size = new System.Drawing.Size(120, 24);
+            this.btnAdvancedSearch.TabIndex = 38;
+            this.btnAdvancedSearch.Text = "Advanced Search";
+            this.btnAdvancedSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAdvancedSearch.UseVisualStyleBackColor = true;
+            this.btnAdvancedSearch.Click += new System.EventHandler(this.BtnAdvancedSearchClick);
+            // 
             // btnChart
             // 
             this.btnChart.Image = global::LegendsViewer.Properties.Resources.chart16x16;
@@ -340,18 +352,6 @@ namespace LegendsViewer
             this.btnForward.UseVisualStyleBackColor = true;
             this.btnForward.Click += new System.EventHandler(this.BtnForward_Click);
             // 
-            // btnAdvancedSearch
-            // 
-            this.btnAdvancedSearch.Image = global::LegendsViewer.Properties.Resources.search16x16;
-            this.btnAdvancedSearch.Location = new System.Drawing.Point(361, 3);
-            this.btnAdvancedSearch.Name = "btnAdvancedSearch";
-            this.btnAdvancedSearch.Size = new System.Drawing.Size(120, 24);
-            this.btnAdvancedSearch.TabIndex = 38;
-            this.btnAdvancedSearch.Text = "Advanced Search";
-            this.btnAdvancedSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAdvancedSearch.UseVisualStyleBackColor = true;
-            this.btnAdvancedSearch.Click += new System.EventHandler(this.btnAdvancedSearchClick);
-            // 
             // FrmLegendsViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,7 +360,7 @@ namespace LegendsViewer
             this.Controls.Add(this.scWorld);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI Symbol", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = global::LegendsViewer.Properties.Resources.book;
             this.Name = "FrmLegendsViewer";
             this.Text = "Legends Viewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

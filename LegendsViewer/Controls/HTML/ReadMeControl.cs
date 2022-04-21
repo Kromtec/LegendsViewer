@@ -25,8 +25,8 @@ namespace LegendsViewer.Controls.HTML
 
                 var assembly = Assembly.GetExecutingAssembly();
                 string markdown;
-                var resourceName = "LegendsViewer.README.md";
-                using (StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)))
+                const string resourceName = "LegendsViewer.README.md";
+                using (StreamReader reader = new(assembly.GetManifestResourceStream(resourceName)))
                 {
                     markdown = reader.ReadToEnd();
                 }
@@ -58,12 +58,11 @@ namespace LegendsViewer.Controls.HTML
         private static string GetHtmlByMarkdown(string markdown)
         {
             string readme = CommonMarkConverter.Convert(markdown);
-            readme = readme
+            return readme
                     .Replace(":high_brightness:",
                     "<img src=\"https://assets-cdn.github.com/images/icons/emoji/unicode/1f506.png\" alt=\":high_brightness:\" title=\":high_brightness:\" class=\"emoji\" height=\"20\" width=\"20\">")
                     .Replace(":blue_book:",
                     "<img src=\"https://assets-cdn.github.com/images/icons/emoji/unicode/1f4d8.png\" alt=\":blue_book:\" title=\":blue_book:\" class=\"emoji\" height=\"20\" width=\"20\">");
-            return readme;
         }
 
         private void BrowserNavigating(object sender, WebBrowserNavigatingEventArgs e)
@@ -80,13 +79,10 @@ namespace LegendsViewer.Controls.HTML
         {
             if (!Disposed)
             {
-                if (disposing)
+                if (disposing && HtmlBrowser != null)
                 {
-                    if (HtmlBrowser != null)
-                    {
-                        HtmlBrowser.Dispose();
-                        HtmlBrowser = null;
-                    }
+                    HtmlBrowser.Dispose();
+                    HtmlBrowser = null;
                 }
                 base.Dispose(disposing);
                 Disposed = true;

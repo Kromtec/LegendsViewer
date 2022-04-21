@@ -1,727 +1,174 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{010B16A9-DE79-4047-80EF-13F3FA12B147}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LegendsViewer</RootNamespace>
-    <AssemblyName>LegendsViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>book.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net45\CommonMark.dll</HintPath>
-    </Reference>
-    <Reference Include="Jdenticon, Version=3.1.2.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon-net.3.1.2\lib\net45\Jdenticon.dll</HintPath>
-    </Reference>
-    <Reference Include="Jdenticon.Gdi, Version=3.1.2.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jdenticon.Gdi.3.1.2\lib\net45\Jdenticon.Gdi.dll</HintPath>
-    </Reference>
-    <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
-      <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
-    </Reference>
-    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
-      <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-    </Reference>
-    <Reference Include="System.Core">
-    </Reference>
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Data">
-    </Reference>
-    <Reference Include="System.Deployment">
-    </Reference>
-    <Reference Include="System.Drawing">
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-    </Reference>
-    <Reference Include="System.Xml">
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Controls\AppHelpers.cs" />
-    <Compile Include="Controls\Chart\ChartControl.cs" />
-    <Compile Include="Controls\Chart\ChartMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Chart\ChartOption.cs" />
-    <Compile Include="Controls\Chart\ChartPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\DwarfTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\EventArgs.cs" />
-    <Compile Include="Controls\HTML\EventOverviewPrinter.cs" />
-    <Compile Include="Controls\HTML\ArtifactPrinter.cs" />
-    <Compile Include="Controls\HTML\ArtFormPrinter.cs" />
-    <Compile Include="Controls\HTML\LandmassPrinter.cs" />
-    <Compile Include="Controls\HTML\MountainPeakPrinter.cs" />
-    <Compile Include="Controls\HTML\RaidPrinter.cs" />
-    <Compile Include="Controls\HTML\ReadMeControl.cs" />
-    <Compile Include="Controls\HTML\RiverPrinter.cs" />
-    <Compile Include="Controls\HTML\StructurePrinter.cs" />
-    <Compile Include="Controls\HTML\Utilities\BrowserUtil.cs" />
-    <Compile Include="Controls\HTML\Utilities\HTMLStyleUtil.cs" />
-    <Compile Include="Controls\HTML\WorldConstructionPrinter.cs" />
-    <Compile Include="Controls\HTML\Utilities\SkillDictionary.cs" />
-    <Compile Include="Controls\HTML\WrittenContentPrinter.cs" />
-    <Compile Include="Controls\InputBox.cs" />
-    <Compile Include="Controls\LVCoordinator.cs" />
-    <Compile Include="Controls\Map\dlgPopulation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\Map\dlgPopulation.Designer.cs">
-      <DependentUpon>dlgPopulation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DwarfTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\HTML\BattlePrinter.cs" />
-    <Compile Include="Controls\HTML\BeastAttackPrinter.cs" />
-    <Compile Include="Controls\HTML\EntityPrinter.cs" />
-    <Compile Include="Controls\HTML\EraPrinter.cs" />
-    <Compile Include="Controls\HTML\HistoricalFigurePrinter.cs" />
-    <Compile Include="Controls\HTML\HTMLControl.cs" />
-    <Compile Include="Controls\HTML\HTMLPrinter.cs" />
-    <Compile Include="Controls\HTML\RegionPrinter.cs" />
-    <Compile Include="Controls\HTML\SiteConqueredPrinter.cs" />
-    <Compile Include="Controls\HTML\SitePrinter.cs" />
-    <Compile Include="Controls\HTML\StringPrinter.cs" />
-    <Compile Include="Controls\HTML\UndergroundRegionPrinter.cs" />
-    <Compile Include="Controls\HTML\WarPrinter.cs" />
-    <Compile Include="Controls\HTML\WorldStatsPrinter.cs" />
-    <Compile Include="Controls\Map\HeatMapMaker.cs" />
-    <Compile Include="Controls\Map\MapControl.cs" />
-    <Compile Include="Controls\Map\MapMenu.cs" />
-    <Compile Include="Controls\Map\MapPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Map\MapUtil.cs" />
-    <Compile Include="Controls\Map\PathMaker.cs" />
-    <Compile Include="Controls\PageControl.cs" />
-    <Compile Include="Controls\Query\Attributes\AllowAdvancedSearchAttribute.cs" />
-    <Compile Include="Controls\Query\Attributes\ShowInAdvancedSearchResultsAttribute.cs" />
-    <Compile Include="Controls\Query\CriteriaLine.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Query\CriteriaPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Query\PropertyBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Query\QueryControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Query\QueryControl.designer.cs">
-      <DependentUpon>QueryControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Query\SearchInfo.cs" />
-    <Compile Include="Controls\Query\SearchList.cs" />
-    <Compile Include="Controls\Query\SearchProperty.cs" />
-    <Compile Include="Controls\SimpleLists.cs" />
-    <Compile Include="Controls\TabControlImproved.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\ArtAndCraftsTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\ArtAndCraftsTab.Designer.cs">
-      <DependentUpon>ArtAndCraftsTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\BaseSearchTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\BaseSearchTab.designer.cs">
-      <DependentUpon>BaseSearchTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\CivsTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\CivsTab.designer.cs">
-      <DependentUpon>CivsTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\CollectionsTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\CollectionsTab.designer.cs">
-      <DependentUpon>CollectionsTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\GeographyTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\GeographyTab.designer.cs">
-      <DependentUpon>GeographyTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\HistoricalFiguresTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\HistoricalFiguresTab.designer.cs">
-      <DependentUpon>HistoricalFiguresTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\InfrastructureTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\InfrastructureTab.Designer.cs">
-      <DependentUpon>InfrastructureTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\SummaryTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\SummaryTab.designer.cs">
-      <DependentUpon>SummaryTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tabs\WarfareTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Tabs\WarfareTab.designer.cs">
-      <DependentUpon>WarfareTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="dlgFileSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgFileSelect.Designer.cs">
-      <DependentUpon>dlgFileSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Chart\dlgHF.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\Chart\dlgHF.designer.cs">
-      <DependentUpon>dlgHF.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Query\DwarfQuery.cs" />
-    <Compile Include="Controls\Query\Dynamic.cs" />
-    <Compile Include="FileLoader.cs" />
-    <Compile Include="LegendsViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LegendsViewer.designer.cs">
-      <DependentUpon>LegendsViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Legends\ArtForm.cs" />
-    <Compile Include="Legends\CreatureInfo.cs" />
-    <Compile Include="Legends\Enums\ActionsForEntities.cs" />
-    <Compile Include="Legends\Enums\ActionsForHistoricalFigures.cs" />
-    <Compile Include="Legends\Enums\Evilness.cs" />
-    <Compile Include="Legends\Enums\PileType.cs" />
-    <Compile Include="Legends\Enums\PreachTopic.cs" />
-    <Compile Include="Legends\Enums\ReasonForCreatingEntity.cs" />
-    <Compile Include="Legends\Events\PlusEvents\HistoricalEventRelationShip.cs" />
-    <Compile Include="Legends\Identity.cs" />
-    <Compile Include="Legends\IncidentalEvents\BattleFought.cs" />
-    <Compile Include="Legends\Events\AddHfEntityHonor.cs" />
-    <Compile Include="Legends\Enums\AgreementReason.cs" />
-    <Compile Include="Legends\Enums\DissolveReason.cs" />
-    <Compile Include="Legends\Enums\IntrigueAction.cs" />
-    <Compile Include="Legends\Enums\IntrigueMethod.cs" />
-    <Compile Include="Legends\Enums\RelationShipProfileType.cs" />
-    <Compile Include="Legends\Enums\SitePropertyType.cs" />
-    <Compile Include="Legends\Enums\VagueRelationshipType.cs" />
-    <Compile Include="Legends\EventCollections\EntityOverthrownCollection.cs" />
-    <Compile Include="Legends\EventCollections\Persecution.cs" />
-    <Compile Include="Legends\Events\BuildingProfileAcquired.cs" />
-    <Compile Include="Legends\Events\EntityAllianceFormed.cs" />
-    <Compile Include="Legends\Events\EntityBreachFeatureLayer.cs" />
-    <Compile Include="Legends\Events\EntityDissolved.cs" />
-    <Compile Include="Legends\Events\EntityEquipmentPurchase.cs" />
-    <Compile Include="Legends\Events\EntityIncorporated.cs" />
-    <Compile Include="Legends\Events\EntityOverthrown.cs" />
-    <Compile Include="Legends\Events\EntityPersecuted.cs" />
-    <Compile Include="Legends\Events\FailedFrameAttempt.cs" />
-    <Compile Include="Legends\Events\FailedIntrigueCorruption.cs" />
-    <Compile Include="Legends\Events\Gamble.cs" />
-    <Compile Include="Legends\Events\HfAskedAboutArtifact.cs" />
-    <Compile Include="Legends\Events\HfCarouse.cs" />
-    <Compile Include="Legends\Events\HfConvicted.cs" />
-    <Compile Include="Legends\Events\HfEnslaved.cs" />
-    <Compile Include="Legends\Events\HfEquipmentPurchase.cs" />
-    <Compile Include="Legends\Events\HfInterrogated.cs" />
-    <Compile Include="Legends\Events\HfPerformedHorribleExperiments.cs" />
-    <Compile Include="Legends\Events\HfPreach.cs" />
-    <Compile Include="Legends\Events\HfRansomed.cs" />
-    <Compile Include="Legends\Events\HfsFormedIntrigueRelationship.cs" />
-    <Compile Include="Legends\Events\HolyCityDeclaration.cs" />
-    <Compile Include="Legends\Events\ModifiedBuilding.cs" />
-    <Compile Include="Legends\Events\RemoveHfHfLink.cs" />
-    <Compile Include="Legends\Events\Sabotage.cs" />
-    <Compile Include="Legends\Events\Trade.cs" />
-    <Compile Include="Legends\Honor.cs" />
-    <Compile Include="Legends\HonorEntity.cs" />
-    <Compile Include="Legends\IntrigueActor.cs" />
-    <Compile Include="Legends\IntriguePlot.cs" />
-    <Compile Include="Legends\PlotActor.cs" />
-    <Compile Include="Legends\SiteProperty.cs" />
-    <Compile Include="Legends\VagueRelationship.cs" />
-    <Compile Include="Legends\WorldObjects\Artifact.cs" />
-    <Compile Include="Legends\WorldObjects\DanceForm.cs" />
-    <Compile Include="Legends\WorldObjects\DwarfObject.cs" />
-    <Compile Include="Legends\WorldObjects\Entity.cs" />
-    <Compile Include="Legends\EntityEntityLink.cs" />
-    <Compile Include="Legends\Enums\AbuseType.cs" />
-    <Compile Include="Legends\Events\EntityExpelsHf.cs" />
-    <Compile Include="Legends\Events\EntityFledSite.cs" />
-    <Compile Include="Legends\EntityLink.cs" />
-    <Compile Include="Legends\EntityOccasion.cs" />
-    <Compile Include="Legends\EntityPopulation.cs" />
-    <Compile Include="Legends\EntityPosition.cs" />
-    <Compile Include="Legends\EntityPositionAssignment.cs" />
-    <Compile Include="Legends\EntityReputation.cs" />
-    <Compile Include="Legends\EntitySiteLink.cs" />
-    <Compile Include="Legends\Enums\AgreementTopic.cs" />
-    <Compile Include="Legends\Enums\BattleOutcome.cs" />
-    <Compile Include="Legends\Enums\BodyState.cs" />
-    <Compile Include="Legends\Enums\ChangeHfStateReason.cs" />
-    <Compile Include="Legends\Enums\Circumstance.cs" />
-    <Compile Include="Legends\Enums\Claim.cs" />
-    <Compile Include="Legends\Enums\ConfrontReason.cs" />
-    <Compile Include="Legends\Enums\ConfrontSituation.cs" />
-    <Compile Include="Legends\Enums\DeathCause.cs" />
-    <Compile Include="Legends\Enums\Dispute.cs" />
-    <Compile Include="Legends\Enums\StructureSubType.cs" />
-    <Compile Include="Legends\Enums\EntityLawType.cs" />
-    <Compile Include="Legends\Enums\EntityLinkType.cs" />
-    <Compile Include="Legends\Enums\EntityType.cs" />
-    <Compile Include="Legends\Enums\FormType.cs" />
-    <Compile Include="Legends\Enums\HfEntityLinkType.cs" />
-    <Compile Include="Legends\Enums\HFSimpleBattleType.cs" />
-    <Compile Include="Legends\Enums\HFState.cs" />
-    <Compile Include="Legends\Enums\HistoricalFigureLinkType.cs" />
-    <Compile Include="Legends\Enums\InsurrectionOutcome.cs" />
-    <Compile Include="Legends\Enums\Mood.cs" />
-    <Compile Include="Legends\Enums\OccasionType.cs" />
-    <Compile Include="Legends\Enums\ArtifactReason.cs" />
-    <Compile Include="Legends\Enums\ReferenceType.cs" />
-    <Compile Include="Legends\Enums\ReputationType.cs" />
-    <Compile Include="Legends\Enums\ScheduleType.cs" />
-    <Compile Include="Legends\Enums\SecretGoal.cs" />
-    <Compile Include="Legends\Enums\SiteConqueredType.cs" />
-    <Compile Include="Legends\Enums\SiteLinkType.cs" />
-    <Compile Include="Legends\Enums\SiteType.cs" />
-    <Compile Include="Legends\Enums\StructureType.cs" />
-    <Compile Include="Legends\Enums\TacticalSituationType.cs" />
-    <Compile Include="Legends\Enums\UnitType.cs" />
-    <Compile Include="Legends\Enums\WorldConstructionType.cs" />
-    <Compile Include="Legends\Enums\WrittenContentType.cs" />
-    <Compile Include="Legends\Era.cs" />
-    <Compile Include="Legends\EventCollections\Abduction.cs" />
-    <Compile Include="Legends\EventCollections\Battle.cs" />
-    <Compile Include="Legends\EventCollections\BeastAttack.cs" />
-    <Compile Include="Legends\EventCollections\CeremonyCollection.cs" />
-    <Compile Include="Legends\EventCollections\CompetitionCollection.cs" />
-    <Compile Include="Legends\EventCollections\Duel.cs" />
-    <Compile Include="Legends\EventCollections\EventCollections.cs" />
-    <Compile Include="Legends\EventCollections\Insurrection.cs" />
-    <Compile Include="Legends\EventCollections\Journey.cs" />
-    <Compile Include="Legends\EventCollections\Occasion.cs" />
-    <Compile Include="Legends\EventCollections\PerformanceCollection.cs" />
-    <Compile Include="Legends\EventCollections\ProcessionCollection.cs" />
-    <Compile Include="Legends\EventCollections\Purge.cs" />
-    <Compile Include="Legends\EventCollections\Raid.cs" />
-    <Compile Include="Legends\EventCollections\SiteConquered.cs" />
-    <Compile Include="Legends\EventCollections\Theft.cs" />
-    <Compile Include="Legends\EventCollections\War.cs" />
-    <Compile Include="Legends\Events\AddHFEntityLink.cs" />
-    <Compile Include="Legends\Events\AddHFHFLink.cs" />
-    <Compile Include="Legends\Events\AddHFSiteLink.cs" />
-    <Compile Include="Legends\Events\AgreementConcluded.cs" />
-    <Compile Include="Legends\Events\AgreementFormed.cs" />
-    <Compile Include="Legends\Events\AgreementMade.cs" />
-    <Compile Include="Legends\Events\AgreementRejected.cs" />
-    <Compile Include="Legends\Events\AgreementVoid.cs" />
-    <Compile Include="Legends\Events\ArtifactClaimFormed.cs" />
-    <Compile Include="Legends\Events\ArtifactCopied.cs" />
-    <Compile Include="Legends\Events\ArtifactCreated.cs" />
-    <Compile Include="Legends\Events\ArtifactDestroyed.cs" />
-    <Compile Include="Legends\Events\ArtifactFound.cs" />
-    <Compile Include="Legends\Events\ArtifactGiven.cs" />
-    <Compile Include="Legends\Events\ArtifactLost.cs" />
-    <Compile Include="Legends\Events\ArtifactPossessed.cs" />
-    <Compile Include="Legends\Events\ArtifactRecovered.cs" />
-    <Compile Include="Legends\Events\ArtifactStored.cs" />
-    <Compile Include="Legends\Events\ArtifactTransformed.cs" />
-    <Compile Include="Legends\Events\AssumeIdentity.cs" />
-    <Compile Include="Legends\Events\AttackedSite.cs" />
-    <Compile Include="Legends\Events\BodyAbused.cs" />
-    <Compile Include="Legends\Events\Ceremony.cs" />
-    <Compile Include="Legends\Events\ChangedCreatureType.cs" />
-    <Compile Include="Legends\Events\ChangeHFBodyState.cs" />
-    <Compile Include="Legends\Events\ChangeHFJob.cs" />
-    <Compile Include="Legends\Events\ChangeHFState.cs" />
-    <Compile Include="Legends\Events\Competition.cs" />
-    <Compile Include="Legends\Events\CreatedSite.cs" />
-    <Compile Include="Legends\Events\CreatedStructure.cs" />
-    <Compile Include="Legends\Events\CreatedWorldConstruction.cs" />
-    <Compile Include="Legends\Events\CreateEntityPosition.cs" />
-    <Compile Include="Legends\Events\CreatureDevoured.cs" />
-    <Compile Include="Legends\Events\DanceFormCreated.cs" />
-    <Compile Include="Legends\Events\DestroyedSite.cs" />
-    <Compile Include="Legends\Events\DiplomatLost.cs" />
-    <Compile Include="Legends\Events\EntityCreated.cs" />
-    <Compile Include="Legends\Events\EntityLaw.cs" />
-    <Compile Include="Legends\Events\EntityPrimaryCriminals.cs" />
-    <Compile Include="Legends\Events\EntityRampagedInSite.cs" />
-    <Compile Include="Legends\Events\EntityRelocate.cs" />
-    <Compile Include="Legends\Events\EntitySearchedSite.cs" />
-    <Compile Include="Legends\Events\FieldBattle.cs" />
-    <Compile Include="Legends\Events\FirstContact.cs" />
-    <Compile Include="Legends\Events\FormCreatedEvent.cs" />
-    <Compile Include="Legends\Events\HFAbducted.cs" />
-    <Compile Include="Legends\Events\HfAttackedSite.cs" />
-    <Compile Include="Legends\Events\HFConfronted.cs" />
-    <Compile Include="Legends\Events\HfDestroyedSite.cs" />
-    <Compile Include="Legends\Events\HFDied.cs" />
-    <Compile Include="Legends\Events\HFDisturbedStructure.cs" />
-    <Compile Include="Legends\Events\HFDoesInteraction.cs" />
-    <Compile Include="Legends\Events\HFFreed.cs" />
-    <Compile Include="Legends\Events\HFGainsSecretGoal.cs" />
-    <Compile Include="Legends\Events\HFLearnsSecret.cs" />
-    <Compile Include="Legends\Events\HFNewPet.cs" />
-    <Compile Include="Legends\Events\HfPrayedInsideStructure.cs" />
-    <Compile Include="Legends\Events\HFProfanedStructure.cs" />
-    <Compile Include="Legends\Events\HFRazedStructure.cs" />
-    <Compile Include="Legends\Events\HFReachSummit.cs" />
-    <Compile Include="Legends\Events\HfRecruitedUnitTypeForEntity.cs" />
-    <Compile Include="Legends\Events\HFRelationShipDenied.cs" />
-    <Compile Include="Legends\Events\HFReunion.cs" />
-    <Compile Include="Legends\Events\HFRevived.cs" />
-    <Compile Include="Legends\Events\HfsFormedReputationRelationship.cs" />
-    <Compile Include="Legends\Events\HFSimpleBattleEvent.cs" />
-    <Compile Include="Legends\Events\HFTravel.cs" />
-    <Compile Include="Legends\Events\HfViewedArtifact.cs" />
-    <Compile Include="Legends\Events\HFWounded.cs" />
-    <Compile Include="Legends\Events\ImpersonateHF.cs" />
-    <Compile Include="Legends\Events\InsurrectionStarted.cs" />
-    <Compile Include="Legends\Events\ItemStolen.cs" />
-    <Compile Include="Legends\Events\KnowledgeDiscovered.cs" />
-    <Compile Include="Legends\Events\MasterpieceArch.cs" />
-    <Compile Include="Legends\Events\MasterpieceArchConstructed.cs" />
-    <Compile Include="Legends\Events\MasterpieceArchDesign.cs" />
-    <Compile Include="Legends\Events\MasterpieceDye.cs" />
-    <Compile Include="Legends\Events\MasterpieceEngraving.cs" />
-    <Compile Include="Legends\Events\MasterpieceFood.cs" />
-    <Compile Include="Legends\Events\MasterpieceItem.cs" />
-    <Compile Include="Legends\Events\MasterpieceItemImprovement.cs" />
-    <Compile Include="Legends\Events\MasterpieceLost.cs" />
-    <Compile Include="Legends\Events\Merchant.cs" />
-    <Compile Include="Legends\Events\MusicalFormCreated.cs" />
-    <Compile Include="Legends\Events\NewSiteLeader.cs" />
-    <Compile Include="Legends\Events\OccasionEvent.cs" />
-    <Compile Include="Legends\Events\PeaceAccepted.cs" />
-    <Compile Include="Legends\Events\PeaceEfforts.cs" />
-    <Compile Include="Legends\Events\PeaceRejected.cs" />
-    <Compile Include="Legends\Events\Performance.cs" />
-    <Compile Include="Legends\Events\PlunderedSite.cs" />
-    <Compile Include="Legends\Events\PoeticFormCreated.cs" />
-    <Compile Include="Legends\Events\Procession.cs" />
-    <Compile Include="Legends\Events\RazedStructure.cs" />
-    <Compile Include="Legends\Events\ReclaimSite.cs" />
-    <Compile Include="Legends\Events\RegionpopIncorporatedIntoEntity.cs" />
-    <Compile Include="Legends\Events\RemoveHFEntityLink.cs" />
-    <Compile Include="Legends\Events\RemoveHFSiteLink.cs" />
-    <Compile Include="Legends\Events\ReplacedStructure.cs" />
-    <Compile Include="Legends\Events\SiteAbandoned.cs" />
-    <Compile Include="Legends\Events\SiteDied.cs" />
-    <Compile Include="Legends\Events\SiteDispute.cs" />
-    <Compile Include="Legends\Events\SiteRetired.cs" />
-    <Compile Include="Legends\Events\SiteSurrendered.cs" />
-    <Compile Include="Legends\Events\SiteTakenOver.cs" />
-    <Compile Include="Legends\Events\SiteTributeForced.cs" />
-    <Compile Include="Legends\Events\SneakIntoSite.cs" />
-    <Compile Include="Legends\Events\SpottedLeavingSite.cs" />
-    <Compile Include="Legends\Events\SquadVsSquad.cs" />
-    <Compile Include="Legends\Events\TacticalSituation.cs" />
-    <Compile Include="Legends\Events\WorldEvent.cs" />
-    <Compile Include="Legends\Events\WrittenContentComposed.cs" />
-    <Compile Include="Legends\Feature.cs" />
-    <Compile Include="Legends\Formatting.cs" />
-    <Compile Include="Legends\WorldObjects\HistoricalFigure.cs" />
-    <Compile Include="Legends\HistoricalFigureLink.cs" />
-    <Compile Include="Legends\Interfaces\IFeatured.cs" />
-    <Compile Include="Legends\Interfaces\IHasCoordinates.cs" />
-    <Compile Include="Legends\WorldObjects\Landmass.cs" />
-    <Compile Include="Legends\Location.cs" />
-    <Compile Include="Legends\Misc.cs" />
-    <Compile Include="Legends\WorldObjects\MountainPeak.cs" />
-    <Compile Include="Legends\WorldObjects\MusicalForm.cs" />
-    <Compile Include="Legends\OwnerPeriod.cs" />
-    <Compile Include="Legends\Parser\HistoryParser.cs" />
-    <Compile Include="Legends\Parser\ParsingErrors.cs" />
-    <Compile Include="Legends\Parser\Property.cs" />
-    <Compile Include="Legends\Parser\Section.cs" />
-    <Compile Include="Legends\Parser\SitesAndPopsParser.cs" />
-    <Compile Include="Legends\Parser\XMLParser.cs" />
-    <Compile Include="Legends\Parser\XMLPlusParser.cs" />
-    <Compile Include="Legends\WorldObjects\PoeticForm.cs" />
-    <Compile Include="Legends\Population.cs" />
-    <Compile Include="Legends\Reference.cs" />
-    <Compile Include="Legends\WorldObjects\Region.cs" />
-    <Compile Include="Legends\RelationshipProfileHF.cs" />
-    <Compile Include="Legends\Reputation.cs" />
-    <Compile Include="Legends\Schedule.cs" />
-    <Compile Include="Legends\WorldObjects\River.cs" />
-    <Compile Include="Legends\WorldObjects\Site.cs" />
-    <Compile Include="Legends\SiteLink.cs" />
-    <Compile Include="Legends\Skill.cs" />
-    <Compile Include="Legends\WorldObjects\Structure.cs" />
-    <Compile Include="Legends\WorldObjects\UndergroundRegion.cs" />
-    <Compile Include="Legends\World.cs" />
-    <Compile Include="Legends\WorldObjects\WorldConstruction.cs" />
-    <Compile Include="Legends\WorldObject.cs" />
-    <Compile Include="Legends\WorldObjects\WrittenContent.cs" />
-    <Compile Include="LocalFileProvider.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Controls\Map\dlgPopulation.resx">
-      <DependentUpon>dlgPopulation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Query\QueryControl.resx">
-      <DependentUpon>QueryControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\ArtAndCraftsTab.resx">
-      <DependentUpon>ArtAndCraftsTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\BaseSearchTab.resx">
-      <DependentUpon>BaseSearchTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\CivsTab.resx">
-      <DependentUpon>CivsTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\CollectionsTab.resx">
-      <DependentUpon>CollectionsTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\GeographyTab.resx">
-      <DependentUpon>GeographyTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\HistoricalFiguresTab.resx">
-      <DependentUpon>HistoricalFiguresTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\InfrastructureTab.resx">
-      <DependentUpon>InfrastructureTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\SummaryTab.resx">
-      <DependentUpon>SummaryTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Tabs\WarfareTab.resx">
-      <DependentUpon>WarfareTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgFileSelect.resx">
-      <DependentUpon>dlgFileSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Chart\dlgHF.resx">
-      <DependentUpon>dlgHF.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LegendsViewer.resx">
-      <DependentUpon>LegendsViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\README.md">
-      <Link>README.md</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="..\appveyor.yml">
-      <Link>appveyor.yml</Link>
-    </None>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="book.ico" />
-    <None Include="Resources\search16x16.png" />
-    <Content Include="WebContent\fonts\fontawesome-webfont.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\glyphicons-halflings-regular.eot">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\glyphicons-halflings-regular.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\glyphicons-halflings-regular.woff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\glyphicons-halflings-regular.woff2">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\fontawesome-webfont.eot">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\fontawesome-webfont.woff">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\fontawesome-webfont.woff2">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="7z.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="7z64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\fonts\glyphicons-halflings-regular.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\images\sort_asc.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\images\sort_asc_disabled.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\images\sort_both.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\images\sort_desc.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\images\sort_desc_disabled.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\Chart.bundle.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\cytoscape-dagre.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\jquery-3.1.1.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\jquery.dataTables.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\warfaregraph.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\styles\bootstrap.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\styles\font-awesome.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\styles\jquery.dataTables.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\globe16x16.png" />
-    <None Include="Resources\map16x16.png" />
-    <None Include="Resources\piechart16x16.png" />
-    <None Include="Resources\arrow_back16x16.png" />
-    <None Include="Resources\arrow_forward16x16.png" />
-    <None Include="Resources\chart16x16.png" />
-    <Content Include="WebContent\styles\github-markdown.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\cytoscape.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\scripts\familygraph.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WebContent\styles\legends.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<AssemblyTitle>LegendsViewer</AssemblyTitle>
+		<Product>LegendsViewer</Product>
+		<AssemblyVersion>1.21.01</AssemblyVersion>
+		<FileVersion>1.21.01</FileVersion>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/kromtec/legendsviewer</RepositoryUrl>
+		<StartupObject>LegendsViewer.Program</StartupObject>
+		<ApplicationIcon>Resources\book.ico</ApplicationIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="CommonMark.NET" Version="0.15.1" />
+		<PackageReference Include="Jdenticon.Gdi" Version="3.1.2" />
+		<PackageReference Include="Jdenticon-net" Version="3.1.2" />
+		<PackageReference Include="ObjectListView.Official" Version="2.9.1" />
+		<PackageReference Include="SevenZipSharp" Version="0.64" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Windows.Forms.DataVisualization" />
+		<Reference Include="System.Deployment" />
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="7z.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="7z64.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\book.ico" />
+		<Content Include="WebContent\fonts\fontawesome-webfont.eot">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\fontawesome-webfont.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\fontawesome-webfont.ttf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\fontawesome-webfont.woff">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\fontawesome-webfont.woff2">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\FontAwesome.otf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\glyphicons-halflings-regular.eot">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\glyphicons-halflings-regular.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\glyphicons-halflings-regular.ttf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\glyphicons-halflings-regular.woff">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\fonts\glyphicons-halflings-regular.woff2">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\images\sort_asc.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\images\sort_asc_disabled.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\images\sort_both.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\images\sort_desc.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\images\sort_desc_disabled.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\Chart.bundle.min.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\cytoscape-dagre.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\jquery-3.1.1.min.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\jquery.dataTables.min.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\warfaregraph.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\styles\bootstrap.min.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\styles\font-awesome.min.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\styles\jquery.dataTables.min.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<EmbeddedResource Include="..\README.md" Link="README.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<None Include="..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="Resources\globe16x16.png" />
+		<None Include="Resources\map16x16.png" />
+		<None Include="Resources\piechart16x16.png" />
+		<None Include="Resources\arrow_back16x16.png" />
+		<None Include="Resources\arrow_forward16x16.png" />
+		<None Include="Resources\chart16x16.png" />
+		<Content Include="WebContent\styles\github-markdown.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\cytoscape.min.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\scripts\familygraph.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="WebContent\styles\legends.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="obj\x86\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="WebContent\fonts\fontawesome-webfont.eot" />
+	  <None Remove="WebContent\fonts\fontawesome-webfont.svg" />
+	  <None Remove="WebContent\fonts\fontawesome-webfont.ttf" />
+	  <None Remove="WebContent\fonts\fontawesome-webfont.woff" />
+	  <None Remove="WebContent\fonts\fontawesome-webfont.woff2" />
+	  <None Remove="WebContent\fonts\FontAwesome.otf" />
+	  <None Remove="WebContent\fonts\glyphicons-halflings-regular.eot" />
+	  <None Remove="WebContent\fonts\glyphicons-halflings-regular.ttf" />
+	  <None Remove="WebContent\fonts\glyphicons-halflings-regular.woff" />
+	  <None Remove="WebContent\fonts\glyphicons-halflings-regular.woff2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="LegendsViewer.resx">
+	    <Generator></Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	  </None>
+	</ItemGroup>
 </Project>
