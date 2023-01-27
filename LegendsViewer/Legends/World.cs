@@ -201,15 +201,15 @@ namespace LegendsViewer.Legends
                 Color raceColor;
                 if (colorIndex * colorVariance < 360)
                 {
-                    raceColor = Formatting.HsvToRgb(colorIndex * colorVariance, 1, 1.0);
+                    raceColor = Formatting.HsvToColor(colorIndex * colorVariance, 1, 1.0);
                 }
                 else if (colorIndex * colorVariance < 720)
                 {
-                    raceColor = Formatting.HsvToRgb(colorIndex * colorVariance - 360, 0.4, 1);
+                    raceColor = Formatting.HsvToColor(colorIndex * colorVariance - 360, 0.4, 1);
                 }
                 else
                 {
-                    raceColor = colorIndex * colorVariance < 1080 ? Formatting.HsvToRgb(colorIndex * colorVariance - 720, 1, 0.4) : Color.Black;
+                    raceColor = colorIndex * colorVariance < 1080 ? Formatting.HsvToColor(colorIndex * colorVariance - 720, 1, 0.4) : Color.Black;
                 }
 
                 const int alpha = 176;

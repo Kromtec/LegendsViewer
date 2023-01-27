@@ -221,120 +221,65 @@ namespace LegendsViewer.Legends
             }
         }
 
-        /// <summary>
-        /// Convert HSV to RGB
-        /// h is from 0-360
-        /// s,v values are 0-1
-        /// r,g,b values are 0-255
-        /// Based upon http://ilab.usc.edu/wiki/index.php/HSV_And_H2SV_Color_Space#HSV_Transformation_C_.2F_C.2B.2B_Code_2
-        /// </summary>
-        public static Color HsvToRgb(double h, double s, double v)
+        public static Color HsvToColor(double h, double s, double v)
         {
-            // ######################################################################
-            // T. Nathan Mundhenk
-            // mundhenk@usc.edu
-            // C/C++ Macro HSV to RGB
-
-            while (h < 0) { h += 360; };
-            while (h >= 360) { h -= 360; };
-            double r, g, b;
-            if (v <= 0)
-            { r = g = b = 0; }
-            else if (s <= 0)
-            {
-                r = g = b = v;
-            }
-            else
-            {
-                double hf = h / 60.0;
-                int i = (int)Math.Floor(hf);
-                double f = hf - i;
-                double pv = v * (1 - s);
-                double qv = v * (1 - s * f);
-                double tv = v * (1 - s * (1 - f));
-                switch (i)
-                {
-                    // Red is the dominant color
-
-                    case 0:
-                        r = v;
-                        g = tv;
-                        b = pv;
-                        break;
-
-                    // Green is the dominant color
-
-                    case 1:
-                        r = qv;
-                        g = v;
-                        b = pv;
-                        break;
-                    case 2:
-                        r = pv;
-                        g = v;
-                        b = tv;
-                        break;
-
-                    // Blue is the dominant color
-
-                    case 3:
-                        r = pv;
-                        g = qv;
-                        b = v;
-                        break;
-                    case 4:
-                        r = tv;
-                        g = pv;
-                        b = v;
-                        break;
-
-                    // Red is the dominant color
-
-                    case 5:
-                        r = v;
-                        g = pv;
-                        b = qv;
-                        break;
-
-                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
-
-                    case 6:
-                        r = v;
-                        g = tv;
-                        b = pv;
-                        break;
-                    case -1:
-                        r = v;
-                        g = pv;
-                        b = qv;
-                        break;
-
-                    // The color is not defined, we should throw an error.
-
-                    default:
-                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                        r = g = b = v; // Just pretend its black/white
-                        break;
-                }
-            }
-            int red = Clamp((int)(r * 255.0));
-            int green = Clamp((int)(g * 255.0));
-            int blue = Clamp((int)(b * 255.0));
+            int red, green, blue;
+            HsvToRgb(h, s, v, out red, out green, out blue);
             return Color.FromArgb(red, green, blue);
         }
 
-        /// <summary>
-        /// Clamp a value to 0-255
-        /// </summary>
-        private static int Clamp(int i)
+        public static void HsvToRgb(double hue, double saturation, double value, out int red, out int green, out int blue)
         {
-            if (i < 0)
+            if (saturation == 0)
             {
-                return 0;
+                red = (int)(value * 255);
+                green = (int)(value * 255);
+                blue = (int)(value * 255);
+                return;
             }
 
-            return i > 255 ? 255 : i;
+            hue /= 60;
+            int i = (int)Math.Floor(hue);
+            double f = hue - i;
+            double p = value * (1 - saturation);
+            double q = value * (1 - saturation * f);
+            double t = value * (1 - saturation * (1 - f));
+
+            switch (i)
+            {
+                case 0:
+                    red = (int)(value * 255);
+                    green = (int)(t * 255);
+                    blue = (int)(p * 255);
+                    break;
+                case 1:
+                    red = (int)(q * 255);
+                    green = (int)(value * 255);
+                    blue = (int)(p * 255);
+                    break;
+                case 2:
+                    red = (int)(p * 255);
+                    green = (int)(value * 255);
+                    blue = (int)(t * 255);
+                    break;
+                case 3:
+                    red = (int)(p * 255);
+                    green = (int)(q * 255);
+                    blue = (int)(value * 255);
+                    break;
+                case 4:
+                    red = (int)(t * 255);
+                    green = (int)(p * 255);
+                    blue = (int)(value * 255);
+                    break;
+                default:
+                    red = (int)(value * 255);
+                    green = (int)(p * 255);
+                    blue = (int)(q * 255);
+                    break;
+            }
         }
+
 
         public static string TimeCountToSeason(int count)
         {
