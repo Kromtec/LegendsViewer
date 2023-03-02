@@ -54,7 +54,15 @@ namespace LegendsViewer.Legends.Events
             string eventString = GetYearTime();
             eventString += Instigator.ToLink(link, pov, this);
             eventString += " toppled the government of ";
-            eventString += OverthrownHistoricalFigure.ToLink(link, pov, this);
+            try
+            {
+                eventString += OverthrownHistoricalFigure.ToLink(link, pov, this);
+            }
+            catch
+            {
+                OverthrownHistoricalFigure = new HistoricalFigure();
+                eventString += OverthrownHistoricalFigure.ToLink(link, pov, this);
+            }
             eventString += " of ";
             eventString += Entity.ToLink(link, pov, this);
             if (PositionTaker != Instigator)
