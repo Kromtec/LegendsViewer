@@ -2,6 +2,20 @@
 [![DFFD Download](https://img.shields.io/badge/DFFD-Download-blue.svg)](http://dffd.bay12games.com/file.php?id=11455)
 [![Build status](https://ci.appveyor.com/api/projects/status/2dcxapcp3tium23l?svg=true)](https://ci.appveyor.com/project/Kromtec/legends-viewer)
 
+# LegendsViewer (Legacy Version)
+Note: This version of LegendsViewer is no longer maintained. A new, updated version, [LegendsViewer-Next](https://github.com/Kromtec/LegendsViewer-Next), is now available with support for the Dwarf Fortress Steam release and cross-platform compatibility.
+
+## Looking for the Latest Version?
+To download the latest release and get full compatibility with the Dwarf Fortress Steam version, please visit the new repository:
+
+[LegendsViewer-Next on GitHub](https://github.com/Kromtec/LegendsViewer-Next)
+
+## About this Repository
+This repository contains the legacy version of LegendsViewer, which is no longer receiving updates or support. We recommend using LegendsViewer-Next for the best experience and continued improvements.
+
+
+---
+
 # Legends Viewer
 
 Recreates Legends Mode from exported data. Browser like navigation, including tabs, allows to easily view other people/places/entities by just clicking names in the event logs or search lists, CTRL+Click opens a new tab. 
